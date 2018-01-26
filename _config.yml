@@ -5,7 +5,7 @@ locale: ko_KR
 description: 밥먹고 살기 힘든 부부 DBA
 logo: site-logo.png
 search: true
-#url: minsql.github.io
+url: http://minsql.github.io
 
 # Jekyll configuration
 
