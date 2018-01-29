@@ -10,9 +10,121 @@
 
   
     ,{
-      "title"			: "MathJax Example",
-      "link"			: "http://localhost:4000/blog/mathjax-example/",
-      "excerpt"		: "MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics  ... , and the other for inline mathematics  ... ."
+      "title"			: "MySQL slow query 를 효율적으로 이용해보자!",
+      "link"			: "http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/",
+      "excerpt"		: "MySQL slow query 를 효율적으로 이용해보자!"
+    }
+  
+
+  
+    ,{
+      "title"			: "PostgreSQL synchronous_commit 개념도",
+      "link"			: "http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/",
+      "excerpt"		: "PostgreSQL synchronous_commit 개념도"
+    }
+  
+
+  
+    ,{
+      "title"			: "pgbadger로 PostgreSQL 로그분석레포팅하기",
+      "link"			: "http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "pgbadger로 PostgreSQL 로그분석레포팅하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "pg_rewind로 좀더 편해진 Streaming replication Failback",
+      "link"			: "http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/",
+      "excerpt"		: "pg_rewind로 좀더 편해진 Streaming replication Failback"
+    }
+  
+
+  
+    ,{
+      "title"			: "skip-name-resolve 와 unauthenticated user",
+      "link"			: "http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/",
+      "excerpt"		: "skip-name-resolve 와 unauthenticated user"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysql client utility 와 -A 옵션",
+      "link"			: "http://localhost:4000/blog/mysql-client-utility-%EC%99%80-A-%EC%98%B5%EC%85%98/",
+      "excerpt"		: "mysql client utility 와 -A 옵션"
+    }
+  
+
+  
+    ,{
+      "title"			: "Error Table \"mysql\".\"innodb_table_stats\" not found 는 왜 발생하는가?",
+      "link"			: "http://localhost:4000/blog/innodb_table_stats_not-found/",
+      "excerpt"		: "“Error: Table “mysql”.”innodb_table_stats” not found” 는 왜 발생하는가?"
+    }
+  
+
+  
+    ,{
+      "title"			: "performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기",
+      "link"			: "http://localhost:4000/blog/performace_schema-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B5%9C%EA%B7%BC%EC%97%90-%EC%8B%A4%ED%96%89%EB%90%9C-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "유용한 mysql client tool 옵션 (my.cnf 에 설정)",
+      "link"			: "http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C-mysql-client-tool-%EC%98%B5%EC%85%98/",
+      "excerpt"		: "유용한 mysql client tool 옵션 (my.cnf 에 설정)"
+    }
+  
+
+  
+    ,{
+      "title"			: "버젼에 따라 쿼리 실행하기",
+      "link"			: "http://localhost:4000/blog/%EB%B2%84%EC%A0%BC%EC%97%90-%EB%94%B0%EB%9D%BC-%EC%BF%BC%EB%A6%AC-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "버젼에 따라 쿼리 실행하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL query_cache 최적화 하기",
+      "link"			: "http://localhost:4000/blog/MySQL-query_cache-%EC%B5%9C%EC%A0%81%ED%99%94-%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MySQL query_cache 최적화 하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "binlog_row_image 에 대해서",
+      "link"			: "http://localhost:4000/blog/binlog_row_image%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C/",
+      "excerpt"		: "binlog_row_image 에 대해서"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysqltest command를 이용한 mockup test 및 임의의 데이터 생성",
+      "link"			: "http://localhost:4000/blog/mysqltest-command%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-mockup-test-%EB%B0%8F-%EC%9E%84%EC%9D%98%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%83%9D%EC%84%B1/",
+      "excerpt"		: "mysqltest command를 이용한 mockup test 및 임의의 데이터 생성"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL SYS schema overview",
+      "link"			: "http://localhost:4000/blog/mysql-sys-schema-overview/",
+      "excerpt"		: "MySQL SYS schema overview"
+    }
+  
+
+  
+    ,{
+      "title"			: "Slave 에서 mysqldump의 dump-slave 옵션을 이용하여 백업 혹은 다른 slave 구성하기",
+      "link"			: "http://localhost:4000/blog/Slave-%EC%97%90%EC%84%9C-mysqldump%EC%9D%98-dump-slave-%EC%98%B5%EC%85%98%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EB%B0%B1%EC%97%85-%ED%98%B9%EC%9D%80-%EB%8B%A4%EB%A5%B8-slave-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "Slave 에서 mysqldump의 dump-slave 옵션을 이용하여 백업 혹은 다른 slave 구성하기"
     }
   
 

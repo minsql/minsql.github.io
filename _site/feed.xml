@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-29T19:51:27+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-29T23:10:30+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
 
 &lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
 
@@ -169,1040 +169,1201 @@
     drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
     -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MathJax Example</title><link href="http://localhost:4000/blog/mathjax-example/" rel="alternate" type="text/html" title="MathJax Example" /><published>2015-08-10T21:08:50+09:00</published><updated>2015-08-10T21:08:50+09:00</updated><id>http://localhost:4000/blog/mathjax-example</id><content type="html" xml:base="http://localhost:4000/blog/mathjax-example/">&lt;p&gt;&lt;a href=&quot;http://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt; is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\[ ... \]&lt;/code&gt;, and the other for inline mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\( ... \)&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL slow query 를 효율적으로 이용해보자!</title><link href="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/" rel="alternate" type="text/html" title="MySQL slow query 를 효율적으로 이용해보자!" /><published>2016-12-15T00:00:00+09:00</published><updated>2016-12-15T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20slow%20query%20%EB%A5%BC%20%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/">&lt;h1 id=&quot;mysql-slow-query-를-효율적으로-이용해보자&quot;&gt;MySQL slow query 를 효율적으로 이용해보자!&lt;/h1&gt;
 
-&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
-
-&lt;p&gt;To enable MathJax support be sure Kramdown is your Markdown flavor of choice and MathJax is set to true in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file.&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;markdown&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kramdown&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;mathjax&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Here is an example MathJax inline rendering \\( 1/x^{2} \\), and here is a block rendering:
-\\[ \frac{1}{n^{2}} \\]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here is an example MathJax inline rendering \( 1/x^{2} \), and here is a block rendering:
-\[ \frac{1}{n^{2}} \]&lt;/p&gt;
-
-&lt;p&gt;The only thing to look out for is the escaping of the backslash when using markdown, so the delimiters become &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[ ... \\]&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; for inline and block maths respectively.&lt;/p&gt;</content><author><name></name></author><summary type="html">MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics \[ ... \], and the other for inline mathematics \( ... \).</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil%7D" /></entry><entry><title type="html">MySQL Audit 사용하기</title><link href="http://localhost:4000/blog/MySQL-Audit-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MySQL Audit 사용하기" /><published>2015-07-21T00:00:00+09:00</published><updated>2015-07-21T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20Audit%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-Audit-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mysql-audit-사용하기&quot;&gt;MySQL Audit 사용하기&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-plugin-file-확인&quot;&gt;1. Plugin file 확인&lt;/h2&gt;
+&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;audit log plugin(audit_log) library object file이 MySQL plugin directory에 위치하는지 확인&lt;/li&gt;
-  &lt;li&gt;Community version을 사용한다면, Enterprise edition을 받아 해당 library directory에서 audit_log.so를 복사한 후 Community version의 library directory에 넣어 사용할 수 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;2-plugin-load&quot;&gt;2. Plugin load&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;my.cnf 에 명시하고 restart 하는 방법
+  &lt;li&gt;MySQL 은 slow query 를 사용하여, 많은 정보를 얻어낼 수 있다. 하지만, 해당 기능들이 default 로 OFF 로 되어 있어 그냥 지나가는 경우가 많다. slow query 관련한 기능들을 알아보자.
     &lt;ul&gt;
-      &lt;li&gt;my.cnf의 [mysqld] 섹션에 아래와 같이 명시해주거나 startup comman-line에서 –plugin-load 을 사용한다.&lt;/li&gt;
-      &lt;li&gt;restart시 plugin-load 명시해주지 않으면 load하지 않는다.&lt;/li&gt;
-      &lt;li&gt;mysql 에 접속하여 show plugin 명령어를 통해 해당 plugin의 상태를 확인할 수 있다.&lt;/li&gt;
+      &lt;li&gt;Slow query 파일은 쿼리를 튜닝하는데 아주 중요한 요소로 작용하지만, 5.6부터는 해당 기능이 default 로 OFF 되어 있다. 먼저 아래에 나열된 모든 기능을 사용하기 위해서는 slow_query_log 를 ON 으로 설정해야 한다.&lt;/li&gt;
+      &lt;li&gt;해당값은 dynamic 변수로서 set global slow_query_log=ON; 와 같이 변경가능하다.&lt;/li&gt;
+      &lt;li&gt;my.cnf 의 [mysqld] section 에 slow_query_log 를 추가하여 restart 후에도 해당 값이 ON 이 될 수있도록 조정한다.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;slow-query-에-쓰여지는것들&quot;&gt;Slow query 에 쓰여지는것들&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;long_query_time 이상으로 실행되는 쿼리에 대하여, slow_query_log_file 에 존재하는 파일에 slow query 를 작성한다.
+    * long_query_time (default : 10) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;OLTP 환경에서 해당값을 10초로 두는것은 개인적으로 너무 길다. 해당 값을 1초 혹은 2초로 수정하자.
+        &lt;ul&gt;
+          &lt;li&gt;slow_query_log_file (default : host_name-slow.log) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Index 를 사용하지 않는 쿼리들
+    * log_queries_not_using_indexes (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;해당옵션을 ON 하게 된다면, INDEX를 사용하지 않는 쿼리가 찍히게 된다. 이는 기존의 slow query (느려서 찍히게 되는 경우) 와 꼬일 수 있으므로, 프로젝트가 오픈되기 전 쿼리 검증을 위해 사용할 수 있다.&lt;/li&gt;
+      &lt;li&gt;중간에 쿼리튜닝을 위해 사용해야 한다면, 아래와 같이 사용하자.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
+mysql&amp;gt; flush logs; 정보 수집을 한 후, 원래의 값으로 돌려놓자.
+mysql&amp;gt; set global log_queries_not_using_indexes = OFF, GLOBAL long_query_time = 2, GLOBAL slow_query_log_file = \'host_name-slow.log\';
+mysql&amp;gt; flush logs;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  * 물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.   3. Admin 관련 명령어 혹은 slave 의 sql_thread 에 의해 실행된 명령어중 long_query_time 이상으로 실행된 명령어를 찾는다.
+* log_slow_admin_statements (default : OFF) - [http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements\\&quot;)
+* log_slow_slave_statements (default : OFF) - [http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements\\&quot;)
+  * 기본적으로 slow queries 에는 admin 관련 명령어나 slave 의 sql_thread 에 의해 실행된 명령어는 아무리 오래걸려도 찍히지 않는다. 해당 내용을 확인하기 위해서는 위의 두옵션을 ON 으로 설정해야 한다.
+  * admin 관련 명령어 는 ALTER TABLE, ANALYZE TABLE, CHECK TABLE, CREATE INDEX, DROP INDEX, OPTIMIZE TABLE, REPAIR TABLE 이다. 예전에 alter table 을 누가했는지 알 수 있는 방법을 문의한적이 있다. 이때 해당 방법은 좋은 선택이 될 수 있다. 물론 해당 명령어 역시, long_query_time 이상으로 실행된 명령어에 대해서만 찍힌다.
+  * 예제
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# User@Host: root[root] @  [192.168.74.202]  Id:    17
+# Query_time: 3.362235  Lock_time: 0.007825 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1469352147;
+alter table tester add index b(b);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;효율적으로-활용하기&quot;&gt;효율적으로 활용하기&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-long-query-time-과-mysqldumpslow를-이용하여-쿼리의-종류와-횟수-계산하기&quot;&gt;1. long-query-time 과 mysqldumpslow를 이용하여, 쿼리의 종류와 횟수 계산하기&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* 일반적으로 어떤 쿼리가 얼만큼 들어오는지 확인하기 위해 여러방법이 쓰일 수 있다. WAS에서 계산해볼 수도 있고, general log 를 내려 모든 쿼리를 확인할 수 있다. 하지만 이 경우 직접 통계를 내는 프로그램이 필요하다.
+* 간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global long_query_time=0;
+shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. [https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html](\\&quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&quot;) ### 2. min_examined_row_limit 를 이용하여, 특정 row 이상으로 검사한 쿼리만 찾기.
+* 비록, log_queries_not_using_indexes 를 통해 index 를 사용하지 않는 쿼리를 찾는다 하더라도, 테이블에 데이터가 10건정도라면 인덱스를 타지 않는것이 현명한 쿼리일 수 있다. 또한 적절히 limit 를 쓴 경우도 그러하다. 이러한 쿼리들을 걸러내기 위하여 min_examined_row_limit 라는 변수가 존재한다.
+* min_examined_row_limit (default : 0) - [http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit\\&quot;)
+* 소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      if (thd-&amp;gt;enable_slow_log)
+      {
+        ulonglong end_utime_of_query= thd-&amp;gt;current_utime();
+        thd_proc_info(thd, 'logging slow query');
+
+        if (((thd-&amp;gt;server_status &amp;amp; SERVER_QUERY_WAS_SLOW) ||
+             ((thd-&amp;gt;server_status &amp;amp;
+               (SERVER_QUERY_NO_INDEX_USED | SERVER_QUERY_NO_GOOD_INDEX_USED)) &amp;amp;&amp;amp;
+              opt_log_queries_not_using_indexes &amp;amp;&amp;amp;
+               !(sql_command_flags[thd-&amp;gt;lex-&amp;gt;sql_command] &amp;amp; CF_STATUS_COMMAND))) &amp;amp;&amp;amp; thd-&amp;gt;examined_row_count &amp;gt;= thd-&amp;gt;variables.min_examined_row_limit)
+        {
+          thd_proc_info(thd, 'logging slow query');
+          thd-&amp;gt;status_var.long_query_count++;
+          slow_log_print(thd, thd-&amp;gt;query(), thd-&amp;gt;query_length(),
+                         end_utime_of_query);
+        }
+      }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;추천하는-설정&quot;&gt;추천하는 설정&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MASTER&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mysqld]
-    plugin-load=audit_log.so
-
-    -- MySQL Restart
-    mysql&amp;gt; show plugins;
-    +----------------------------+----------+--------------------+--------------+-------------+
-    | Name                       | Status   | Type               | Library      | License     |
-    +----------------------------+----------+--------------------+--------------+-------------+
-    ...
-    | audit_log                  | ACTIVE   | AUDIT              | audit_log.so | PROPRIETARY |
-    +----------------------------+----------+--------------------+--------------+-------------+
+    log-slow-queries=/log/slow_queries.log
+    long-query-time=1
+    log_slow_admin_statements
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;INSTALL PLUGIN문으로 인스톨하는 방법
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;mysql 에 접속하여 아래의 명령어로 활성화 시킬 수 있다.&lt;/p&gt;
-
-        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; INSTALL PLUGIN audit_log SONAME 'audit_log.so';&lt;/code&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;mysql.plugin 테이블에 해당 plugin을 등록하고 restart시에도 load된다.&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;SLAVE&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;3-audit-log-file-관련-옵션&quot;&gt;3. Audit log file 관련 옵션&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;audit log file : audit.log&lt;/li&gt;
-  &lt;li&gt;audit log format : OLD(default) 와 NEW 를 쓸 수 있다.
-    &lt;ul&gt;
-      &lt;li&gt;NEW format은 5.6.14부터 생겼고, Oracle Audit Vault와의 나은 호환성을 가짐.&lt;/li&gt;
-      &lt;li&gt;뒤에 이야기 하겠지만, MySQL table에 넣고 분석할 경우, OLD 포맷만이 가능하다. 현재 bug로 fix 중에 있다. 2015-07-21&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;audit_log_strategy :&lt;code class=&quot;highlighter-rouge&quot;&gt; ASYNCHRONOUS(default) | PERFORMANCE | SEMISYNCHRONOUS | SYNCHRONOUS&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;ASYNCHRONOUS : asynchronously, buffer가 다 차면 쓴다. minimal impact&lt;/li&gt;
-      &lt;li&gt;PERFORMACE : asynchronously, buffer가 부족해지면 쓴다.&lt;/li&gt;
-      &lt;li&gt;SEMISYNCHRONOUS : synchronously, 즉각 OS 캐시에 씀, 캐시에서 내려쓰는건 OS에 맡김.&lt;/li&gt;
-      &lt;li&gt;SYNCHRONOUS : synchronously, 매 write request마다 call sync()&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;audit_log_buffer_size : async방식일 때만 이만큼 buffer할당&lt;/li&gt;
-  &lt;li&gt;audit_log_rotate_on_size, audit_log_flush : rotation, flush 관련 옵션&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;4-audit-log&quot;&gt;4. Audit Log&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;해당 파일은 default 로 datadir 아래 audit.log라는 이름으로 생성된다.&lt;/li&gt;
-  &lt;li&gt;물론 에러가 난 명령어까지도 STATUS_CODE를 통해 audit한다.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-file.html&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-file.html&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &amp;lt;AUDIT_RECORD TIMESTAMP=&quot;2015-06-16T09:20:17 UTC&quot; RECORD_ID=&quot;307_2015-06-16T08:23:17&quot; NAME=&quot;Query&quot; CONNECTION_ID=&quot;60&quot; STATUS=&quot;1064&quot; STATUS_CODE=&quot;1&quot; USER=&quot;root[root] @ localhost []&quot; OS_LOGIN=&quot;&quot; HOST=&quot;localhost&quot; IP=&quot;&quot; COMMAND_CLASS=&quot;grant&quot; SQLTEXT=&quot;grant all on *.* to 'dba'@'%' indentified by 'dba'&quot;/&amp;gt;
-     &amp;lt;AUDIT_RECORD TIMESTAMP=&quot;2015-06-16T09:21:01 UTC&quot; RECORD_ID=&quot;308_2015-06-16T08:23:17&quot; NAME=&quot;Query&quot; CONNECTION_ID=&quot;60&quot; STATUS=&quot;0&quot; STATUS_CODE=&quot;0&quot; USER=&quot;root[root] @ localhost []&quot; OS_LOGIN=&quot;&quot; HOST=&quot;localhost&quot; IP=&quot;&quot; COMMAND_CLASS=&quot;grant&quot; SQLTEXT=&quot;GRANT ALL PRIVILEGES ON *.* TO 'dba'@'%' IDENTIFIED BY PASSWORD '*381AD08BBFA647B14C82AC1094A29AD4D7E4F51D'&quot;/&amp;gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mysqld]
+    log-slow-queries=/log/slow_queries.log
+    long-query-time=1
+    log_slow_slave_statements
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL slow query 를 효율적으로 이용해보자!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">PostgreSQL synchronous_commit 개념도</title><link href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" rel="alternate" type="text/html" title="PostgreSQL synchronous_commit 개념도" /><published>2016-07-01T00:00:00+09:00</published><updated>2016-07-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/PostgreSQL%20synchronous_commit%20%EA%B0%9C%EB%85%90%EB%8F%84</id><content type="html" xml:base="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/">&lt;h1 id=&quot;postgresql-synchronous_commit-개념도&quot;&gt;PostgreSQL synchronous_commit 개념도&lt;/h1&gt;
 
-&lt;h3 id=&quot;5-audit-log-filtering&quot;&gt;5. Audit Log Filtering&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;계정별 filtering
-    &lt;ul&gt;
-      &lt;li&gt;가장 요구사항이 많았던 기능으로 5.6.20 부터 지원된다.&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_include_accounts&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_include_accounts&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;audit_log_include_accounts : 명시한 계정만 audit&lt;/li&gt;
-      &lt;li&gt;audit_log_exclude_accounts : 명시한 계정 이외의 계정들 audit&lt;/li&gt;
-      &lt;li&gt;다음과 같이 user_name@host_name format으로 명시한다. mysql&amp;gt; SET GLOBAL audit_log_include_accounts = ‘user1@localhost,user2@localhost’;&lt;/li&gt;
-      &lt;li&gt;5.6.23 까지는 해당 옵션과 관계없이 모든유저의 접속 및 quit한 로그가 나타났지만, 5.6.24부터는 설정된 유저만 나타나게 된다.&lt;/li&gt;
-      &lt;li&gt;지속적인 적용을 위해 my.cnf에 해당 옵션을 명시한다. [mysqld] audit_log_include_accounts=dba@localhost,dba@%&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;command 별 filtering
-    &lt;ul&gt;
-      &lt;li&gt;audit_log_policy :&lt;code class=&quot;highlighter-rouge&quot;&gt; ALL | LOGINS | QUERIES | NONE&lt;/code&gt; 로 나누어 적용할 수 있다.&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_policy&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_policy&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;6-audit-file-rotate-시키기&quot;&gt;6. Audit file rotate 시키기&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;audit_log_rotate_on_size 설정
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_rotate_on_size&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_rotate_on_size&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;지정된 사이즈만큼 커지고 넘어가게 되면 timestamp의 값을 추가하여 아카이빙한다.&lt;/li&gt;
-      &lt;li&gt;default 는 0으로 audit 파일은 계속 커진다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;수동 설정
-    &lt;ul&gt;
-      &lt;li&gt;먼저 해당 테이블로 저장하기위해는 온전한 파일이어야 한다. 수동으로 해당 파일을 분리해보자.&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;mv로 옮겨도 file descriptor를 mysql이 가지고 있기 때문에 지속적으로 변경된 파일에 쓰게 된다.&lt;/p&gt;
-
-        &lt;p&gt;## MySQL 의 Data Home Directory는 /data1/5.6/data 로 설정되어 있다.
-&lt;code class=&quot;highlighter-rouge&quot;&gt;SHELL&amp;gt; mv /data1/5.6/data/audit.log  /data1/5.6/data/audit.log.bak
-&lt;/code&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;audit log를 flush 한다.&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;기존의 /data1/5.6/data/audit.log.bak 에 대해서는 닫고 새로운 /data1/5.6/data/audit.log 을 열게 된다.&lt;/p&gt;
-
-        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; SET GLOBAL audit_log_flush = 1;&lt;/code&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;7-audit-파일-테이블로-저장하기&quot;&gt;7. Audit 파일 테이블로 저장하기&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;table을 만들고, LOAD XML을 통해 올려보자.
-    &lt;ul&gt;
-      &lt;li&gt;해당 /data1/5.6/data/audit.log.bak 을 테이블로 넣어보자. 물론 mv로 해당 파일을 바꾸지 않고 쓰고 있는 파일에 대하여 넣어도 상관없다.&lt;/li&gt;
-      &lt;li&gt;중복을 방지하기 위해 UNIQUE U_RECORD_ID 를 추가했다.&lt;/li&gt;
-      &lt;li&gt;필요한 business logic에 맞춰 테이블의 인덱스를 추가해서 넣자.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; CREATE TABLE audit_log_to_table (
-    id bigint PRIMARY KEY auto_increment,
-    TIMESTAMP timestamp,
-    CONNECTION_ID bigint,
-    USER varchar(128),
-    HOST varchar(128),
-    IP varchar(25),
-    OS_LOGIN varchar(64),
-    RECORD_ID varchar(64),
-    NAME varchar(64),
-    STATUS int,
-    STATUS_CODE int,
-    COMMAND_CLASS varchar(64),
-    SQLTEXT longtext,
-    UNIQUE U_RECORD_ID (RECORD_ID)
-    ) DEFAULT CHARSET utf8mb4;
-
-mysql&amp;gt; LOAD XML LOCAL INFILE '/data1/5.6/data/audit.log.bak'
-     INTO TABLE audit_log_to_table
-     CHARACTER SET utf8mb4
-     ROWS IDENTIFIED BY ''
-    (@TIMESTAMP, CONNECTION_ID, USER, HOST, IP, OS_LOGIN, RECORD_ID, NAME, STATUS, STATUS_CODE, COMMAND_CLASS, SQLTEXT)
-    SET TIMESTAMP = CONVERT_TZ(STR_TO_DATE(@TIMESTAMP, '%Y-%m-%dT%H:%i:%s UTC'), 'UTC', '+9:00');
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL Audit 사용하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL to PostgreSQL Migration tool</title><link href="http://localhost:4000/blog/mysql-to-postgresql-migration-tool/" rel="alternate" type="text/html" title="MySQL to PostgreSQL Migration tool" /><published>2015-06-12T00:00:00+09:00</published><updated>2015-06-12T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-to-postgresql-migration-tool</id><content type="html" xml:base="http://localhost:4000/blog/mysql-to-postgresql-migration-tool/">&lt;h1 id=&quot;mysql-to-postgresql-migration-tool&quot;&gt;MySQL to PostgreSQL Migration tool&lt;/h1&gt;
+&lt;h3 id=&quot;synchronous_commit-개념도&quot;&gt;synchronous_commit 개념도&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;py-mysql2pgsql - A tool for migrating/converting/exporting data from MySQL to PostgreSQL https://github.com/philipsoutham/py-mysql2pgsql&lt;/p&gt;
+  &lt;p&gt;안정성이냐 성능이냐. PostgreSQL의 synchronous_commit, fsync에 대해서 정리해본다.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;1-py-mysql2pgsql-설치&quot;&gt;1. py-mysql2pgsql 설치&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/Slide4.jpg&quot; alt=&quot;Slide4&quot; /&gt;
+&lt;img src=&quot;/uploads/Slide1.jpg&quot; alt=&quot;Slide1&quot; /&gt;
+&lt;img src=&quot;/uploads/Slide2.jpg&quot; alt=&quot;Slide2&quot; /&gt;
+&lt;img src=&quot;/uploads/Slide3.jpg&quot; alt=&quot;Slide3&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;11-requirements-pip설치&quot;&gt;1.1 requirements, pip설치&lt;/h4&gt;
+&lt;h4 id=&quot;synchronous_commit-enum&quot;&gt;synchronous_commit (enum)&lt;/h4&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@pgvm1 ~]# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+&lt;ul&gt;
+  &lt;li&gt;트랜잭션 커밋하기전에 WAL 레코드가 disk까지 쓰인다음에 success를 리턴할 것인가 여부.
+    &lt;ul&gt;
+      &lt;li&gt;on : default&lt;/li&gt;
+      &lt;li&gt;off : 클라이언트에 바로 transaction commit을 보냄. 하지만 실제로 트랜잭션이 안전하게 반영(WAL record가 WAL file에 쓰여짐) 되기까지 딜레이가 존재함. 서버 crash났을때 트랜잭션 손실될 수 있음. (최대 delay는 wal_writer_delay(200ms)의 3배). 하지만 fsync와는 달리 off로 한다고 해서 db 일관성에 문제가 되지는 않음. 최근 커밋되어야하는 트랜잭션이 손실될 수는 있으나 database 상태는 이 트랜잭션들이 정상적으로 롤백된 것과 같아서 일관성에 문제 없음.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;synchronous 리플리케이션을 사용하는 경우에 트랜잭션 커밋전에 변경WAL이 synchronus standby까지 리플리케이션되기를 기다릴것인지 아닌지를 설정할 수 있음
+    &lt;ul&gt;
+      &lt;li&gt;on : 변경WAL레코드가 standby의 WAL file까지 쓰여진 후 커밋 success 리턴해줌&lt;/li&gt;
+      &lt;li&gt;remote-write : standby가 WAL을 받아서 os buffer까지 썼다는 것을 의미, disk에 쓰여진것은 보장하지 않음. 이세팅도 충분히 안전함.&lt;/li&gt;
+      &lt;li&gt;local : synchronous replication을 사용한다는 것은 일반적으로 master의 disk와 standby에 WAL변경사항을 동시에 적용해야하는게 당연하다. 그렇지 않다면 asynchronus replication인 것이니까 말이다. 그럼에도 불구하고 local disk에까지만 쓰고, standby까지 replication되는 것을 기다리지 않고 싶다면 local로 설정할 수 있다. 이 파라메터는 운영중에 변경가능하므로, sync해야하는 트랜잭션도 있고 async로 해도 되는 트랜잭션도 있는 경우 유용하게 사용할 수 있을 것이다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-[root@pgvm1 ~]# python ez_setup.py
+&lt;h4 id=&quot;fsync-boolean&quot;&gt;fsync (boolean)&lt;/h4&gt;
 
-[root@pgvm1 ~]# easy_install pip
+&lt;ul&gt;
+  &lt;li&gt;fsync가 on이면, PostgreSQL서버는 fsync()시스템콜을 통해서 변경분을 디스크에 물리적으로 바로 쓴다. 이는 데이터베이스클러스터가 OS나 하드웨어 장애시 consistent한 상태로 복구가 가능함을 보장한다.&lt;/li&gt;
+  &lt;li&gt;fsync를 off한다면, OS가 알아서 메모리에 있는 것을 디스크로 내려쓰게 된다. 언제 무엇이 디스크에 쓰여졌는지 아닌지 알수 없다. 그러므로 성능상 이득을 볼수는 있겠지만, 전원장애나 system crash로가 발생했을때 복구가 불가능할수 있다. 만약 전체 데이터베이스를 쉽게 재생성할수 있는 경우에만 off하도록 한다. 예를들어 백업본으로부터 새로운 데이터베이스 클러스트를 초기 구축하는 경우, 버리고 재생성할 데이터베이스의 데이터 처리, 자주 재생성되는 read-only 데이터베이스 복제본으로 failover에 사용되지 않는 데이터베이스인 경우 사용할 수 있다. 고성능의 하드웨어 장비라고해서 fsync를 끄는 것은 올바르지 않다.
+    &lt;ul&gt;
+      &lt;li&gt;성능을 위해서라면 synchronous_commit을 off하는 것만으로 충분할 것이다.&lt;/li&gt;
+      &lt;li&gt;만약 off하기로 했다면, full_page_writes도 off하는 것을 고려하도록 한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">PostgreSQL synchronous_commit 개념도</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">pgbadger로 PostgreSQL 로그분석레포팅하기</title><link href="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="pgbadger로 PostgreSQL 로그분석레포팅하기" /><published>2016-06-30T00:00:00+09:00</published><updated>2016-06-30T00:00:00+09:00</updated><id>http://localhost:4000/blog/pgbadger%EB%A1%9C%20PostgreSQL%20%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;pgbadger로-postgresql-로그분석레포팅하기&quot;&gt;pgbadger로 PostgreSQL 로그분석레포팅하기&lt;/h1&gt;
 
-[root@pgvm1 ~]# yum install MySQL-python
+&lt;h2 id=&quot;pgbadger---a-fast-postgresql-log-analysis-report&quot;&gt;pgBadger - a fast PostgreSQL log analysis report&lt;/h2&gt;
 
-[root@pgvm1 ~]# yum install postgresql-devel
+&lt;blockquote&gt;
+  &lt;p&gt;너무 간단해서 쓸것도 없지만, 기록을 남겨두겠음&lt;/p&gt;
+&lt;/blockquote&gt;
 
-[root@pgvm1 ~]# yum install python-devel
+&lt;h3 id=&quot;1-설치&quot;&gt;1. 설치&lt;/h3&gt;
 
-[root@pgvm1 ~]# yum install python-psycopg2
+&lt;ul&gt;
+  &lt;li&gt;최신버전 다운로드 후 압축해제: https://github.com/dalibo/pgbadger/releases/latest&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
+tar xzf pgbadger-8.1.tar.gz
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;12-py-mysql2pgsql-설치&quot;&gt;1.2 py-mysql2pgsql 설치&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;설치
+    &lt;ul&gt;
+      &lt;li&gt;root user로&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@pgvm1 ~]# pip install py-mysql2pgsql
-
-[root@pgvm1 ~]# which py-mysql2pgsql
-/usr/bin/py-mysql2pgsql
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cd pgbadger-8.1
+# perl Makefile.PL
+Checking if your kit is complete...
+Looks good
+Writing Makefile for pgBadger
+Writing MYMETA.yml and MYMETA.json
+# make &amp;amp;&amp;amp; make install
+Installing /usr/local/share/man/man1/pgbadger.1p
+Installing /usr/local/bin/pgbadger
+Appending installation info to /usr/lib64/perl5/perllocal.pod
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;2-configuration&quot;&gt;2. Configuration&lt;/h3&gt;
+&lt;h3 id=&quot;2-postgresql-관련-파라메터-설정&quot;&gt;2. PostgreSQL 관련 파라메터 설정&lt;/h3&gt;
 
-&lt;h4 id=&quot;21-usage-확인&quot;&gt;2.1 Usage 확인&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;log_min_durtion_statement를 0 이상으로 설정하자. 0은 모든 문장을 로깅하므로, 서비스서버에서는 알맞는 duration을 지정한다.&lt;/li&gt;
+  &lt;li&gt;log_line_prefix
+    &lt;ul&gt;
+      &lt;li&gt;‘stderr’ log format을 사용하는 경우, log_line_prefix에 최소한 ‘%t [%p]: [%l-1] ‘(timestamp,process id,session line number)를 설정해야한다. user, dbname, application name, client ip까지 로깅하기를 원한다면, ‘%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h ‘을 사용하자.&lt;/li&gt;
+      &lt;li&gt;syslog log format을 사용하는 경우, ‘user=%u,db=%d,app=%aclient=%h ‘로 설정하자.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvmll1 ~]$ py-mysql2pgsql -h
-usage: py-mysql2pgsql [-h] [-v] [-f FILE] [-V]
-
-Tool for migrating/converting data from mysql to postgresql.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --verbose         Show progress of data migration.
-  -f FILE, --file FILE  Location of configuration file (default:
-                        mysql2pgsql.yml). If none exists at that path, one
-                        will be created for you.
-  -V, --version         Print version and exit.
-
-https://github.com/philipsoutham/py-mysql2pgsql
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_min_duration_statement = 1000
+log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;22-mysql2pgsqlyml-생성&quot;&gt;2.2 mysql2pgsql.yml 생성&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;추가 정보를 로깅하고 싶다면 다음의 파라메터를 활성화할수 있다.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 py-mysql2pgsql]$ mkdir output
-[postgres@pgvm1 py-mysql2pgsql]$ vi mysql2pgsql.yml
-mysql:
- hostname: 192.168.56.111
- port: 3355
- socket:
- username: michaela
- password: michaela
- database: core
- compress: false
-destination:
- # if file is given, output goes to file, else postgres
- file: output/results-pgsql.sql
- postgres:
-  hostname: localhost
-  port: 5434
-  username: incarta
-  password: incarta
-  database: incartadb
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+log_autovacuum_min_duration = 0
+log_error_verbosity = default
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;23-target-usertablespacedatabaseschema-생성&quot;&gt;2.3 target user/tablespace/database/schema 생성&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;log_statement은 pgBadger로 parse되지 않으니 사용하지 않는다.&lt;/li&gt;
+  &lt;li&gt;lc_messages는 C로 한다&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 9.4]$ mkdir -p pg_data/incarta_data
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lc_messages='C'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
+&lt;ul&gt;
+  &lt;li&gt;[Note] log_min_duration_statement, log_duration 설정관련 참조
+    &lt;ul&gt;
+      &lt;li&gt;수행된 쿼리문장까지 로깅하고 싶다면 log_min_duration_statement 을 0이상으로 설정하여 사용한다. 쿼리문은 로깅하지 않고, 단지 수행시간과 횟수만 로깅하고 싶다면 log_min_duration_statement는 -1로 설정하여 disable하고, log_duration을 사용한다.&lt;/li&gt;
+      &lt;li&gt;log_min_duration_statement을 사용하면 가장 수행시간이 많이 걸리는 쿼리에 대한 레포트를 생성할수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
+&lt;h3 id=&quot;3-레포트생성&quot;&gt;3. 레포트생성&lt;/h3&gt;
 
-CREATE ROLE incarta LOGIN
-  PASSWORD 'incarta'
-  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
+[=============&amp;gt;           ] Parsed 1639250 bytes of 2842188 (57.68%), queries: 8
+[========================&amp;gt;] Parsed 2842188 bytes of 2842188 (100.00%), queries: 17221, events: 21
+LOG: Ok, generating html report...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-CREATE TABLESPACE incarta_data
-  OWNER postgres
-  LOCATION '/data1/9.4/pg_data/incarta_data';
-COMMENT ON TABLESPACE incarta_data
-  IS 'incarta data tablespace';
+&lt;p&gt;간단하게 html output을 뽑아 볼수 있다.
+&lt;img src=&quot;/wp-content/uploads/2016/06/pgbadger_out.png&quot; alt=&quot;pgbadger_out&quot; /&gt; 다른 옵션들은 필요하다면 사용해보시길.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;github 참조 &lt;a href=&quot;https://github.com/dalibo/pgbadger&quot;&gt;https://github.com/dalibo/pgbadger&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pgbadger로 PostgreSQL 로그분석레포팅하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</title><link href="http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/" rel="alternate" type="text/html" title="pg_rewind로 좀더 편해진 Streaming replication Failback" /><published>2016-06-10T00:00:00+09:00</published><updated>2016-06-10T00:00:00+09:00</updated><id>http://localhost:4000/blog/pg_rewind%EB%A1%9C%20%EC%A2%80%EB%8D%94%20%ED%8E%B8%ED%95%B4%EC%A7%84%20Streaming%20replication%20Failback</id><content type="html" xml:base="http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/">&lt;h1 id=&quot;pg_rewind로-좀더-편해진-streaming-replication-failback&quot;&gt;pg_rewind로 좀더 편해진 Streaming replication Failback&lt;/h1&gt;
 
-GRANT ALL ON TABLESPACE incarta_data TO incarta;
+&lt;h3 id=&quot;pg_rewind&quot;&gt;pg_rewind&lt;/h3&gt;
 
+&lt;ul&gt;
+  &lt;li&gt;9.5부터 지원되는 feature이다.&lt;/li&gt;
+  &lt;li&gt;streaming replication을 사용하다가 마스터가 failure난 경우, 쉽게 슬레이브를 promote하여 서비스를 계속할수 있다. 그럼 마스터를 정상화시킨후 다시 replication의 slave로 failback할수 있는가? 디스크 폴드가 아니라서 크래시 직전까지의 데이터가 온전히 있는 경우에도 백업본 올려서 replication 재구성해야했다. 그 작업이 pg_rewind을 사용해서 단축될수 있다. pg_rewind는 소스디렉터라와 타겟디렉터리의 파일들을 sync해주는 유틸리티이다. pg_controlfile의 정보를 바탕으로 모든 data file을 동기화하는것이다. pg_rewind로 파일 싱크한뒤 recovery.conf작성하여 start하면 recovery모드로 진입해서 wal 적용하고 streaming 받기 시작한다.&lt;/li&gt;
+&lt;/ul&gt;
 
-CREATE DATABASE incartadb
-  WITH OWNER = incarta
-       ENCODING = 'UTF8'
-       TABLESPACE = incarta_data
-       LC_COLLATE = 'en_US.UTF-8'
-       LC_CTYPE = 'en_US.UTF-8'
-       CONNECTION LIMIT = -1;
+&lt;h3 id=&quot;test&quot;&gt;TEST&lt;/h3&gt;
 
-COMMENT ON DATABASE incartadb
-  IS 'incarta database';
+&lt;h4 id=&quot;i-streaming-replication-구성&quot;&gt;I. streaming replication 구성&lt;/h4&gt;
 
- alter database incartadb set default_tablespace ='incarta_data';
+&lt;h5 id=&quot;1-server1-준비&quot;&gt;1. server1 준비&lt;/h5&gt;
 
-GRANT ALL ON DATABASE incartadb to incarta;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/initdb --pgdata=/data1/9.5/data -W
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
+&lt;h5 id=&quot;2-server1-postgresqlconf&quot;&gt;2. server1 postgresql.conf&lt;/h5&gt;
 
-postgres=# c incartadb incarta
-You are now connected to database &quot;incartadb&quot; as user &quot;incarta&quot;.
-incartadb=&amp;gt; show default_tablespace ;
- default_tablespace
---------------------
- incarta_data
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
+port = 5435                             # (change requires restart)
+wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
+wal_log_hints = on                      # also do full page writes of non-critical updates
+archive_mode = on               # enables archiving; off, on, or always
+archive_command = 'test ! -f /backup1/9.5/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5/pg_arc/%f'            # command to use to archive a logfile segment
+max_wal_senders = 3             # max number of walsender processes
+wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
+hot_standby = on                        # &quot;on&quot; allows queries during recovery
+logging_collector = on          # Enable capturing of stderr and csvlog
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;3-server1-pg_hbaconf&quot;&gt;3. server1 pg_hba.conf&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;4-server1-start&quot;&gt;4. server1 start&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_ctl -D /data1/9.5/data start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;5-server2-준비&quot;&gt;5. server2 준비&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;6-server2-postgresqlconf&quot;&gt;6. server2 postgresql.conf&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
+port = 5445                             # (change requires restart)
+wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
+wal_log_hints = on                      # also do full page writes of non-critical updates
+archive_mode = on               # enables archiving; off, on, or always
+archive_command = 'test ! -f /backup1/9.5s1/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5s1/pg_arc/%f'                # command to use to archive a logfile segment
+max_wal_senders = 3             # max number of walsender processes
+wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
+hot_standby = on                        # &quot;on&quot; allows queries during recovery
+logging_collector = on          # Enable capturing of stderr and csvlog
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;7-server2-pg_hbaconf&quot;&gt;7. server2 pg_hba.conf&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;8-server2-recoveryconf&quot;&gt;8. server2 recovery.conf&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;standby_mode = 'on'
+primary_conninfo = 'host=localhost port=5435'
+restore_command = 'cp /backup1/9.5/pg_arc/%f %p'
+recovery_target_timeline = 'latest'
+trigger_file = '/tmp/trigger_file_0'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;ii-failover-테스트&quot;&gt;II. failover 테스트&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;server1(port=5435) -&amp;gt; server2(port=5445)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;1-master-failover하자&quot;&gt;1. master failover하자&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server 1
+touch /tmp/trigger_file_0
+@server2
+tail -f pg_log/postgresql-2016-06-10_123437.log
+pgbench -i -s 10 postgres
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;2-pg_rewind-테스트&quot;&gt;2. pg_rewind 테스트&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1
+[postgres@pgvm1 data]$ pg_ctl stop
+waiting for server to shut down.... done
+server stopped
+
+[postgres@pgvm1 data]$ pg_rewind --source-server='host=::1 port=5445 user=postgres' --target-pgdata=$PGDATA -P
+connected to server
+servers diverged at WAL position 0/220003E0 on timeline 5
+rewinding from last common checkpoint at 0/22000338 on timeline 5
+reading source file list
+reading target file list
+reading WAL in target
+need to copy 458 MB (total source directory size is 482 MB)
+469734/469734 kB (100%) copied
+creating backup label and updating control file
+Done!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;3-recoveryconf-생성&quot;&gt;3. recovery.conf 생성&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;pg_rewind가 recovery.conf생성해주진 않는다&lt;/li&gt;
+  &lt;li&gt;server2꺼 recovery.done sync된것이 있으니 이걸 활용해서 변경&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ cp recovery.done recovery.conf
+[postgres@pgvm1 data]$ vi recovery.conf
+standby_mode = 'on'
+primary_conninfo = 'host=localhost port=5445'
+restore_command = 'cp /backup1/9.5s1/pg_arc/%f %p'
+recovery_target_timeline = 'latest'
+trigger_file = '/tmp/trigger_file_0'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;4-postgresqlconf-변경&quot;&gt;4. postgresql.conf 변경&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;pg_rewind가 postgresql.conf를 덮어쓴다 변경해야할 파라메터들은 변경하자&lt;/li&gt;
+  &lt;li&gt;내경우엔 port랑 archive command&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ vi postgresql.conf
+listen_addresses = '*'          # what IP address(es) to listen on;
+port = 5435                             # (change requires restart)
+wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
+wal_log_hints = on                      # also do full page writes of non-critical updates
+archive_mode = on               # enables archiving; off, on, or always
+archive_command = 'test ! -f /backup1/9.5/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5/pg_arc/%f'            # command to use to archive a logfile segment
+max_wal_senders = 3             # max number of walsender processes
+wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
+hot_standby = on                        # &quot;on&quot; allows queries during recovery
+logging_collector = on          # Enable capturing of stderr and csvlog
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;5-failback&quot;&gt;5. failback&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ pg_ctl start
+server starting
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;6-failback-확인&quot;&gt;6. failback 확인&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1(new slave)
+#pg_log/로그파일 확인
+LOG:  database system was interrupted while in recovery at log time 2016-06-10 12:35:31 GMT-10
+HINT:  If this has occurred more than once some data might be corrupted and you might need to choose an earlier recovery target.
+cp: cannot stat `/backup1/9.5s1/pg_arc/00000007.history': No such file or directory
+LOG:  entering standby mode
+LOG:  restored log file &quot;00000006.history&quot; from archive
+LOG:  restored log file &quot;000000060000000000000022&quot; from archive
+cp: cannot stat `/backup1/9.5s1/pg_arc/00000005.history': No such file or directory
+LOG:  redo starts at 0/22000300
+LOG:  restored log file &quot;000000060000000000000023&quot; from archive
+LOG:  restored log file &quot;000000060000000000000024&quot; from archive
+LOG:  restored log file &quot;000000060000000000000025&quot; from archive
+LOG:  restored log file &quot;000000060000000000000026&quot; from archive
+LOG:  restored log file &quot;000000060000000000000027&quot; from archive
+LOG:  restored log file &quot;000000060000000000000028&quot; from archive
+cp: cannot stat `/backup1/9.5s1/pg_arc/000000060000000000000029': No such file or directory
+LOG:  consistent recovery state reached at 0/29B41898
+LOG:  database system is ready to accept read only connections
+LOG:  invalid record length at 0/29B41898
+LOG:  started streaming WAL from primary at 0/29000000 on timeline 6
+
+@server2(new master)
+[postgres@pgvm1 data]$ psql
+Timing is on.
+psql (9.5.1)
+Type &quot;help&quot; for help.
+
+postgres=# select * from pg_stat_replication ;
+ pid  | usesysid | usename  | application_name | client_addr | client_hostname | client_port |         backend_start         | backend_xmin |   state   | sent_l ocation | write_location | flush_location | replay_location | sync_priority | sync_state
+------+----------+----------+------------------+-------------+-----------------+ -------------+-------------------------------+--------------+-----------+------- --------+----------------+----------------+-----------------+---------------+------------
+ 2692 |       10 | postgres | wal_receiver1    | ::1         |                 | 48059 | 2016-06-10 12:39:21.203712+10 |              | streaming | 0/29B4 2588    | 0/29B42588     | 0/29B42588     | 0/29B418C8      |             0 | async
 (1 row)
 
-incartadb=&amp;gt;
+Time: 6.919 ms
+postgres=#
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">skip-name-resolve 와 unauthenticated user</title><link href="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/" rel="alternate" type="text/html" title="skip-name-resolve 와 unauthenticated user" /><published>2016-04-18T00:00:00+09:00</published><updated>2016-04-18T00:00:00+09:00</updated><id>http://localhost:4000/blog/skip-name-resolve%20%EC%99%80%20unauthenticated%20user</id><content type="html" xml:base="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/">&lt;h1 id=&quot;skip-name-resolve-와-unauthenticated-user&quot;&gt;skip-name-resolve 와 unauthenticated user&lt;/h1&gt;
 
+&lt;h2 id=&quot;문제발생&quot;&gt;문제발생&lt;/h2&gt;
 
-CREATE SCHEMA core
-  AUTHORIZATION incarta;
+&lt;p&gt;MySQL 을 사용하다보면, DNS 서버가 응답을 하지 않음으로서 MySQL 이 커넥션을 빠르게 처리하지 못하고 show processlist 에 많은 수의 ‘unauthenticated user’ 가 발생할 수 있다. 이는 error log 에 아래와 같이 나타나며,&lt;/p&gt;
 
-alter database incartadb SET search_path TO core;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+[Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;3-py-mysql2pgsql-실행&quot;&gt;3. py-mysql2pgsql 실행&lt;/h3&gt;
+&lt;p&gt;porcesslist에는 다음과 같이 나타날 수 있다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;py-mysql2pgsql -v -f mysql2pgsql.yml
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+| Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
++-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+| 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
++-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;socket을 주면 localhost의 socket 통신을 함.&lt;/li&gt;
-  &lt;li&gt;remote server접속을 위해서는 host, port을 주고 socket은 명시하지 않아야함.&lt;/li&gt;
-  &lt;li&gt;destination file 주면 file로 export, file 없을 때 명시된 postgresql 로 migrating함&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h2 id=&quot;원인&quot;&gt;원인&lt;/h2&gt;
 
-&lt;h3 id=&quot;4-동작-결과&quot;&gt;4. 동작 결과&lt;/h3&gt;
+&lt;p&gt;MySQL 은 connection 에서 요청이 들어오면, DNS 를 확인하여 해당 host가 무엇인지를 확인한다. 비록 user 생성시에 hostname이 아닌 IP로 유저를 만들었다 할지라도 들어온 IP에 대해 look up을 하고 hostname 을 알아낸 다음 해당 정보를 다시 사용하거나 관리하기 위하여 performance_schema.host_cache 에 저장한다. 이 과정에서 DNS 서버가 문제가 생긴다면, hostname 을 알아오려는 문제때문에 접속시에 시간이 오래걸릴뿐 아니라 커넥션들이 쌓이며 문제가 발생할 수 있다. 만약 user를 단순히 IP 로서 지정하거나 IP 를 통해 접속을 한다면, skip-name-resolve 를 my.cnf 에 주어 오버헤드를 막을 수 있다.&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;file로 exporting하는 경우
-    &lt;ul&gt;
-      &lt;li&gt;이슈없음&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;target postgresql로 migration 하는 경우
-    &lt;ul&gt;
-      &lt;li&gt;mysql의 각 database를 postgresql schema로 이관하기 위해서는, 이관하기전에 search_path을 원하는 스키마로 설정한 후 진행.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">MySQL to PostgreSQL Migration tool</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</title><link href="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기" /><published>2015-04-21T00:00:00+09:00</published><updated>2015-04-21T00:00:00+09:00</updated><id>http://localhost:4000/blog/Linux%20%EC%9D%98%20OOM%20(Out%20of%20memory)%20killer%20%EB%A1%9C%20%EC%9D%B8%ED%95%9C%20mysqld%20shutdown%20%ED%94%BC%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;linux-의-oom-out-of-memory-killer-로-인한-mysqld-shutdown-피하기&quot;&gt;Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기&lt;/h1&gt;
+&lt;h2 id=&quot;문제-재현&quot;&gt;문제 재현&lt;/h2&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;갑자기 MySQL 이 kill 되는 수가 있다. 이는 여러가지 원인이 있을 수 있다.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:13:43&amp;gt; show global variables like 'skip_name_resolve';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| skip_name_resolve | OFF   |
++-------------------+-------+
+1 row in set (0.01 sec)
 
-&lt;h3 id=&quot;1-해당-원인은-크게-3가지로-나눈다-여기서-볼것은-oom으로-인해-os가-mysqld-를-죽인-경우이다&quot;&gt;1. 해당 원인은 크게 3가지로 나눈다. 여기서 볼것은 oom으로 인해 O/S가 mysqld 를 죽인 경우이다.&lt;/h3&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;3가지는 다음과 같다.
-    &lt;ul&gt;
-      &lt;li&gt;메모리 부족으로 인해 OS 가 kill 을 시킨 경우 (이는 /var/log/message 를 확인함으로서 알 수 있다.)&lt;/li&gt;
-      &lt;li&gt;Hardware fault로 stop 된 경우 (이는 /var/log 및의 여러로그를 확인함으로서 알 수 있다.)&lt;/li&gt;
-      &lt;li&gt;bug로 인해 restart 된 경우 (이는 mysql error log file 을 확인함으로서 알 수 있다.)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;대부분의 경우 mysql 이 restart 되면 /var/log/message 를 확인하지 않는 경우가 많고 갑자기 죽었다고 생각하는데 대부분의 경우 OOM killer에 의해 죽게된다.
-    &lt;ul&gt;
-      &lt;li&gt;err 을 살펴보자&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+        [root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
+        Warning: Using a password on the command line interface can be insecure.
+        +---+
+        | 1 |
+        +---+
+        | 1 |
+        +---+
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    150317 11:21:46 mysqld_safe Number of processes running now: 0
-    150317 11:21:46 mysqld_safe mysqld restarted
-    2015-03-17 11:21:49 14235 [Note] Plugin 'FEDERATED' is disabled.
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Using atomics to ref count buffer pool pages
-    2015-03-17 11:21:49 14235 [Note] InnoDB: The InnoDB memory heap is disabled
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Compressed tables use zlib 1.2.3
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Using Linux native AIO
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Using CPU crc32 instructions
-    2015-03-17 11:21:49 14235 [Note] InnoDB: Initializing buffer pool, size = 24.0G
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Completed initialization of buffer pool
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Highest supported file format is Barracuda.
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Log scan progressed past the checkpoint lsn 2603553789682
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Database was not shutdown normally!
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Starting crash recovery.
-    2015-03-17 11:21:51 14235 [Note] InnoDB: Reading tablespace information from the .ibd files...
-    2015-03-17 11:22:03 14235 [Note] InnoDB: Restoring possible half-written data pages
-    2015-03-17 11:22:03 14235 [Note] InnoDB: from the doublewrite buffer...
-    InnoDB: Doing recovery: scanned up to log sequence number 2603559032320
-    InnoDB: Doing recovery: scanned up to log sequence number 2603564275200
-    InnoDB: Doing recovery: scanned up to log sequence number 2603569518080
-    --- 죽었다는 메세지 없이 다시 시작되었다.
+        real    0m28.071s
+        user    0m0.006s
+        sys 0m0.013s
+        ^^^ 접속시 대략 30초 정도의 시간이 걸렸다. DNS 를 lookup 했지만, 현재 DNS가 빨리 응답을 못하고 있다.
+
+
+root@localhost:performance_schema 23:16:22&amp;gt; show processlist;
++-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+| Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
++-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+| 151 | root                 | localhost            | performance_schema | Query   |    0 | init  | show processlist |
+| 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
++-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+2 rows in set (0.00 sec)
+^^^ 해당 순간의 processlist 이다.
+
+
+root@localhost:performance_schema 23:18:58&amp;gt; select * from performance_schema.host_cacheG
+*************************** 1. row ***************************
+                                        IP: 192.168.74.202
+                                      HOST: NULL
+                            HOST_VALIDATED: NO
+                        SUM_CONNECT_ERRORS: 0
+                 COUNT_HOST_BLOCKED_ERRORS: 0
+           COUNT_NAMEINFO_TRANSIENT_ERRORS: 6
+           COUNT_NAMEINFO_PERMANENT_ERRORS: 0
+                       COUNT_FORMAT_ERRORS: 0
+           COUNT_ADDRINFO_TRANSIENT_ERRORS: 0
+           COUNT_ADDRINFO_PERMANENT_ERRORS: 0
+                       COUNT_FCRDNS_ERRORS: 0
+                     COUNT_HOST_ACL_ERRORS: 0
+               COUNT_NO_AUTH_PLUGIN_ERRORS: 0
+                  COUNT_AUTH_PLUGIN_ERRORS: 0
+                    COUNT_HANDSHAKE_ERRORS: 0
+                   COUNT_PROXY_USER_ERRORS: 0
+               COUNT_PROXY_USER_ACL_ERRORS: 0
+               COUNT_AUTHENTICATION_ERRORS: 0
+                          COUNT_SSL_ERRORS: 0
+         COUNT_MAX_USER_CONNECTIONS_ERRORS: 0
+COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
+             COUNT_DEFAULT_DATABASE_ERRORS: 0
+                 COUNT_INIT_CONNECT_ERRORS: 0
+                        COUNT_LOCAL_ERRORS: 0
+                      COUNT_UNKNOWN_ERRORS: 0
+                                FIRST_SEEN: 2016-04-14 21:37:38
+                                 LAST_SEEN: 2016-04-14 23:19:03
+                          FIRST_ERROR_SEEN: 2016-04-14 21:37:38
+                           LAST_ERROR_SEEN: 2016-04-14 23:19:03
+1 row in set (0.00 sec)
+^^^ host_cache 테이블에는 IP만 존재할 뿐 HOST는 NULL 로 되어있다. DNS로부터 HOST 값을 정확히 얻어내지 못했다. host_cache 에 HOST_VALIDATED 값이 NO 라면, 다음번 접속시에도 똑같이 느린 현상이 발생한다.
+만약 제대로 HOST 값이 저장된다면, 해당 테이블이 truncate 되기 전까지는 빠른 접속이 가능하다.
+    - https://dev.mysql.com/doc/refman/5.6/en/host-cache-table.html
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;system의 log message 를 살펴보자&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Error log&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    vi /var/log/message
-    ....
-    Mar 17 11:21:42 testvm1 kernel: mysqld invoked oom-killer: gfp_mask=0x200da, order=0, oom_adj=0, oom_score_adj=0
-    Mar 17 11:21:42 testvm1 kernel: [ pid ]   uid  tgid total_vm      rss cpu oom_adj oom_score_adj name
-    Mar 17 11:21:42 testvm1 kernel: [ 4144]   497  4144 10443009  7862020   0       0             0 mysqld
-    Mar 17 11:21:42 testvm1 kernel: Out of memory: Kill process 4144 (mysqld) score 963 or sacrifice child
-    Mar 17 11:21:42 testvm1 kernel: Killed process 4144, UID 497, (mysqld) total-vm:41772036kB, anon-rss:31443592kB, file-rss:4512kB
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+[Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
+^^^ error log 에 다음과 같이 찍힐 수 있다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;해결방법&quot;&gt;해결방법&lt;/h2&gt;
+
+&lt;h4 id=&quot;1-hosts-파일에-추가&quot;&gt;1. hosts 파일에 추가&lt;/h4&gt;
+
+&lt;p&gt;만약 DNS에서 자주 문제가 생긴다면, /etc/hosts 에 해당 서버로 접속하는 서버들에 대해 host를 명시해 줄 수 있다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@testvm3 certs]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.74.203  testvm3
+192.168.74.202  testvm2
+
+[root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
+Warning: Using a password on the command line interface can be insecure.
++---+
+| 1 |
++---+
+| 1 |
++---+
+
+real    0m0.021s
+user    0m0.003s
+sys 0m0.009s
+^^^ DNS를 lookup 하기 전에 /etc/hosts 파일에서 해당 hostname을 가지고 오기 때문에 아주 빠르다.
+
+root@localhost:(none) 23:22:09&amp;gt; select * from performance_schema.host_cacheG
+*************************** 1. row ***************************
+                                        IP: 192.168.74.202
+                                      HOST: testvm2
+                            HOST_VALIDATED: YES
+                        SUM_CONNECT_ERRORS: 0
+                 COUNT_HOST_BLOCKED_ERRORS: 0
+           COUNT_NAMEINFO_TRANSIENT_ERRORS: 6
+           COUNT_NAMEINFO_PERMANENT_ERRORS: 0
+                       COUNT_FORMAT_ERRORS: 0
+           COUNT_ADDRINFO_TRANSIENT_ERRORS: 0
+           COUNT_ADDRINFO_PERMANENT_ERRORS: 0
+                       COUNT_FCRDNS_ERRORS: 0
+                     COUNT_HOST_ACL_ERRORS: 0
+               COUNT_NO_AUTH_PLUGIN_ERRORS: 0
+                  COUNT_AUTH_PLUGIN_ERRORS: 0
+                    COUNT_HANDSHAKE_ERRORS: 0
+                   COUNT_PROXY_USER_ERRORS: 0
+               COUNT_PROXY_USER_ACL_ERRORS: 0
+               COUNT_AUTHENTICATION_ERRORS: 0
+                          COUNT_SSL_ERRORS: 0
+         COUNT_MAX_USER_CONNECTIONS_ERRORS: 0
+COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
+             COUNT_DEFAULT_DATABASE_ERRORS: 0
+                 COUNT_INIT_CONNECT_ERRORS: 0
+                        COUNT_LOCAL_ERRORS: 0
+                      COUNT_UNKNOWN_ERRORS: 0
+                                FIRST_SEEN: 2016-04-14 21:37:38
+                                 LAST_SEEN: 2016-04-14 23:22:01
+                          FIRST_ERROR_SEEN: 2016-04-14 21:37:38
+                           LAST_ERROR_SEEN: 2016-04-14 23:19:03
+1 row in set (0.00 sec)
+^^^ host_cache 의 HOST 에도 testvm2 라고 저장된다.
+
+
+root@localhost:(none) 23:22:36&amp;gt; show processlist;
++-----+------+---------------+------+---------+------+-------+------------------+
+| Id  | User | Host          | db   | Command | Time | State | Info             |
++-----+------+---------------+------+---------+------+-------+------------------+
+| 167 | root | localhost     | NULL | Query   |    0 | init  | show processlist |
+| 168 | au   | testvm2:52593 | NULL | Sleep   |    9 |       | NULL             |
++-----+------+---------------+------+---------+------+-------+------------------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;2-mycnf-의-mysqld-섹션에-skip_name_resolve-를-추가하고-restart&quot;&gt;2. my.cnf 의 [mysqld] 섹션에 skip_name_resolve 를 추가하고 restart&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:24:56&amp;gt; show global variables like 'skip_name_resolve';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| skip_name_resolve | ON    |
++-------------------+-------+
+1 row in set (0.02 sec)
+
+[root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
+Warning: Using a password on the command line interface can be insecure.
++---+
+| 1 |
++---+
+| 1 |
++---+
+
+real    0m0.025s
+user    0m0.009s
+sys 0m0.010s
+^^^ hostname 을 알아오려는 시도를 하지 않기 때문에 빠르다.
+
+root@localhost:(none) 23:25:57&amp;gt; show processlist;
++----+------+----------------------+------+---------+------+-------+------------------+
+| Id | User | Host                 | db   | Command | Time | State | Info             |
++----+------+----------------------+------+---------+------+-------+------------------+
+|  1 | root | localhost            | NULL | Query   |    0 | init  | show processlist |
+| 26 | au   | 192.168.74.202:54301 | NULL | Sleep   |    4 |       | NULL             |
++----+------+----------------------+------+---------+------+-------+------------------+
+2 rows in set (0.00 sec)
+^^^ 만약 접속하게 된다면, hostname 대신 192.168.74.202 가 나타나는것이 관찰된다.
+
+
+root@localhost:(none) 23:25:57&amp;gt; select * from performance_schema.host_cacheG
+Empty set (0.00 sec)
+^^^ 물론 host_cache 테이블에는 아무것도 존재하지 않는다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">mysql client utility 와 -A 옵션</title><link href="http://localhost:4000/blog/mysql-client-utility-%EC%99%80-A-%EC%98%B5%EC%85%98/" rel="alternate" type="text/html" title="mysql client utility 와 -A 옵션" /><published>2016-04-06T00:00:00+09:00</published><updated>2016-04-06T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql%20client%20utility%20%EC%99%80%20-A%20%EC%98%B5%EC%85%98</id><content type="html" xml:base="http://localhost:4000/blog/mysql-client-utility-%EC%99%80-A-%EC%98%B5%EC%85%98/">&lt;h1 id=&quot;mysql-client-utility-와--a-옵션&quot;&gt;mysql client utility 와 -A 옵션&lt;/h1&gt;
+
+&lt;p&gt;mysql client utility 는 기본적으로 데이터베이스를 use 하는 순간, 해당 database의 테이블을 비롯하여 컬럼까지 읽어들여 캐시에 저장한 후 자동완성 기능을 제공한다. - &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash&lt;/a&gt; 이를 막고자, 접속시에 –no-auto-rehash 옵션을 두거나, -A 옵션을 사용할 수 있다. - &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash&lt;/a&gt; 이때문에 간편하기도 하지만 테이블이 많아진다면, mysql client에서 use database; 시에 몇 초동안이나 기다려야 할 수도 있다. 서버가 바쁜경우는 더욱 오래걸린다. 아래는 간단한 예제이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---- #no-auto-rehash (해당 옵션을 사용하지 않은 경우)
+    [root@testvm2 db]# m
+    Welcome to the MySQL monitor.  Commands end with ; or g.
+    Your MySQL connection id is 34983
+    Server version: 5.6.19-log MySQL Community Server (GPL)
+
+    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+
+    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+    root@localhost:(none) 17:00:48&amp;gt;use test
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A       &amp;lt;---- 익숙한 메세지지만, 내용인 즉 -A 를 사용해서 자동완성기능을 끌 수 있다는 것이다.
+
+    Database changed
+    root@localhost:test 17:00:55&amp;gt;      &amp;lt;-- tab을 두번 연속으로 누르게 된다면, mysql client tool 에서 실행할 수 있는 모든 명령어 및 table, column 들에 대한 정보들를 볼 수 있다.
+    Display all 11054 possibilities? (y or n)  &amp;lt;--- table 이 100개 정도 되니.. 어마어마한 숫자가 캐시되었다.
+
+
+---- no-auto-rehash (해당 옵션을 사용한 경우)
+    [root@testvm2 db]# /db/5.6/bin/mysql -uroot
+    Welcome to the MySQL monitor.  Commands end with ; or g.
+    Your MySQL connection id is 357
+    Server version: 5.6.19-log MySQL Community Server (GPL)
+
+    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+
+    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+    root@localhost:(none) 17:07:07&amp;gt;use test
+    Database changed
+    root@localhost:test 17:07:10&amp;gt;       &amp;lt;-- tab을 눌러도 아무런 변화가 없습니다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;이와 같이 굳이 자동완성기능을 사용하지 않는경우, -A 옵션을 주는 것이 일반적이다. 또한 사용되지도 않을 테이블들을 모두 열어야 하기 때문에 서버가 바쁜경우라면 더욱 문제가 될 수 있다. 장애로 이어질 수도… 아래의 예제를 확인해보자&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---- no-auto-rehash
+    root@localhost:test 17:08:48&amp;gt;show open tables;
     ...
-    --- OOM-Killer 에 의해 죽은것이 관찰된다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    70 rows in set (0.00 sec)
 
-&lt;h3 id=&quot;2-그렇다면-oom-killer를-피할-수-있는방법을-생각해보자&quot;&gt;2. 그렇다면 OOM killer를 피할 수 있는방법을 생각해보자&lt;/h3&gt;
+    root@localhost:test 17:08:51&amp;gt; use test;
+    Database changed
 
-&lt;ul&gt;
-  &lt;li&gt;oom_score_adj 의 값을 조정함으로서 해결 할 수 있다.&lt;/li&gt;
-  &lt;li&gt;해당값은 1000 ~ -1000 까지 줄 수 있다. oom_score_adj 에 대한 공식이 궁금하다면 구글링을 해보자.&lt;/li&gt;
-  &lt;li&gt;-1000 으로 값을 설정한다면, oom killer 는 해당 process를 죽이지 않을것이다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    cat /proc/[pid]/oom_score_adj
-    echo &quot;-1000&quot; &amp;gt; /proc/self/oom_score_adj
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;3-그렇다면-mysqld에-대한-process-id를-띄울때마다-확인해서-해당-작업을-해야하는것일까&quot;&gt;3. 그렇다면, mysqld에 대한 process id를 띄울때마다 확인해서 해당 작업을 해야하는것일까?&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;mysql 은 mysqld가 시작되기전에 특정 script를 호출할 수 있다.&lt;/li&gt;
-  &lt;li&gt;my.cnf의 mysqld_safe section에 mysqld=xxx.sh 를 추가함으로서 mysqld 가 시작될때 해당 script를 실행시킬 수 있다.&lt;/li&gt;
-  &lt;li&gt;https://dev.mysql.com/doc/refman/5.6/en/mysqld-safe.html#option_mysqld_safe_mysqld&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 bin]# cat /db/5.6/conf/my.cnf
+    root@localhost:test 17:08:55&amp;gt;show open tables;
     ...
-    [mysqld_safe]
-    mysqld=pre_mysqld_safe.sh
-    user=mysql
+    70 rows in set (0.00 sec) &amp;lt;-- 여전히 처음 시작할때의 70 개의 table 만을 열고 있다.
+
+
+---- #no-auto-rehash
+    root@localhost:(none) 17:10:53&amp;gt;show open tables;
     ...
+    70 rows in set (0.01 sec)
 
-    [root@testvm1 bin]# pwd
-    /db/5.6/bin
-    [root@testvm1 bin]# ls -al pre_mysqld_safe.sh
-    -rwxr-xr-x. 1 root root 94 Mar 31 01:38 pre_mysqld_safe.sh
-    -- mysqld와 같은 디렉토리에 해당 sh를 놓자.
+    root@localhost:(none) 17:10:55&amp;gt; use test;
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A
 
-    [root@testvm1 bin]# cat pre_mysqld_safe.sh
-    #!/bin/sh
-    echo &quot;-1000&quot; &amp;gt; /proc/self/oom_score_adj
-    BIN_DIR=$(dirname &quot;$0&quot;)
-    exec &quot;$BIN_DIR/mysqld&quot; &quot;$@&quot;
+    Database changed
+    root@localhost:test 17:11:02&amp;gt;show open tables;
+    ...
+    861 rows in set (0.02 sec) &amp;lt;-- 대략 800개의 테이블을 추가로 열었다.
 
-
-    [root@testvm1 db]# cd /db/5.6
-    [root@testvm1 5.6]# ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf &amp;amp;
-    [1] 27626
-    [root@testvm1 5.6]# 150331 01:42:07 mysqld_safe Logging to '/data1/5.6/data/mysql.err'.
-    150331 01:42:07 mysqld_safe Starting pre_mysqld_safe.sh daemon with databases from /data1/5.6/data
-    -- pre_mysqld_safe.sh 로 시작되었음을 알려준다.
-
-    [root@testvm1 5.6]# ps -ef | grep mysql
-    root     27626 27539  0 01:42 pts/0    00:00:00 /bin/sh ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf
-    mysql    27986 27626  0 01:42 pts/0    00:00:00 /db/5.6/bin/mysqld --defaults-file=/db/5.6/conf/my.cnf --basedir=/db/5.6 --datadir=/data1/5.6/data --plugin-dir=/db/5.6/lib/plugin --user=mysql --log-error=/data1/5.6/data/mysql.err --pid-file=/data1/5.6/data/testvm1.pid --socket=/tmp/mysql.sock --port=3306
-    root     28011 27539  0 01:42 pts/0    00:00:00 grep mysql
-    -- mysqld 의 process id 는 27986 이다. user 는 mysql로 뜬것도 확인할 수 있다.
-
-    [root@testvm1 5.6]# cat /proc/27986/oom_score_adj
-    -1000
-    -- 값이 -1000 이 된것을 알 수 있다.
+    test database 의 모든 테이블을 열었다. 이는 엄청난 오버헤드를 발생시킨다.
+        - http://dev.mysql.com/doc/refman/5.7/en/table-cache.html
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;4-해당-스크립트-이외에-또-어떤것을-쓸-수-있나&quot;&gt;4. 해당 스크립트 이외에 또 어떤것을 쓸 수 있나?&lt;/h3&gt;
+&lt;p&gt;혹은 범용적으로 사용될 수 있는 my.cnf 인 /etc/my.cnf 의 [mysql] 항목에 아래와 같이 명시하여, mysql client 가 실행될때 아래의 옵션에 따라 실행될 수 있도록 조절할 수 있다. 이 경우에는 굳이 -A 옵션을 주지 않아도 자동으로 비활성화 된다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysql]
+no-auto-rehash
+show-warnings
+prompt=u@h:d_R:m:\s&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;추가로 show-warnings 는 warning 이 발생하였을시, show warnings 로 확인하는 것이 아닌 바로 warning을 볼 수 있게 해주는 옵션이다 show warnings 를 치기 귀찮은 사람은 강추. prompt 옵션은 mysql&amp;gt; 대신 좀 더 유익한 정보를 찍어주는 옵션이다. 현재 접속된 host 및 database, 시간등…&lt;/p&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">mysql client utility 와 -A 옵션</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Error Table “mysql”.”innodb_table_stats” not found 는 왜 발생하는가?</title><link href="http://localhost:4000/blog/innodb_table_stats_not-found/" rel="alternate" type="text/html" title="Error Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found 는 왜 발생하는가?" /><published>2016-04-06T00:00:00+09:00</published><updated>2016-04-06T00:00:00+09:00</updated><id>http://localhost:4000/blog/innodb_table_stats_not%20found</id><content type="html" xml:base="http://localhost:4000/blog/innodb_table_stats_not-found/">&lt;h1 id=&quot;error-table-mysqlinnodb_table_stats-not-found-는-왜-발생하는가&quot;&gt;“Error: Table “mysql”.”innodb_table_stats” not found” 는 왜 발생하는가?&lt;/h1&gt;
+
+&lt;h2 id=&quot;발생현상&quot;&gt;발생현상&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2016-03-29 09:37:03 7f6c34610700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;asaa&quot; but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
+2016-03-29 09:37:38 7f6c35a53700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 09:37:38 7f6c35a53700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;asaa&quot; but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
+2016-03-29 09:38:26 3007 [Warning] InnoDB: Cannot open table mysql/innodb_index_stats from the internal data dictionary of InnoDB though the .frm file for the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.
+2016-03-29 09:38:42 3007 [Warning] InnoDB: Cannot open table mysql/innodb_index_stats from the internal data dictionary of InnoDB though the .frm file for the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.
+....
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;n1&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p1&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p2&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
+2016-03-29 18:00:31 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:31 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p2&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
+2016-03-29 18:00:41 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:00:41 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
+2016-03-29 18:01:22 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
+2016-03-29 18:01:22 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
+2016-03-29 18:01:32 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not foun
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;왜-발생하는가&quot;&gt;왜 발생하는가?&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;ulimit 명령어로 해당 값을 조절할 수 있다. (echo “-1000” &amp;gt; /proc/self/oom_score_adj 대신 아래의 명령어를 사용한다)
+  &lt;li&gt;MySQL 5.6 부터 mysql database 에 통계정보나 slave 관련 정보를 저장하기 위해 새로운 InnoDB table 5개가 추가 되었다. (innodb_index_stats, innodb_table_stats, slave_master_info, slave_relay_log_info, slave_worker_info)
     &lt;ul&gt;
-      &lt;li&gt;ulimit -u 10000&lt;/li&gt;
-      &lt;li&gt;ulimit -c unlimited&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/innodb-persistent-stats.html&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/innodb-persistent-stats.html&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;NUMA 도 조절가능하다.
-    &lt;ul&gt;
-      &lt;li&gt;exec /usr/bin/numactl –interleave all “BIN_DIR/mysqld” “$@”&lt;/li&gt;
-    &lt;/ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;또한 모든 InnoDB 관련 meta 정보는 ibdata1 (system tablespace) 에 저장된다.&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL architecture - Adaptive Hash Indexes</title><link href="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/" rel="alternate" type="text/html" title="MySQL architecture - Adaptive Hash Indexes" /><published>2015-04-20T00:00:00+09:00</published><updated>2015-04-20T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes</id><content type="html" xml:base="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/">&lt;h1 id=&quot;mysql-architecture---adaptive-hash-indexes&quot;&gt;MySQL architecture - Adaptive Hash Indexes&lt;/h1&gt;
-
-&lt;h2 id=&quot;adaptive-hase-indexahi&quot;&gt;Adaptive Hase Index(AHI)&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;workload와 충분한 buffer pool memory의 적절한 조합하에서, transactional 특성이나 reliability에 위배되지 않는 선에서, InnoDB를 in-memory database처럼 동작하게 한다.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-관련-파라메터&quot;&gt;1. 관련 파라메터&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;innodb_adaptive_hash_index&lt;/strong&gt;
+  &lt;li&gt;하지만,
     &lt;ul&gt;
-      &lt;li&gt;default : ON&lt;/li&gt;
-      &lt;li&gt;Scope : Global&lt;/li&gt;
-      &lt;li&gt;dynamic Variable : Yes&lt;/li&gt;
-      &lt;li&gt;turn off option : –skip-innodb_adaptive_hash_index&lt;/li&gt;
-      &lt;li&gt;disable하면 hash table을 즉시 비운다. hash table을 사용하여 실행중이던 쿼리는 B-tree 인덱스를 직접 access하여 처리된다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-동작&quot;&gt;2. 동작&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;MySQL은 search 패턴을 고려하여 index prefix로 hash index를 만든다
-    &lt;ul&gt;
-      &lt;li&gt;인덱스 페이지가 자주 access 되는 경우 필요시 hash index가 생성된다.&lt;/li&gt;
-      &lt;li&gt;hash index는 자주 access되는 인덱스 페이지에 대해서만 부분적으로 생성될 수도 있다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;만약 테이블 전체가 메모리에 들어갈수 있는 사이즈인 경우, hash index는 쿼리 속도를 향상시킨다. 인덱스를 pointer와 같이 동작하게 해서 원하는 로우를 바로 다이렉트하게 찾을수 있다.&lt;/li&gt;
-  &lt;li&gt;InnoDB는 index search 패턴을 모니터링하는 메커니즘을 가지고 있다. 해당 쿼리가 hash index를 사용하면 이익이라고 판단되면, 자동으로 hash index를 생성한다.&lt;/li&gt;
-  &lt;li&gt;workload에 따라, hash index를 통한 속도향상이 hash index를 유지관리하는 비용보다 더 이득일수도 있고 아닐수도 있다.
-    &lt;ul&gt;
-      &lt;li&gt;heavy workload하에서는(such as multiple concurrent joins), adaptive has index를 접근할때 획득하는 read/write lock이 contention의 원인이 되기도 한다.&lt;/li&gt;
-      &lt;li&gt;LIKE % 쿼리의 경우에도 AHI로 별 이득을 얻지 못한다.&lt;/li&gt;
-      &lt;li&gt;AHI가 필요없는 workload하에서는 이를 disable해서 불필요한 overhead를 줄이도록 한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;3-monitoring&quot;&gt;3. monitoring&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;adaptive hash index로 인한 contention 확인하는 방법
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;SHOW ENGINE INNODB STATUS&lt;/strong&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;SEMAPHORE&lt;/strong&gt; 섹션에 RW-latch를 대기하는 thread가 여러개 있다면, adaptive hash indexing을 disable하는 것이 더 좋을 수도 있다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL architecture - Adaptive Hash Indexes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL InnoDB architecture - doublewrite buffer</title><link href="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/" rel="alternate" type="text/html" title="MySQL InnoDB architecture - doublewrite buffer" /><published>2015-04-17T00:00:00+09:00</published><updated>2015-04-17T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-architecture-doublewrite-buffer</id><content type="html" xml:base="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/">&lt;h1 id=&quot;mysql-innodb-architecture---doublewrite-buffer&quot;&gt;MySQL InnoDB architecture - doublewrite buffer&lt;/h1&gt;
-
-&lt;h2 id=&quot;doublewrite-buffer&quot;&gt;Doublewrite Buffer&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;InnoDB는 file flush관련 독특한 technique을 사용하는데, 그것이 바로 doublewrite buffer이다.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-관련파라메터&quot;&gt;1. 관련파라메터&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;innodb_doublewrite
-    &lt;ul&gt;
-      &lt;li&gt;default로 활성화 되어있다.&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_doublewrite=ON&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-목적&quot;&gt;2. 목적&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;시스템 crash, 전원공급중단 등 장애시 보다 안전한 리커버리
-    &lt;ul&gt;
-      &lt;li&gt;특히 page의 일부분만 쓰다가 장애가 난 경우, 리커버리 어떻게 할 것인가.&lt;/li&gt;
-      &lt;li&gt;예를 들어, 16K innodb page중에 첫 4KB를 썼는데, 갑자기 OS crash가 났다거나 전원공급이 중단되어 나머지는 이전 상태로 남아있는 경우. 대부분의 file system의 default block size는 4k이다.
+      &lt;li&gt;5.5 의 data를 5.6 upgrade 한 후, mysql_upgrade를 해주지 않은 경우 이 경우, mysql database 의 구조는 5.5 로 되돌아 간다. 반드시 mysql_upgrade 를 진행해 주어야 한다.
         &lt;ul&gt;
-          &lt;li&gt;여기서 내 시스템의 block size가 궁금하다면; : &lt;code class=&quot;highlighter-rouge&quot;&gt;dumpe2fs /dev/sda1 | grep &quot;^Block size&quot;&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.7/en/mysql-upgrade.html&quot;&gt;http://dev.mysql.com/doc/refman/5.7/en/mysql-upgrade.html&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;로그파일을 이용해서 복구한다? : InnoDB는 log file에 full pages를 로깅하는 것이 아니라, page number, 변경내용, log sequence 정보를 로깅한다. 하지만, page가 항상 consistent하다는 것을 전제로 한다. 즉, page version이 “현재” 버전이면, page 변경을 skip하고, “이전” 버전이면 변경을 반영한다. page가 inconsistent하다면, 리커버리 할수가 없다.&lt;/li&gt;
+      &lt;li&gt;ibdata1 을 새롭게 구성하는 경우 innodb_file_per_table 를 사용함에도 ibdata1 이 지속적으로 커진 경우 ( undo 로그저장을 위해 지속적으로 커질 수 있음), ibdata1의 사이즈를 줄이고자 MySQL을 중지하고 ibdata1 과 ib_logfile 들을 삭제한 후 다시 시작할 수 있다. 이 경우, ibdata1 이 초기화되며 MySQL 은 모든 mysql database 를 제외한 서비스 databas 의 모든 InnoDB 테이블의 meta 정보를 새롭게 저장하게 된다. 하지만 정작 mysql database 에 새롭게 만들어진 5개의 InnoDB 테이블에 대한 정보는 저장하지 않아, 위와 같은 에러가 발생한다.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Unix시스템에서 fsync() 콜을 줄임으로써 성능 향상&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;3-동작&quot;&gt;3. 동작&lt;/h3&gt;
+&lt;h2 id=&quot;해결방법은-무엇인가&quot;&gt;해결방법은 무엇인가?&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;innodb buffer pool의 변경된 pages를 data files로 write하기 전에, InnoDB는 먼저 그 pages들을 doublewrite buffer라는 contiguous tablespace area에 먼저 쓴다.
+  &lt;li&gt;mysql 에 존재하는 innodb 관련 테이블들을 깨끗하게 지우고 mysql_upgrade 를 통해 새로 생성하는 방법&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    MySQL startup
+        1) 관련된 5개 테이블 삭제
+            mysql&amp;gt; use mysql;  drop table innodb_index_stats ; drop table innodb_table_stats; drop table slave_master_info; drop table slave_relay_log_info; drop table slave_worker_info;
+                - 테이블이 없다고 에러가 발생하지만, frm 을 삭제하여 다시 MySQL 이 시작될때 해당 테이블의 존재를 알려주지 않기 위함
+
+    MySQL shutdown
+        2) mysql database 에 존재하는 ibd 파일 삭제 (frm 은 drop table 시 지워졌음)
+            shell$ ls -al *.ibd
+            -rw-r--r--. 1 mysql mysql 409600 Mar 10 11:04 innodb_index_stats.ibd
+            -rw-r--r--. 1 mysql mysql  98304 Mar 10 11:04 innodb_table_stats.ibd
+            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_master_info.ibd
+            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_relay_log_info.ibd
+            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_worker_info.ibd
+
+            shell$ rm -rf innodb_index_stats.ibd innodb_table_stats.ibd slave_master_info.ibd slave_relay_log_info.ibd  slave_worker_info.ibd
+                - 기존의 ibd 파일은 모두 삭제한다. 3번 작업에서 5개의 테이블을 생성시 오류를 피하기 위함
+
+    MySQL startup
+        3) mysql 강제 upgrade
+            shell$ mysql_upgrade --force -uroot -p
+                - 위 작업을 통해 존재하지 않는 5개의 테이블이 새로 생성이 된다.
+    MySQL restart
+        4) err 로그를 확인하여, 정상적으로 동작하는지 확인.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">“Error: Table “mysql”.”innodb_table_stats” not found” 는 왜 발생하는가?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기</title><link href="http://localhost:4000/blog/performace_schema-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B5%9C%EA%B7%BC%EC%97%90-%EC%8B%A4%ED%96%89%EB%90%9C-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기" /><published>2016-02-01T00:00:00+09:00</published><updated>2016-02-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/performace_schema%20%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC%20%EC%B5%9C%EA%B7%BC%EC%97%90%20%EC%8B%A4%ED%96%89%EB%90%9C%20%EC%BF%BC%EB%A6%AC%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/performace_schema-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B5%9C%EA%B7%BC%EC%97%90-%EC%8B%A4%ED%96%89%EB%90%9C-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;performace_schema-를-이용하여-최근에-실행된-쿼리-확인하기&quot;&gt;performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기&lt;/h1&gt;
+
+&lt;p&gt;show processlist 와 show engine processlist 를 확인하면, 어떤 쿼리인지는 알 수 없으나 트랜잭션을 잡고 있는것을 확인할 수 있습니다. commit 되지 않은 트랜잭션이 존재한다면, MySQL InnoDB는 old image를 읽어오기 위해 시간이 지날수록 느려지고 다른 쿼리또한 lock 으로 인해 대기될 수 있습니다. 해당 쿼리를 tracking 하기 위해서는 기본적으로 performace_schema 가 ON (1) 되어 있어야 합니다. MySQL 5.6.6 이상에서는 은 기본적으로 해당값이 ON 되어 있으므로, 추가적인 설정이 필요없습니다. &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    mysql&amp;gt; show global variables like 'performance_schema';
+    +--------------------+-------+
+    | Variable_name      | Value |
+    +--------------------+-------+
+    | performance_schema | ON    |
+    +--------------------+-------+
+    1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;먼저 예제를 하나 만들도록 하겠습니다. session 1 에서 테이블을 만들고, 해당 테이블에 값을 넣습니다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 1&amp;gt;
+    mysql&amp;gt; create table p ( a int);
+    Query OK, 0 rows affected (0.03 sec)
+
+    mysql&amp;gt; begin;
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql&amp;gt; insert into p values (1);
+    Query OK, 1 row affected (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;다른 세션에서 show engine innodb status, show processlist;, information_schema.INNODB_TRX 를 조회해 보겠습니다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 2&amp;gt;
+    mysql&amp;gt; show engine innodb statusG
+    ------------
+    TRANSACTIONS
+    ------------
+    Trx id counter 632685
+    Purge done for trx's n:o &amp;lt; 632684 undo n:o &amp;lt; 0 state: running but idle
+    History list length 443
+    LIST OF TRANSACTIONS FOR EACH SESSION:
+    ---TRANSACTION 0, not started
+    MySQL thread id 53587, OS thread handle 0x7f6f0c0a2700, query id 498268 localhost root init
+    show engine innodb status
+    ---TRANSACTION 0, not started
+    MySQL thread id 15918, OS thread handle 0x7f6eec0ed700, query id 498176 localhost gu cleaning up
+    ---TRANSACTION 632684, ACTIVE 32 sec
+/* 해당 transaction 이 Active 상태로 32초동안 active 상태지만, 어떤 쿼리인지는 알 수 없습니다. 단순히 test.p 테이블에 실행된 쿼리로만 짐작이 됩니다.
+현재는 아무런 쿼리도 돌고 있지 않기 때문입니다. 물론 undo log entires 를 통해 DML이 실행되었을것이라고 짐작할 수 있습니다.
+undo log entries 가 없는 경우도 있는데, 이는 begin; select .... 구문을 실행했기 때문입니다.
+commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 성능정하를 일이키는 요소입니다.
+**/
+    1 lock struct(s), heap size 360, 0 row lock(s), undo log entries 1
+    sMySQL thread id 56604, OS thread handle 0x7f6f0c061700, query id 497985 localhost root cleaning up
+    TABLE LOCK table `test`.`p` trx id 632684 lock mode IX
+
+
+
+    mysql&amp;gt; show processlist;
+    +-------+------+-----------+-------+---------+------+-------+------------------+
+    | Id    | User | Host      | db    | Command | Time | State | Info             |
+    +-------+------+-----------+-------+---------+------+-------+------------------+
+    | 15918 | gu   | localhost | mysql | Sleep   |   24 |       | NULL             |
+    | 53587 | root | localhost | NULL  | Query   |    0 | init  | show processlist |
+    | 56604 | root | localhost | test  | Sleep   |   42 |       | NULL             |
+    +-------+------+-----------+-------+---------+------+-------+------------------+
+    5 rows in set (0.00 sec)
+
+/* show processlist; 에서는 현재 해당 thread가 아무런 작업을 하고 있지 않기 때문에 Sleep 상태만을 보여줍니다.**/
+
+    mysql&amp;gt; select * from information_schema.INNODB_TRXG
+    *************************** 1. row ***************************
+                trx_id: 632684
+             trx_state: RUNNING
+               trx_started: 2016-01-26 04:22:10
+         trx_requested_lock_id: NULL
+          trx_wait_started: NULL
+            trx_weight: 2
+           trx_mysql_thread_id: 56604
+             trx_query: NULL
+           trx_operation_state: NULL
+         trx_tables_in_use: 0
+         trx_tables_locked: 0
+          trx_lock_structs: 1
+         trx_lock_memory_bytes: 360
+           trx_rows_locked: 0
+         trx_rows_modified: 1
+       trx_concurrency_tickets: 0
+           trx_isolation_level: REPEATABLE READ
+         trx_unique_checks: 1
+        trx_foreign_key_checks: 1
+    trx_last_foreign_key_error: NULL
+     trx_adaptive_hash_latched: 0
+     trx_adaptive_hash_timeout: 10000
+          trx_is_read_only: 0
+    trx_autocommit_non_locking: 0
+    1 row in set (0.00 sec)
+
+/* information_schema.INNODB_TRX 에서는 현재 해당 thread가 아무런 작업을 하고 있지 않기 때문에 trx_rows_modified 를 통해 어떤 DML 이 실행되었고, 1개의 record를 수정한채 commit 하지 않았다는것만을 알 수 있습니다. **/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;performance_schema.events_statements_current 의 데이터를 조회해 보겠습니다. 해당 테이블은 마지막에 해당 thread에서 실행된 쿼리를 저장하고 있습니다. 해당 테이블의 값을 조회하기 위해서는 performance_schema.threads 와 조인이 필요합니다. processlist 에서 보여주는 mysql 이 만든 thread와 performance_schema 에서 만든 thread 값이 다르기 때문입니다. (performance_schema.threads 는 background thread의 값도 가지고 있기 때문입니다.)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 2&amp;gt;
+    mysql&amp;gt; SELECT esc.THREAD_ID, t.processlist_id, esc.SQL_TEXT FROM performance_schema.events_statements_current esc JOIN performance_schema.threads t ON t.thread_id = esc.thread_id WHERE t.processlist_id = 56604;
+    +-----------+----------------+--------------------------+
+    | THREAD_ID | processlist_id | SQL_TEXT                 |
+    +-----------+----------------+--------------------------+
+    |     56624 |          56604 | insert into p values (1) |
+    +-----------+----------------+--------------------------+
+
+/* process_id 가 56604 의 thread 가 실행한 마지막 쿼리가 나타납니다. 56604 값은 show engine innodb statusG 의 transaction 값 중 thread id 56604 값을 통해 알아낼 수 있습니다. **/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;위는 default 로 동작되는 방법입니다. 그렇다면, 지나간 쿼리에 대해서는 어떻게 로그인을 하는지 확인해보겠습니다. - https://dev.mysql.com/doc/refman/5.6/en/performance-schema-statement-tables.html 먼저 performance_schema.setup_consumers 테이블의 events_statements_history, events_statements_history_long 의 값을 ON 시켜주어야 합니다. (default 로 events_statements_current 는 ON이 되어 있는것을 확인할 수 있습니다.)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    mysql&amp;gt; select * from performance_schema.setup_consumers where name like 'events_statements_%';
+    +--------------------------------+---------+
+    | NAME                           | ENABLED |
+    +--------------------------------+---------+
+    | events_statements_current      | YES     |
+    | events_statements_history      | NO      |
+    | events_statements_history_long | NO      |
+    +--------------------------------+---------+
+    3 rows in set (0.00 sec)
+
+
+    mysql&amp;gt; UPDATE performance_schema.setup_consumers SET ENABLED = 'YES' WHERE name like 'events_statements_%';
+    Query OK, 2 row affected (0.06 sec)
+    Rows matched: 3  Changed: 2  Warnings: 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;다시 session 1에서 쿼리를 실행해 보겠습니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;Session&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Empty&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;다른 세션에서 events_statements_history_long 의 값을 조회하여 해당세션이 실행한 쿼리들을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THREAD_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SQL_TEXT&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;performance_schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;events_statements_history_long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;JOIN&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;performance_schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;threads&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thread_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thread_id&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TIMER_END&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ASC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;THREAD_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQL_TEXT&lt;/span&gt;                  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;위와 같이 시간순으로 조회될 수 있습니다. 전체 쿼리를 저장할 수 있는 갯수는 아래의 설정을 통해 가능합니다. (performance_schema_events_statements_history_size, performance_schema_events_statements_history_long_size)
+5.6.6 이상부터는 default 값으로 MySQL 의 현재상태를 고려하여 값이 자동으로 늘어나거나 줄어들게 됩니다.
+물론 아래의 값으로 고정시킬 수도 있습니다.&lt;/p&gt;
+
+&lt;p&gt;https://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema_events_statements_history_size
+https://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema_events_statements_history_long_size&lt;/p&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">유용한 mysql client tool 옵션 (my.cnf 에 설정)</title><link href="http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C-mysql-client-tool-%EC%98%B5%EC%85%98/" rel="alternate" type="text/html" title="유용한 mysql client tool 옵션 (my.cnf 에 설정)" /><published>2015-12-17T00:00:00+09:00</published><updated>2015-12-17T00:00:00+09:00</updated><id>http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C%20mysql%20client%20tool%20%EC%98%B5%EC%85%98</id><content type="html" xml:base="http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C-mysql-client-tool-%EC%98%B5%EC%85%98/">&lt;h1 id=&quot;유용한-mysql-client-tool-옵션-mycnf-에-설정&quot;&gt;유용한 mysql client tool 옵션 (my.cnf 에 설정)&lt;/h1&gt;
+
+&lt;p&gt;현재 내가 사용하는 my.cnf 에는 다음과 같은 내용이 명시되어 있다.
+[mysqld] 가 아닌 [mysql] 에 명시해야 한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;my.cnf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysql]
+prompt=(\U) {\h}[\d] \R:\m:\s&amp;gt;_
+pager=head -n 50
+show-warnings
+i-am-a-dummy
+no-auto-rehash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;promptu-hd-rms_&quot;&gt;prompt=(\U) {\h}[\d] \R:\m:\s&amp;gt;_&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;접속 시 prompt 에 보여 줄 내용을 명시한다. default 로는 mysql (자세한 옵션은 아래 메뉴얼에 존재한다.) Host 정보를 통해 실수를 줄이거나 실행시간을 체크해 볼 수 있다. TEST DB로 착각하고 데이터베이스를 drop 한 기억이… ㄷㄷㄷ
     &lt;ul&gt;
-      &lt;li&gt;contiguous라는 건 인접한 블럭으로 append하는 식으로 쓰는 형식으로 사용하는 공간을 말한다.&lt;/li&gt;
-      &lt;li&gt;InnoDB가 innodb buffer pool로 부터 page를 flush할때 multiple pages를 한번에 flush 하는데 이 pages들이 sequential하게 doublewrite buffer에 쓰여지는 것이다.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;doublewrite buffer로 write하고 flush까지 한후(fsync())에, InnoDB는 data file의 적절한 position에다가 변경된 pages를 write(2차 fsync())한다.&lt;/li&gt;
-  &lt;li&gt;page write중에 만약 OS나 스토리지시스템에 문제가 발생하거나, mysql이 crash되었다면, (partial page write, torn page), InnoDB는 recovery시, doublewrite buffer로부터 해당 page를 찾아서 간단히 복구할 수 있다.
+  &lt;li&gt;my.cnf에 명시할 수도 있고, mysql에서 직접 필요할때만 (시간측정을 통한 test) 실행할 수 도 있다.
     &lt;ul&gt;
-      &lt;li&gt;만약 doublewrite buffer의 page가 inconsistent하다면 그냥 버려버리고, 로그파일로 부터 복구하게 된다.&lt;/li&gt;
-      &lt;li&gt;실제 data file의 page가 inconsistent한 경우, doublewrite buffer에서 복구한다.&lt;/li&gt;
+      &lt;li&gt;직접 실행하는 경우는 mysql client tool 에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; prompt (U) {h}[d] R:m:s&amp;gt;_ &lt;/code&gt;를 실행한다.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;4-성능&quot;&gt;4. 성능&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm2 ~]# /db/5.6/bin/mysql --defaults-file=/db/5.6/conf/my.cnf -uroot --host=192.168.74.203
+    Welcome to the MySQL monitor.  Commands end with ; or g.
+    Your MySQL connection id is 1152
+    Server version: 5.6.27-enterprise-commercial-advanced-log MySQL Enterprise Server - Advanced Edition (Commercial)
+
+    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+
+    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+    (root@192.168.74.202) {192.168.74.203}[(none)] 07:33:36&amp;gt;
+    (root@192.168.74.202) {192.168.74.203}[(none)] 07:34:55&amp;gt; use test
+    Database changed
+    (root@192.168.74.202) {192.168.74.203}[test] 07:34:56&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;pagerhead--n-50&quot;&gt;pager=head -n 50&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;doublewrite를 사용하면 page를 두번 써야하니까 overhead가 있을까?
+  &lt;li&gt;pager는 결과값을 OS 명령어를 통해 이용할 수 있게 해준다. 잘 이용하면 아주 유익하게 사용할 수 있다. 결과만을 다른 파일로 저장할 수도 있고 less 를 사용하여 스크롤을 안 할 수 있다. 나는 주로 많은 양의 데이터를 테스트할때 이용하는데, 10000 row가 select 되었더라도 화면에 뿌려지는 것은 앞에서 50개로 자를 수 있다.
     &lt;ul&gt;
-      &lt;li&gt;적어도 두배의 overhead는 아니다.&lt;/li&gt;
-      &lt;li&gt;doublewrite buffer는 sequential 하게 쓰여지기때문에 매우 빠르다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;fsync()횟수를 줄인다
-    &lt;ul&gt;
-      &lt;li&gt;매 page마다 fsync()를 콜하는게 아니라, multiple page를 한번에 쓰고 fsync()한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;일반적으로 doublewrite를 활성화에 의해서 발생하는 성능 저하는 5-10%정도라고 본다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;5-비활성화-할수-있나&quot;&gt;5. 비활성화 할수 있나&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;데이터가 소중하지 않다면, 혹은 file system 단에서 partial page write가 발생하지 않는다고 보장할수 있다면, disable할수 있다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_doublewrite=0&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;하지만 대부분의 경우, 이런 위험을 감수할 필요는 없다고 본다.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL InnoDB architecture - doublewrite buffer</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MongoDB Replica Set 멤버 추가삭제하기</title><link href="http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MongoDB Replica Set 멤버 추가삭제하기" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Replica%20Set%20%EB%A9%A4%EB%B2%84%20%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mongodb-replica-set-멤버-추가삭제하기&quot;&gt;MongoDB Replica Set 멤버 추가/삭제하기&lt;/h1&gt;
-
-&lt;h2 id=&quot;mongodb-replica-set-멤버-추가삭제하기-1&quot;&gt;MongoDB Replica Set 멤버 추가/삭제하기&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;운영중인 replica set에 멤버를 추가/삭제해보자.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-개요&quot;&gt;1. 개요&lt;/h3&gt;
-
-&lt;h4 id=&quot;11-maximum-voting-members&quot;&gt;1.1 Maximum Voting Members&lt;/h4&gt;
-
-&lt;p&gt;voting member는 최대 7개까지 구성할수 있다. 이미 7개의 votes가 존재하는 replica set에 멤버를 추가하는 경우에는, 추가할 멤버를 non-voting member로 설정하거나, 기존 멤버에서 votes를 제거해야한다.&lt;/p&gt;
-
-&lt;h4 id=&quot;12-control-scripts&quot;&gt;1.2 Control Scripts&lt;/h4&gt;
-
-&lt;p&gt;control script를 사용한다면 이 스크립트도 수정한다.&lt;/p&gt;
-
-&lt;h4 id=&quot;13-existing-members&quot;&gt;1.3 Existing Members&lt;/h4&gt;
-
-&lt;p&gt;remove한 멤버를 다시 추가할수도 있다. 만약 remove했던 멤버의 데이터가 최신이었다면, recover, catch up을 쉽게 할수 있다.&lt;/p&gt;
-
-&lt;h4 id=&quot;14-data-files&quot;&gt;1.4 Data Files&lt;/h4&gt;
-
-&lt;p&gt;기존멤버의 백업이나 스냅샷이 있는 경우, 해당 data files를 copy해서 바로 new member로 추가할 수 있다. * 정상적인 백업파일이어야한다. * filesystem snapshot을 사용하도록 한다. * &lt;strong&gt;mongodump&lt;/strong&gt; 나 &lt;strong&gt;mongorestore&lt;/strong&gt;을 사용하지 않는다. * 가장 오래된 primary의 oplog보다 최근의 백업파일이어야한다. * 새로 추가된 멤버가 primary의 oplog를 적용해서 최신상태로 따라와야한다. * &lt;strong&gt;참조&lt;/strong&gt; : &lt;a href=&quot;/uncategorized/mongodb-filesystem-snapshot%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%eb%b0%b1%ec%97%85%eb%a6%ac%ec%8a%a4%ed%86%a0%ec%96%b4/&quot;&gt;MongoDB 스냅샷백업&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;2-필수요건&quot;&gt;2. 필수요건&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;운영중인 replica set&lt;/li&gt;
-  &lt;li&gt;새로운 MongoDB 시스템. replica set과 네트워크 연결 가능한 시스템
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;참조&lt;/strong&gt; : &lt;a href=&quot;/others/mongodb-installation-2/&quot;&gt;MongoDB 설치&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;직접 실행하는 경우는 mysql client tool 에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; pager less -n -i -F -X -E&lt;/code&gt; 를 실행한다.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;물론 &lt;code class=&quot;highlighter-rouge&quot;&gt;head, less, cat | &amp;gt;&lt;/code&gt;등도 모두 사용가능하다.&lt;/li&gt;
+      &lt;li&gt;해당내용은 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt;s&lt;/code&gt; 를 통해 확인가능하다. (s, status 명령어는 통계를 잽싸게 보는데도 유리하다.)&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;3-프로세스&quot;&gt;3. 프로세스&lt;/h3&gt;
-
-&lt;h4 id=&quot;31-data-directory-준비&quot;&gt;3.1 Data Directory 준비&lt;/h4&gt;
-
-&lt;p&gt;새로운 멤버를 기존의 replica set에 추가하기전에, data directory를 단계에 따라 준비한다. * data directory를 준비. 다른 데이터를 포함하지 않은 빈 디렉터리여야한다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm4 ~]# mkdir /db/mongo
-    [root@testvm4 ~]# chown -R mongo. /db/mongo
-    [root@testvm4 ~]# mkdir /data1/mongo
-    [root@testvm4 ~]# chown -R mongo. /data1/mongo
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:40:49&amp;gt; select * from test.abcd limit 10000;
+    +------+------------------------------------------------------------------------------------------------------+
+    | a    | b                                                                                                    |
+    +------+------------------------------------------------------------------------------------------------------+
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
+    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
+    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
+    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
+    10000 rows in set (0.05 sec)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;수동으로 기존의 멤버의 data directory를 copy한다.
-    &lt;ul&gt;
-      &lt;li&gt;새멤버를 secondary member로 추가하게 되면 replica set의 현상태를 따라잡게 된다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm4 ~]$ cd /data1/mongo
-    [mongo@testvm4 mongo]$ ll
-    total 0
-    [mongo@testvm4 mongo]$ scp -pr testvm1:/backupsnap/mongo/* . #스냅샷백업본에서 카피
-    ...
+&lt;h3 id=&quot;show-warnings&quot;&gt;show-warnings&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;warning 이 발생시, 자동으로 보여준다.
+가끔씩 warning을 보려고 show warnings 를 실행하다… 오타로 날라가는 슬픈현실을 막을 수 있다.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;32-기존의-repica-set으로-mongod-instanace-시작한다&quot;&gt;3.2 기존의 repica set으로 mongod instanace 시작한다.&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:40:16&amp;gt; explain extended select * from test.abcd;
+    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
+    | id | select_type | table | type | possible_keys | key  | key_len | ref  | rows    | filtered | Extra |
+    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
+    |  1 | SIMPLE      | abcd  | ALL  | NULL          | NULL | NULL    | NULL | 2532999 |   100.00 | NULL  |
+    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
+    1 row in set, 1 warning (0.00 sec)
 
-&lt;ul&gt;
-  &lt;li&gt;configuration file 생성하고 시작한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm4 ~]$ cd /db/mongo
-    [mongo@testvm4 mongo]$ scp testvm1:/db/mongo/mongod.conf .
-    mongo@testvm1's password:
-    mongod.conf                                   100% 1513     1.5KB/s   00:00
-    [root@testvm4 mongo]# grep &quot;replSet&quot; mongod.conf            # 기존 replSet으로 지정
-    replSet=rs0
-    [root@testvm4 mongo]#  mongod -f /db/mongo/mongod.conf
-    about to fork child process, waiting until server is ready for connections.
-    forked process: 2131
-    child process started successfully, parent exiting
+    Note (Code 1003): /* select#1 */ select `test`.`abcd`.`a` AS `a`,`test`.`abcd`.`b` AS `b` from `test`.`abcd`
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;33-replica-set의-primary로-접속&quot;&gt;3.3 replica set의 primary로 접속&lt;/h4&gt;
+&lt;h3 id=&quot;i-am-a-dummy&quot;&gt;i-am-a-dummy&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm1 ~]$ mongo
-    MongoDB shell version: 2.6.9
-    connecting to: test
-    rs0:PRIMARY&amp;gt; db.isMaster()
-    {
-            &quot;setName&quot; : &quot;rs0&quot;,
-            &quot;setVersion&quot; : 3,
-            &quot;ismaster&quot; : true,
-            &quot;secondary&quot; : false,
-            &quot;hosts&quot; : [
-                    &quot;testvm1:27017&quot;,
-                    &quot;testvm3:27017&quot;,
-                    &quot;testvm2:27017&quot;
-            ],
-            &quot;primary&quot; : &quot;testvm1:27017&quot;,
-            &quot;me&quot; : &quot;testvm1:27017&quot;,
-            &quot;maxBsonObjectSize&quot; : 16777216,
-            &quot;maxMessageSizeBytes&quot; : 48000000,
-            &quot;maxWriteBatchSize&quot; : 1000,
-            &quot;localTime&quot; : ISODate(&quot;2015-04-15T07:12:02.755Z&quot;),
-            &quot;maxWireVersion&quot; : 2,
-            &quot;minWireVersion&quot; : 0,
-            &quot;ok&quot; : 1
-    }
+&lt;ul&gt;
+  &lt;li&gt;나는 바보? 라는 뜻이다. 가끔 mysql client tool 에서 접속하여 오래걸리는 쿼리를 실행하여 서비스에 문제가 생기는일이 있다.&lt;/li&gt;
+  &lt;li&gt;delete 나 update 시 where 조건이 없으면 에러를 낸다.&lt;/li&gt;
+  &lt;li&gt;select시 limit 를 안 붙이면 자동으로 1000 이 붙는다.&lt;/li&gt;
+  &lt;li&gt;쿼리가 실행될때 row를 최대 1000000 개만 읽는다.&lt;/li&gt;
+  &lt;li&gt;정말 테이블의 모든 데이터에 대하여 변경으로 가하려면, where 1=1 을 넣을 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:48:52&amp;gt; delete from test.abcd;
+    ERROR 1175 (HY000): You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;34-멤버-추가-명령&quot;&gt;3.4 멤버 추가 명령&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;추가하기전에 변경발생시켜두자&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; for (var i = 1; i &amp;lt;= 100000; i++) {    db.test1.insert( { x : i } ) }
-    WriteResult({ &quot;nInserted&quot; : 1 })
+&lt;h3 id=&quot;no-auto-rehash&quot;&gt;no-auto-rehash&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql client tool에서 자동완성 기능을 사용할 수 있는데, 이는 접속시 오버헤드가 발생한다.
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;멤버추가&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.add(&quot;testvm4:27017&quot;)
-    { &quot;ok&quot; : 1 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;35-확인&quot;&gt;3.5 확인&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;rs.conf()확인&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.conf()
-    {
-            &quot;_id&quot; : &quot;rs0&quot;,
-            &quot;version&quot; : 4,
-            &quot;members&quot; : [
-                    {
-                            &quot;_id&quot; : 0,
-                            &quot;host&quot; : &quot;testvm1:27017&quot;
-                    },
-                    {
-                            &quot;_id&quot; : 1,
-                            &quot;host&quot; : &quot;testvm2:27017&quot;
-                    },
-                    {
-                            &quot;_id&quot; : 2,
-                            &quot;host&quot; : &quot;testvm3:27017&quot;
-                    },
-                    {
-                            &quot;_id&quot; : 3,
-                            &quot;host&quot; : &quot;testvm4:27017&quot;
-                    }
-            ]
-    }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;슬레이브 catch up확인&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm4 ~]# mongo
-    MongoDB shell version: 2.6.9
-    connecting to: test
-    rs0:SECONDARY&amp;gt; rs.slaveOk()
-    rs0:SECONDARY&amp;gt; db.test1.count()
-    90018
-    rs0:SECONDARY&amp;gt; db.test1.count()
-    100000
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;4-멤버-삭제하기&quot;&gt;4. 멤버 삭제하기&lt;/h3&gt;
-
-&lt;h4 id=&quot;41-rsremove&quot;&gt;4.1 rs.remove()&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;삭제할 멤버의 인스턴스를 shutdown한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:SECONDARY&amp;gt; use admin
-    switched to db admin
-    rs0:SECONDARY&amp;gt;  db.shutdownServer()
-    2015-04-16T11:08:33.496+1000 DBClientCursor::init call() failed
-    server should be down...
-    2015-04-16T11:08:33.503+1000 trying reconnect to 127.0.0.1:27017 (127.0.0.1) failed
-    2015-04-16T11:08:33.511+1000 warning: Failed to connect to 127.0.0.1:27017, reason: errno:111 Connection refused
-    2015-04-16T11:08:33.511+1000 reconnect 127.0.0.1:27017 (127.0.0.1) failed failed couldn't connect to server 127.0.0.1:27017 (127.0.0.1), connection attempt failed
-    &amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;primary로 접속하여 rs.remove() 명령한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.remove(&quot;testvm4:27017&quot;)
-    2015-04-15T17:21:48.106+1000 DBClientCursor::init call() failed
-    2015-04-15T17:21:48.108+1000 Error: error doing query: failed at src/mongo/shell/query.js:81
-    2015-04-15T17:21:48.110+1000 trying reconnect to 127.0.0.1:27017 (127.0.0.1) failed
-    2015-04-15T17:21:48.112+1000 reconnect 127.0.0.1:27017 (127.0.0.1) ok
-    rs0:PRIMARY&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Replica Set 멤버 추가/삭제하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry><entry><title type="html">MongoDB Replica Set status 확인하기</title><link href="http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MongoDB Replica Set status 확인하기" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Replica%20Set%20status%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mongodb-replica-set-status-확인하기&quot;&gt;MongoDB Replica Set status 확인하기&lt;/h1&gt;
-
-&lt;h2 id=&quot;mongodb-replica-set-status-확인하기-1&quot;&gt;MongoDB Replica Set status 확인하기&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Replica Set 상태 확인하는 몇가지 명령어를 알아보자&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-check-replica-set-status&quot;&gt;1. Check Replica Set Status&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;primary에서 &lt;strong&gt;rs.status()&lt;/strong&gt; 로 확인&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt;  rs.status()
-    {
-            &quot;set&quot; : &quot;rs0&quot;,
-            &quot;date&quot; : ISODate(&quot;2015-04-15T10:56:27Z&quot;),
-            &quot;myState&quot; : 1,
-            &quot;members&quot; : [
-                    {
-                            &quot;_id&quot; : 0,
-                            &quot;name&quot; : &quot;testvm1:27017&quot;,
-                            &quot;health&quot; : 1,
-                            &quot;state&quot; : 1,
-                            &quot;stateStr&quot; : &quot;PRIMARY&quot;,
-                            &quot;uptime&quot; : 13616,
-                            &quot;optime&quot; : Timestamp(1429084514, 1),
-                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
-                            &quot;electionTime&quot; : Timestamp(1429081894, 1),
-                            &quot;electionDate&quot; : ISODate(&quot;2015-04-15T07:11:34Z&quot;),
-                            &quot;self&quot; : true
-                    },
-                    {
-                            &quot;_id&quot; : 1,
-                            &quot;name&quot; : &quot;testvm2:27017&quot;,
-                            &quot;health&quot; : 1,
-                            &quot;state&quot; : 2,
-                            &quot;stateStr&quot; : &quot;SECONDARY&quot;,
-                            &quot;uptime&quot; : 10873,
-                            &quot;optime&quot; : Timestamp(1429084514, 1),
-                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
-                            &quot;lastHeartbeat&quot; : ISODate(&quot;2015-04-15T10:56:25Z&quot;),
-                            &quot;lastHeartbeatRecv&quot; : ISODate(&quot;2015-04-15T10:56:26Z&quot;),
-                            &quot;pingMs&quot; : 0,
-                            &quot;syncingTo&quot; : &quot;testvm1:27017&quot;
-                    },
-                    {
-                            &quot;_id&quot; : 2,
-                            &quot;name&quot; : &quot;testvm3:27017&quot;,
-                            &quot;health&quot; : 1,
-                            &quot;state&quot; : 2,
-                            &quot;stateStr&quot; : &quot;SECONDARY&quot;,
-                            &quot;uptime&quot; : 10873,
-                            &quot;optime&quot; : Timestamp(1429084514, 1),
-                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
-                            &quot;lastHeartbeat&quot; : ISODate(&quot;2015-04-15T10:56:25Z&quot;),
-                            &quot;lastHeartbeatRecv&quot; : ISODate(&quot;2015-04-15T10:56:26Z&quot;),
-                            &quot;pingMs&quot; : 0,
-                            &quot;syncingTo&quot; : &quot;testvm1:27017&quot;
-                    }
-            ],
-            &quot;ok&quot; : 1
-    }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;2-check-the-replication-lag&quot;&gt;2. Check the Replication Lag&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;primary에서 &lt;strong&gt;rs.printSlaveReplicationInfo()&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.printSlaveReplicationInfo()
-    source: testvm2:27017
-            syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
-            0 secs (0 hrs) behind the primary
-    source: testvm3:27017
-            syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
-            0 secs (0 hrs) behind the primary
-    rs0:PRIMARY&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;3-check-the-size-of-the-oplog&quot;&gt;3. Check the Size of the Oplog&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;멤버별로 체크 가능함. &lt;strong&gt;rs.printReplicationInfo()&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.printReplicationInfo()
-    configured oplog size:   990MB
-    log length start to end: 1605625secs (446.01hrs)
-    oplog first event time:  Sat Mar 28 2015 04:54:49 GMT+1100 (EST)
-    oplog last event time:   Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
-    now:                     Wed Apr 15 2015 21:14:28 GMT+1000 (EST)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;oplog사이즈는 replication lag를 얼마나 허용할 건지에 따라서 용량을 산정해야한다.&lt;/li&gt;
-  &lt;li&gt;위 예제환경의 경우, oplog사이즈가 990MB이고 446시간정도의 transaction을 저장할수 있다. 이 사이즈가 발생가능한 가장 긴 secondary downtime을 커버할수 있는지 체크하면 된다.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Replica Set status 확인하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry><entry><title type="html">MongoDB Filesystem snapshot을 사용한 백업리스토어</title><link href="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/" rel="alternate" type="text/html" title="MongoDB Filesystem snapshot을 사용한 백업리스토어" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Filesystem%20snapshot%EC%9D%84%20%EC%82%AC%EC%9A%A9%ED%95%9C%20%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/">&lt;h1 id=&quot;mongodb-filesystem-snapshot을-사용한-백업리스토어&quot;&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/h1&gt;
-
-&lt;p&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/p&gt;
-
-&lt;h2 id=&quot;mongodb-filesystem-snapshot을-사용한-백업리스토어-1&quot;&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;system-level 툴을 사용하여 MongoDB의 백업을 생성해보자. Filesystem snapshot(“block-level” backup)은 system level 툴을 사용하여 생성한 MongoDB의 데이터파일의 copy본을 의미한다. 이 방식은 빠르고 신뢰할만 하지만 MongoDB외의 system 관련 구성이 필요하다. 간단하게 Linux system 의 LVM을 사용하여 백업을 진행해 보자.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-create-a-snapshot&quot;&gt;1. Create a Snapshot&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;lvcreate 명령을 사용한다 다음의 옵션을 확인한다.
-    &lt;ul&gt;
-      &lt;li&gt;예시 : &lt;code class=&quot;highlighter-rouge&quot;&gt;lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;LVM 스냅샷을 생성한다. : &lt;strong&gt;--snapshot&lt;/strong&gt; option&lt;/li&gt;
-      &lt;li&gt;스냅샷 이름 : mdb-snap01&lt;/li&gt;
-      &lt;li&gt;스냅샷 받을 볼륨 그룹 : /dev/vg_vm2/lv_data&lt;/li&gt;
-      &lt;li&gt;size : 이건 전체 스냅샷의 사이즈를 의미하는 것이 아니라 현재 볼륨과 snapshot볼륨간의 difference를 저장할 용량을 의미한다.&lt;/li&gt;
-      &lt;li&gt;스냅샷 위치 : /dev/vg_vm2/mdb-snap01&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;생성해보자
-    &lt;ul&gt;
-      &lt;li&gt;([필요시에만..) 사용중인 볼륨 사이즈를 조정한다. 지금 100%에 대해 logical volumn생성한 상태인데, vgreduce를 통해 줄인다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvreduce --size 9.5G /dev/vg_vm3/lv_data
-      WARNING: Reducing active and open logical volume to 9.50 GiB
-      THIS MAY DESTROY YOUR DATA (filesystem etc.)
-    Do you really want to reduce lv_data? [y/n]: y
-      Reducing logical volume lv_data to 9.50 GiB
-      Logical volume lv_data successfully resized
-    [root@testvm1 ~]# umount /data1
-    [root@testvm1 ~]# e2fsck -f /dev/vg_vm3/lv_data
-    [root@testvm1 ~]# resize2fs /dev/vg_vm3/lv_data
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;그리고 스냅샷 볼륨을 생성해본다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data
-      Logical volume &quot;mdb-snap01&quot; created
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;만약 스냅샷 볼륨의 공간이 부족하게 되면, 이 스냅샷 이미지는 못쓰게 된다. 버리고 다시 생성해야한다.&lt;/li&gt;
-  &lt;li&gt;스냅샷이 백업을 빠르게 생성하는 방법이긴 하지만, 사실 백업 데이터를 보관하는데에는 좋은 포맷이 아니다. 오리지널과 동일한 storage환경에서만 동작하기 때문에, 이 스냅샷을 별도 장비에 archive하는 것은 좋은 방법이 아니다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-archive-a-snapshot&quot;&gt;2. Archive a Snapshot&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;shapshot을 mount하고, 다른 시스템을 copy할 수 있다.&lt;/li&gt;
-  &lt;li&gt;또는, backup image를 압축해서 옮길수도 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# dd if=/dev/vg_vm3/mdb-snap01 | gzip &amp;gt; /db/mongo/mdb-snap01.gz &amp;amp;
-    19922944+0 records in
-    19922944+0 records out
-    10200547328 bytes (10 GB) copied, 169.867 s, 60.1 MB/s
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;3-restore-a-snapshot&quot;&gt;3. Restore a Snapshot&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;snapshot을 restore해보자
-    &lt;ul&gt;
-      &lt;li&gt;새로운 logical volume lv_backupsnap을 만들고, 거기에 snapshot을 restore한다.&lt;/li&gt;
-      &lt;li&gt;사이즈는 original file system 사이즈와 같거나 더 커야한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvcreate -l 100%FREE --name lv_backupsnap vg_vm4
-      Logical volume &quot;lv_backupsnap&quot; created
-    [root@testvm1 ~]# gzip -d -c /db/mongo/mdb-snap01.gz  | dd of=/dev/vg_vm4/lv_backupsnap
-    19922944+0 records in
-    19922944+0 records out
-    10200547328 bytes (10 GB) copied, 343.295 s, 29.7 MB/s
-
-    [root@testvm1 ~]# mount /dev/vg_vm4/lv_backupsnap /backupsnap/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;4-remove-a-snapshot&quot;&gt;4. Remove a Snapshot&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;스냅샷 볼륨을 정리한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]#  lvremove /dev/vg_vm3/mdb-snap01
-    Do you really want to remove active logical volume mdb-snap01? [y/n]: y
-      Logical volume &quot;mdb-snap01&quot; successfully removed
-    [root@testvm1 ~]#
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Filesystem snapshot을 사용한 백업/리스토어</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry></feed>
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">유용한 mysql client tool 옵션 (my.cnf 에 설정)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>
