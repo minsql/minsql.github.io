@@ -1,4 +1,175 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-26T23:32:28+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MathJax Example</title><link href="http://localhost:4000/blog/mathjax-example/" rel="alternate" type="text/html" title="MathJax Example" /><published>2015-08-10T21:08:50+09:00</published><updated>2015-08-10T21:08:50+09:00</updated><id>http://localhost:4000/blog/mathjax-example</id><content type="html" xml:base="http://localhost:4000/blog/mathjax-example/">&lt;p&gt;&lt;a href=&quot;http://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt; is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\[ ... \]&lt;/code&gt;, and the other for inline mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\( ... \)&lt;/code&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-29T19:51:27+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
+
+&lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;MySQL 을 이용하여 여러 TEST 를 진행하는 경우, 설치 및 설정하는데 많은 시간이 소요된다. 이러한 수고를 줄이고자 MySQL sandbox (한국에는 놀이터에 없는것 같지만, 외국에는 모래를 가지고 뭔가를 만들고 부셔버리는 모래놀이장이 있는데 이것이 sandbox 라고 불린다) 라는것이 존재하고 아주 유용하다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;해당 sandbox 를 이용하면 손쉽게 다음과 같은일을 진행할 수 있다.
+    &lt;ul&gt;
+      &lt;li&gt;instance 통제&lt;/li&gt;
+      &lt;li&gt;$HOME/sandboxes 에서 현재 설치된 모든 instance 들을 통제할 수 있다.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;$HOME/sandboxes/msb_$version 혹은 $HOME/sandboxes/$rsandbox_mysql-$verstion 으로 들어가서 각 instance 를 개별적으로 통제할 수 있다.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;instance 구성
+        &lt;ul&gt;
+          &lt;li&gt;single instance 구성&lt;/li&gt;
+          &lt;li&gt;여러개의 single instance 구성&lt;/li&gt;
+          &lt;li&gt;여러가지 replication 구성&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;자세한 사용법은 아래를 참고하자. &lt;a href=&quot;https://github.com/datacharmer/mysql-sandbox&quot;&gt;https://github.com/datacharmer/mysql-sandbox&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;설치&quot;&gt;설치&lt;/h3&gt;
+
+&lt;p&gt;설치는 간단하다. 소스를 github 에서 받아 설치해주면 된다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;아래의 명령어는 sandbox 를 설치하기 위한 명령어이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    shell# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    shell# unzip master.zip
+    shell# cd mysql-sandbox-master
+    shell# perl Makefile.PL
+
+    shell# make
+    shell# make test
+    shell# make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost sandbox]# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    --2017-07-20 04:16:45--  https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    Resolving jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)... 10.188.53.53
+    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+    Proxy request sent, awaiting response... 302 Found
+    Location: https://codeload.github.com/datacharmer/mysql-sandbox/zip/master [following]
+    --2017-07-20 04:16:46--  https://codeload.github.com/datacharmer/mysql-sandbox/zip/master
+    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+    Proxy request sent, awaiting response... 200 OK
+    Length: unspecified [application/zip]
+    Saving to: ‘master.zip’
+
+        [  &amp;lt;=&amp;gt;                                                                                                                                   ] 167,877      414KB/s   in 0.4s   
+
+    2017-07-20 04:16:48 (414 KB/s) - ‘master.zip’ saved [167877]
+
+    [root@localhost sandbox]# ll
+    total 288
+    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+
+    [root@localhost sandbox]# unzip master.zip
+    Archive:  master.zip
+    a3d6e43f5c5f8baee3794c98a157ee0c8fe8a2a4
+       creating: mysql-sandbox-master/
+      inflating: mysql-sandbox-master/Changelog  
+      inflating: mysql-sandbox-master/LICENSE  
+      inflating: mysql-sandbox-master/MANIFEST  
+      inflating: mysql-sandbox-master/Makefile.PL  
+      inflating: mysql-sandbox-master/README.md  
+       creating: mysql-sandbox-master/bin/
+      inflating: mysql-sandbox-master/bin/deploy_to_remote_sandboxes.sh  
+      inflating: mysql-sandbox-master/bin/low_level_make_sandbox  
+      inflating: mysql-sandbox-master/bin/make_multiple_custom_sandbox  
+      inflating: mysql-sandbox-master/bin/make_multiple_sandbox  
+      inflating: mysql-sandbox-master/bin/make_replication_sandbox  
+      inflating: mysql-sandbox-master/bin/make_sandbox  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_installed  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_source  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_url  
+      inflating: mysql-sandbox-master/bin/msandbox  
+      inflating: mysql-sandbox-master/bin/msb  
+      inflating: mysql-sandbox-master/bin/sbtool  
+      inflating: mysql-sandbox-master/bin/test_sandbox  
+       creating: mysql-sandbox-master/lib/
+       creating: mysql-sandbox-master/lib/MySQL/
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox.pm  
+       creating: mysql-sandbox-master/lib/MySQL/Sandbox/
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Recipes.pm  
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Scripts.pm  
+      inflating: mysql-sandbox-master/mkdist.sh  
+      inflating: mysql-sandbox-master/repo_list.pl  
+       creating: mysql-sandbox-master/t/
+      inflating: mysql-sandbox-master/t/01_modules.t  
+      inflating: mysql-sandbox-master/t/02_test_binaries.t  
+      inflating: mysql-sandbox-master/t/03_test_sandbox.t  
+      inflating: mysql-sandbox-master/t/04_test_sbtool.t  
+      inflating: mysql-sandbox-master/t/05_test_smoke.t  
+      inflating: mysql-sandbox-master/t/06_test_user_defined.t  
+      inflating: mysql-sandbox-master/t/07_test_user_defined.t  
+      inflating: mysql-sandbox-master/t/08_test_single_port_checking.t  
+      inflating: mysql-sandbox-master/t/09_test_multiple_port_checking.t  
+      inflating: mysql-sandbox-master/t/10_check_start_restart.t  
+      inflating: mysql-sandbox-master/t/11_replication_parameters.t  
+      inflating: mysql-sandbox-master/t/12_custom_user_pwd.t  
+      inflating: mysql-sandbox-master/t/13_innodb_plugin_install.t  
+      inflating: mysql-sandbox-master/t/14_semi_synch_plugin_install.t  
+      inflating: mysql-sandbox-master/t/15_user_privileges.t  
+      inflating: mysql-sandbox-master/t/16_replication_options.t  
+      inflating: mysql-sandbox-master/t/17_replication_flow.t  
+      inflating: mysql-sandbox-master/t/18_force_creation.t  
+      inflating: mysql-sandbox-master/t/19_replication_gtid.t  
+      inflating: mysql-sandbox-master/t/20_add_option.t  
+      inflating: mysql-sandbox-master/t/21_replication_gtid_option.t  
+      inflating: mysql-sandbox-master/t/22_init_exec_sql.t  
+      inflating: mysql-sandbox-master/t/23_mysqlx_plugin.t  
+      inflating: mysql-sandbox-master/t/24_dd_expose.t  
+      inflating: mysql-sandbox-master/t/Test_Helper.pm  
+      inflating: mysql-sandbox-master/t/add_option.sb.pl  
+      inflating: mysql-sandbox-master/t/check_replication.sb  
+      inflating: mysql-sandbox-master/t/check_single_server.sb  
+      inflating: mysql-sandbox-master/t/custom_user_pwd.sb.pl  
+      inflating: mysql-sandbox-master/t/dd_expose.sb.pl  
+      inflating: mysql-sandbox-master/t/force.sb.pl  
+      inflating: mysql-sandbox-master/t/group_port_checking.sb.pl  
+      inflating: mysql-sandbox-master/t/init_exec_sql.sb.pl  
+      inflating: mysql-sandbox-master/t/innodb_plugin_install.sb.pl  
+      inflating: mysql-sandbox-master/t/mysqlx_plugin.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_flow.sh  
+      inflating: mysql-sandbox-master/t/replication_gtid.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_options.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_parameters.sb.pl  
+      inflating: mysql-sandbox-master/t/semi_synch_plugin_install.sb.pl  
+      inflating: mysql-sandbox-master/t/single_port_checking.sb.pl  
+      inflating: mysql-sandbox-master/t/start_restart_arguments.sb.pl  
+      inflating: mysql-sandbox-master/t/test_init_exec.sh  
+      inflating: mysql-sandbox-master/t/user_privileges.sb.pl  
+      inflating: mysql-sandbox-master/test_all_latest.sh  
+    [root@localhost sandbox]# ll
+    total 288
+    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+    drwxr-xr-x. 5 root root     184 Jul 18 14:24 mysql-sandbox-master
+
+    [root@localhost sandbox]# cd mysql-sandbox-master
+
+    [root@localhost mysql-sandbox-master]# ll
+    total 120
+    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 bin
+    -rw-r--r--. 1 root root 41076 Jul 18 14:24 Changelog
+    drwxr-xr-x. 3 root root    19 Jul 18 14:24 lib
+    -rw-r--r--. 1 root root 11358 Jul 18 14:24 LICENSE
+    -rw-r--r--. 1 root root  2927 Jul 18 14:24 Makefile.PL
+    -rw-r--r--. 1 root root  1498 Jul 18 14:24 MANIFEST
+    -rwxr-xr-x. 1 root root  1659 Jul 18 14:24 mkdist.sh
+    -rw-r--r--. 1 root root 33848 Jul 18 14:24 README.md
+    -rw-r--r--. 1 root root  1011 Jul 18 14:24 repo_list.pl
+    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
+    -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MathJax Example</title><link href="http://localhost:4000/blog/mathjax-example/" rel="alternate" type="text/html" title="MathJax Example" /><published>2015-08-10T21:08:50+09:00</published><updated>2015-08-10T21:08:50+09:00</updated><id>http://localhost:4000/blog/mathjax-example</id><content type="html" xml:base="http://localhost:4000/blog/mathjax-example/">&lt;p&gt;&lt;a href=&quot;http://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt; is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\[ ... \]&lt;/code&gt;, and the other for inline mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\( ... \)&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
 
@@ -17,424 +188,1021 @@
 &lt;p&gt;Here is an example MathJax inline rendering \( 1/x^{2} \), and here is a block rendering:
 \[ \frac{1}{n^{2}} \]&lt;/p&gt;
 
-&lt;p&gt;The only thing to look out for is the escaping of the backslash when using markdown, so the delimiters become &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[ ... \\]&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; for inline and block maths respectively.&lt;/p&gt;</content><author><name></name></author><summary type="html">MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics \[ ... \], and the other for inline mathematics \( ... \).</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil%7D" /></entry><entry><title type="html">Hello World</title><link href="http://localhost:4000/blog/hello-world/" rel="alternate" type="text/html" title="Hello World" /><published>2014-08-09T04:39:55+09:00</published><updated>2014-08-09T04:39:55+09:00</updated><id>http://localhost:4000/blog/hello-world</id><content type="html" xml:base="http://localhost:4000/blog/hello-world/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory - edit this post and re-build (or run with the &lt;code class=&quot;highlighter-rouge&quot;&gt;-w&lt;/code&gt; switch) to see your changes!
-To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention: YYYY-MM-DD-name-of-post.ext.&lt;/p&gt;
+&lt;p&gt;The only thing to look out for is the escaping of the backslash when using markdown, so the delimiters become &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[ ... \\]&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; for inline and block maths respectively.&lt;/p&gt;</content><author><name></name></author><summary type="html">MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics \[ ... \], and the other for inline mathematics \( ... \).</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil%7D" /></entry><entry><title type="html">MySQL Audit 사용하기</title><link href="http://localhost:4000/blog/MySQL-Audit-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MySQL Audit 사용하기" /><published>2015-07-21T00:00:00+09:00</published><updated>2015-07-21T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20Audit%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-Audit-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mysql-audit-사용하기&quot;&gt;MySQL Audit 사용하기&lt;/h1&gt;
 
-&lt;h2 id=&quot;sample-heading&quot;&gt;Sample Heading&lt;/h2&gt;
-
-&lt;h3 id=&quot;sample-heading-2&quot;&gt;Sample Heading 2&lt;/h3&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory - edit this post and re-build (or run with the -w switch) to see your changes! To add new posts, simply add a file in the _posts directory that follows the convention: YYYY-MM-DD-name-of-post.ext.</summary></entry><entry><title type="html">Override Author Byline Test Post</title><link href="http://localhost:4000/articles/author-override/" rel="alternate" type="text/html" title="Override Author Byline Test Post" /><published>2014-06-19T00:00:00+09:00</published><updated>2014-06-19T00:00:00+09:00</updated><id>http://localhost:4000/articles/author-override</id><content type="html" xml:base="http://localhost:4000/articles/author-override/">&lt;p&gt;For those of you who may have content written by multiple authors on your site you can now assign different authors to each post if desired.&lt;/p&gt;
-
-&lt;p&gt;Previously the theme used a global author for the entire site and those attributes would be used in all bylines, social networking links, Twitter Card attribution, and Google Authorship. These &lt;code class=&quot;highlighter-rouge&quot;&gt;owner&lt;/code&gt; variables were defined in &lt;code class=&quot;highlighter-rouge&quot;&gt;config.yml&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Start by modifying or creating a new &lt;code class=&quot;highlighter-rouge&quot;&gt;authors.yml&lt;/code&gt; file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_data&lt;/code&gt; folder and add your authors using the following format.&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Authors&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;billy_rick&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Billy Rick&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://thewhip.com&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;billy@rick.com&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;bio&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;What&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;you&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;want,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jewels?&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;am&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;very&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;extravagant&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;man.&quot;&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;avatar&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bio-photo-2.jpg&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;extravagantman&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;google&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;plus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;BillyRick&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;cornelius_fiddlebone&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Cornelius Fiddlebone&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cornelius@thewhip.com&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;bio&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ordered&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;what?&quot;&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;avatar&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bio-photo.jpg&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;rhymeswithsackit&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;google&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;plus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CorneliusFiddlebone&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To assign Billy Rick as an author for our post. You’d add the following YAML front matter to a post:&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;billy_rick&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="sample-post" /><category term="readability" /><category term="test" /><summary type="html">An article to test overriding the default site author.</summary></entry><entry><title type="html">Syntax Highlighting Post</title><link href="http://localhost:4000/articles/code-highlighting-post/" rel="alternate" type="text/html" title="Syntax Highlighting Post" /><published>2013-08-16T00:00:00+09:00</published><updated>2013-08-16T00:00:00+09:00</updated><id>http://localhost:4000/articles/code-highlighting-post</id><content type="html" xml:base="http://localhost:4000/articles/code-highlighting-post/">&lt;p&gt;Syntax highlighting is a feature that displays source code, in different colors and fonts according to the category of terms. This feature facilitates writing in a structured language such as a programming language or a markup language as both structures and syntax errors are visually distinct. Highlighting does not affect the meaning of the text itself; it is intended only for human readers.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;highlighted-code-blocks&quot;&gt;Highlighted Code Blocks&lt;/h3&gt;
-
-&lt;p&gt;To modify styling and highlight colors edit &lt;code class=&quot;highlighter-rouge&quot;&gt;/_sass/_syntax.scss&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;#container&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-240px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;nav&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pagination&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;role=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;navigation&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    {% if page.previous %}
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ site.url }}{{ page.previous.url }}&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ page.previous.title }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Previous article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-    {% endif %}
-    {% if page.next %}
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ site.url }}{{ page.next.url }}&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ page.next.title }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Next article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-    {% endif %}
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/nav&amp;gt;&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- /.pagination --&amp;gt;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TagIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Page&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@site&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'index.html'&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read_yaml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'_layouts'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tag_index.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag_title_prefix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Tagged: '&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tag_title_suffix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag_title_suffix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;amp;#8211;'&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'title'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'description'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;An archive of posts tagged &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;standard-code-block&quot;&gt;Standard Code Block&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;nav class=&quot;pagination&quot; role=&quot;navigation&quot;&amp;gt;
-    {% if page.previous %}
-        &amp;lt;a href=&quot;{{ site.url }}{{ page.previous.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.previous.title }}&quot;&amp;gt;Previous article&amp;lt;/a&amp;gt;
-    {% endif %}
-    {% if page.next %}
-        &amp;lt;a href=&quot;{{ site.url }}{{ page.next.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.next.title }}&quot;&amp;gt;Next article&amp;lt;/a&amp;gt;
-    {% endif %}
-&amp;lt;/nav&amp;gt;&amp;lt;!-- /.pagination --&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;fenced-code-blocks&quot;&gt;Fenced Code Blocks&lt;/h3&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;#container&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-240px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;nav&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pagination&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;role=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;navigation&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    {% if page.previous %}
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ site.url }}{{ page.previous.url }}&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ page.previous.title }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Previous article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-    {% endif %}
-    {% if page.next %}
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ site.url }}{{ page.next.url }}&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ page.next.title }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Next article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-    {% endif %}
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/nav&amp;gt;&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- /.pagination --&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TagIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Page&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@site&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'index.html'&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read_yaml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'_layouts'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tag_index.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag_title_prefix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Tagged: '&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tag_title_suffix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tag_title_suffix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;amp;#8211;'&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'title'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'description'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;An archive of posts tagged &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Syntax_highlighting&quot;&gt;http://en.wikipedia.org/wiki/Syntax_highlighting&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="sample-post" /><category term="code" /><category term="highlighting" /><summary type="html">Demo post displaying the various ways of highlighting code in Markdown.</summary></entry><entry><title type="html">Sample Link Post</title><link href="http://localhost:4000/articles/sample-link-post/" rel="alternate" type="text/html" title="Sample Link Post" /><published>2013-08-12T00:00:00+09:00</published><updated>2013-08-12T00:00:00+09:00</updated><id>http://localhost:4000/articles/sample-link-post</id><content type="html" xml:base="http://localhost:4000/articles/sample-link-post/">&lt;p&gt;So Simple Theme now supports &lt;strong&gt;link posts&lt;/strong&gt;, made famous by John Gruber. To activate just add &lt;code class=&quot;highlighter-rouge&quot;&gt;link: http://url-you-want-linked&lt;/code&gt; to the post’s YAML front matter and you’re done.&lt;/p&gt;</content><author><name></name></author><category term="sample-post" /><category term="link-post" /><summary type="html">Example and code for using link posts.</summary></entry><entry><title type="html">A Post with a Video</title><link href="http://localhost:4000/articles/video-post/" rel="alternate" type="text/html" title="A Post with a Video" /><published>2013-06-25T00:00:00+09:00</published><updated>2013-06-25T00:00:00+09:00</updated><id>http://localhost:4000/articles/video-post</id><content type="html" xml:base="http://localhost:4000/articles/video-post/">&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;//www.youtube.com/embed/pdSp4Y4GOQs&quot; frameborder=&quot;0&quot;&gt; &lt;/iframe&gt;
-
-&lt;p&gt;Video embeds are responsive and scale with the width of the main content block with the help of &lt;a href=&quot;http://fitvidsjs.com/&quot;&gt;FitVids&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;iframe&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;560&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;315&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.youtube.com/embed/PWf4WUoMXwg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;frameborder=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;/iframe&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here’s a Vimeo embed for testing purposes.&lt;/p&gt;
-
-&lt;iframe src=&quot;//player.vimeo.com/video/98146708?title=0&amp;amp;byline=0&quot; width=&quot;500&quot; height=&quot;281&quot; frameborder=&quot;0&quot;&gt; &lt;/iframe&gt;</content><author><name></name></author><category term="sample-post" /><category term="video" /><summary type="html">Custom written post descriptions are the way to go... if you're not lazy.</summary></entry><entry><title type="html">Post with Large Feature Image and Text</title><link href="http://localhost:4000/articles/readability-feature-post/" rel="alternate" type="text/html" title="Post with Large Feature Image and Text" /><published>2013-05-23T00:00:00+09:00</published><updated>2013-05-23T00:00:00+09:00</updated><id>http://localhost:4000/articles/readability-feature-post</id><content type="html" xml:base="http://localhost:4000/articles/readability-feature-post/">&lt;p&gt;This is a sample post with a large feature image up top and tons of text. Odio ad blue bottle vinyl, 90’s narwhal commodo bitters pour-over nostrud. Ugh est hashtag in, fingerstache adipisicing laboris esse Pinterest shabby chic Portland. Shoreditch bicycle rights anim, flexitarian laboris put a bird on it vinyl cupidatat narwhal. Hashtag artisan skateboard, flannel Bushwick nesciunt salvia aute fixie do plaid post-ironic dolor McSweeney’s. Cliche pour-over chambray nulla four loko skateboard sapiente hashtag.&lt;/p&gt;
-
-&lt;p&gt;Vero laborum commodo occupy. Semiotics voluptate mumblecore pug. Cosby sweater ullamco quinoa ennui assumenda, sapiente occupy delectus lo-fi. Ea fashion axe Marfa cillum aliquip. Retro Bushwick keytar cliche. Before they sold out sustainable gastropub Marfa readymade, ethical Williamsburg skateboard brunch qui consectetur gentrify semiotics. Mustache cillum irony, fingerstache magna pour-over keffiyeh tousled selfies.&lt;/p&gt;
-
-&lt;h2 id=&quot;cupidatat-90s-lo-fi-authentic-try-hard&quot;&gt;Cupidatat 90’s lo-fi authentic try-hard&lt;/h2&gt;
-
-&lt;p&gt;In pug Portland incididunt mlkshk put a bird on it vinyl quinoa. Terry Richardson shabby chic +1, scenester Tonx excepteur tempor fugiat voluptate fingerstache aliquip nisi next level. Farm-to-table hashtag Truffaut, Odd Future ex meggings gentrify single-origin coffee try-hard 90’s.&lt;/p&gt;
+&lt;h2 id=&quot;1-plugin-file-확인&quot;&gt;1. Plugin file 확인&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Sartorial hoodie&lt;/li&gt;
-  &lt;li&gt;Labore viral forage&lt;/li&gt;
-  &lt;li&gt;Tote bag selvage&lt;/li&gt;
-  &lt;li&gt;DIY exercitation et id ugh tumblr church-key&lt;/li&gt;
+  &lt;li&gt;audit log plugin(audit_log) library object file이 MySQL plugin directory에 위치하는지 확인&lt;/li&gt;
+  &lt;li&gt;Community version을 사용한다면, Enterprise edition을 받아 해당 library directory에서 audit_log.so를 복사한 후 Community version의 library directory에 넣어 사용할 수 있다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Incididunt umami sriracha, ethical fugiat VHS ex assumenda yr irure direct trade. Marfa Truffaut bicycle rights, kitsch placeat Etsy kogi asymmetrical. Beard locavore flexitarian, kitsch photo booth hoodie plaid ethical readymade leggings yr.&lt;/p&gt;
-
-&lt;p&gt;Aesthetic odio dolore, meggings disrupt qui readymade stumptown brunch Terry Richardson pour-over gluten-free. Banksy american apparel in selfies, biodiesel flexitarian organic meh wolf quinoa gentrify banjo kogi. Readymade tofu ex, scenester dolor umami fingerstache occaecat fashion axe Carles jean shorts minim. Keffiyeh fashion axe nisi Godard mlkshk dolore. Lomo you probably haven’t heard of them eu non, Odd Future Truffaut pug keytar meggings McSweeney’s Pinterest cred. Etsy literally aute esse, eu bicycle rights qui meggings fanny pack. Gentrify leggings pug flannel duis.&lt;/p&gt;
-
-&lt;h2 id=&quot;forage-occaecat-cardigan-qui&quot;&gt;Forage occaecat cardigan qui&lt;/h2&gt;
-
-&lt;p&gt;Fashion axe hella gastropub lo-fi kogi 90’s aliquip +1 veniam delectus tousled. Cred sriracha locavore gastropub kale chips, iPhone mollit sartorial. Anim dolore 8-bit, pork belly dolor photo booth aute flannel small batch. Dolor disrupt ennui, tattooed whatever salvia Banksy sartorial roof party selfies raw denim sint meh pour-over. Ennui eu cardigan sint, gentrify iPhone cornhole.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Whatever velit occaecat quis deserunt gastropub, leggings elit tousled roof party 3 wolf moon kogi pug blue bottle ea. Fashion axe shabby chic Austin quinoa pickled laborum bitters next level, disrupt deep v accusamus non fingerstache.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Tote bag asymmetrical elit sunt. Occaecat authentic Marfa, hella McSweeney’s next level irure veniam master cleanse. Sed hoodie letterpress artisan wolf leggings, 3 wolf moon commodo ullamco. Anim occupy ea labore Terry Richardson. Tofu ex master cleanse in whatever pitchfork banh mi, occupy fugiat fanny pack Austin authentic. Magna fugiat 3 wolf moon, labore McSweeney’s sustainable vero consectetur. Gluten-free disrupt enim, aesthetic fugiat jean shorts trust fund keffiyeh magna try-hard.&lt;/p&gt;
-
-&lt;h2 id=&quot;hoodie-duis&quot;&gt;Hoodie Duis&lt;/h2&gt;
-
-&lt;p&gt;Actually salvia consectetur, hoodie duis lomo YOLO sunt sriracha. Aute pop-up brunch farm-to-table odio, salvia irure occaecat. Sriracha small batch literally skateboard. Echo Park nihil hoodie, aliquip forage artisan laboris. Trust fund reprehenderit nulla locavore. Stumptown raw denim kitsch, keffiyeh nulla twee dreamcatcher fanny pack ullamco 90’s pop-up est culpa farm-to-table. Selfies 8-bit do pug odio.&lt;/p&gt;
-
-&lt;h3 id=&quot;thundercats-ho&quot;&gt;Thundercats Ho!&lt;/h3&gt;
-
-&lt;p&gt;Fingerstache thundercats Williamsburg, deep v scenester Banksy ennui vinyl selfies mollit biodiesel duis odio pop-up. Banksy 3 wolf moon try-hard, sapiente enim stumptown deep v ad letterpress. Squid beard brunch, exercitation raw denim yr sint direct trade. Raw denim narwhal id, flannel DIY McSweeney’s seitan. Letterpress artisan bespoke accusamus, meggings laboris consequat Truffaut qui in seitan. Sustainable cornhole Schlitz, twee Cosby sweater banh mi deep v forage letterpress flannel whatever keffiyeh. Sartorial cred irure, semiotics ethical sed blue bottle nihil letterpress.&lt;/p&gt;
-
-&lt;p&gt;Occupy et selvage squid, pug brunch blog nesciunt hashtag mumblecore skateboard yr kogi. Ugh small batch swag four loko. Fap post-ironic qui tote bag farm-to-table american apparel scenester keffiyeh vero, swag non pour-over gentrify authentic pitchfork. Schlitz scenester lo-fi voluptate, tote bag irony bicycle rights pariatur vero Vice freegan wayfarers exercitation nisi shoreditch. Chambray tofu vero sed. Street art swag literally leggings, Cosby sweater mixtape PBR lomo Banksy non in pitchfork ennui McSweeney’s selfies. Odd Future Banksy non authentic.&lt;/p&gt;
-
-&lt;p&gt;Aliquip enim artisan dolor post-ironic. Pug tote bag Marfa, deserunt pour-over Portland wolf eu odio intelligentsia american apparel ugh ea. Sunt viral et, 3 wolf moon gastropub pug id. Id fashion axe est typewriter, mlkshk Portland art party aute brunch. Sint pork belly Cosby sweater, deep v mumblecore kitsch american apparel. Try-hard direct trade tumblr sint skateboard. Adipisicing bitters excepteur biodiesel, pickled gastropub aute veniam.&lt;/p&gt;</content><author><name></name></author><category term="sample-post" /><category term="readability" /><summary type="html">Custom written post descriptions are the way to go... if you're not lazy.</summary></entry><entry><title type="html">A Post with Images</title><link href="http://localhost:4000/articles/sample-post-images/" rel="alternate" type="text/html" title="A Post with Images" /><published>2013-05-22T00:00:00+09:00</published><updated>2013-05-22T00:00:00+09:00</updated><id>http://localhost:4000/articles/sample-post-images</id><content type="html" xml:base="http://localhost:4000/articles/sample-post-images/">&lt;p&gt;Here are some examples of what a post with images might look like. If you want to display two or three images next to each other responsively use &lt;code class=&quot;highlighter-rouge&quot;&gt;figure&lt;/code&gt; with the appropriate &lt;code class=&quot;highlighter-rouge&quot;&gt;class&lt;/code&gt;. Each instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;figure&lt;/code&gt; is auto-numbered and displayed in the caption.&lt;/p&gt;
-
-&lt;h2 id=&quot;figures-for-images-or-video&quot;&gt;Figures (for images or video)&lt;/h2&gt;
-
-&lt;h3 id=&quot;one-up&quot;&gt;One Up&lt;/h3&gt;
-
-&lt;figure&gt;
-	&lt;a href=&quot;http://farm9.staticflickr.com/8426/7758832526_cc8f681e48_b.jpg&quot;&gt;&lt;img src=&quot;http://farm9.staticflickr.com/8426/7758832526_cc8f681e48_c.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;figcaption&gt;&lt;a href=&quot;http://www.flickr.com/photos/80901381@N04/7758832526/&quot; title=&quot;Morning Fog Emerging From Trees by A Guy Taking Pictures, on Flickr&quot;&gt;Morning Fog Emerging From Trees by A Guy Taking Pictures, on Flickr&lt;/a&gt;.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;h3 id=&quot;two-up&quot;&gt;Two Up&lt;/h3&gt;
-
-&lt;p&gt;Apply the &lt;code class=&quot;highlighter-rouge&quot;&gt;half&lt;/code&gt; class like so to display two images side by side that share the same caption.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;figure&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;half&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/images/image-filename-1.jpg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/images/image-filename-2.jpg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;figcaption&amp;gt;&lt;/span&gt;Caption describing these two images.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figcaption&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figure&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And you’ll get something that looks like this:&lt;/p&gt;
-
-&lt;figure class=&quot;half&quot;&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;
-	&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;
-	&lt;figcaption&gt;Two images.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;h3 id=&quot;three-up&quot;&gt;Three Up&lt;/h3&gt;
-
-&lt;p&gt;Apply the &lt;code class=&quot;highlighter-rouge&quot;&gt;third&lt;/code&gt; class like so to display three images side by side that share the same caption.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;figure&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;third&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/1200x600.jpg&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/600x300.jpg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/1200x600.jpg&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/600x300.jpg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/1200x600.jpg&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://placehold.it/600x300.jpg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;figcaption&amp;gt;&lt;/span&gt;Caption describing these three images.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figcaption&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figure&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And you’ll get something that looks like this:&lt;/p&gt;
-
-&lt;figure class=&quot;third&quot;&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;a href=&quot;http://placehold.it/1200x600.jpg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;
-	&lt;figcaption&gt;Three images.&lt;/figcaption&gt;
-&lt;/figure&gt;</content><author><name></name></author><category term="sample-post" /><category term="images" /><category term="test" /><summary type="html">Examples and code for displaying images in posts.</summary></entry><entry><title type="html">Testing Readability with a Bunch of Text</title><link href="http://localhost:4000/articles/readability-post/" rel="alternate" type="text/html" title="Testing Readability with a Bunch of Text" /><published>2012-05-22T00:00:00+09:00</published><updated>2012-05-22T00:00:00+09:00</updated><id>http://localhost:4000/articles/readability-post</id><content type="html" xml:base="http://localhost:4000/articles/readability-post/">&lt;p&gt;Portland in shoreditch Vice, labore typewriter pariatur hoodie fap sartorial Austin. Pinterest literally occupy Schlitz forage. Odio ad blue bottle vinyl, 90’s narwhal commodo bitters pour-over nostrud. Ugh est hashtag in, fingerstache adipisicing laboris esse Pinterest shabby chic Portland. Shoreditch bicycle rights anim, flexitarian laboris put a bird on it vinyl cupidatat narwhal. Hashtag artisan skateboard, flannel Bushwick nesciunt salvia aute fixie do plaid post-ironic dolor McSweeney’s. Cliche pour-over chambray nulla four loko skateboard sapiente hashtag.&lt;/p&gt;
-
-&lt;p&gt;Vero laborum commodo occupy. Semiotics voluptate mumblecore pug. Cosby sweater ullamco quinoa ennui assumenda, sapiente occupy delectus lo-fi. Ea fashion axe Marfa cillum aliquip. Retro Bushwick keytar cliche. Before they sold out sustainable gastropub Marfa readymade, ethical Williamsburg skateboard brunch qui consectetur gentrify semiotics. Mustache cillum irony, fingerstache magna pour-over keffiyeh tousled selfies.&lt;/p&gt;
-
-&lt;h2 id=&quot;cupidatat-90s-lo-fi-authentic-try-hard&quot;&gt;Cupidatat 90’s lo-fi authentic try-hard&lt;/h2&gt;
-
-&lt;p&gt;In pug Portland incididunt mlkshk put a bird on it vinyl quinoa. Terry Richardson shabby chic +1, scenester Tonx excepteur tempor fugiat voluptate fingerstache aliquip nisi next level. Farm-to-table hashtag Truffaut, Odd Future ex meggings gentrify single-origin coffee try-hard 90’s.&lt;/p&gt;
+&lt;h2 id=&quot;2-plugin-load&quot;&gt;2. Plugin load&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Sartorial hoodie&lt;/li&gt;
-  &lt;li&gt;Labore viral forage&lt;/li&gt;
-  &lt;li&gt;Tote bag selvage&lt;/li&gt;
-  &lt;li&gt;DIY exercitation et id ugh tumblr church-key&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Incididunt umami sriracha, ethical fugiat VHS ex assumenda yr irure direct trade. Marfa Truffaut bicycle rights, kitsch placeat Etsy kogi asymmetrical. Beard locavore flexitarian, kitsch photo booth hoodie plaid ethical readymade leggings yr.&lt;/p&gt;
-
-&lt;p&gt;Aesthetic odio dolore, meggings disrupt qui readymade stumptown brunch Terry Richardson pour-over gluten-free. Banksy american apparel in selfies, biodiesel flexitarian organic meh wolf quinoa gentrify banjo kogi. Readymade tofu ex, scenester dolor umami fingerstache occaecat fashion axe Carles jean shorts minim. Keffiyeh fashion axe nisi Godard mlkshk dolore. Lomo you probably haven’t heard of them eu non, Odd Future Truffaut pug keytar meggings McSweeney’s Pinterest cred. Etsy literally aute esse, eu bicycle rights qui meggings fanny pack. Gentrify leggings pug flannel duis.&lt;/p&gt;
-
-&lt;h2 id=&quot;forage-occaecat-cardigan-qui&quot;&gt;Forage occaecat cardigan qui&lt;/h2&gt;
-
-&lt;p&gt;Fashion axe hella gastropub lo-fi kogi 90’s aliquip +1 veniam delectus tousled. Cred sriracha locavore gastropub kale chips, iPhone mollit sartorial. Anim dolore 8-bit, pork belly dolor photo booth aute flannel small batch. Dolor disrupt ennui, tattooed whatever salvia Banksy sartorial roof party selfies raw denim sint meh pour-over. Ennui eu cardigan sint, gentrify iPhone cornhole.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Whatever velit occaecat quis deserunt gastropub, leggings elit tousled roof party 3 wolf moon kogi pug blue bottle ea. Fashion axe shabby chic Austin quinoa pickled laborum bitters next level, disrupt deep v accusamus non fingerstache.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Tote bag asymmetrical elit sunt. Occaecat authentic Marfa, hella McSweeney’s next level irure veniam master cleanse. Sed hoodie letterpress artisan wolf leggings, 3 wolf moon commodo ullamco. Anim occupy ea labore Terry Richardson. Tofu ex master cleanse in whatever pitchfork banh mi, occupy fugiat fanny pack Austin authentic. Magna fugiat 3 wolf moon, labore McSweeney’s sustainable vero consectetur. Gluten-free disrupt enim, aesthetic fugiat jean shorts trust fund keffiyeh magna try-hard.&lt;/p&gt;
-
-&lt;h2 id=&quot;hoodie-duis&quot;&gt;Hoodie Duis&lt;/h2&gt;
-
-&lt;p&gt;Actually salvia consectetur, hoodie duis lomo YOLO sunt sriracha. Aute pop-up brunch farm-to-table odio, salvia irure occaecat. Sriracha small batch literally skateboard. Echo Park nihil hoodie, aliquip forage artisan laboris. Trust fund reprehenderit nulla locavore. Stumptown raw denim kitsch, keffiyeh nulla twee dreamcatcher fanny pack ullamco 90’s pop-up est culpa farm-to-table. Selfies 8-bit do pug odio.&lt;/p&gt;
-
-&lt;h3 id=&quot;thundercats-ho&quot;&gt;Thundercats Ho!&lt;/h3&gt;
-
-&lt;p&gt;Fingerstache thundercats Williamsburg, deep v scenester Banksy ennui vinyl selfies mollit biodiesel duis odio pop-up. Banksy 3 wolf moon try-hard, sapiente enim stumptown deep v ad letterpress. Squid beard brunch, exercitation raw denim yr sint direct trade. Raw denim narwhal id, flannel DIY McSweeney’s seitan. Letterpress artisan bespoke accusamus, meggings laboris consequat Truffaut qui in seitan. Sustainable cornhole Schlitz, twee Cosby sweater banh mi deep v forage letterpress flannel whatever keffiyeh. Sartorial cred irure, semiotics ethical sed blue bottle nihil letterpress.&lt;/p&gt;
-
-&lt;p&gt;Occupy et selvage squid, pug brunch blog nesciunt hashtag mumblecore skateboard yr kogi. Ugh small batch swag four loko. Fap post-ironic qui tote bag farm-to-table american apparel scenester keffiyeh vero, swag non pour-over gentrify authentic pitchfork. Schlitz scenester lo-fi voluptate, tote bag irony bicycle rights pariatur vero Vice freegan wayfarers exercitation nisi shoreditch. Chambray tofu vero sed. Street art swag literally leggings, Cosby sweater mixtape PBR lomo Banksy non in pitchfork ennui McSweeney’s selfies. Odd Future Banksy non authentic.&lt;/p&gt;
-
-&lt;p&gt;Aliquip enim artisan dolor post-ironic. Pug tote bag Marfa, deserunt pour-over Portland wolf eu odio intelligentsia american apparel ugh ea. Sunt viral et, 3 wolf moon gastropub pug id. Id fashion axe est typewriter, mlkshk Portland art party aute brunch. Sint pork belly Cosby sweater, deep v mumblecore kitsch american apparel. Try-hard direct trade tumblr sint skateboard. Adipisicing bitters excepteur biodiesel, pickled gastropub aute veniam.&lt;/p&gt;</content><author><name></name></author><category term="sample-post" /><category term="readability" /><category term="test" /><category term="intro" /><summary type="html">A ton of text to test readability.</summary></entry><entry><title type="html">Sample Post</title><link href="http://localhost:4000/articles/sample-post/" rel="alternate" type="text/html" title="Sample Post" /><published>2011-03-10T00:00:00+09:00</published><updated>2011-03-10T00:00:00+09:00</updated><id>http://localhost:4000/articles/sample-post</id><content type="html" xml:base="http://localhost:4000/articles/sample-post/">&lt;p&gt;Below is just about everything you’ll need to style in the theme. Check the source code to see the many embedded elements within paragraphs.&lt;/p&gt;
-
-&lt;h1 id=&quot;heading-1&quot;&gt;Heading 1&lt;/h1&gt;
-
-&lt;h2 id=&quot;heading-2&quot;&gt;Heading 2&lt;/h2&gt;
-
-&lt;h3 id=&quot;heading-3&quot;&gt;Heading 3&lt;/h3&gt;
-
-&lt;h4 id=&quot;heading-4&quot;&gt;Heading 4&lt;/h4&gt;
-
-&lt;h5 id=&quot;heading-5&quot;&gt;Heading 5&lt;/h5&gt;
-
-&lt;h6 id=&quot;heading-6&quot;&gt;Heading 6&lt;/h6&gt;
-
-&lt;h3 id=&quot;body-text&quot;&gt;Body text&lt;/h3&gt;
-
-&lt;p&gt;Lorem ipsum dolor sit amet, test link adipiscing elit. &lt;strong&gt;This is strong&lt;/strong&gt;. Nullam dignissim convallis est. Quisque aliquam.&lt;/p&gt;
-
-&lt;p class=&quot;pull-right&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/3953273590_704e3899d5_m.jpg&quot; alt=&quot;Smithsonian Image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;This is emphasized&lt;/em&gt;. Donec faucibus. Nunc iaculis suscipit dui. 53 = 125. Water is H&lt;sub&gt;2&lt;/sub&gt;O. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. The New York Times &lt;cite&gt;(That’s a citation)&lt;/cite&gt;. &lt;u&gt;Underline&lt;/u&gt;. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.&lt;/p&gt;
-
-&lt;p&gt;HTML and &lt;abbr title=&quot;cascading stylesheets&quot;&gt;CSS&lt;abbr&gt; are our tools. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.&lt;/abbr&gt;&lt;/abbr&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;blockquotes&quot;&gt;Blockquotes&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Lorem ipsum dolor sit amet, test link adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;list-types&quot;&gt;List Types&lt;/h2&gt;
-
-&lt;h3 id=&quot;ordered-lists&quot;&gt;Ordered Lists&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Item one
-    &lt;ol&gt;
-      &lt;li&gt;sub item one&lt;/li&gt;
-      &lt;li&gt;sub item two&lt;/li&gt;
-      &lt;li&gt;sub item three&lt;/li&gt;
-    &lt;/ol&gt;
+  &lt;li&gt;my.cnf 에 명시하고 restart 하는 방법
+    &lt;ul&gt;
+      &lt;li&gt;my.cnf의 [mysqld] 섹션에 아래와 같이 명시해주거나 startup comman-line에서 –plugin-load 을 사용한다.&lt;/li&gt;
+      &lt;li&gt;restart시 plugin-load 명시해주지 않으면 load하지 않는다.&lt;/li&gt;
+      &lt;li&gt;mysql 에 접속하여 show plugin 명령어를 통해 해당 plugin의 상태를 확인할 수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Item two&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;unordered-lists&quot;&gt;Unordered Lists&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Item one&lt;/li&gt;
-  &lt;li&gt;Item two&lt;/li&gt;
-  &lt;li&gt;Item three&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;tables&quot;&gt;Tables&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mysqld]
+    plugin-load=audit_log.so
 
-&lt;table class=&quot;table&quot;&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Header1&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Header2&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Header3&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-  &lt;tfoot&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;Foot1&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Foot2&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;Foot3&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tfoot&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;code-snippets&quot;&gt;Code Snippets&lt;/h2&gt;
-
-&lt;p&gt;Syntax highlighting via Rouge&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;#container&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-240px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    -- MySQL Restart
+    mysql&amp;gt; show plugins;
+    +----------------------------+----------+--------------------+--------------+-------------+
+    | Name                       | Status   | Type               | Library      | License     |
+    +----------------------------+----------+--------------------+--------------+-------------+
+    ...
+    | audit_log                  | ACTIVE   | AUDIT              | audit_log.so | PROPRIETARY |
+    +----------------------------+----------+--------------------+--------------+-------------+
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Non Rouge code example&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;INSTALL PLUGIN문으로 인스톨하는 방법
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;mysql 에 접속하여 아래의 명령어로 활성화 시킬 수 있다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;awesome&quot;&amp;gt;
-    &amp;lt;p&amp;gt;This is great isn't it?&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; INSTALL PLUGIN audit_log SONAME 'audit_log.so';&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;mysql.plugin 테이블에 해당 plugin을 등록하고 restart시에도 load된다.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-audit-log-file-관련-옵션&quot;&gt;3. Audit log file 관련 옵션&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;audit log file : audit.log&lt;/li&gt;
+  &lt;li&gt;audit log format : OLD(default) 와 NEW 를 쓸 수 있다.
+    &lt;ul&gt;
+      &lt;li&gt;NEW format은 5.6.14부터 생겼고, Oracle Audit Vault와의 나은 호환성을 가짐.&lt;/li&gt;
+      &lt;li&gt;뒤에 이야기 하겠지만, MySQL table에 넣고 분석할 경우, OLD 포맷만이 가능하다. 현재 bug로 fix 중에 있다. 2015-07-21&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;audit_log_strategy :&lt;code class=&quot;highlighter-rouge&quot;&gt; ASYNCHRONOUS(default) | PERFORMANCE | SEMISYNCHRONOUS | SYNCHRONOUS&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;ASYNCHRONOUS : asynchronously, buffer가 다 차면 쓴다. minimal impact&lt;/li&gt;
+      &lt;li&gt;PERFORMACE : asynchronously, buffer가 부족해지면 쓴다.&lt;/li&gt;
+      &lt;li&gt;SEMISYNCHRONOUS : synchronously, 즉각 OS 캐시에 씀, 캐시에서 내려쓰는건 OS에 맡김.&lt;/li&gt;
+      &lt;li&gt;SYNCHRONOUS : synchronously, 매 write request마다 call sync()&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;audit_log_buffer_size : async방식일 때만 이만큼 buffer할당&lt;/li&gt;
+  &lt;li&gt;audit_log_rotate_on_size, audit_log_flush : rotation, flush 관련 옵션&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-audit-log&quot;&gt;4. Audit Log&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;해당 파일은 default 로 datadir 아래 audit.log라는 이름으로 생성된다.&lt;/li&gt;
+  &lt;li&gt;물론 에러가 난 명령어까지도 STATUS_CODE를 통해 audit한다.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-file.html&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-file.html&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &amp;lt;AUDIT_RECORD TIMESTAMP=&quot;2015-06-16T09:20:17 UTC&quot; RECORD_ID=&quot;307_2015-06-16T08:23:17&quot; NAME=&quot;Query&quot; CONNECTION_ID=&quot;60&quot; STATUS=&quot;1064&quot; STATUS_CODE=&quot;1&quot; USER=&quot;root[root] @ localhost []&quot; OS_LOGIN=&quot;&quot; HOST=&quot;localhost&quot; IP=&quot;&quot; COMMAND_CLASS=&quot;grant&quot; SQLTEXT=&quot;grant all on *.* to 'dba'@'%' indentified by 'dba'&quot;/&amp;gt;
+     &amp;lt;AUDIT_RECORD TIMESTAMP=&quot;2015-06-16T09:21:01 UTC&quot; RECORD_ID=&quot;308_2015-06-16T08:23:17&quot; NAME=&quot;Query&quot; CONNECTION_ID=&quot;60&quot; STATUS=&quot;0&quot; STATUS_CODE=&quot;0&quot; USER=&quot;root[root] @ localhost []&quot; OS_LOGIN=&quot;&quot; HOST=&quot;localhost&quot; IP=&quot;&quot; COMMAND_CLASS=&quot;grant&quot; SQLTEXT=&quot;GRANT ALL PRIVILEGES ON *.* TO 'dba'@'%' IDENTIFIED BY PASSWORD '*381AD08BBFA647B14C82AC1094A29AD4D7E4F51D'&quot;/&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;buttons&quot;&gt;Buttons&lt;/h2&gt;
+&lt;h3 id=&quot;5-audit-log-filtering&quot;&gt;5. Audit Log Filtering&lt;/h3&gt;
 
-&lt;p&gt;Make any link standout more when applying the &lt;code class=&quot;highlighter-rouge&quot;&gt;.btn&lt;/code&gt; class.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;계정별 filtering
+    &lt;ul&gt;
+      &lt;li&gt;가장 요구사항이 많았던 기능으로 5.6.20 부터 지원된다.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_include_accounts&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_include_accounts&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;audit_log_include_accounts : 명시한 계정만 audit&lt;/li&gt;
+      &lt;li&gt;audit_log_exclude_accounts : 명시한 계정 이외의 계정들 audit&lt;/li&gt;
+      &lt;li&gt;다음과 같이 user_name@host_name format으로 명시한다. mysql&amp;gt; SET GLOBAL audit_log_include_accounts = ‘user1@localhost,user2@localhost’;&lt;/li&gt;
+      &lt;li&gt;5.6.23 까지는 해당 옵션과 관계없이 모든유저의 접속 및 quit한 로그가 나타났지만, 5.6.24부터는 설정된 유저만 나타나게 된다.&lt;/li&gt;
+      &lt;li&gt;지속적인 적용을 위해 my.cnf에 해당 옵션을 명시한다. [mysqld] audit_log_include_accounts=dba@localhost,dba@%&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;command 별 filtering
+    &lt;ul&gt;
+      &lt;li&gt;audit_log_policy :&lt;code class=&quot;highlighter-rouge&quot;&gt; ALL | LOGINS | QUERIES | NONE&lt;/code&gt; 로 나누어 적용할 수 있다.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_policy&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_policy&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;This is a button&lt;/a&gt;&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="sample-post" /><summary type="html">Just about everything you'll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more.</summary></entry></feed>
+&lt;h3 id=&quot;6-audit-file-rotate-시키기&quot;&gt;6. Audit file rotate 시키기&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;audit_log_rotate_on_size 설정
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_rotate_on_size&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/audit-log-plugin-options-variables.html#sysvar_audit_log_rotate_on_size&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;지정된 사이즈만큼 커지고 넘어가게 되면 timestamp의 값을 추가하여 아카이빙한다.&lt;/li&gt;
+      &lt;li&gt;default 는 0으로 audit 파일은 계속 커진다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;수동 설정
+    &lt;ul&gt;
+      &lt;li&gt;먼저 해당 테이블로 저장하기위해는 온전한 파일이어야 한다. 수동으로 해당 파일을 분리해보자.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;mv로 옮겨도 file descriptor를 mysql이 가지고 있기 때문에 지속적으로 변경된 파일에 쓰게 된다.&lt;/p&gt;
+
+        &lt;p&gt;## MySQL 의 Data Home Directory는 /data1/5.6/data 로 설정되어 있다.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;SHELL&amp;gt; mv /data1/5.6/data/audit.log  /data1/5.6/data/audit.log.bak
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;audit log를 flush 한다.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;기존의 /data1/5.6/data/audit.log.bak 에 대해서는 닫고 새로운 /data1/5.6/data/audit.log 을 열게 된다.&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; SET GLOBAL audit_log_flush = 1;&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;7-audit-파일-테이블로-저장하기&quot;&gt;7. Audit 파일 테이블로 저장하기&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;table을 만들고, LOAD XML을 통해 올려보자.
+    &lt;ul&gt;
+      &lt;li&gt;해당 /data1/5.6/data/audit.log.bak 을 테이블로 넣어보자. 물론 mv로 해당 파일을 바꾸지 않고 쓰고 있는 파일에 대하여 넣어도 상관없다.&lt;/li&gt;
+      &lt;li&gt;중복을 방지하기 위해 UNIQUE U_RECORD_ID 를 추가했다.&lt;/li&gt;
+      &lt;li&gt;필요한 business logic에 맞춰 테이블의 인덱스를 추가해서 넣자.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; CREATE TABLE audit_log_to_table (
+    id bigint PRIMARY KEY auto_increment,
+    TIMESTAMP timestamp,
+    CONNECTION_ID bigint,
+    USER varchar(128),
+    HOST varchar(128),
+    IP varchar(25),
+    OS_LOGIN varchar(64),
+    RECORD_ID varchar(64),
+    NAME varchar(64),
+    STATUS int,
+    STATUS_CODE int,
+    COMMAND_CLASS varchar(64),
+    SQLTEXT longtext,
+    UNIQUE U_RECORD_ID (RECORD_ID)
+    ) DEFAULT CHARSET utf8mb4;
+
+mysql&amp;gt; LOAD XML LOCAL INFILE '/data1/5.6/data/audit.log.bak'
+     INTO TABLE audit_log_to_table
+     CHARACTER SET utf8mb4
+     ROWS IDENTIFIED BY ''
+    (@TIMESTAMP, CONNECTION_ID, USER, HOST, IP, OS_LOGIN, RECORD_ID, NAME, STATUS, STATUS_CODE, COMMAND_CLASS, SQLTEXT)
+    SET TIMESTAMP = CONVERT_TZ(STR_TO_DATE(@TIMESTAMP, '%Y-%m-%dT%H:%i:%s UTC'), 'UTC', '+9:00');
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL Audit 사용하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL to PostgreSQL Migration tool</title><link href="http://localhost:4000/blog/mysql-to-postgresql-migration-tool/" rel="alternate" type="text/html" title="MySQL to PostgreSQL Migration tool" /><published>2015-06-12T00:00:00+09:00</published><updated>2015-06-12T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-to-postgresql-migration-tool</id><content type="html" xml:base="http://localhost:4000/blog/mysql-to-postgresql-migration-tool/">&lt;h1 id=&quot;mysql-to-postgresql-migration-tool&quot;&gt;MySQL to PostgreSQL Migration tool&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;py-mysql2pgsql - A tool for migrating/converting/exporting data from MySQL to PostgreSQL https://github.com/philipsoutham/py-mysql2pgsql&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-py-mysql2pgsql-설치&quot;&gt;1. py-mysql2pgsql 설치&lt;/h3&gt;
+
+&lt;h4 id=&quot;11-requirements-pip설치&quot;&gt;1.1 requirements, pip설치&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@pgvm1 ~]# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+
+[root@pgvm1 ~]# python ez_setup.py
+
+[root@pgvm1 ~]# easy_install pip
+
+[root@pgvm1 ~]# yum install MySQL-python
+
+[root@pgvm1 ~]# yum install postgresql-devel
+
+[root@pgvm1 ~]# yum install python-devel
+
+[root@pgvm1 ~]# yum install python-psycopg2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;12-py-mysql2pgsql-설치&quot;&gt;1.2 py-mysql2pgsql 설치&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@pgvm1 ~]# pip install py-mysql2pgsql
+
+[root@pgvm1 ~]# which py-mysql2pgsql
+/usr/bin/py-mysql2pgsql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;2-configuration&quot;&gt;2. Configuration&lt;/h3&gt;
+
+&lt;h4 id=&quot;21-usage-확인&quot;&gt;2.1 Usage 확인&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvmll1 ~]$ py-mysql2pgsql -h
+usage: py-mysql2pgsql [-h] [-v] [-f FILE] [-V]
+
+Tool for migrating/converting data from mysql to postgresql.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Show progress of data migration.
+  -f FILE, --file FILE  Location of configuration file (default:
+                        mysql2pgsql.yml). If none exists at that path, one
+                        will be created for you.
+  -V, --version         Print version and exit.
+
+https://github.com/philipsoutham/py-mysql2pgsql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;22-mysql2pgsqlyml-생성&quot;&gt;2.2 mysql2pgsql.yml 생성&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 py-mysql2pgsql]$ mkdir output
+[postgres@pgvm1 py-mysql2pgsql]$ vi mysql2pgsql.yml
+mysql:
+ hostname: 192.168.56.111
+ port: 3355
+ socket:
+ username: michaela
+ password: michaela
+ database: core
+ compress: false
+destination:
+ # if file is given, output goes to file, else postgres
+ file: output/results-pgsql.sql
+ postgres:
+  hostname: localhost
+  port: 5434
+  username: incarta
+  password: incarta
+  database: incartadb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;23-target-usertablespacedatabaseschema-생성&quot;&gt;2.3 target user/tablespace/database/schema 생성&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 9.4]$ mkdir -p pg_data/incarta_data
+
+
+
+CREATE ROLE incarta LOGIN
+  PASSWORD 'incarta'
+  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+
+CREATE TABLESPACE incarta_data
+  OWNER postgres
+  LOCATION '/data1/9.4/pg_data/incarta_data';
+COMMENT ON TABLESPACE incarta_data
+  IS 'incarta data tablespace';
+
+GRANT ALL ON TABLESPACE incarta_data TO incarta;
+
+
+CREATE DATABASE incartadb
+  WITH OWNER = incarta
+       ENCODING = 'UTF8'
+       TABLESPACE = incarta_data
+       LC_COLLATE = 'en_US.UTF-8'
+       LC_CTYPE = 'en_US.UTF-8'
+       CONNECTION LIMIT = -1;
+
+COMMENT ON DATABASE incartadb
+  IS 'incarta database';
+
+ alter database incartadb set default_tablespace ='incarta_data';
+
+GRANT ALL ON DATABASE incartadb to incarta;
+
+
+postgres=# c incartadb incarta
+You are now connected to database &quot;incartadb&quot; as user &quot;incarta&quot;.
+incartadb=&amp;gt; show default_tablespace ;
+ default_tablespace
+--------------------
+ incarta_data
+(1 row)
+
+incartadb=&amp;gt;
+
+
+CREATE SCHEMA core
+  AUTHORIZATION incarta;
+
+alter database incartadb SET search_path TO core;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;3-py-mysql2pgsql-실행&quot;&gt;3. py-mysql2pgsql 실행&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;py-mysql2pgsql -v -f mysql2pgsql.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;socket을 주면 localhost의 socket 통신을 함.&lt;/li&gt;
+  &lt;li&gt;remote server접속을 위해서는 host, port을 주고 socket은 명시하지 않아야함.&lt;/li&gt;
+  &lt;li&gt;destination file 주면 file로 export, file 없을 때 명시된 postgresql 로 migrating함&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-동작-결과&quot;&gt;4. 동작 결과&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;file로 exporting하는 경우
+    &lt;ul&gt;
+      &lt;li&gt;이슈없음&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;target postgresql로 migration 하는 경우
+    &lt;ul&gt;
+      &lt;li&gt;mysql의 각 database를 postgresql schema로 이관하기 위해서는, 이관하기전에 search_path을 원하는 스키마로 설정한 후 진행.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">MySQL to PostgreSQL Migration tool</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</title><link href="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기" /><published>2015-04-21T00:00:00+09:00</published><updated>2015-04-21T00:00:00+09:00</updated><id>http://localhost:4000/blog/Linux%20%EC%9D%98%20OOM%20(Out%20of%20memory)%20killer%20%EB%A1%9C%20%EC%9D%B8%ED%95%9C%20mysqld%20shutdown%20%ED%94%BC%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;linux-의-oom-out-of-memory-killer-로-인한-mysqld-shutdown-피하기&quot;&gt;Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;갑자기 MySQL 이 kill 되는 수가 있다. 이는 여러가지 원인이 있을 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-해당-원인은-크게-3가지로-나눈다-여기서-볼것은-oom으로-인해-os가-mysqld-를-죽인-경우이다&quot;&gt;1. 해당 원인은 크게 3가지로 나눈다. 여기서 볼것은 oom으로 인해 O/S가 mysqld 를 죽인 경우이다.&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;3가지는 다음과 같다.
+    &lt;ul&gt;
+      &lt;li&gt;메모리 부족으로 인해 OS 가 kill 을 시킨 경우 (이는 /var/log/message 를 확인함으로서 알 수 있다.)&lt;/li&gt;
+      &lt;li&gt;Hardware fault로 stop 된 경우 (이는 /var/log 및의 여러로그를 확인함으로서 알 수 있다.)&lt;/li&gt;
+      &lt;li&gt;bug로 인해 restart 된 경우 (이는 mysql error log file 을 확인함으로서 알 수 있다.)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;대부분의 경우 mysql 이 restart 되면 /var/log/message 를 확인하지 않는 경우가 많고 갑자기 죽었다고 생각하는데 대부분의 경우 OOM killer에 의해 죽게된다.
+    &lt;ul&gt;
+      &lt;li&gt;err 을 살펴보자&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    150317 11:21:46 mysqld_safe Number of processes running now: 0
+    150317 11:21:46 mysqld_safe mysqld restarted
+    2015-03-17 11:21:49 14235 [Note] Plugin 'FEDERATED' is disabled.
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using atomics to ref count buffer pool pages
+    2015-03-17 11:21:49 14235 [Note] InnoDB: The InnoDB memory heap is disabled
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Compressed tables use zlib 1.2.3
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using Linux native AIO
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using CPU crc32 instructions
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Initializing buffer pool, size = 24.0G
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Completed initialization of buffer pool
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Highest supported file format is Barracuda.
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Log scan progressed past the checkpoint lsn 2603553789682
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Database was not shutdown normally!
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Starting crash recovery.
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Reading tablespace information from the .ibd files...
+    2015-03-17 11:22:03 14235 [Note] InnoDB: Restoring possible half-written data pages
+    2015-03-17 11:22:03 14235 [Note] InnoDB: from the doublewrite buffer...
+    InnoDB: Doing recovery: scanned up to log sequence number 2603559032320
+    InnoDB: Doing recovery: scanned up to log sequence number 2603564275200
+    InnoDB: Doing recovery: scanned up to log sequence number 2603569518080
+    --- 죽었다는 메세지 없이 다시 시작되었다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;system의 log message 를 살펴보자&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    vi /var/log/message
+    ....
+    Mar 17 11:21:42 testvm1 kernel: mysqld invoked oom-killer: gfp_mask=0x200da, order=0, oom_adj=0, oom_score_adj=0
+    Mar 17 11:21:42 testvm1 kernel: [ pid ]   uid  tgid total_vm      rss cpu oom_adj oom_score_adj name
+    Mar 17 11:21:42 testvm1 kernel: [ 4144]   497  4144 10443009  7862020   0       0             0 mysqld
+    Mar 17 11:21:42 testvm1 kernel: Out of memory: Kill process 4144 (mysqld) score 963 or sacrifice child
+    Mar 17 11:21:42 testvm1 kernel: Killed process 4144, UID 497, (mysqld) total-vm:41772036kB, anon-rss:31443592kB, file-rss:4512kB
+    ...
+    --- OOM-Killer 에 의해 죽은것이 관찰된다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;2-그렇다면-oom-killer를-피할-수-있는방법을-생각해보자&quot;&gt;2. 그렇다면 OOM killer를 피할 수 있는방법을 생각해보자&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;oom_score_adj 의 값을 조정함으로서 해결 할 수 있다.&lt;/li&gt;
+  &lt;li&gt;해당값은 1000 ~ -1000 까지 줄 수 있다. oom_score_adj 에 대한 공식이 궁금하다면 구글링을 해보자.&lt;/li&gt;
+  &lt;li&gt;-1000 으로 값을 설정한다면, oom killer 는 해당 process를 죽이지 않을것이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    cat /proc/[pid]/oom_score_adj
+    echo &quot;-1000&quot; &amp;gt; /proc/self/oom_score_adj
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;3-그렇다면-mysqld에-대한-process-id를-띄울때마다-확인해서-해당-작업을-해야하는것일까&quot;&gt;3. 그렇다면, mysqld에 대한 process id를 띄울때마다 확인해서 해당 작업을 해야하는것일까?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mysql 은 mysqld가 시작되기전에 특정 script를 호출할 수 있다.&lt;/li&gt;
+  &lt;li&gt;my.cnf의 mysqld_safe section에 mysqld=xxx.sh 를 추가함으로서 mysqld 가 시작될때 해당 script를 실행시킬 수 있다.&lt;/li&gt;
+  &lt;li&gt;https://dev.mysql.com/doc/refman/5.6/en/mysqld-safe.html#option_mysqld_safe_mysqld&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 bin]# cat /db/5.6/conf/my.cnf
+    ...
+    [mysqld_safe]
+    mysqld=pre_mysqld_safe.sh
+    user=mysql
+    ...
+
+    [root@testvm1 bin]# pwd
+    /db/5.6/bin
+    [root@testvm1 bin]# ls -al pre_mysqld_safe.sh
+    -rwxr-xr-x. 1 root root 94 Mar 31 01:38 pre_mysqld_safe.sh
+    -- mysqld와 같은 디렉토리에 해당 sh를 놓자.
+
+    [root@testvm1 bin]# cat pre_mysqld_safe.sh
+    #!/bin/sh
+    echo &quot;-1000&quot; &amp;gt; /proc/self/oom_score_adj
+    BIN_DIR=$(dirname &quot;$0&quot;)
+    exec &quot;$BIN_DIR/mysqld&quot; &quot;$@&quot;
+
+
+    [root@testvm1 db]# cd /db/5.6
+    [root@testvm1 5.6]# ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf &amp;amp;
+    [1] 27626
+    [root@testvm1 5.6]# 150331 01:42:07 mysqld_safe Logging to '/data1/5.6/data/mysql.err'.
+    150331 01:42:07 mysqld_safe Starting pre_mysqld_safe.sh daemon with databases from /data1/5.6/data
+    -- pre_mysqld_safe.sh 로 시작되었음을 알려준다.
+
+    [root@testvm1 5.6]# ps -ef | grep mysql
+    root     27626 27539  0 01:42 pts/0    00:00:00 /bin/sh ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf
+    mysql    27986 27626  0 01:42 pts/0    00:00:00 /db/5.6/bin/mysqld --defaults-file=/db/5.6/conf/my.cnf --basedir=/db/5.6 --datadir=/data1/5.6/data --plugin-dir=/db/5.6/lib/plugin --user=mysql --log-error=/data1/5.6/data/mysql.err --pid-file=/data1/5.6/data/testvm1.pid --socket=/tmp/mysql.sock --port=3306
+    root     28011 27539  0 01:42 pts/0    00:00:00 grep mysql
+    -- mysqld 의 process id 는 27986 이다. user 는 mysql로 뜬것도 확인할 수 있다.
+
+    [root@testvm1 5.6]# cat /proc/27986/oom_score_adj
+    -1000
+    -- 값이 -1000 이 된것을 알 수 있다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;4-해당-스크립트-이외에-또-어떤것을-쓸-수-있나&quot;&gt;4. 해당 스크립트 이외에 또 어떤것을 쓸 수 있나?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ulimit 명령어로 해당 값을 조절할 수 있다. (echo “-1000” &amp;gt; /proc/self/oom_score_adj 대신 아래의 명령어를 사용한다)
+    &lt;ul&gt;
+      &lt;li&gt;ulimit -u 10000&lt;/li&gt;
+      &lt;li&gt;ulimit -c unlimited&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;NUMA 도 조절가능하다.
+    &lt;ul&gt;
+      &lt;li&gt;exec /usr/bin/numactl –interleave all “BIN_DIR/mysqld” “$@”&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL architecture - Adaptive Hash Indexes</title><link href="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/" rel="alternate" type="text/html" title="MySQL architecture - Adaptive Hash Indexes" /><published>2015-04-20T00:00:00+09:00</published><updated>2015-04-20T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes</id><content type="html" xml:base="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/">&lt;h1 id=&quot;mysql-architecture---adaptive-hash-indexes&quot;&gt;MySQL architecture - Adaptive Hash Indexes&lt;/h1&gt;
+
+&lt;h2 id=&quot;adaptive-hase-indexahi&quot;&gt;Adaptive Hase Index(AHI)&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;workload와 충분한 buffer pool memory의 적절한 조합하에서, transactional 특성이나 reliability에 위배되지 않는 선에서, InnoDB를 in-memory database처럼 동작하게 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-관련-파라메터&quot;&gt;1. 관련 파라메터&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;innodb_adaptive_hash_index&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;default : ON&lt;/li&gt;
+      &lt;li&gt;Scope : Global&lt;/li&gt;
+      &lt;li&gt;dynamic Variable : Yes&lt;/li&gt;
+      &lt;li&gt;turn off option : –skip-innodb_adaptive_hash_index&lt;/li&gt;
+      &lt;li&gt;disable하면 hash table을 즉시 비운다. hash table을 사용하여 실행중이던 쿼리는 B-tree 인덱스를 직접 access하여 처리된다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-동작&quot;&gt;2. 동작&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MySQL은 search 패턴을 고려하여 index prefix로 hash index를 만든다
+    &lt;ul&gt;
+      &lt;li&gt;인덱스 페이지가 자주 access 되는 경우 필요시 hash index가 생성된다.&lt;/li&gt;
+      &lt;li&gt;hash index는 자주 access되는 인덱스 페이지에 대해서만 부분적으로 생성될 수도 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;만약 테이블 전체가 메모리에 들어갈수 있는 사이즈인 경우, hash index는 쿼리 속도를 향상시킨다. 인덱스를 pointer와 같이 동작하게 해서 원하는 로우를 바로 다이렉트하게 찾을수 있다.&lt;/li&gt;
+  &lt;li&gt;InnoDB는 index search 패턴을 모니터링하는 메커니즘을 가지고 있다. 해당 쿼리가 hash index를 사용하면 이익이라고 판단되면, 자동으로 hash index를 생성한다.&lt;/li&gt;
+  &lt;li&gt;workload에 따라, hash index를 통한 속도향상이 hash index를 유지관리하는 비용보다 더 이득일수도 있고 아닐수도 있다.
+    &lt;ul&gt;
+      &lt;li&gt;heavy workload하에서는(such as multiple concurrent joins), adaptive has index를 접근할때 획득하는 read/write lock이 contention의 원인이 되기도 한다.&lt;/li&gt;
+      &lt;li&gt;LIKE % 쿼리의 경우에도 AHI로 별 이득을 얻지 못한다.&lt;/li&gt;
+      &lt;li&gt;AHI가 필요없는 workload하에서는 이를 disable해서 불필요한 overhead를 줄이도록 한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-monitoring&quot;&gt;3. monitoring&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;adaptive hash index로 인한 contention 확인하는 방법
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;SHOW ENGINE INNODB STATUS&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;SEMAPHORE&lt;/strong&gt; 섹션에 RW-latch를 대기하는 thread가 여러개 있다면, adaptive hash indexing을 disable하는 것이 더 좋을 수도 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL architecture - Adaptive Hash Indexes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL InnoDB architecture - doublewrite buffer</title><link href="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/" rel="alternate" type="text/html" title="MySQL InnoDB architecture - doublewrite buffer" /><published>2015-04-17T00:00:00+09:00</published><updated>2015-04-17T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql-architecture-doublewrite-buffer</id><content type="html" xml:base="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/">&lt;h1 id=&quot;mysql-innodb-architecture---doublewrite-buffer&quot;&gt;MySQL InnoDB architecture - doublewrite buffer&lt;/h1&gt;
+
+&lt;h2 id=&quot;doublewrite-buffer&quot;&gt;Doublewrite Buffer&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;InnoDB는 file flush관련 독특한 technique을 사용하는데, 그것이 바로 doublewrite buffer이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-관련파라메터&quot;&gt;1. 관련파라메터&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;innodb_doublewrite
+    &lt;ul&gt;
+      &lt;li&gt;default로 활성화 되어있다.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_doublewrite=ON&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-목적&quot;&gt;2. 목적&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;시스템 crash, 전원공급중단 등 장애시 보다 안전한 리커버리
+    &lt;ul&gt;
+      &lt;li&gt;특히 page의 일부분만 쓰다가 장애가 난 경우, 리커버리 어떻게 할 것인가.&lt;/li&gt;
+      &lt;li&gt;예를 들어, 16K innodb page중에 첫 4KB를 썼는데, 갑자기 OS crash가 났다거나 전원공급이 중단되어 나머지는 이전 상태로 남아있는 경우. 대부분의 file system의 default block size는 4k이다.
+        &lt;ul&gt;
+          &lt;li&gt;여기서 내 시스템의 block size가 궁금하다면; : &lt;code class=&quot;highlighter-rouge&quot;&gt;dumpe2fs /dev/sda1 | grep &quot;^Block size&quot;&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;로그파일을 이용해서 복구한다? : InnoDB는 log file에 full pages를 로깅하는 것이 아니라, page number, 변경내용, log sequence 정보를 로깅한다. 하지만, page가 항상 consistent하다는 것을 전제로 한다. 즉, page version이 “현재” 버전이면, page 변경을 skip하고, “이전” 버전이면 변경을 반영한다. page가 inconsistent하다면, 리커버리 할수가 없다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Unix시스템에서 fsync() 콜을 줄임으로써 성능 향상&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-동작&quot;&gt;3. 동작&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;innodb buffer pool의 변경된 pages를 data files로 write하기 전에, InnoDB는 먼저 그 pages들을 doublewrite buffer라는 contiguous tablespace area에 먼저 쓴다.
+    &lt;ul&gt;
+      &lt;li&gt;contiguous라는 건 인접한 블럭으로 append하는 식으로 쓰는 형식으로 사용하는 공간을 말한다.&lt;/li&gt;
+      &lt;li&gt;InnoDB가 innodb buffer pool로 부터 page를 flush할때 multiple pages를 한번에 flush 하는데 이 pages들이 sequential하게 doublewrite buffer에 쓰여지는 것이다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;doublewrite buffer로 write하고 flush까지 한후(fsync())에, InnoDB는 data file의 적절한 position에다가 변경된 pages를 write(2차 fsync())한다.&lt;/li&gt;
+  &lt;li&gt;page write중에 만약 OS나 스토리지시스템에 문제가 발생하거나, mysql이 crash되었다면, (partial page write, torn page), InnoDB는 recovery시, doublewrite buffer로부터 해당 page를 찾아서 간단히 복구할 수 있다.
+    &lt;ul&gt;
+      &lt;li&gt;만약 doublewrite buffer의 page가 inconsistent하다면 그냥 버려버리고, 로그파일로 부터 복구하게 된다.&lt;/li&gt;
+      &lt;li&gt;실제 data file의 page가 inconsistent한 경우, doublewrite buffer에서 복구한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-성능&quot;&gt;4. 성능&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;doublewrite를 사용하면 page를 두번 써야하니까 overhead가 있을까?
+    &lt;ul&gt;
+      &lt;li&gt;적어도 두배의 overhead는 아니다.&lt;/li&gt;
+      &lt;li&gt;doublewrite buffer는 sequential 하게 쓰여지기때문에 매우 빠르다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;fsync()횟수를 줄인다
+    &lt;ul&gt;
+      &lt;li&gt;매 page마다 fsync()를 콜하는게 아니라, multiple page를 한번에 쓰고 fsync()한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;일반적으로 doublewrite를 활성화에 의해서 발생하는 성능 저하는 5-10%정도라고 본다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;5-비활성화-할수-있나&quot;&gt;5. 비활성화 할수 있나&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;데이터가 소중하지 않다면, 혹은 file system 단에서 partial page write가 발생하지 않는다고 보장할수 있다면, disable할수 있다.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_doublewrite=0&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;하지만 대부분의 경우, 이런 위험을 감수할 필요는 없다고 본다.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL InnoDB architecture - doublewrite buffer</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MongoDB Replica Set 멤버 추가삭제하기</title><link href="http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MongoDB Replica Set 멤버 추가삭제하기" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Replica%20Set%20%EB%A9%A4%EB%B2%84%20%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mongodb-replica-set-멤버-추가삭제하기&quot;&gt;MongoDB Replica Set 멤버 추가/삭제하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;mongodb-replica-set-멤버-추가삭제하기-1&quot;&gt;MongoDB Replica Set 멤버 추가/삭제하기&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;운영중인 replica set에 멤버를 추가/삭제해보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-개요&quot;&gt;1. 개요&lt;/h3&gt;
+
+&lt;h4 id=&quot;11-maximum-voting-members&quot;&gt;1.1 Maximum Voting Members&lt;/h4&gt;
+
+&lt;p&gt;voting member는 최대 7개까지 구성할수 있다. 이미 7개의 votes가 존재하는 replica set에 멤버를 추가하는 경우에는, 추가할 멤버를 non-voting member로 설정하거나, 기존 멤버에서 votes를 제거해야한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;12-control-scripts&quot;&gt;1.2 Control Scripts&lt;/h4&gt;
+
+&lt;p&gt;control script를 사용한다면 이 스크립트도 수정한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;13-existing-members&quot;&gt;1.3 Existing Members&lt;/h4&gt;
+
+&lt;p&gt;remove한 멤버를 다시 추가할수도 있다. 만약 remove했던 멤버의 데이터가 최신이었다면, recover, catch up을 쉽게 할수 있다.&lt;/p&gt;
+
+&lt;h4 id=&quot;14-data-files&quot;&gt;1.4 Data Files&lt;/h4&gt;
+
+&lt;p&gt;기존멤버의 백업이나 스냅샷이 있는 경우, 해당 data files를 copy해서 바로 new member로 추가할 수 있다. * 정상적인 백업파일이어야한다. * filesystem snapshot을 사용하도록 한다. * &lt;strong&gt;mongodump&lt;/strong&gt; 나 &lt;strong&gt;mongorestore&lt;/strong&gt;을 사용하지 않는다. * 가장 오래된 primary의 oplog보다 최근의 백업파일이어야한다. * 새로 추가된 멤버가 primary의 oplog를 적용해서 최신상태로 따라와야한다. * &lt;strong&gt;참조&lt;/strong&gt; : &lt;a href=&quot;/uncategorized/mongodb-filesystem-snapshot%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%eb%b0%b1%ec%97%85%eb%a6%ac%ec%8a%a4%ed%86%a0%ec%96%b4/&quot;&gt;MongoDB 스냅샷백업&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-필수요건&quot;&gt;2. 필수요건&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;운영중인 replica set&lt;/li&gt;
+  &lt;li&gt;새로운 MongoDB 시스템. replica set과 네트워크 연결 가능한 시스템
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;참조&lt;/strong&gt; : &lt;a href=&quot;/others/mongodb-installation-2/&quot;&gt;MongoDB 설치&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-프로세스&quot;&gt;3. 프로세스&lt;/h3&gt;
+
+&lt;h4 id=&quot;31-data-directory-준비&quot;&gt;3.1 Data Directory 준비&lt;/h4&gt;
+
+&lt;p&gt;새로운 멤버를 기존의 replica set에 추가하기전에, data directory를 단계에 따라 준비한다. * data directory를 준비. 다른 데이터를 포함하지 않은 빈 디렉터리여야한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm4 ~]# mkdir /db/mongo
+    [root@testvm4 ~]# chown -R mongo. /db/mongo
+    [root@testvm4 ~]# mkdir /data1/mongo
+    [root@testvm4 ~]# chown -R mongo. /data1/mongo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;수동으로 기존의 멤버의 data directory를 copy한다.
+    &lt;ul&gt;
+      &lt;li&gt;새멤버를 secondary member로 추가하게 되면 replica set의 현상태를 따라잡게 된다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm4 ~]$ cd /data1/mongo
+    [mongo@testvm4 mongo]$ ll
+    total 0
+    [mongo@testvm4 mongo]$ scp -pr testvm1:/backupsnap/mongo/* . #스냅샷백업본에서 카피
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;32-기존의-repica-set으로-mongod-instanace-시작한다&quot;&gt;3.2 기존의 repica set으로 mongod instanace 시작한다.&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;configuration file 생성하고 시작한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm4 ~]$ cd /db/mongo
+    [mongo@testvm4 mongo]$ scp testvm1:/db/mongo/mongod.conf .
+    mongo@testvm1's password:
+    mongod.conf                                   100% 1513     1.5KB/s   00:00
+    [root@testvm4 mongo]# grep &quot;replSet&quot; mongod.conf            # 기존 replSet으로 지정
+    replSet=rs0
+    [root@testvm4 mongo]#  mongod -f /db/mongo/mongod.conf
+    about to fork child process, waiting until server is ready for connections.
+    forked process: 2131
+    child process started successfully, parent exiting
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;33-replica-set의-primary로-접속&quot;&gt;3.3 replica set의 primary로 접속&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mongo@testvm1 ~]$ mongo
+    MongoDB shell version: 2.6.9
+    connecting to: test
+    rs0:PRIMARY&amp;gt; db.isMaster()
+    {
+            &quot;setName&quot; : &quot;rs0&quot;,
+            &quot;setVersion&quot; : 3,
+            &quot;ismaster&quot; : true,
+            &quot;secondary&quot; : false,
+            &quot;hosts&quot; : [
+                    &quot;testvm1:27017&quot;,
+                    &quot;testvm3:27017&quot;,
+                    &quot;testvm2:27017&quot;
+            ],
+            &quot;primary&quot; : &quot;testvm1:27017&quot;,
+            &quot;me&quot; : &quot;testvm1:27017&quot;,
+            &quot;maxBsonObjectSize&quot; : 16777216,
+            &quot;maxMessageSizeBytes&quot; : 48000000,
+            &quot;maxWriteBatchSize&quot; : 1000,
+            &quot;localTime&quot; : ISODate(&quot;2015-04-15T07:12:02.755Z&quot;),
+            &quot;maxWireVersion&quot; : 2,
+            &quot;minWireVersion&quot; : 0,
+            &quot;ok&quot; : 1
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;34-멤버-추가-명령&quot;&gt;3.4 멤버 추가 명령&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;추가하기전에 변경발생시켜두자&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; for (var i = 1; i &amp;lt;= 100000; i++) {    db.test1.insert( { x : i } ) }
+    WriteResult({ &quot;nInserted&quot; : 1 })
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;멤버추가&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.add(&quot;testvm4:27017&quot;)
+    { &quot;ok&quot; : 1 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;35-확인&quot;&gt;3.5 확인&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;rs.conf()확인&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.conf()
+    {
+            &quot;_id&quot; : &quot;rs0&quot;,
+            &quot;version&quot; : 4,
+            &quot;members&quot; : [
+                    {
+                            &quot;_id&quot; : 0,
+                            &quot;host&quot; : &quot;testvm1:27017&quot;
+                    },
+                    {
+                            &quot;_id&quot; : 1,
+                            &quot;host&quot; : &quot;testvm2:27017&quot;
+                    },
+                    {
+                            &quot;_id&quot; : 2,
+                            &quot;host&quot; : &quot;testvm3:27017&quot;
+                    },
+                    {
+                            &quot;_id&quot; : 3,
+                            &quot;host&quot; : &quot;testvm4:27017&quot;
+                    }
+            ]
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;슬레이브 catch up확인&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm4 ~]# mongo
+    MongoDB shell version: 2.6.9
+    connecting to: test
+    rs0:SECONDARY&amp;gt; rs.slaveOk()
+    rs0:SECONDARY&amp;gt; db.test1.count()
+    90018
+    rs0:SECONDARY&amp;gt; db.test1.count()
+    100000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;4-멤버-삭제하기&quot;&gt;4. 멤버 삭제하기&lt;/h3&gt;
+
+&lt;h4 id=&quot;41-rsremove&quot;&gt;4.1 rs.remove()&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;삭제할 멤버의 인스턴스를 shutdown한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:SECONDARY&amp;gt; use admin
+    switched to db admin
+    rs0:SECONDARY&amp;gt;  db.shutdownServer()
+    2015-04-16T11:08:33.496+1000 DBClientCursor::init call() failed
+    server should be down...
+    2015-04-16T11:08:33.503+1000 trying reconnect to 127.0.0.1:27017 (127.0.0.1) failed
+    2015-04-16T11:08:33.511+1000 warning: Failed to connect to 127.0.0.1:27017, reason: errno:111 Connection refused
+    2015-04-16T11:08:33.511+1000 reconnect 127.0.0.1:27017 (127.0.0.1) failed failed couldn't connect to server 127.0.0.1:27017 (127.0.0.1), connection attempt failed
+    &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;primary로 접속하여 rs.remove() 명령한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.remove(&quot;testvm4:27017&quot;)
+    2015-04-15T17:21:48.106+1000 DBClientCursor::init call() failed
+    2015-04-15T17:21:48.108+1000 Error: error doing query: failed at src/mongo/shell/query.js:81
+    2015-04-15T17:21:48.110+1000 trying reconnect to 127.0.0.1:27017 (127.0.0.1) failed
+    2015-04-15T17:21:48.112+1000 reconnect 127.0.0.1:27017 (127.0.0.1) ok
+    rs0:PRIMARY&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Replica Set 멤버 추가/삭제하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry><entry><title type="html">MongoDB Replica Set status 확인하기</title><link href="http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="MongoDB Replica Set status 확인하기" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Replica%20Set%20status%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;mongodb-replica-set-status-확인하기&quot;&gt;MongoDB Replica Set status 확인하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;mongodb-replica-set-status-확인하기-1&quot;&gt;MongoDB Replica Set status 확인하기&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Replica Set 상태 확인하는 몇가지 명령어를 알아보자&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-check-replica-set-status&quot;&gt;1. Check Replica Set Status&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;primary에서 &lt;strong&gt;rs.status()&lt;/strong&gt; 로 확인&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt;  rs.status()
+    {
+            &quot;set&quot; : &quot;rs0&quot;,
+            &quot;date&quot; : ISODate(&quot;2015-04-15T10:56:27Z&quot;),
+            &quot;myState&quot; : 1,
+            &quot;members&quot; : [
+                    {
+                            &quot;_id&quot; : 0,
+                            &quot;name&quot; : &quot;testvm1:27017&quot;,
+                            &quot;health&quot; : 1,
+                            &quot;state&quot; : 1,
+                            &quot;stateStr&quot; : &quot;PRIMARY&quot;,
+                            &quot;uptime&quot; : 13616,
+                            &quot;optime&quot; : Timestamp(1429084514, 1),
+                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
+                            &quot;electionTime&quot; : Timestamp(1429081894, 1),
+                            &quot;electionDate&quot; : ISODate(&quot;2015-04-15T07:11:34Z&quot;),
+                            &quot;self&quot; : true
+                    },
+                    {
+                            &quot;_id&quot; : 1,
+                            &quot;name&quot; : &quot;testvm2:27017&quot;,
+                            &quot;health&quot; : 1,
+                            &quot;state&quot; : 2,
+                            &quot;stateStr&quot; : &quot;SECONDARY&quot;,
+                            &quot;uptime&quot; : 10873,
+                            &quot;optime&quot; : Timestamp(1429084514, 1),
+                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
+                            &quot;lastHeartbeat&quot; : ISODate(&quot;2015-04-15T10:56:25Z&quot;),
+                            &quot;lastHeartbeatRecv&quot; : ISODate(&quot;2015-04-15T10:56:26Z&quot;),
+                            &quot;pingMs&quot; : 0,
+                            &quot;syncingTo&quot; : &quot;testvm1:27017&quot;
+                    },
+                    {
+                            &quot;_id&quot; : 2,
+                            &quot;name&quot; : &quot;testvm3:27017&quot;,
+                            &quot;health&quot; : 1,
+                            &quot;state&quot; : 2,
+                            &quot;stateStr&quot; : &quot;SECONDARY&quot;,
+                            &quot;uptime&quot; : 10873,
+                            &quot;optime&quot; : Timestamp(1429084514, 1),
+                            &quot;optimeDate&quot; : ISODate(&quot;2015-04-15T07:55:14Z&quot;),
+                            &quot;lastHeartbeat&quot; : ISODate(&quot;2015-04-15T10:56:25Z&quot;),
+                            &quot;lastHeartbeatRecv&quot; : ISODate(&quot;2015-04-15T10:56:26Z&quot;),
+                            &quot;pingMs&quot; : 0,
+                            &quot;syncingTo&quot; : &quot;testvm1:27017&quot;
+                    }
+            ],
+            &quot;ok&quot; : 1
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;2-check-the-replication-lag&quot;&gt;2. Check the Replication Lag&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;primary에서 &lt;strong&gt;rs.printSlaveReplicationInfo()&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.printSlaveReplicationInfo()
+    source: testvm2:27017
+            syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
+            0 secs (0 hrs) behind the primary
+    source: testvm3:27017
+            syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
+            0 secs (0 hrs) behind the primary
+    rs0:PRIMARY&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;3-check-the-size-of-the-oplog&quot;&gt;3. Check the Size of the Oplog&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;멤버별로 체크 가능함. &lt;strong&gt;rs.printReplicationInfo()&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    rs0:PRIMARY&amp;gt; rs.printReplicationInfo()
+    configured oplog size:   990MB
+    log length start to end: 1605625secs (446.01hrs)
+    oplog first event time:  Sat Mar 28 2015 04:54:49 GMT+1100 (EST)
+    oplog last event time:   Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
+    now:                     Wed Apr 15 2015 21:14:28 GMT+1000 (EST)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;oplog사이즈는 replication lag를 얼마나 허용할 건지에 따라서 용량을 산정해야한다.&lt;/li&gt;
+  &lt;li&gt;위 예제환경의 경우, oplog사이즈가 990MB이고 446시간정도의 transaction을 저장할수 있다. 이 사이즈가 발생가능한 가장 긴 secondary downtime을 커버할수 있는지 체크하면 된다.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Replica Set status 확인하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry><entry><title type="html">MongoDB Filesystem snapshot을 사용한 백업리스토어</title><link href="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/" rel="alternate" type="text/html" title="MongoDB Filesystem snapshot을 사용한 백업리스토어" /><published>2015-04-16T00:00:00+09:00</published><updated>2015-04-16T00:00:00+09:00</updated><id>http://localhost:4000/blog/MongoDB%20Filesystem%20snapshot%EC%9D%84%20%EC%82%AC%EC%9A%A9%ED%95%9C%20%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4</id><content type="html" xml:base="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/">&lt;h1 id=&quot;mongodb-filesystem-snapshot을-사용한-백업리스토어&quot;&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/h1&gt;
+
+&lt;p&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/p&gt;
+
+&lt;h2 id=&quot;mongodb-filesystem-snapshot을-사용한-백업리스토어-1&quot;&gt;MongoDB Filesystem snapshot을 사용한 백업/리스토어&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;system-level 툴을 사용하여 MongoDB의 백업을 생성해보자. Filesystem snapshot(“block-level” backup)은 system level 툴을 사용하여 생성한 MongoDB의 데이터파일의 copy본을 의미한다. 이 방식은 빠르고 신뢰할만 하지만 MongoDB외의 system 관련 구성이 필요하다. 간단하게 Linux system 의 LVM을 사용하여 백업을 진행해 보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-create-a-snapshot&quot;&gt;1. Create a Snapshot&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;lvcreate 명령을 사용한다 다음의 옵션을 확인한다.
+    &lt;ul&gt;
+      &lt;li&gt;예시 : &lt;code class=&quot;highlighter-rouge&quot;&gt;lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;LVM 스냅샷을 생성한다. : &lt;strong&gt;--snapshot&lt;/strong&gt; option&lt;/li&gt;
+      &lt;li&gt;스냅샷 이름 : mdb-snap01&lt;/li&gt;
+      &lt;li&gt;스냅샷 받을 볼륨 그룹 : /dev/vg_vm2/lv_data&lt;/li&gt;
+      &lt;li&gt;size : 이건 전체 스냅샷의 사이즈를 의미하는 것이 아니라 현재 볼륨과 snapshot볼륨간의 difference를 저장할 용량을 의미한다.&lt;/li&gt;
+      &lt;li&gt;스냅샷 위치 : /dev/vg_vm2/mdb-snap01&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;생성해보자
+    &lt;ul&gt;
+      &lt;li&gt;([필요시에만..) 사용중인 볼륨 사이즈를 조정한다. 지금 100%에 대해 logical volumn생성한 상태인데, vgreduce를 통해 줄인다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvreduce --size 9.5G /dev/vg_vm3/lv_data
+      WARNING: Reducing active and open logical volume to 9.50 GiB
+      THIS MAY DESTROY YOUR DATA (filesystem etc.)
+    Do you really want to reduce lv_data? [y/n]: y
+      Reducing logical volume lv_data to 9.50 GiB
+      Logical volume lv_data successfully resized
+    [root@testvm1 ~]# umount /data1
+    [root@testvm1 ~]# e2fsck -f /dev/vg_vm3/lv_data
+    [root@testvm1 ~]# resize2fs /dev/vg_vm3/lv_data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;그리고 스냅샷 볼륨을 생성해본다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data
+      Logical volume &quot;mdb-snap01&quot; created
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;만약 스냅샷 볼륨의 공간이 부족하게 되면, 이 스냅샷 이미지는 못쓰게 된다. 버리고 다시 생성해야한다.&lt;/li&gt;
+  &lt;li&gt;스냅샷이 백업을 빠르게 생성하는 방법이긴 하지만, 사실 백업 데이터를 보관하는데에는 좋은 포맷이 아니다. 오리지널과 동일한 storage환경에서만 동작하기 때문에, 이 스냅샷을 별도 장비에 archive하는 것은 좋은 방법이 아니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-archive-a-snapshot&quot;&gt;2. Archive a Snapshot&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;shapshot을 mount하고, 다른 시스템을 copy할 수 있다.&lt;/li&gt;
+  &lt;li&gt;또는, backup image를 압축해서 옮길수도 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# dd if=/dev/vg_vm3/mdb-snap01 | gzip &amp;gt; /db/mongo/mdb-snap01.gz &amp;amp;
+    19922944+0 records in
+    19922944+0 records out
+    10200547328 bytes (10 GB) copied, 169.867 s, 60.1 MB/s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;3-restore-a-snapshot&quot;&gt;3. Restore a Snapshot&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;snapshot을 restore해보자
+    &lt;ul&gt;
+      &lt;li&gt;새로운 logical volume lv_backupsnap을 만들고, 거기에 snapshot을 restore한다.&lt;/li&gt;
+      &lt;li&gt;사이즈는 original file system 사이즈와 같거나 더 커야한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]# lvcreate -l 100%FREE --name lv_backupsnap vg_vm4
+      Logical volume &quot;lv_backupsnap&quot; created
+    [root@testvm1 ~]# gzip -d -c /db/mongo/mdb-snap01.gz  | dd of=/dev/vg_vm4/lv_backupsnap
+    19922944+0 records in
+    19922944+0 records out
+    10200547328 bytes (10 GB) copied, 343.295 s, 29.7 MB/s
+
+    [root@testvm1 ~]# mount /dev/vg_vm4/lv_backupsnap /backupsnap/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;4-remove-a-snapshot&quot;&gt;4. Remove a Snapshot&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;스냅샷 볼륨을 정리한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm1 ~]#  lvremove /dev/vg_vm3/mdb-snap01
+    Do you really want to remove active logical volume mdb-snap01? [y/n]: y
+      Logical volume &quot;mdb-snap01&quot; successfully removed
+    [root@testvm1 ~]#
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Mongo" /><summary type="html">MongoDB Filesystem snapshot을 사용한 백업/리스토어</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mongo.png%22%7D" /></entry></feed>

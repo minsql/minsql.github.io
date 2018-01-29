@@ -19,7 +19,7 @@
 
 /* feature image */
 
-.entry-feature-image {
+.entry-feature-image-org {
 	margin: 20px 0 0;
 	width: 100%;
 
@@ -298,8 +298,45 @@ span + .entry-title {
   }
 }
 
+/* ==========================================================================
+   TABLES
+   ========================================================================== */
+
+.table {
+  margin-bottom: 1em;
+  width: 100%;
+  //font-family: $global-font-family;
+  font-size: $type-size-6;
+  border-collapse: collapse;
+
+  & + table {
+    margin-top: 1em;
+  }
+}
+
+thead {
+  background-color: $border-color;
+  border-bottom: 2px solid mix(#000, $border-color, 25%);
+}
+
+th {
+  padding: 0.5em;
+  font-weight: bold;
+  text-align: left;
+}
+
+td {
+  padding: 0.5em;
+  border-bottom: 1px solid mix(#000, $border-color, 25%);
+}
+
+tr,
+td,
+th {
+  vertical-align: middle;
+}
 /*
-   Tables
+   Tables -org
    ========================================================================== */
 
 /** For nicer looking tables apply the .table class
@@ -311,7 +348,6 @@ span + .entry-title {
  *      <td>cell3</td>
  *    </tr>
  *  </table>
-*/
 
 .table {
 	border-collapse: collapse;
@@ -354,3 +390,4 @@ span + .entry-title {
 		vertical-align: middle;
 	}
 }
+*/

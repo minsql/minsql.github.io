@@ -29,6 +29,14 @@
   a > span {
     float: right;
   }
+  .entry-feature-image {
+    float: left;
+  	margin: 0 10px 0 0;
+    @include media($medium) {
+      display: inline;
+      width: 50px;
+    }
+  }
 
   .entry-date {
     @include font-size(14,no);

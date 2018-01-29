@@ -122,6 +122,8 @@
      Table of contents navigation
      ========================================================================== */
 
+
+
 .nav__title {
   margin: 0;
   padding: 0.5rem 1rem;
@@ -147,7 +149,7 @@
   font-family: $sans-serif-narrow;
   color: $gray;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
   background-color: $background-color;
   border: 1px solid $border-color;
   border-radius: $border-radius;
@@ -168,7 +170,6 @@
   width: 100%;
   list-style: none;
   font-size: 0.8rem;
-
   a {
     display: block;
     padding: 0.5rem 1rem;
@@ -182,7 +183,9 @@
       color: $text-color;
     }
   }
-
+  li {
+    margin-bottom : 0;
+  }
   > li:last-child {
     a {
       border-bottom: none;

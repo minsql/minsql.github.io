@@ -2,6 +2,14 @@
 
   
     {
+      "title"			: "MySQL sandbox 설치와 이용방법",
+      "link"			: "http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/",
+      "excerpt"		: "MySQL sandbox 설치와 이용방법"
+    }
+  
+
+  
+    ,{
       "title"			: "MathJax Example",
       "link"			: "http://localhost:4000/blog/mathjax-example/",
       "excerpt"		: "MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics  ... , and the other for inline mathematics  ... ."
@@ -10,9 +18,329 @@
 
   
     ,{
-      "title"			: "Hello World",
-      "link"			: "http://localhost:4000/blog/hello-world/",
-      "excerpt"		: "You’ll find this post in your _posts directory - edit this post and re-build (or run with the -w switch) to see your changes!To add new posts, simply add a file in the _posts directory that follows the convention: YYYY-MM-DD-name-of-post.ext."
+      "title"			: "MySQL Audit 사용하기",
+      "link"			: "http://localhost:4000/blog/MySQL-Audit-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MySQL Audit 사용하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL to PostgreSQL Migration tool",
+      "link"			: "http://localhost:4000/blog/mysql-to-postgresql-migration-tool/",
+      "excerpt"		: "MySQL to PostgreSQL Migration tool"
+    }
+  
+
+  
+    ,{
+      "title"			: "Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기",
+      "link"			: "http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL architecture - Adaptive Hash Indexes",
+      "link"			: "http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/",
+      "excerpt"		: "MySQL architecture - Adaptive Hash Indexes"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL InnoDB architecture - doublewrite buffer",
+      "link"			: "http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/",
+      "excerpt"		: "MySQL InnoDB architecture - doublewrite buffer"
+    }
+  
+
+  
+    ,{
+      "title"			: "MongoDB Replica Set 멤버 추가삭제하기",
+      "link"			: "http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MongoDB Replica Set 멤버 추가/삭제하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MongoDB Replica Set status 확인하기",
+      "link"			: "http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MongoDB Replica Set status 확인하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MongoDB Filesystem snapshot을 사용한 백업리스토어",
+      "link"			: "http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/",
+      "excerpt"		: "MongoDB Filesystem snapshot을 사용한 백업/리스토어"
+    }
+  
+
+  
+    ,{
+      "title"			: "information_schema.INNODB_XXX 를 활용한 lock 정보 확인",
+      "link"			: "http://localhost:4000/blog/information_schema.INNODB_XXX-%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-lock-%EC%A0%95%EB%B3%B4-%ED%99%95%EC%9D%B8/",
+      "excerpt"		: "information_schema.INNODB_XXX 를 활용한 lock 정보 확인"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysqladmin 을 통한 상태로깅",
+      "link"			: "http://localhost:4000/blog/mysqladmin-%EC%9D%84-%ED%86%B5%ED%95%9C-%EC%83%81%ED%83%9C%EB%A1%9C%EA%B9%85/",
+      "excerpt"		: "mysqladmin 을 통한 상태로깅"
+    }
+  
+
+  
+    ,{
+      "title"			: "MongoDB Replica Set 구성하기",
+      "link"			: "http://localhost:4000/blog/mongodb-replica-set-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MongoDB Replica Set 구성하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MongoDB Installation",
+      "link"			: "http://localhost:4000/blog/mongodb-installation-2/",
+      "excerpt"		: "MongoDB Installation"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL InnoDB Thread Concurrency 설정하기",
+      "link"			: "http://localhost:4000/blog/MySQL-InnoDB-Thread-Concurrency-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "MySQL InnoDB Thread Concurrency 설정하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL open_files_limit 변경하기",
+      "link"			: "http://localhost:4000/blog/mysql-open_files_limit-eb-b3-80-ea-b2-bd-ed-95-98-ea-b8-b0/",
+      "excerpt"		: "MySQL open_files_limit 변경하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL innodb_flush_method",
+      "link"			: "http://localhost:4000/blog/mysql-innodb_flush_method/",
+      "excerpt"		: "MySQL innodb_flush_method"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL InnoDB architecture – InnoDB I/O threads",
+      "link"			: "http://localhost:4000/blog/mysql-innodb-architecture-innodb-io-threads/",
+      "excerpt"		: "MySQL InnoDB architecture – InnoDB I/O threads"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL InnoDB architecture - change buffer",
+      "link"			: "http://localhost:4000/blog/mysql-innodb-architecture-change-buffer/",
+      "excerpt"		: "MySQL InnoDB architecture - change buffer"
+    }
+  
+
+  
+    ,{
+      "title"			: "innodb_flush_log_at_trx_commit 개념도와 튜닝 포인트",
+      "link"			: "http://localhost:4000/blog/innodb_flush_log_at_trx_commit-%EA%B0%9C%EB%85%90%EB%8F%84%EC%99%80-%ED%8A%9C%EB%8B%9D-%ED%8F%AC%EC%9D%B8%ED%8A%B8/",
+      "excerpt"		: "innodb_flush_log_at_trx_commit 개념도와 튜닝 포인트"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysqldump를 이용한 전체 fulldump 에서 특정 database 만 import 하기",
+      "link"			: "http://localhost:4000/blog/mysqldump%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%A0%84%EC%B2%B4-fulldump-%EC%97%90%EC%84%9C-%ED%8A%B9%EC%A0%95-database-%EB%A7%8C-import-%ED%95%98%EA%B8%B0/",
+      "excerpt"		: "mysqldump를 이용한 전체 fulldump 에서 특정 database 만 import 하기"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysqlfailover , mysqlreplicate , mysqlrpladmin 를 이용한 MySQL HA 자동 failover 및 수동 failback",
+      "link"			: "http://localhost:4000/blog/mysqlfailover-,-mysqlreplicate-,-mysqlrpladmin-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-MySQL-HA-%EC%9E%90%EB%8F%99-failover-%EB%B0%8F-%EC%88%98%EB%8F%99-failback/",
+      "excerpt"		: "mysqlfailover , mysqlreplicate , mysqlrpladmin 를 이용한 MySQL HA 자동 failover 및 수동 failback"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 의 show slave status 에서 Seconds_Behind_Master 는 무엇을 기준으로 결정되는가",
+      "link"			: "http://localhost:4000/blog/MySQL-%EC%9D%98-show-slave-status-%EC%97%90%EC%84%9C-Seconds_Behind_Master-%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%84-%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C-%EA%B2%B0%EC%A0%95%EB%90%98%EB%8A%94%EA%B0%80/",
+      "excerpt"		: "MySQL 의 show slave status 에서 Seconds_Behind_Master 는 무엇을 기준으로 결정되는가?"
+    }
+  
+
+  
+    ,{
+      "title"			: "mysqlrpladmin 외부스크립트 연동 옵션",
+      "link"			: "http://localhost:4000/blog/mysqlrpladmin-%EC%99%B8%EB%B6%80%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%97%B0%EB%8F%99-%EC%98%B5%EC%85%98/",
+      "excerpt"		: "mysqlrpladmin 외부스크립트 연동 옵션"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 에러메시지 언어 설정",
+      "link"			: "http://localhost:4000/blog/MySQL-%EC%97%90%EB%9F%AC%EB%A9%94%EC%8B%9C%EC%A7%80-%EC%96%B8%EC%96%B4-%EC%84%A4%EC%A0%95/",
+      "excerpt"		: "MySQL 에러메시지 언어 설정"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL Fabric",
+      "link"			: "http://localhost:4000/blog/mysql-fabric/",
+      "excerpt"		: "MySQL Fabric"
+    }
+  
+
+  
+    ,{
+      "title"			: "BLOB 저장방식 in InnoDB",
+      "link"			: "http://localhost:4000/blog/BLOB-%EC%A0%80%EC%9E%A5%EB%B0%A9%EC%8B%9D-in-InnoDB/",
+      "excerpt"		: "BLOB 저장방식 in InnoDB"
+    }
+  
+
+  
+    ,{
+      "title"			: "Slony-I Replication Configuration",
+      "link"			: "http://localhost:4000/blog/slony-i-replication-configuration/",
+      "excerpt"		: "Slony-I Replication Configuration"
+    }
+  
+
+  
+    ,{
+      "title"			: "Oracle 11gR2 Installation on CentOS6",
+      "link"			: "http://localhost:4000/blog/oracle-11gr2-installation-on-centos6/",
+      "excerpt"		: "Oracle 11gR2 Installation on CentOS6"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL login-path",
+      "link"			: "http://localhost:4000/blog/mysql-login-path/",
+      "excerpt"		: "MySQL login-path"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL Cluster Overview",
+      "link"			: "http://localhost:4000/blog/mysql-cluster-overview/",
+      "excerpt"		: "MySQL Cluster Overview"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL Cluster Installation",
+      "link"			: "http://localhost:4000/blog/mysql-cluster-installation/",
+      "excerpt"		: "MySQL Cluster Installation"
+    }
+  
+
+  
+    ,{
+      "title"			: "HA를 위한 mysql utilities",
+      "link"			: "http://localhost:4000/blog/HA%EB%A5%BC-%EC%9C%84%ED%95%9C-mysql-utilities/",
+      "excerpt"		: "HA를 위한 mysql utilities"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 5.6 Crash-safe replication",
+      "link"			: "http://localhost:4000/blog/mysql-5-6-crash-safe-replication/",
+      "excerpt"		: "MySQL 5.6 Crash-safe replication"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 5.6 Multi-Threaded Slave",
+      "link"			: "http://localhost:4000/blog/mysql-5-6-multi-threaded-slave/",
+      "excerpt"		: "MySQL 5.6 Multi-Threaded Slave"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 5.6 gtid replication manadatory options",
+      "link"			: "http://localhost:4000/blog/mysql-5-6-gtid-replication-manadatory-options/",
+      "excerpt"		: "MySQL 5.6 gtid replication manadatory options"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 5.6 gtid replication configuration and failover simple test",
+      "link"			: "http://localhost:4000/blog/mysql-5-6-gtid-replication-configuration-and-failover-simple-test/",
+      "excerpt"		: "MySQL 5.6 gtid replication configuration and failover simple test"
+    }
+  
+
+  
+    ,{
+      "title"			: "Windows MySQL root password reset",
+      "link"			: "http://localhost:4000/blog/windows-mysql-root-password-reset/",
+      "excerpt"		: "Windows MySQL root password reset"
+    }
+  
+
+  
+    ,{
+      "title"			: "ora2pg migration test",
+      "link"			: "http://localhost:4000/blog/ora2pg-migration-test/",
+      "excerpt"		: "ora2pg migration test"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 실행계획 추적",
+      "link"			: "http://localhost:4000/blog/MySQL-%EC%8B%A4%ED%96%89%EA%B3%84%ED%9A%8D-%EC%B6%94%EC%A0%81/",
+      "excerpt"		: "MySQL 실행계획 추적"
+    }
+  
+
+  
+    ,{
+      "title"			: "PostgreSQL VACUUM main point",
+      "link"			: "http://localhost:4000/blog/postgresql-vacuum-manual-main-point/",
+      "excerpt"		: "PostgreSQL VACUUM main point"
+    }
+  
+
+  
+    ,{
+      "title"			: "Detecting lock problems",
+      "link"			: "http://localhost:4000/blog/detecting-lock-problems/",
+      "excerpt"		: "Detecting lock problems"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL Transaction isolation level",
+      "link"			: "http://localhost:4000/blog/mysql-transaction-isolation-level/",
+      "excerpt"		: "MySQL Transaction isolation level"
     }
   
 
@@ -21,6 +349,46 @@
       "title"			: "Override Author Byline Test Post",
       "link"			: "http://localhost:4000/articles/author-override/",
       "excerpt"		: "An article to test overriding the default site author."
+    }
+  
+
+  
+    ,{
+      "title"			: "pg_stat_activity truncate query size at 1024",
+      "link"			: "http://localhost:4000/blog/pg_stat_activity-truncate-query-size-at-1024/",
+      "excerpt"		: "pg_stat_activity truncate query size at 1024"
+    }
+  
+
+  
+    ,{
+      "title"			: "how to unlock LOCKED(TIMED) account",
+      "link"			: "http://localhost:4000/blog/how-to-unlock-lockedtimed-account/",
+      "excerpt"		: "how to unlock LOCKED(TIMED) account"
+    }
+  
+
+  
+    ,{
+      "title"			: "unique index with nullable column",
+      "link"			: "http://localhost:4000/blog/unique-index-with-nullable-column/",
+      "excerpt"		: "unique index with nullable column"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL MEMORY 엔진",
+      "link"			: "http://localhost:4000/blog/MySQL-MEMORY-%EC%97%94%EC%A7%84/",
+      "excerpt"		: "MySQL MEMORY 엔진"
+    }
+  
+
+  
+    ,{
+      "title"			: "slave_sql_verify_checksum 성능에 미치는 영향",
+      "link"			: "http://localhost:4000/blog/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/",
+      "excerpt"		: "slave_sql_verify_checksum 성능에 미치는 영향"
     }
   
 
@@ -104,9 +472,9 @@
 
   
     ,{
-      "title"			: "About the Jekyll Theme",
+      "title"			: "About MINSQL",
       "link"			: "http://localhost:4000/about/",
-      "excerpt"		: "So Simple is a responsive Jekyll theme for your words and images."
+      "excerpt"		: "밥먹고 살기 힘든 부부 DBA"
     }
   
 

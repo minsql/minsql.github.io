@@ -1,0 +1,26 @@
+.wp_pp_button_selection_section, .wp_pp_button_other_amt_section, .wp_pp_button_reference_section{
+    margin-bottom: 10px;
+}
+.wp_paypal_button_widget{
+    margin: 10px 0;
+}
+.wp_accept_pp_button_form input{
+    width: auto !important;
+}
+
+.buy_now_button_image {
+    max-width: 100%;
+}
+
+.wpapp_payment_subject{
+    margin: 10px 0px;
+}
+.wpapp_other_amount_label{
+    margin: 10px 0px;
+}
+.wpapp_ref_title_label{
+    margin: 10px 0px;
+}
+.wpapp_payment_button{
+    margin: 10px 0px;
+}

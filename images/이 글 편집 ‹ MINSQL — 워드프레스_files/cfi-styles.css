@@ -1,0 +1,23 @@
+/**
+ * Plugin Name: Category Featured Images
+ * Author: Mattia Roccoberton
+ * Author URI: http://blocknot.es
+ * License: GPL3
+ */
+
+.cfi-preview {
+	max-width: 400px;
+	max-height: 150px;
+}
+
+#cfi-change-image,
+#cfi-remove-image {
+	width: auto;
+}
+
+#cfi-thumbnail {
+	margin-top: 5px;
+}
+#cfi-thumbnail img {
+	border: 1px solid #888;
+}
