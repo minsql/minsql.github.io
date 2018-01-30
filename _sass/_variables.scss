@@ -1,12 +1,12 @@
 // TYPOGRAPHY ================================================
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
 
-$base-font                : "Nanum Gothic", 'source-sans-pro', sans-serif;
+$base-font                : "Nanum Barun Gothic", 'source-sans-pro', sans-serif;
 $heading-font             : $base-font;
 $caption-font             : $base-font;
 $code-font                : "Nanum Gothic Coding",'source-code-pro', monospace;
-$alt-font                 : "Nanum Gothic", 'source-sans-pro', sans-serif;
+$alt-font                 : "Nanum Barun Gothic", 'source-sans-pro', sans-serif;
 
 $doc-font-size            : 16;
 $doc-line-height          : 24;
