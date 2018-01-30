@@ -1,4 +1,347 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-29T23:10:30+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-30T15:43:38+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL range partition VS range columns partition</title><link href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" rel="alternate" type="text/html" title="MySQL range partition VS range columns partition" /><published>2018-01-22T14:46:49+09:00</published><updated>2018-01-22T14:46:49+09:00</updated><id>http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition</id><content type="html" xml:base="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/">&lt;h1 id=&quot;mysql-range-partition-vs-range-columns-partition&quot;&gt;MySQL range partition VS range columns partition&lt;/h1&gt;
+
+&lt;p&gt;날짜를 이용하여 파티션시, range 를 사용할 것인가? range colums 를 사용할 것인가?&lt;/p&gt;
+
+&lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;데이터가 커짐에 따라, mysql 에서도 partition 기능을 많이 사용하게 된다. 특히 날짜를 이용하여, partitioning 을 많이 진행하게 되는데 이는 “PARTITION BY RANGE (to_days(날짜형식컬럼))” 혹은 “ PARTITION BY RANGE COLUMNS(날짜형식컬럼))” 으로 진행될 수 있다. 이 두형식에 대해 알아보자.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;생성방법&quot;&gt;생성방법&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;RANGE PARTITONING
+    &lt;ul&gt;
+      &lt;li&gt;대부분의 MySQL DBA 들은 날짜를 이용하여 파티션시, range 를 자주 사용한다. 사용은 date 형 컬럼을 to_days 로 비교하여 사용될 수 있다. (Range 파티션은 값으로 int 형 데이터가 와야 하기 때문이다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;modifiedAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201801&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-02-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201802&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-03-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201803&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-05-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-06-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-07-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html&quot;&gt;https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;RANGE COLUMNS PARTITONING
+    &lt;ul&gt;
+      &lt;li&gt;파티션은 잘 모르는분들도 있겠지만, range partition 과 비슷하지만 복합 컬럼을 사용할 수 있다는 장점이 있다. 이는 열거된 컬럼들과 row 의 실제값과의 비교연산을 통해 partition 이 선택이 되는데, 날짜 형식컬럼을 partition key 로 지정하여 비교를 진행할 수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range_columns&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;modifiedAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RANGE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COLUMNS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201801&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-02-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201802&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-03-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201803&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-05-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-06-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-07-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html&quot;&gt;https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;장단점&quot;&gt;장단점&lt;/h3&gt;
+
+&lt;h4 id=&quot;1-성능-관점에서&quot;&gt;1. 성능 관점에서&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;일반적으로 성능상에는 아주 미세하게 “RANGE (to_days(createdAt))” 가 빠르다. date 형 값을 to_days function 으로 int 로 바꾸어 지정된 partition 으로 들어갈 수 있도록 비교하는것이, date 형을 string 형으로 바꾼 후 string 형으로 비교하는것보다 미세하게 빠르기 때문이다. 물론 CPU 의 성능에 따라 다르겠지만, 위와같은 비교연산에 비해 나머지 연산들 (Data 를 변경하거나 SELECT 하는 연산들) 이 훨씬 더 많은 자원과 시간을 소모하기때문에 크게 문제가 되지는 않는다. 이는 큰 문제가 되지 않는다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;성능을 측정하기 위해 mysqlslap 을 이용하여, 단순 TEST를 진행해보자. 천건씩 (limit 1000) insert 를 10개의 세션 (–concurrency=10) 에서 모두 1000 번 (–number-of-queries=1000, 세션당 100번) 을 실행한다. 이를 10번 진행해보고 (–iterations=10) 결과를 확인해보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# cat bt.sh
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Test for insert on range partition table&quot;&lt;/span&gt;
+date
+/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 --create-schema&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --iterations&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  --number-of-queries&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 --pre-query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range;&quot;&lt;/span&gt; --query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into test.pt_range (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  --socket&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
+date
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Test for insert on range column partition table&quot;&lt;/span&gt;
+date
+/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 --create-schema&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --iterations&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  --number-of-queries&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 --pre-query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range_columns;&quot;&lt;/span&gt; --query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into pt_range_columns (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  --socket&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
+date
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# ./bt.sh &amp;gt; x
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# cat x
+&lt;span class=&quot;o&quot;&gt;========================================================&lt;/span&gt;
+Test &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;insert on range partition table
+Sun Jan 14 06:50:06 EST 2018
+Benchmark
+        Average number of seconds to run all queries: 19.477 seconds
+        Minimum number of seconds to run all queries: 18.528 seconds
+        Maximum number of seconds to run all queries: 20.999 seconds
+        Number of clients running queries: 10
+        Average number of queries per client: 100
+
+Sun Jan 14 06:53:23 EST 2018
+&lt;span class=&quot;o&quot;&gt;========================================================&lt;/span&gt;
+Test &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;insert on range column partition table
+Sun Jan 14 06:53:23 EST 2018
+Benchmark
+        Average number of seconds to run all queries: 20.407 seconds
+        Minimum number of seconds to run all queries: 18.257 seconds
+        Maximum number of seconds to run all queries: 23.298 seconds
+        Number of clients running queries: 10
+        Average number of queries per client: 100
+
+Sun Jan 14 06:56:49 EST 2018
+&lt;span class=&quot;o&quot;&gt;========================================================&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;크게 차이는 없지만, range partition table 에 데이터를 넣는것 (평균 19.477 vs 20.407) 이 insert 단위 테스트에서는 조금 더 빠른 결과를 보여준다. (큰 차이는 없었다)&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;조건을 통해 partition pruning 을 할 경우 (정확히는 여러달에 걸친 조건 ( between ‘2018-03-30’ and ‘2018-04-02’;)) , 의도치 않게 “RANGE (to_days(createdAt))” 에서 첫번째 partition 을 추가로 읽을 수 있다. 이는 여러달에 걸친 data 를 조회할때는 추가적인 scan (첫번째 partiton 에 대한 scan) 이 필요함으로 성능이 떨어진다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;explain&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-03-30 00:00:00'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-04-30 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;select_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt;              &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;possible_keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key_len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ref&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Extra&lt;/span&gt;                    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SIMPLE&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201801&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p201803&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;524254&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;-- range partition 의 경우, createdAt between '2018-03-30 00:00:00' and '2018-04-30 00:00:00'; 시에 알 수 없는 p201801 에 대한 partition 을 scan 하게 된다.&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;explain&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range_columns&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-03-30 00:00:00'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt;  &lt;span class=&quot;s1&quot;&gt;'2018-04-30 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+------------------+-----------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;select_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;possible_keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key_len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ref&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Extra&lt;/span&gt;                    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+------------------+-----------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SIMPLE&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range_columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201803&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;406717&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+------------------+-----------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;-- range columns partition 의 경우,  p201801 에 대한 partition 을 읽지 않는다.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;이는 to_days 가 특정일짜에 대해서 null 을 return 할 수 있기때문에, null 이 저장된 첫번째 partition 을 읽어야 정확한 데이터를 추출해낼 수 있기 때문이다. 이는 bug 가 아닌 의도된 결과이다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;예를 들어, ‘2018-04-00 00:00:00’ 의 경우, 데이터는 들어갈 수 있지만 (sql_mode 에 따라 다르지만, NO_ZERO_IN_DATE 를 사용하지 않는 경우 들어갈 수 있다.) 해당 결과는 to_days function 에의해 null 로 return 되어 첫번째 partition 에 저장되기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;이를 createdAt between ‘2018-03-30 00:00:00’ and ‘2018-04-30 00:00:00’ 와 같은 조건으로 검색할 경우, ‘2018-04-00 00:00:00’ 도 맞는 조건임으로 뽑아내야 하며, 이를 위해 첫번째 partition이 검색되어야 한다.&lt;/p&gt;
+
+&lt;p&gt;하지만, 일반적으로 createdAt between ‘2018-04-01 00:00:00’ and ‘2018-04-30 23:59:59’ 와 같이 한달을 기준으로 혹은 더 작은 단위로 사용될 경우, 첫번째 partition 은 검색되지 않는다.&lt;/p&gt;
+
+&lt;p&gt;아래의 예제를 확인해보자.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;                           &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------------------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;-- NULL 이 return 된다. to_days 로 표현할 수 없는 값이기 때문이다.&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;insert&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;into&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modifiedAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'some_data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;',now());
+ERROR 1292 (22007): Incorrect datetime value: '&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' for column '&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' at row 1
+
+mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@session.sql_mode                                                                                                                        |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+    -- 해당 값으로 data 를 넣으면 5.7 에서는 error 가 발생한다. 그 이유는 5.7 의 default sql_mode 값으로 NO_ZERO_IN_DATE 값을 포함하기 때문이다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; SET SESSION sql_mode = sys.list_drop(@@session.sql_mode, '&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NO_ZERO_IN_DATE&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;');
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
++---------------------------------------------------------------------------------------------------------------------------+
+| @@session.sql_mode                                                                                                        |
++---------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++---------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+    --  sys.list_drop() 을 이용하여, 해당 session 의 sql_mode 에서 NO_ZERO_IN_DATE 값을 제거하였다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; insert into pt_range (some_data, createdAt, modifiedAt) values ('&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;',now());
+Query OK, 1 row affected (0.01 sec)
+
+    --  값이 잘 들어간다. 5.6 의 경우, sql_mode 의 default 값에 NO_ZERO_IN_DATE 가 존재하지 않음으로 위의 작업 없이도 테스트가 가능하다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; explain select * from pt_range where createdAt='&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;';
++----+-------------+----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table    | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | pt_range | p201801    | ALL  | NULL          | NULL | NULL    | NULL | 107694 |    10.00 | Using where |
++----+-------------+----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+    --  실행계획을 range partition 의 경우,  partition pruning 시에 p201801 를 읽는것이 확인된다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; select * from pt_range where createdAt='&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;';
++---------+-----------+----------------------------+----------------------------+
+| id      | some_data | createdAt                  | modifiedAt                 |
++---------+-----------+----------------------------+----------------------------+
+| 1002002 | some_data | 2018-04-00 00:00:00.000000 | 2018-01-14 07:09:52.000000 |
++---------+-----------+----------------------------+----------------------------+
+1 row in set (0.09 sec)
+
+    --  원하는값도 정상적으로 가져온다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; insert into pt_range_columns (some_data, createdAt, modifiedAt) values ('&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;',now());
+Query OK, 1 row affected (0.01 sec)
+
+mysql [localhost] {msandbox} (test) &amp;gt; explain select * from pt_range_columns where createdAt='&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;';
++----+-------------+------------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table            | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+------------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | pt_range_columns | p201803    | ALL  | NULL          | NULL | NULL    | NULL | 206671 |    10.00 | Using where |
++----+-------------+------------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+    --  실행계획을 range columns partition 의 경우, 기대한것처럼 partition pruning 시에 p201803 를 읽는것이 확인된다.
+
+
+mysql [localhost] {msandbox} (test) &amp;gt; select * from pt_range_columns where createdAt='&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;04&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;';
++---------+-----------+----------------------------+----------------------------+
+| id      | some_data | createdAt                  | modifiedAt                 |
++---------+-----------+----------------------------+----------------------------+
+| 1002278 | some_data | 2018-04-00 00:00:00.000000 | 2018-01-14 07:11:15.000000 |
++---------+-----------+----------------------------+----------------------------+
+1 row in set (0.13 sec)
+
+mysql [localhost] {msandbox} (test) &amp;gt; SET SESSION sql_mode = sys.list_add(@@session.sql_mode, '&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NO_ZERO_IN_DATE&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;');
+Query OK, 0 rows affected (0.00 sec)
+
+mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@session.sql_mode                                                                                                                        |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+    -- sys.list_add() 을 이용하여 다시 원래대로 세션의 sql_mode  값에 NO_ZERO_IN_DATE 를 추가할 수 있다.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;이에대해 관련된 공식 문서와 버그는 아래와 같다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- http://bugs.mysql.com/bug.php?id=72383 (Pruning includes first partition when query range crosses month boundary)
+- Bug 18621754 : PRUNING INCLUDES FIRST PARTITION WHEN QUERY RANGE CROSSES MONTH BOUNDARY
+
+
+    Fixed in 5.1+, documented in the 5.1.69, 5.5.31, 5.6.11, and 5.7.1 changelogs
+
+
+    A query on a table partitioned by range and using TO_DAYS() as a
+    partitioing function always included the first partition of the
+    table when pruning. This happened regardless of the range
+    employed in the BETWEEN clause of such a query.
+
+    - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-31.html
+    - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-11.html
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;추가로, range columns 에서 pruning 이 정확히 안되는 버그가 있었지만, 이는 5-5-33 과 5-6-13 에서 fix 되었다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- Bug 16447483 : PARTITION PRUNING IS NOT CORRECT FOR RANGE COLUMNS
+
+    - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-33.html
+    - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-13.html
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;2-가독성-및-관리관점에서&quot;&gt;2. 가독성 및 관리관점에서,&lt;/h4&gt;
+&lt;p&gt;가독성 부분에서는 “PARTITION BY RANGE COLUMNS(createdAt)” 이 더 좋을 수 있다. show create table 등으로 확인할때 직관적으로 날짜를 확인하여 파티션구조를 확인할 수 있기 때문이다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*!50500 PARTITION BY RANGE  COLUMNS(createdAt)
+(PARTITION p201801 VALUES LESS THAN ('2018-02-01') ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN ('2018-03-01') ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN ('2018-04-01') ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN ('2018-05-01') ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN ('2018-06-01') ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN ('2018-07-01') ENGINE = InnoDB) */&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;반면에&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RANGE&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;의&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;경우&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;show&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;시&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;02&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;가&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;변환되어&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;737091&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;라는&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;결과가&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;반환된다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;이는&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;가독성&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;부분에서&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;많이&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;떨어질뿐&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;아니라&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;향후&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;을&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;추가할때도&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DATE_ADD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INTERVAL&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;737241&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DAY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;와&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;같이&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;언제까지&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;을&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;추가했는지&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;알아내야한다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*!50100 PARTITION BY RANGE (to_days(createdAt))
+(PARTITION p201801 VALUES LESS THAN (737091) ENGINE = InnoDB,
+ PARTITION p201802 VALUES LESS THAN (737119) ENGINE = InnoDB,
+ PARTITION p201803 VALUES LESS THAN (737150) ENGINE = InnoDB,
+ PARTITION p201804 VALUES LESS THAN (737180) ENGINE = InnoDB,
+ PARTITION p201805 VALUES LESS THAN (737211) ENGINE = InnoDB,
+ PARTITION p201806 VALUES LESS THAN (737241) ENGINE = InnoDB) */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;결론&quot;&gt;결론&lt;/h3&gt;
+&lt;p&gt;일반적으로, 달이 넘어가는 데이터를 조회하지 않는 경우, “PARTITION BY RANGE COLUMNS(createdAt)” 과 “PARTITION BY RANGE (to_days(createdAt))” 는 성능에 큰 영향을 주지 않는다.&lt;/p&gt;
+
+&lt;p&gt;하지만, 달이 넘어가는 데이터를 조회하는 경우는 꼭 explain 을 확인해보자. 만약 첫번째 partition 이 데이터가 많은 경우, 이는 overhead 가 될 수 있다.&lt;/p&gt;
+
+&lt;p&gt;또한 partition drop 시 invalid date 를 가진 data 가 의도치않게 날아가버릴 수도 있다. 예를 들면, 첫번째 partition 인 2월이전의 partition 을 drop 하고 싶었지만, ‘2018-04-00 00:00:00’ row 도 함께 삭제될 수 있다.&lt;/p&gt;
+
+&lt;p&gt;RANGE partiton 을 꼭 써야만한다면, 아래와 같이 첫번째 partition 을 추가하는것이 좋다. 첫번째 partition 을 확인하더라도 첫번째 파티션에 저장된 유효하지 않은 데이터만 확인함으로 성능상 유리할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;modifiedAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INVALID_DATE_DATA&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201801&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737091&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201802&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737119&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201803&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737150&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737211&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737241&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL range partition VS range columns partition</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
 
 &lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
 
@@ -169,7 +512,1003 @@
     drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
     -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL slow query 를 효율적으로 이용해보자!</title><link href="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/" rel="alternate" type="text/html" title="MySQL slow query 를 효율적으로 이용해보자!" /><published>2016-12-15T00:00:00+09:00</published><updated>2016-12-15T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20slow%20query%20%EB%A5%BC%20%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/">&lt;h1 id=&quot;mysql-slow-query-를-효율적으로-이용해보자&quot;&gt;MySQL slow query 를 효율적으로 이용해보자!&lt;/h1&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Make my replication to the InnoDB Cluster</title><link href="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/" rel="alternate" type="text/html" title="Make my replication to the InnoDB Cluster" /><published>2017-09-19T00:00:00+09:00</published><updated>2017-09-19T00:00:00+09:00</updated><id>http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster</id><content type="html" xml:base="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/">&lt;h1 id=&quot;make-my-replication-to-the-innodb-cluster&quot;&gt;Make my replication to the InnoDB Cluster&lt;/h1&gt;
+
+&lt;p&gt;내 리플리케이션을 cluster로 관리해보자. 빈서버를 cluster로 구성하는 것도 유사한 스텝으로 작업한다. 데이터가 있는 경우라면, cluster생성시 첫 인스턴스를 master를 선택하면 된다. 이데이터가 seed가 되어 전체 클러스터에 복제되게 된다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;이번 테스트에서는 기존 5.7에 설치된 mixed replication으로 구성한 서버들을 활용한다.(server1,2,3) 기존의 replication 모두 절체. reset slave, reset master&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;innodb-cluster-requirements&quot;&gt;InnoDB cluster Requirements&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;InnoDB cluster uses Group Replication and therefore your server instances must meet the same requirements. See Section 17.7.1, “Group Replication Requirements”. -&amp;gt; Requirements를 모두 만족하는지 확인한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In addition, the provisioning scripts that MySQL Shell uses to configure servers for use in InnoDB cluster require access to Python (2.7 and above). On Windows MySQL Shell includes Python and no user configuration is required. On Unix Python must be found as part of the environment. To check that your system has Python configured correctly issue: -&amp;gt; 그리고 python이 2.7 이상이 필요하다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;@all servers&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+Initialized empty Git repository in /root/.pyenv/.git/
+remote: Counting objects: 15428, done.
+remote: Compressing objects: 100% (36/36), done.
+remote: Total 15428 (delta 18), reused 31 (delta 10), pack-reused 15381
+Receiving objects: 100% (15428/15428), 2.77 MiB | 820 KiB/s, done.
+Resolving deltas: 100% (10543/10543), done.
+[root@server1:~]# echo 'export PYENV_ROOT=&quot;$HOME/.pyenv&quot;' &amp;gt;&amp;gt; ~/.bash_profile
+[root@server1:~]# echo 'export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;' &amp;gt;&amp;gt; ~/.bash_profile
+[root@server1:~]# echo 'eval &quot;$(pyenv init -)&quot;' &amp;gt;&amp;gt; ~/.bash_profile
+[root@server1:~]# pyenv versions
+* system (set by /root/.pyenv/version)
+[root@server1:~]# pyenv install 2.7.13
+Downloading Python-2.7.13.tar.xz...
+-&amp;gt; https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
+Installing Python-2.7.13...
+Installed Python-2.7.13 to /root/.pyenv/versions/2.7.13
+
+[root@server1:~]# python --version
+Python 2.6.6
+[root@server1:~]# pyenv versions
+* system (set by /root/.pyenv/version)
+  2.7.13
+[root@server1:~]# cd /mysql
+
+[root@server1:/mysql]# pyenv local 2.7.13
+[root@server1:/mysql]# python --version
+Python 2.7.13
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;methods-of-installing&quot;&gt;Methods of Installing&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MySQL Server 5.7.17 or higher. For details, see Chapter 2, Installing and Upgrading MySQL. -&amp;gt; ok&lt;/li&gt;
+  &lt;li&gt;MySQL Shell 1.0.9 or higher. For details, see Section 19.3.1, “Installing MySQL Shell”.
+    &lt;ul&gt;
+      &lt;li&gt;Installing MySQL Shell from Direct Downloads from the MySQL Developer Zone&lt;/li&gt;
+      &lt;li&gt;mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz 를 받아서 all servers에 업로드&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;MySQL Router 2.1.3 or higher. For details, see Installation.
+    &lt;ul&gt;
+      &lt;li&gt;Download official MySQL packages: Downloads are available at http://dev.mysql.com/downloads/router.&lt;/li&gt;
+      &lt;li&gt;mysql-router-2.1.4-linux-glibc2.12-x86-64bit.tar.gz 를 받아서 all servers에 업로드
+@all servers&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:/mysql]# tar zxf mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz
+[root@server1:/mysql]# tar zxf mysql-router-2.1.4-linux-glibc2.12-x86-64bit.tar.gz
+cd /usr/local/bin
+ln -s  /mysql/mysql-shell-1.0.10-linux-glibc2.12-x86-64bit/bin/mysqlsh /usr/local/bin/mysqlsh
+ln -s  /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin/mysqlrouter /usr/local/bin/mysqlrouter
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;production-deployment&quot;&gt;Production Deployment&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://dev.mysql.com/doc/refman/5.7/en/mysql-innodb-cluster-working-with-production-deployment.html&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;create-user&quot;&gt;Create user&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;instance 관리를 위한 user account가 필요하다. root일 필요는 없다. 하지만 많은 권한을 가져야한다. SUPER포함..
+    &lt;ul&gt;
+      &lt;li&gt;The user account used to administer an instance does not have to be the root account, however the user needs to be assigned full read and write privileges on the Metadata tables in addition to full MySQL administrator privileges (SUPER, GRANT OPTION, CREATE, DROP and so on). To give the user your_user the privileges needed to administer InnoDB cluster issue:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;grgr@ip 유저를 활용한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;@all servers&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
+create user 'grgr'@'192.168.73.123' identified by 'grgr';
+
+GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
+GRANT RELOAD, SHUTDOWN, PROCESS, FILE, SUPER, REPLICATION SLAVE, REPLICATION CLIENT, CREATE USER ON *.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
+GRANT SELECT ON performance_schema.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
+GRANT SELECT ON sys.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
+
+create user 'grgr'@'192.168.81.192' identified by 'grgr';
+GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
+GRANT RELOAD, SHUTDOWN, PROCESS, FILE, SUPER, REPLICATION SLAVE, REPLICATION CLIENT, CREATE USER ON *.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
+GRANT SELECT ON performance_schema.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
+GRANT SELECT ON sys.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
+SET SQL_LOG_BIN=1;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;위처럼 멤버의 모든 아이피를 넣어줘야하지만, 유연한 변경을 위해서 %를 사용한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
+create user 'grgr'@'192.168.%' identified by 'grgr';
+GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.%' WITH GRANT OPTION;
+GRANT RELOAD, SHUTDOWN, PROCESS, FILE, SUPER, REPLICATION SLAVE, REPLICATION CLIENT, CREATE USER ON *.* TO grgr@'192.168.%' WITH GRANT OPTION;
+GRANT SELECT ON performance_schema.* TO grgr@'192.168.%' WITH GRANT OPTION;
+GRANT SELECT ON sys.* TO grgr@'192.168.%' WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.%' WITH GRANT OPTION;
+SET SQL_LOG_BIN=1;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;전체서버가 아직 클러스터 그룹이 되지 않은 상태이기 때문에, 모든 서버에 따로 변경을 가하는 경우에 SET SQL_LOG_BIN=0;을 잊지 않도록 한다. 나중에 dup에러를 만나지 않기 위해서. 물론 첫 구성이니 reset master로 해결할 수 있겠지만, 귀찮아지기 싫다면 SET SQL_LOG_BIN=0;로 작업한다. &amp;gt; 기존 사용하던 database가 추가되어있는 경우,&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Checking compliance of existing tables… FAIL
+ERROR: 6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위와 같은 에러를 만날 수 있다. PK가 모두 존재하더라도.. 이건 user가 해당 데이터베이스에 권한이 없기 때문이었다. 만약 database가 사용자데이터베이스를 사용중이라면 권한을 추가해야한다. &lt;code class=&quot;highlighter-rouge&quot;&gt;GRANT SELECT ON test.* TO grgr@'192.168.%' WITH GRANT OPTION;&lt;/code&gt; or 여러개라면, 그리고 귀찮다면 &lt;code class=&quot;highlighter-rouge&quot;&gt;GRANT SELECT ON *.* TO grgr@'192.168.%' WITH GRANT OPTION;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;working-with-mysqlsh&quot;&gt;working with mysqlsh&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;When working with a production deployment it is a good idea to configure verbose logging for MySQL Shell initially. This is helpful in finding and resolving any issues that may arise when you are preparing the server to work as part of InnoDB cluster. To start MySQL Shell with a verbose logging level type: -&amp;gt; production에서 작업할때는 log-level을 높여서 작업하면 이슈를 찾기가 쉽다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell&amp;gt; mysqlsh --log-level=DEBUG3&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The log file is located in ~/.mysqlsh/mysqlsh.log for Unix-based systems. On Microsoft Windows systems it is located in %APPDATA%\MySQL\mysqlsh\mysqlsh.log. See Section 18.5, “MySQL Shell Application Log”.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;checking-instance-state&quot;&gt;Checking Instance State&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;대상 인스턴스가 cluster에 추가할 수 있는 상태인지 먼저 확인한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;checking-instance-configuration&quot;&gt;Checking Instance Configuration&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+
+mysql-js&amp;gt; dba.checkInstanceConfiguration('grgr@192.168.73.123:3306')
+Please provide the password for 'grgr@192.168.73.123:3306':
+Validating instance...
+
+The instance '192.168.73.123:3306' is not valid for Cluster usage.
+
+The following issues were encountered:
+
+ - 2 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).
+ - Some configuration options need to be fixed.
+
++----------------------------------+---------------+----------------+--------------------------------------------------+
+| Variable                         | Current Value | Required Value | Note     |
++----------------------------------+---------------+----------------+--------------------------------------------------+
+| binlog_checksum                  | CRC32         | NONE           | Update the server variable or restart the server |
+| binlog_format                    | MIXED         | ROW            | Update the server variable or restart the server |
+| enforce_gtid_consistency         | OFF           | ON             | Restart the server     |
+| gtid_mode                        | OFF           | ON             | Restart the server     |
+| log_slave_updates                | 0             | ON             | Restart the server     |
+| master_info_repository           | FILE          | TABLE          | Restart the server     |
+| relay_log_info_repository        | FILE          | TABLE          | Restart the server     |
+| transaction_write_set_extraction | OFF           | XXHASH64       | Restart the server     |
++----------------------------------+---------------+----------------+--------------------------------------------------+
+
+
+Please fix these issues, restart the server and try again.
+
+{
+    &quot;config_errors&quot;: [
+        {
+            &quot;action&quot;: &quot;server_update&quot;,
+            &quot;current&quot;: &quot;CRC32&quot;,
+            &quot;option&quot;: &quot;binlog_checksum&quot;,
+            &quot;required&quot;: &quot;NONE&quot;
+        },
+        {
+            &quot;action&quot;: &quot;server_update&quot;,
+            &quot;current&quot;: &quot;MIXED&quot;,
+            &quot;option&quot;: &quot;binlog_format&quot;,
+            &quot;required&quot;: &quot;ROW&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;OFF&quot;,
+            &quot;option&quot;: &quot;enforce_gtid_consistency&quot;,
+            &quot;required&quot;: &quot;ON&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;OFF&quot;,
+            &quot;option&quot;: &quot;gtid_mode&quot;,
+            &quot;required&quot;: &quot;ON&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;0&quot;,
+            &quot;option&quot;: &quot;log_slave_updates&quot;,
+            &quot;required&quot;: &quot;ON&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;FILE&quot;,
+            &quot;option&quot;: &quot;master_info_repository&quot;,
+            &quot;required&quot;: &quot;TABLE&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;FILE&quot;,
+            &quot;option&quot;: &quot;relay_log_info_repository&quot;,
+            &quot;required&quot;: &quot;TABLE&quot;
+        },
+        {
+            &quot;action&quot;: &quot;restart&quot;,
+            &quot;current&quot;: &quot;OFF&quot;,
+            &quot;option&quot;: &quot;transaction_write_set_extraction&quot;,
+            &quot;required&quot;: &quot;XXHASH64&quot;
+        }
+    ],
+    &quot;errors&quot;: [
+        &quot;2 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).&quot;
+    ],
+    &quot;restart_required&quot;: true,
+    &quot;status&quot;: &quot;error&quot;
+}
+=&amp;gt; my.cnf 변경하고 다시 시작.
+
+mysql-js&amp;gt;  dba.checkInstanceConfiguration('grgr@192.168.73.123:3306')
+Please provide the password for 'grgr@192.168.73.123:3306':
+Validating instance...
+
+The instance '192.168.73.123:3306' is not valid for Cluster usage.
+
+The following issues were encountered:
+
+ - 2 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).
+
+Please fix these issues and try again.
+
+{
+    &quot;errors&quot;: [
+        &quot;2 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).&quot;
+    ],
+    &quot;restart_required&quot;: false,
+    &quot;status&quot;: &quot;error&quot;
+}
+mysql-js&amp;gt;
+=&amp;gt; pk 없는 테이블은 추가해준다.
+
+mysql-sql&amp;gt; \js
+Switching to JavaScript mode...
+mysql-js&amp;gt; dba.checkInstanceConfiguration('grgr@192.168.73.123:3306')
+Please provide the password for 'grgr@192.168.73.123:3306':
+Validating instance...
+
+The instance '192.168.73.123:3306' is valid for Cluster usage
+{
+    &quot;status&quot;: &quot;ok&quot;
+}
+mysql-js&amp;gt;
+=&amp;gt; status가 ok 라면 계속 진행한다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;creating-the-cluster&quot;&gt;Creating the Cluster&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[root@server1:~]# mysqlsh --log-level=DEBUG3 --uri grgr@192.168.73.123:3306&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Now create the cluster&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; var cluster = dba.createCluster('myCluster');
+A new InnoDB cluster will be created on instance 'grgr@192.168.73.123:3306'.
+
+Creating InnoDB cluster 'myCluster' on 'grgr@192.168.73.123:3306'...
+Adding Seed Instance...
+
+Cluster successfully created. Use Cluster.addInstance() to add MySQL instances.
+At least 3 instances are needed for the cluster to be able to withstand up to
+one server failure.
+
+mysql-js&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;check the instance state:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.checkInstanceState('grgr@192.168.73.123:3306')
+Please provide the password for 'grgr@192.168.73.123:3306':
+Analyzing the instance replication state...
+
+The instance '192.168.73.123:3306' is valid for the cluster.
+The instance is fully recoverable.
+
+{
+    &quot;reason&quot;: &quot;recoverable&quot;,
+    &quot;state&quot;: &quot;ok&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check the cluster status:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.status()
+{
+    &quot;clusterName&quot;: &quot;myCluster&quot;,
+    &quot;defaultReplicaSet&quot;: {
+        &quot;name&quot;: &quot;default&quot;,
+        &quot;primary&quot;: &quot;192.168.73.123:3306&quot;,
+        &quot;status&quot;: &quot;OK_NO_TOLERANCE&quot;,
+        &quot;statusText&quot;: &quot;Cluster is NOT tolerant to any failures.&quot;,
+        &quot;topology&quot;: {
+            &quot;192.168.73.123:3306&quot;: {
+                &quot;address&quot;: &quot;192.168.73.123:3306&quot;,
+                &quot;mode&quot;: &quot;R/W&quot;,
+                &quot;readReplicas&quot;: {},
+                &quot;role&quot;: &quot;HA&quot;,
+                &quot;status&quot;: &quot;ONLINE&quot;
+            }
+        }
+    }
+}
+mysql-js&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;adding-instances&quot;&gt;Adding instances&lt;/h4&gt;
+&lt;p&gt;You need to add two more instances to the cluster to make it tolerant to a server failure.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+
+mysql-js&amp;gt; cluster=dba.getCluster();
+
+mysql-js&amp;gt; cluster.status();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;다음과 같이 추가한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
+cluster.addInstance(&quot;grgr@192.168.81.192:3306&quot;)
+dba.checkInstanceConfiguration('grgr@192.168.85.198:3306')
+cluster.addInstance(&quot;grgr@192.168.85.198:3306&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;logs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please provide the password for 'grgr@192.168.85.198:3306':
+Validating instance...
+
+The instance '192.168.85.198:3306' is valid for Cluster usage
+{
+    &quot;status&quot;: &quot;ok&quot;
+}
+mysql-js&amp;gt;
+mysql-js&amp;gt; cluster.addInstance('grgr@192.168.85.198:3306')
+A new instance will be added to the InnoDB cluster. Depending on the amount of
+data on the cluster this might take from a few seconds to several hours.
+
+Please provide the password for 'grgr@192.168.85.198:3306':
+Adding instance to the cluster ...
+
+Cluster.addInstance: WARNING: Not running locally on the server and can not access its error log.
+ERROR:
+Group Replication join failed.
+ERROR: Error joining instance to cluster: '192.168.85.198:3306' - Query failed.3092 (HY000): The server is not configured properly to be an active member of the group. Please see more details on error log.. Query: START group_replication (RuntimeError)
+
+mysql-js&amp;gt; cluster.addInstance(&quot;grgr@192.168.85.198:3306&quot;, {ipWhitelist: &quot;192.168.73.0/24,192.168.81.0/24,192.168.85.0/24&quot;})
+A new instance will be added to the InnoDB cluster. Depending on the amount of
+data on the cluster this might take from a few seconds to several hours.
+
+Please provide the password for 'grgr@192.168.85.198:3306':
+Adding instance to the cluster ...
+
+The instance 'grgr@192.168.85.198:3306' was successfully added to the cluster.
+
+mysql-js&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;=&amp;gt; 잘 추가된다면 다행이지만..
+역시 여러가지 에러케이스가 존재한다.
+configuration다 변경했는지.
+user를 잘 생성했는지.
+PK를 다 추가했는지.
+checkInstanceConfiguration에서 걸린 에러를 잘 확인하도록 한다.
+정보가 부족하다면 dba.verbose = 1를 사용한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;error-cases&quot;&gt;Error Cases&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;User권한 부족&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; dba.verbose = 1
+1
+mysql-js&amp;gt; dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
+Please provide the password for 'grgr@192.168.81.192:3306':
+Validating instance...
+
+=========================== MySQL Provision Output ===========================
+Enter the password for server (grgr@192.168.81.192:3306):
+
+Running check command.
+Checking Group Replication prerequisites.
+* Comparing options compatibility with Group Replication... PASS
+Server configuration is compliant with the requirements.
+* Checking server version... PASS
+Server is 5.7.17
+
+* Checking that server_id is unique... PASS
+The server_id is valid.
+
+* Checking compatibility of Multi-Threaded Slave settings... PASS
+Multi-Threaded Slave settings are compatible with Group Replication.
+
+* Checking compliance of existing tables... FAIL
+ERROR: 6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).
+        PERCONA_SCHEMA.xtrabackup_history, test.events, test.t1, test.t2, test.tp, test_group_event_stats.event_user_actions
+
+Group Replication requires tables to use InnoDB and have a PRIMARY KEY or PRIMARY KEY Equivalent (non-null unique key). Tables that do not follow these requirements will be readable but not updateable when used with Group Replication. If your applications make updates (INSERT, UPDATE or DELETE) to these tables, ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
+You can retry this command with the --allow-non-compatible-tables option if you'd like to enable Group Replication ignoring this warning.
+
+
+ERROR: Error checking instance: The operation could not continue due to the following requirementsnot being met:
+Non-compatible tables found in database.
+==============================================================================
+The instance '192.168.81.192:3306' is not valid for Cluster usage.
+
+The following issues were encountered:
+
+ - 6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).
+
+Please fix these issues and try again.
+
+{
+    &quot;errors&quot;: [
+        &quot;6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null unique key).&quot;
+    ],
+    &quot;restart_required&quot;: false,
+    &quot;status&quot;: &quot;error&quot;
+}
+mysql-js&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;=&amp;gt; 추가된 데이터베이스에 권한이 없다. 권한을 부여
+&lt;code class=&quot;highlighter-rouge&quot;&gt;GRANT SELECT ON *.* TO grgr@'192.168.73.123' WITH GRANT OPTION;&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;IP whitelist문제
+    &lt;ul&gt;
+      &lt;li&gt;addInstance에서 작업하다가 에러남. 이건 무엇인가 한참 해맸으나. IP 대역대 문제였음.&lt;/li&gt;
+      &lt;li&gt;mysql error log를 함께 본다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:09:08.639569+09:00 0 [Warning] Plugin group_replication reported: '[GCS] Connection attempt from IP address 192.168.81.192 refused. Address is not in the IP whitelist.'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;=&amp;gt; 이런 에러를 발견했다면 whitelist문제일수 있다. group_replication_ip_whitelist= AUTOMATIC 이지만, C class를 벗어난 대역대 간의 통신에 대해서는 수동으로 추가해줄 필요가 있음. 물론 서로간에 방화벽이나 SElinux같은 것이 활성화 되지 않은 통신이 가능한 상태의 서버들간이어야함.&lt;/p&gt;
+
+&lt;p&gt;@server1: group_replication_ip_whitelist를 설정한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 16:18:00&amp;gt;stop group_replication;
+
+Query OK, 0 rows affected (35.04 sec)
+
+set global group_replication_ip_whitelist = '192.168.73.0/24,192.168.81.0/24,192.168.85.0/24';
+
+set global group_replication_ip_whitelist=AUTOMATIC;
+
+
+root@localhost:(none) 16:18:43&amp;gt;start group_replication;
+ERROR 3097 (HY000): The START GROUP_REPLICATION command failed as there was an error when joining the communication group.
+=&amp;gt; 노드가 1개뿐이었던 상태이므로 조인할수 없다는 에러가 나온다. 이렇게 되면,
+mysql-js&amp;gt; dba.rebootClusterFromCompleteOutage();
+Reconfiguring the default cluster from complete outage...
+
+
+The cluster was successfully rebooted.
+
+&amp;lt;Cluster:myCluster&amp;gt;
+
+
+
+ mysql-js&amp;gt; cluster.addInstance(&quot;grgr@192.168.81.192:3306&quot;);
+ A new instance will be added to the InnoDB cluster. Depending on the amount of
+ data on the cluster this might take from a few seconds to several hours.
+
+ Please provide the password for 'grgr@192.168.81.192:3306':
+ Adding instance to the cluster ...
+
+ The instance 'grgr@192.168.81.192:3306' was successfully added to the cluster.
+=&amp;gt; addInsatance 할때도 cluster.addInstance(“grgr@192.168.81.192:3306”, {ipWhitelist: “192.168.73.0/24,192.168.81.0/24,192.168.85.0/24”})와 같이 whitelist argument를 추가한다.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;gtid에러
+    &lt;ul&gt;
+      &lt;li&gt;addInstance에서 실패하면 mysqlsh 의 로그보다는 mysql error log를 보는 것에 좋다.&lt;/li&gt;
+      &lt;li&gt;mysql error log를 함께 본다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:16:32.035765+09:00 0 [ERROR] Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: 998a1dbd-7b3c-11e7-a6c0-fa163ed51496:1 &amp;gt; Group transactions: 7f3e956c-98f7-11e7-84a4-fa163e110d6b:1-159,
+b5eafd39-2316-11e7-88c5-fa163e110d6b:1-24'
+=&amp;gt; 트랜잭션이 더 있었다? 지금은 설정하면서 발생한 트랜잭션일 가능성이 높으므로, reset master해버린다.
+
+root@localhost:(none) 12:16:59&amp;gt;reset master;
+Query OK, 0 rows affected (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;check-cluster-status&quot;&gt;Check cluster status&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+
+mysql-js&amp;gt; cluster=dba.getCluster();
+
+mysql-js&amp;gt; cluster.status();
+{
+    &quot;clusterName&quot;: &quot;myCluster&quot;,
+    &quot;defaultReplicaSet&quot;: {
+        &quot;name&quot;: &quot;default&quot;,
+        &quot;primary&quot;: &quot;192.168.73.123:3306&quot;,
+        &quot;status&quot;: &quot;OK&quot;,
+        &quot;statusText&quot;: &quot;Cluster is ONLINE and can tolerate up to ONE failure.&quot;,
+        &quot;topology&quot;: {
+            &quot;192.168.73.123:3306&quot;: {
+                &quot;address&quot;: &quot;192.168.73.123:3306&quot;,
+                &quot;mode&quot;: &quot;R/W&quot;,
+                &quot;readReplicas&quot;: {},
+                &quot;role&quot;: &quot;HA&quot;,
+                &quot;status&quot;: &quot;ONLINE&quot;
+            },
+            &quot;192.168.81.192:3306&quot;: {
+                &quot;address&quot;: &quot;192.168.81.192:3306&quot;,
+                &quot;mode&quot;: &quot;R/O&quot;,
+                &quot;readReplicas&quot;: {},
+                &quot;role&quot;: &quot;HA&quot;,
+                &quot;status&quot;: &quot;ONLINE&quot;
+            },
+            &quot;192.168.85.198:3306&quot;: {
+                &quot;address&quot;: &quot;192.168.85.198:3306&quot;,
+                &quot;mode&quot;: &quot;R/O&quot;,
+                &quot;readReplicas&quot;: {},
+                &quot;role&quot;: &quot;HA&quot;,
+                &quot;status&quot;: &quot;ONLINE&quot;
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;deploy-mysql-router&quot;&gt;Deploy MySQL Router&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# cd /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit]# cd bin
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]#
+
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]# mysqlrouter --bootstrap root@localhost:3306 --user=mysql
+Please enter MySQL password for root:
+WARNING: The MySQL server does not have SSL configured and metadata used by therouter may be transmitted unencrypted.
+
+Bootstrapping system MySQL Router instance...
+MySQL Router  has now been configured for the InnoDB cluster 'myCluster'.
+
+The following connection information can be used to connect to the cluster.
+
+Classic MySQL protocol connections to cluster 'myCluster':
+- Read/Write Connections: localhost:6446
+- Read/Only Connections: localhost:6447
+
+X protocol connections to cluster 'myCluster':
+- Read/Write Connections: localhost:64460
+- Read/Only Connections: localhost:64470
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]#
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]# mysqlrouter &amp;amp;
+[1] 3225
+Connect using Mysql Router
+Read/Write Connections: localhost:6446
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]# mysqlsh --uri test@localhost:6446
+Creating a Session to 'test@localhost:6446'
+Enter password:
+Your MySQL connection id is 13101
+Server version: 5.7.17-enterprise-commercial-advanced-log MySQL Enterprise Server - Advanced Edition (Commercial)
+No default schema selected; type \use &amp;lt;schema&amp;gt; to set one.
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries.
+mysql-js&amp;gt; \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql&amp;gt; select @@hostname;
++-------------------------------+
+| @@hostname                    |
++-------------------------------+
+| server1 |
++-------------------------------+
+1 row in set (0.00 sec)
+mysql-sql&amp;gt; \q
+Bye!
+Read/Only Connections: localhost:6447
+[root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]# mysqlsh --uri test@localhost:6447
+Creating a Session to 'test@localhost:6447'
+Enter password:
+Your MySQL connection id is 116
+Server version: 5.7.17-log MySQL Community Server (GPL)
+No default schema selected; type \use &amp;lt;schema&amp;gt; to set one.
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries.
+mysql-js&amp;gt; \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql&amp;gt; select @@hostname;
++-------------------------------+
+| @@hostname                    |
++-------------------------------+
+| server3 |
++-------------------------------+
+1 row in set (0.00 sec)
+mysql-sql&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Make my replication to the InnoDB Cluster</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL 통계정보</title><link href="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/" rel="alternate" type="text/html" title="MySQL 통계정보" /><published>2017-04-02T00:00:00+09:00</published><updated>2017-04-02T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/">&lt;h1 id=&quot;mysql-통계정보&quot;&gt;MySQL 통계정보&lt;/h1&gt;
+
+&lt;h1 id=&quot;mysql-55--51&quot;&gt;MySQL 5.5 , 5.1&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;각각 모든 index 에 대하여 innodb_stats_sample_pages 에 설정된 값만큼 sampling 하여 통계정보(cardinality) 를 구하여 memory 에 있는 dictionary 에 저장하게 된다..&lt;/li&gt;
+  &lt;li&gt;기본적으로 아래와 같은 조건에서 통계정보가 생성되거나 기존의 정보에 업데이트된다. 해당 정보는 memory 에 존재하는 table dictionary 에 통계정보를 재생성하는데, 이는 memory 에 존재하기 때문에 해당 내용은 휘발성 데이터가 된다.
+    &lt;ul&gt;
+      &lt;li&gt;MySQL daemon이 시작되고 table 처음 오픈하거나 table cache 가 적어 table 을 닫고 다시 오픈되는 경우, 통계정보가 생성되며 이는 많은 resource 가 소비된다.&lt;/li&gt;
+      &lt;li&gt;사용자가 analyze table 을 실행한 경우&lt;/li&gt;
+      &lt;li&gt;마지막 통계정보 생성후 데이터의 1/16 (6.25%) 의 변경이 일어난 경우&lt;/li&gt;
+      &lt;li&gt;innodb_stats_on_metadata 에 의한 업데이트&lt;/li&gt;
+      &lt;li&gt;MySQL 5.5 , 5.1.32 이상에서는 innodb_stats_on_metadata 가 default 로 ON이었다. (https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_stats_on_metadata)&lt;/li&gt;
+      &lt;li&gt;이는 SHOW TABLE STATUS, SHOW INDEX 로 해당 테이블에 대한 정보를 조회하거나, INFORMATION_SCHEMA.TABLES 과 INFORMATION_SCHEMA.STATISTICS 를 확인하는 경우 자동으로 analyze table 이 실행되어 통계정보가 갱신된다.&lt;/li&gt;
+      &lt;li&gt;이러한 이유로 SHOW TABLE STATUS 혹은 INFORMATION_SCHEMA.TABLES 를 조회하여 InnoDB tablespace 의 가용량을 계산하는 모니터링 스크립트가 주기적으로 실행된다면, 이는 많은 오버헤드가 필요한 작업이 될 수 있다. 바쁜서버의 경우, 장애의 포인트가 될 수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;하지만 innodb_stats_sample_pages 이 충분히 큰 값을 갖고 innodb_stats_on_metadata 을 통해 빈번한 통계정보 갱신으로 이루어진 경우, 오히려 optimiser 가 실행계획을 세우는데는 더욱 도움이 된다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;mysql-56&quot;&gt;MySQL 5.6&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;5.5 에서처럼 innodb_stats_on_metadata=ON 으로 설정될 경우, 문제가 많이 발생하였다. 바쁜서버의 경우, 너무 자주 실행되는 SHOW 구문 혹은 스크립트에 의해 조회된 INFORMATION_SCHEMA.TABLES 에 (예를 들면, 테이블의 현재 가용공간을 가져오는 스크립트) 의해 MySQL 이 hang 상태에 접어드는 경우가 많았다. 이로써, 5.6.6 부터는 해당값의 default 값이 FALSE 로 변경되었다.
+    &lt;ul&gt;
+      &lt;li&gt;https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_stats_on_metadata&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;MySQL 5.6 에서는 새롭게 기본적으로 아래와 같은 조건에서 통계정보가 생성되거나 기존의 정보에 업데이트된다. innodb_stats_persistent 가 ON 인 경우 (default) 해당 정보는 memory 에 존재하는 table dictionary 에 통계정보를 재생성하며 해당 정보를 mysql.innodb_table_stats 과 mysql.innodb_index_stats 에 함께 저장한다.
+    &lt;ul&gt;
+      &lt;li&gt;이는 통계정보를 mysql.innodb_table_stats 과 mysql.innodb_index_stats 에 저장할지 아닐지에 대해 판단한다.&lt;/li&gt;
+      &lt;li&gt;innodb_stats_persistent_sample_pages 는 innodb_stats_persistent 이 ON 이 되어 있는 경우, 어느정도의 index page 를 탐색하여 통계정보를 만들지 결정한다. (https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_stats_persistent)&lt;/li&gt;
+      &lt;li&gt;innodb_stats_transient_sample_pages 는 5.5 에서 사용되었던 innodb_stats_sample_pages 의 이름이 바뀐것이다. innodb_stats_persistent 이 OFF 이 되어 있는 경우 (5.5 처럼 사용), 어느정도의 index page 를 탐색하여 통계정보를 만들지 결정한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;만약 MySQL 을 5.6 통계와 관련하여 default 설정으로 사용하는 경우, 아래와 같이 동작한다.
+    &lt;ul&gt;
+      &lt;li&gt;MySQL daemon이 시작되고 table 처음 오픈하거나 table cache 가 적어 table 을 닫고 다시 오픈되는 경우, 통계정보를 mysql.innodb_table_stats 과 mysql.innodb_index_stats 에서 가져온다.&lt;/li&gt;
+      &lt;li&gt;사용자가 analyze table 을 실행한 경우&lt;/li&gt;
+      &lt;li&gt;innodb_stats_persistent = ON 이라면, 마지막 통계정보 생성후 데이터의 1/10 (10%) 의 변경이 발생하게 된다면 갱신된다. OFF 라면 예전버젼과 같이 6.25% 가 변경되면 통계정보를 바꾼다. 이는 소스에 hard coding 되어 있다. ** innodb_stats_auto_recalc 에 의해 자동 통계 재조정이 조절된다. innodb_stats_auto_recalc 가 ON 이라면, 아래의 공식대로 수행되지만, OFF 라면 자동 통계 재조정은 하지 않는다. (https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_stats_auto_recalc)
+        &lt;ul&gt;
+          &lt;li&gt;https://github.com/mysql/mysql-server/blob/23032807537d8dd8ee4ec1c4d40f0633cd4e12f9/storage/innobase/row/row0mysql.cc&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/***********************************//*
+Updates the table modification counter and calculates new estimates
+for table and index statistics if necessary. */
+UNIV_INLINE
+void
+row_update_statistics_if_needed(
+/*============================*/
+ dict_table_t* table) /*!&amp;lt; in: table */
+{
+ ib_uint64_t counter;
+ ib_uint64_t n_rows;
+
+ if (!table-&amp;gt;stat_initialized) {
+  DBUG_EXECUTE_IF(
+   'test_upd_stats_if_needed_not_inited',
+   fprintf(stderr, 'test_upd_stats_if_needed_not_inited'
+    ' was executedn');
+  );
+  return;
+ }
+
+ counter = table-&amp;gt;stat_modified_counter++;
+ n_rows = dict_table_get_n_rows(table);
+
+ if (dict_stats_is_persistent_enabled(table)) {
+  if (counter &amp;gt; n_rows / 10 /* 10% */
+      &amp;amp;&amp;amp; dict_stats_auto_recalc_is_enabled(table)) {
+
+   dict_stats_recalc_pool_add(table);
+   table-&amp;gt;stat_modified_counter = 0;
+  }
+  return;
+ }
+
+ /* Calculate new statistics if 1 / 16 of table has been modified
+ since the last time a statistics batch was run.
+ We calculate statistics at most every 16th round, since we may have
+ a counter table which is very small and updated very often. */
+
+ if (counter &amp;gt; 16 + n_rows / 16 /* 6.25% */) {
+
+  ut_ad(!mutex_own(&amp;amp;dict;_sys-&amp;gt;mutex));
+  /* this will reset table-&amp;gt;stat_modified_counter to 0 */
+  dict_stats_update(table, DICT_STATS_RECALC_TRANSIENT);
+ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Default 값 (innodb_stats_persistent=ON,innodb_stats_auto_recalc=ON,innodb_stats_persistent_sample_pages=20)으로 사용한다 하더라도, TABLE 을 만들때 해당 데이터 변화량에 의해 자동으로 통계정보가 수집될지 아닐지를 결정할 수 있다. (https://dev.mysql.com/doc/refman/5.6/en/create-table.html)
+    &lt;ul&gt;
+      &lt;li&gt;STATS_AUTO_RECALC 는 GLOBAL 한 innodb_stats_auto_recalc 과 관계없이 해당 테이블에 의존적으로 동작한다. (시간이 지남에 따라 자주 통계정보가 바뀌어 실행계획이 틀어지는 경우 해당 값을 OFF 시켜 해당 테이블에 대한 자동 통계정보를 갱신하지 않게 만들 수 있다.)&lt;/li&gt;
+      &lt;li&gt;STATS_PERSISTENT 는 GLOBAL 한 innodb_stats_persistent 과 관계없이 해당 테이블에 의존적으로 동작한다. (특정 테이블의 경우, 통계정보를 자주 갱신해야 하는 경우, 해당값을 5.5 형태인 OFF 로 두어 SHOW 명령어등에 의해서도 자주 휘발성 통계정보를 만들 수 있다.)&lt;/li&gt;
+      &lt;li&gt;STATS_SAMPLE_PAGES 는 GLOBAL 한 innodb_stats_persistent_sample_pages 과 관계없이 해당 테이블에 의존적으로 동작한다. (해당 옵션을 잘 조절하여, DATA 가 큰 경우에는 STATS_SAMPLE_PAGES 등을 크게 잡아 통계정보를 좀 더 세심하게 만들어줄 수 있다.)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;참고 optimizer table 과 analyze table.
+    &lt;ul&gt;
+      &lt;li&gt;analyze table 은 지정된 만큼 인덱스의 데이터를 조회하여, 통계정보를 갱신한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL 통계정보</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Semi-Synchronous Replication on MySQL</title><link href="http://localhost:4000/blog/semi-synchronous-replication-on-mysql/" rel="alternate" type="text/html" title="Semi-Synchronous Replication on MySQL" /><published>2017-03-10T00:00:00+09:00</published><updated>2017-03-10T00:00:00+09:00</updated><id>http://localhost:4000/blog/semi-synchronous-replication-on-mysql</id><content type="html" xml:base="http://localhost:4000/blog/semi-synchronous-replication-on-mysql/">&lt;h1 id=&quot;semi-synchronous-replication-on-mysql&quot;&gt;Semi-Synchronous Replication on MySQL&lt;/h1&gt;
+
+&lt;h2 id=&quot;loss-less-semi-synchronous-replication-on-mysql-572&quot;&gt;Loss-less Semi-Synchronous Replication on MySQL 5.7.2&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;5.7.2이전, 이후 semi-sync replication방식 비교&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table class=&quot;relative-table wrapped confluenceTable&quot;&gt;&lt;colgroup&gt; &lt;col /&gt; &lt;col /&gt; &lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot;&gt;MySQL Version
+
+rpl_semi_sync_master_wait_point
+
+(introduced from 5.7)&lt;/th&gt;
+&lt;th class=&quot;confluenceTh&quot;&gt;MySQL 5.5 and 5.6
+
+AFTER_COMMIT(MySQL 5.7.2)&lt;/th&gt;
+&lt;th class=&quot;confluenceTh&quot;&gt;MySQL 5.7.2
+
+AFTER_SYNC(By default on MySQL 5.7.2)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot;&gt; Feature view&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; width=&quot;50%&quot;&gt;
+&lt;div class=&quot;content-wrapper&quot;&gt;
+
+&lt;a href=&quot;/uploads/after_commit.png&quot;&gt;&lt;img class=&quot;alignnone wp-image-927 size-full&quot; src=&quot;/uploads/after_commit.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/a&gt;
+
+&lt;/div&gt;&lt;/td&gt;
+&lt;td class=&quot;confluenceTd&quot; width=&quot;50%&quot;&gt;
+&lt;div class=&quot;content-wrapper&quot;&gt;
+
+&lt;a href=&quot;/uploads/after_sync.png&quot;&gt;&lt;img class=&quot;alignnone wp-image-928 size-full&quot; src=&quot;/uploads/after_sync.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/a&gt;
+
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Workflow&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;1. User transaction commit
+
+2. Engine prepare
+
+3. Binlog flush (writing to fscache)
+
+4. Binlog commit (fsync if sync_binlog=1)
+
+5-1. Engine commit (releasing row locks, changes are visible to other users)
+
+5-2. Binlog dump thread send event with ACK Request
+
+6. &lt;strong&gt;semisync wait (AFTER_COMMIT)&lt;/strong&gt;
+
+7. User Commit OK&lt;/td&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;1. User transaction commit
+
+2. Engine prepare
+
+3. Binlog flush (writing to fscache)
+
+4. Binlog commit (fsync if sync_binlog=1)
+
+5. Binlog dump thread send event with ACK Request
+
+6.&lt;strong&gt; loss-less semisync wait (AFTER_SYNC)&lt;/strong&gt;
+
+7. Engine commit (releasing row locks, changes are visible to other users)
+
+8. User Commit OK&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Master crash&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;If master is crashed at step 6.
+&lt;ul&gt;
+ 	&lt;li&gt;Master에 이미 Engine commit됨&lt;/li&gt;
+ 	&lt;li&gt;slave로 부터 ack를 기다리고 있는 중인데, 다른 세션은 해당 데이터를 읽을 수 있다.&lt;/li&gt;
+ 	&lt;li&gt;이 상태에서 master가 crash된다면, slave에는 해당 데이터가 없다. (Phantom Read)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;If master is crashed at step 6.
+&lt;ul&gt;
+ 	&lt;li&gt;Slave에서 ACK를 받지 못했다면, master에도 commit되지 않는다.&lt;/li&gt;
+ 	&lt;li&gt;Phantom Read가 일어나지 않는다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Data Integrity - 1. Master에만 존재하고 Slave에 존재하지않는 데이터&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;Possible&lt;/li&gt;
+ 	&lt;li&gt;slave에 replicated되지 않고 master에만 commit된 transaction을 manually rollback해야한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;None&lt;/li&gt;
+ 	&lt;li&gt;slave에 replicated되지 않고 master에만 commit된 transaction은 없다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Data Integrity - 2. Slave에만 존재하고 Master에 존재하지않는 데이터&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;workflow단계 중 3, 4 단계에서 master가 crash된 경우, master의 binlog에는 쓰여지지 않았는데, slave에는 이미 데이터가 전송되었을 가능성이 있었다.&lt;/li&gt;
+ 	&lt;li&gt;→ 5.6.17이후 fix됨(3 단계에서 user session 이 binlog lock(LOCK_log)를 hold 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;1&quot;&gt;
+&lt;div class=&quot;content-wrapper&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;None&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Strong Durability설정에서 binlog와 redo log(ib_logfile)관계
+
+1. sync_binlog=1
+
+2. innodb_flush_log_at_trx_commit=1
+
+3. innodb_support_xa=1&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;2&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;sync_binlog=1이라면, Binlog commit 단계에서 바로 file로 fsync한다.&lt;/li&gt;
+ 	&lt;li&gt;innodb_flush_log_at_trx_commit=1이라면, Engine commit단계에서 바로 redo log file 로 flush한다.&lt;/li&gt;
+ 	&lt;li&gt;binlog와 redo log의 synchronize를 manage하는 옵션이 innodb_support_xa=1이다. crash recovery시 redo log뿐 아니라 binary log까지 참조하여 transaction event를 recovery해준다.
+&lt;ul&gt;
+ 	&lt;li&gt;세부 내용은 하단 참조.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&quot;confluenceTh&quot; colspan=&quot;1&quot;&gt;Strong Durability설정에서 Crashed master recovery&lt;/th&gt;
+&lt;td class=&quot;confluenceTd&quot; colspan=&quot;2&quot;&gt;
+&lt;ul&gt;
+ 	&lt;li&gt;Binlog commit 후 Binlog dump가 slave IO thread에 binlog event를 전달한다. (binlog commit 완료)&lt;/li&gt;
+ 	&lt;li&gt;ACK 를 받지 않은 상태에서 master가 crash되었다면, slave에 데이터가 있을 수도 있고 없을 수도 있다.&lt;/li&gt;
+ 	&lt;li&gt;Master에는 binlog commit까지 된것이므로 recovery 시 데이터 복구 된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;strong-durability&quot;&gt;Strong Durability&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;sync_binlog=1&lt;/li&gt;
+  &lt;li&gt;innodb_flush_log_at_trx_commit=1&lt;/li&gt;
+  &lt;li&gt;innodb_support_xa=1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;distributed-transaction-processing-using-xa&quot;&gt;Distributed Transaction Processing Using XA&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;In version 5.0, the server uses XA internally to coordinate the binary log and the storage engines.&lt;/li&gt;
+  &lt;li&gt;XA protocol을 사용한 트랜잭션에 대해서 2 phase commit을 지원하는 기능이지만, 내부적으로 MySQL은 이 기능을 사용해서 binary log와 storage engines의 commit 프로세스를 2 PC로 수행한다.
+    &lt;ul&gt;
+      &lt;li&gt;XA includes a transaction manager that coordinates a set of resource managers so that they commit a global transaction as an atomic unit. Each transaction is assigned a unique XID, which is used by the transaction manager and the resource managers. When used internally in the MySQL server, the transaction manager is usually the binary log and the resource managers are the storage engines.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-phase-commit&quot;&gt;2 Phase commit&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/msha_0408.png&quot; alt=&quot;&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Phase 1. Innodb prepare
+    &lt;ul&gt;
+      &lt;li&gt;Error : rollback&lt;/li&gt;
+      &lt;li&gt;OK : Phase 2&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Before Phase 2. Binlog commit (XID 저장하고 있음)&lt;/li&gt;
+  &lt;li&gt;Phase 2. InnoDB commit
+    &lt;ul&gt;
+      &lt;li&gt;이때 commit이 fail하는 일은 보통 일어나지 않는다. phase1에서 prepare를 했다는 이야기는 commit을 할 수 있다는 것을 확인한 것이다. 그러므로 fail했을때에 대한 로직이 없다.&lt;/li&gt;
+      &lt;li&gt;하지만 여전히 HW fail은 발생할 수 있다. 다음의 Crash safety에서 recovery 단계를 살펴본다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After phase 2. XA cleanup. Binary log do nothing.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;crash-safety&quot;&gt;Crash safety&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/msha_0409.png&quot; alt=&quot;&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;InnoDB crash recovery.
+    &lt;ul&gt;
+      &lt;li&gt;Phase 2의 InnoDB commit까지 일어났다면, 변경분이 redo에 정상적으로 저장되었으므로 recover된다.&lt;/li&gt;
+      &lt;li&gt;InnoDB commit되기전, binlog에만 써진 변경사항이 존재할 수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The last binary log recovery.
+    &lt;ul&gt;
+      &lt;li&gt;마지막 binary log를 연다.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Format_description&lt;/code&gt; event를 확인하여 &lt;code class=&quot;highlighter-rouge&quot;&gt;binlog-in-use&lt;/code&gt; flag 가 설정되었다면, binlog가 제대로 쓰여졌다는 것을 의미한다. 그 Xid들에 대해서는 recovery해준다.&lt;/li&gt;
+      &lt;li&gt;binlog-in-use=0 이라면 제대로 쓰고 닫힌 것으로 볼수 없으므로  truncate한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Semi-Synchronous Replication on MySQL</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL slow query 를 효율적으로 이용해보자!</title><link href="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/" rel="alternate" type="text/html" title="MySQL slow query 를 효율적으로 이용해보자!" /><published>2016-12-15T00:00:00+09:00</published><updated>2016-12-15T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20slow%20query%20%EB%A5%BC%20%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/">&lt;h1 id=&quot;mysql-slow-query-를-효율적으로-이용해보자&quot;&gt;MySQL slow query 를 효율적으로 이용해보자!&lt;/h1&gt;
 
 &lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
@@ -185,25 +1524,25 @@
 
 &lt;h2 id=&quot;slow-query-에-쓰여지는것들&quot;&gt;Slow query 에 쓰여지는것들&lt;/h2&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;long_query_time 이상으로 실행되는 쿼리에 대하여, slow_query_log_file 에 존재하는 파일에 slow query 를 작성한다.
-    * long_query_time (default : 10) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time&lt;/a&gt;
+&lt;h3 id=&quot;1-long_query_time-이상으로-실행되는-쿼리에-대하여-slow_query_log_file-에-존재하는-파일에-slow-query-를-작성한다&quot;&gt;1. long_query_time 이상으로 실행되는 쿼리에 대하여, slow_query_log_file 에 존재하는 파일에 slow query 를 작성한다.&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;long_query_time (default : 10) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time&lt;/a&gt;
     &lt;ul&gt;
-      &lt;li&gt;OLTP 환경에서 해당값을 10초로 두는것은 개인적으로 너무 길다. 해당 값을 1초 혹은 2초로 수정하자.
-        &lt;ul&gt;
-          &lt;li&gt;slow_query_log_file (default : host_name-slow.log) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
+      &lt;li&gt;OLTP 환경에서 해당값을 10초로 두는것은 개인적으로 너무 길다. 해당 값을 1초 혹은 2초로 수정하자.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Index 를 사용하지 않는 쿼리들
-    * log_queries_not_using_indexes (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes&lt;/a&gt;
+  &lt;li&gt;slow_query_log_file (default : host_name-slow.log) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-index-를-사용하지-않는-쿼리들&quot;&gt;2. Index 를 사용하지 않는 쿼리들&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;log_queries_not_using_indexes (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes&lt;/a&gt;
     &lt;ul&gt;
       &lt;li&gt;해당옵션을 ON 하게 된다면, INDEX를 사용하지 않는 쿼리가 찍히게 된다. 이는 기존의 slow query (느려서 찍히게 되는 경우) 와 꼬일 수 있으므로, 프로젝트가 오픈되기 전 쿼리 검증을 위해 사용할 수 있다.&lt;/li&gt;
       &lt;li&gt;중간에 쿼리튜닝을 위해 사용해야 한다면, 아래와 같이 사용하자.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
 mysql&amp;gt; flush logs; 정보 수집을 한 후, 원래의 값으로 돌려놓자.
@@ -212,14 +1551,21 @@ mysql&amp;gt; flush logs;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  * 물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.   3. Admin 관련 명령어 혹은 slave 의 sql_thread 에 의해 실행된 명령어중 long_query_time 이상으로 실행된 명령어를 찾는다.
-* log_slow_admin_statements (default : OFF) - [http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements\\&quot;)
-* log_slow_slave_statements (default : OFF) - [http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements\\&quot;)
-  * 기본적으로 slow queries 에는 admin 관련 명령어나 slave 의 sql_thread 에 의해 실행된 명령어는 아무리 오래걸려도 찍히지 않는다. 해당 내용을 확인하기 위해서는 위의 두옵션을 ON 으로 설정해야 한다.
-  * admin 관련 명령어 는 ALTER TABLE, ANALYZE TABLE, CHECK TABLE, CREATE INDEX, DROP INDEX, OPTIMIZE TABLE, REPAIR TABLE 이다. 예전에 alter table 을 누가했는지 알 수 있는 방법을 문의한적이 있다. 이때 해당 방법은 좋은 선택이 될 수 있다. 물론 해당 명령어 역시, long_query_time 이상으로 실행된 명령어에 대해서만 찍힌다.
-  * 예제
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-admin-관련-명령어-혹은-slave-의-sql_thread-에-의해-실행된-명령어중-long_query_time-이상으로-실행된-명령어를-찾는다&quot;&gt;3. Admin 관련 명령어 혹은 slave 의 sql_thread 에 의해 실행된 명령어중 long_query_time 이상으로 실행된 명령어를 찾는다.&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;log_slow_admin_statements (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;log_slow_slave_statements (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;기본적으로 slow queries 에는 admin 관련 명령어나 slave 의 sql_thread 에 의해 실행된 명령어는 아무리 오래걸려도 찍히지 않는다. 해당 내용을 확인하기 위해서는 위의 두옵션을 ON 으로 설정해야 한다.&lt;/li&gt;
+      &lt;li&gt;admin 관련 명령어 는 ALTER TABLE, ANALYZE TABLE, CHECK TABLE, CREATE INDEX, DROP INDEX, OPTIMIZE TABLE, REPAIR TABLE 이다. 예전에 alter table 을 누가했는지 알 수 있는 방법을 문의한적이 있다. 이때 해당 방법은 좋은 선택이 될 수 있다. 물론 해당 명령어 역시, long_query_time 이상으로 실행된 명령어에 대해서만 찍힌다.&lt;/li&gt;
+      &lt;li&gt;예제&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# User@Host: root[root] @  [192.168.74.202]  Id:    17
 # Query_time: 3.362235  Lock_time: 0.007825 Rows_sent: 0  Rows_examined: 0
@@ -231,40 +1577,44 @@ alter table tester add index b(b);
 &lt;h2 id=&quot;효율적으로-활용하기&quot;&gt;효율적으로 활용하기&lt;/h2&gt;
 
 &lt;h3 id=&quot;1-long-query-time-과-mysqldumpslow를-이용하여-쿼리의-종류와-횟수-계산하기&quot;&gt;1. long-query-time 과 mysqldumpslow를 이용하여, 쿼리의 종류와 횟수 계산하기&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* 일반적으로 어떤 쿼리가 얼만큼 들어오는지 확인하기 위해 여러방법이 쓰일 수 있다. WAS에서 계산해볼 수도 있고, general log 를 내려 모든 쿼리를 확인할 수 있다. 하지만 이 경우 직접 통계를 내는 프로그램이 필요하다.
-* 간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;일반적으로 어떤 쿼리가 얼만큼 들어오는지 확인하기 위해 여러방법이 쓰일 수 있다. WAS에서 계산해볼 수도 있고, general log 를 내려 모든 쿼리를 확인할 수 있다. 하지만 이 경우 직접 통계를 내는 프로그램이 필요하다.&lt;/li&gt;
+  &lt;li&gt;간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global long_query_time=0;
 shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. [https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html](\\&quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&quot;) ### 2. min_examined_row_limit 를 이용하여, 특정 row 이상으로 검사한 쿼리만 찾기.
-* 비록, log_queries_not_using_indexes 를 통해 index 를 사용하지 않는 쿼리를 찾는다 하더라도, 테이블에 데이터가 10건정도라면 인덱스를 타지 않는것이 현명한 쿼리일 수 있다. 또한 적절히 limit 를 쓴 경우도 그러하다. 이러한 쿼리들을 걸러내기 위하여 min_examined_row_limit 라는 변수가 존재한다.
-* min_examined_row_limit (default : 0) - [http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit](\\&quot;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit\\&quot;)
-* 소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. &lt;a href=&quot;\\&amp;quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&amp;quot;&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      if (thd-&amp;gt;enable_slow_log)
-      {
-        ulonglong end_utime_of_query= thd-&amp;gt;current_utime();
-        thd_proc_info(thd, 'logging slow query');
+&lt;h3 id=&quot;2-min_examined_row_limit-를-이용하여-특정-row-이상으로-검사한-쿼리만-찾기&quot;&gt;2. min_examined_row_limit 를 이용하여, 특정 row 이상으로 검사한 쿼리만 찾기.&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;비록, log_queries_not_using_indexes 를 통해 index 를 사용하지 않는 쿼리를 찾는다 하더라도, 테이블에 데이터가 10건정도라면 인덱스를 타지 않는것이 현명한 쿼리일 수 있다. 또한 적절히 limit 를 쓴 경우도 그러하다. 이러한 쿼리들을 걸러내기 위하여 min_examined_row_limit 라는 변수가 존재한다.&lt;/li&gt;
+  &lt;li&gt;min_examined_row_limit (default : 0) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)&lt;/li&gt;
+&lt;/ul&gt;
 
-        if (((thd-&amp;gt;server_status &amp;amp; SERVER_QUERY_WAS_SLOW) ||
-             ((thd-&amp;gt;server_status &amp;amp;
-               (SERVER_QUERY_NO_INDEX_USED | SERVER_QUERY_NO_GOOD_INDEX_USED)) &amp;amp;&amp;amp;
-              opt_log_queries_not_using_indexes &amp;amp;&amp;amp;
-               !(sql_command_flags[thd-&amp;gt;lex-&amp;gt;sql_command] &amp;amp; CF_STATUS_COMMAND))) &amp;amp;&amp;amp; thd-&amp;gt;examined_row_count &amp;gt;= thd-&amp;gt;variables.min_examined_row_limit)
-        {
-          thd_proc_info(thd, 'logging slow query');
-          thd-&amp;gt;status_var.long_query_count++;
-          slow_log_print(thd, thd-&amp;gt;query(), thd-&amp;gt;query_length(),
-                         end_utime_of_query);
-        }
-      }
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (thd-&amp;gt;enable_slow_log)
+{
+  ulonglong end_utime_of_query= thd-&amp;gt;current_utime();
+  thd_proc_info(thd, 'logging slow query');
+
+  if (((thd-&amp;gt;server_status &amp;amp; SERVER_QUERY_WAS_SLOW) ||
+       ((thd-&amp;gt;server_status &amp;amp;
+         (SERVER_QUERY_NO_INDEX_USED | SERVER_QUERY_NO_GOOD_INDEX_USED)) &amp;amp;&amp;amp;
+        opt_log_queries_not_using_indexes &amp;amp;&amp;amp;
+         !(sql_command_flags[thd-&amp;gt;lex-&amp;gt;sql_command] &amp;amp; CF_STATUS_COMMAND))) &amp;amp;&amp;amp; thd-&amp;gt;examined_row_count &amp;gt;= thd-&amp;gt;variables.min_examined_row_limit)
+  {
+    thd_proc_info(thd, 'logging slow query');
+    thd-&amp;gt;status_var.long_query_count++;
+    slow_log_print(thd, thd-&amp;gt;query(), thd-&amp;gt;query_length(),
+                   end_utime_of_query);
+  }
+}
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -274,10 +1624,10 @@ shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
   &lt;li&gt;MASTER&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mysqld]
-    log-slow-queries=/log/slow_queries.log
-    long-query-time=1
-    log_slow_admin_statements
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+log-slow-queries=/log/slow_queries.log
+long-query-time=1
+log_slow_admin_statements
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -285,10 +1635,10 @@ shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
   &lt;li&gt;SLAVE&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [mysqld]
-    log-slow-queries=/log/slow_queries.log
-    long-query-time=1
-    log_slow_slave_statements
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+log-slow-queries=/log/slow_queries.log
+long-query-time=1
+log_slow_slave_statements
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL slow query 를 효율적으로 이용해보자!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">PostgreSQL synchronous_commit 개념도</title><link href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" rel="alternate" type="text/html" title="PostgreSQL synchronous_commit 개념도" /><published>2016-07-01T00:00:00+09:00</published><updated>2016-07-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/PostgreSQL%20synchronous_commit%20%EA%B0%9C%EB%85%90%EB%8F%84</id><content type="html" xml:base="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/">&lt;h1 id=&quot;postgresql-synchronous_commit-개념도&quot;&gt;PostgreSQL synchronous_commit 개념도&lt;/h1&gt;
 
@@ -852,518 +2202,4 @@ root@localhost:(none) 23:25:57&amp;gt; select * from performance_schema.host_cac
 Empty set (0.00 sec)
 ^^^ 물론 host_cache 테이블에는 아무것도 존재하지 않는다.
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">mysql client utility 와 -A 옵션</title><link href="http://localhost:4000/blog/mysql-client-utility-%EC%99%80-A-%EC%98%B5%EC%85%98/" rel="alternate" type="text/html" title="mysql client utility 와 -A 옵션" /><published>2016-04-06T00:00:00+09:00</published><updated>2016-04-06T00:00:00+09:00</updated><id>http://localhost:4000/blog/mysql%20client%20utility%20%EC%99%80%20-A%20%EC%98%B5%EC%85%98</id><content type="html" xml:base="http://localhost:4000/blog/mysql-client-utility-%EC%99%80-A-%EC%98%B5%EC%85%98/">&lt;h1 id=&quot;mysql-client-utility-와--a-옵션&quot;&gt;mysql client utility 와 -A 옵션&lt;/h1&gt;
-
-&lt;p&gt;mysql client utility 는 기본적으로 데이터베이스를 use 하는 순간, 해당 database의 테이블을 비롯하여 컬럼까지 읽어들여 캐시에 저장한 후 자동완성 기능을 제공한다. - &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash&lt;/a&gt; 이를 막고자, 접속시에 –no-auto-rehash 옵션을 두거나, -A 옵션을 사용할 수 있다. - &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash&lt;/a&gt; 이때문에 간편하기도 하지만 테이블이 많아진다면, mysql client에서 use database; 시에 몇 초동안이나 기다려야 할 수도 있다. 서버가 바쁜경우는 더욱 오래걸린다. 아래는 간단한 예제이다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---- #no-auto-rehash (해당 옵션을 사용하지 않은 경우)
-    [root@testvm2 db]# m
-    Welcome to the MySQL monitor.  Commands end with ; or g.
-    Your MySQL connection id is 34983
-    Server version: 5.6.19-log MySQL Community Server (GPL)
-
-    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
-
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
-
-    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
-
-    root@localhost:(none) 17:00:48&amp;gt;use test
-    Reading table information for completion of table and column names
-    You can turn off this feature to get a quicker startup with -A       &amp;lt;---- 익숙한 메세지지만, 내용인 즉 -A 를 사용해서 자동완성기능을 끌 수 있다는 것이다.
-
-    Database changed
-    root@localhost:test 17:00:55&amp;gt;      &amp;lt;-- tab을 두번 연속으로 누르게 된다면, mysql client tool 에서 실행할 수 있는 모든 명령어 및 table, column 들에 대한 정보들를 볼 수 있다.
-    Display all 11054 possibilities? (y or n)  &amp;lt;--- table 이 100개 정도 되니.. 어마어마한 숫자가 캐시되었다.
-
-
----- no-auto-rehash (해당 옵션을 사용한 경우)
-    [root@testvm2 db]# /db/5.6/bin/mysql -uroot
-    Welcome to the MySQL monitor.  Commands end with ; or g.
-    Your MySQL connection id is 357
-    Server version: 5.6.19-log MySQL Community Server (GPL)
-
-    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
-
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
-
-    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
-
-    root@localhost:(none) 17:07:07&amp;gt;use test
-    Database changed
-    root@localhost:test 17:07:10&amp;gt;       &amp;lt;-- tab을 눌러도 아무런 변화가 없습니다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;이와 같이 굳이 자동완성기능을 사용하지 않는경우, -A 옵션을 주는 것이 일반적이다. 또한 사용되지도 않을 테이블들을 모두 열어야 하기 때문에 서버가 바쁜경우라면 더욱 문제가 될 수 있다. 장애로 이어질 수도… 아래의 예제를 확인해보자&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---- no-auto-rehash
-    root@localhost:test 17:08:48&amp;gt;show open tables;
-    ...
-    70 rows in set (0.00 sec)
-
-    root@localhost:test 17:08:51&amp;gt; use test;
-    Database changed
-
-    root@localhost:test 17:08:55&amp;gt;show open tables;
-    ...
-    70 rows in set (0.00 sec) &amp;lt;-- 여전히 처음 시작할때의 70 개의 table 만을 열고 있다.
-
-
----- #no-auto-rehash
-    root@localhost:(none) 17:10:53&amp;gt;show open tables;
-    ...
-    70 rows in set (0.01 sec)
-
-    root@localhost:(none) 17:10:55&amp;gt; use test;
-    Reading table information for completion of table and column names
-    You can turn off this feature to get a quicker startup with -A
-
-    Database changed
-    root@localhost:test 17:11:02&amp;gt;show open tables;
-    ...
-    861 rows in set (0.02 sec) &amp;lt;-- 대략 800개의 테이블을 추가로 열었다.
-
-    test database 의 모든 테이블을 열었다. 이는 엄청난 오버헤드를 발생시킨다.
-        - http://dev.mysql.com/doc/refman/5.7/en/table-cache.html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;혹은 범용적으로 사용될 수 있는 my.cnf 인 /etc/my.cnf 의 [mysql] 항목에 아래와 같이 명시하여, mysql client 가 실행될때 아래의 옵션에 따라 실행될 수 있도록 조절할 수 있다. 이 경우에는 굳이 -A 옵션을 주지 않아도 자동으로 비활성화 된다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysql]
-no-auto-rehash
-show-warnings
-prompt=u@h:d_R:m:\s&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;추가로 show-warnings 는 warning 이 발생하였을시, show warnings 로 확인하는 것이 아닌 바로 warning을 볼 수 있게 해주는 옵션이다 show warnings 를 치기 귀찮은 사람은 강추. prompt 옵션은 mysql&amp;gt; 대신 좀 더 유익한 정보를 찍어주는 옵션이다. 현재 접속된 host 및 database, 시간등…&lt;/p&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">mysql client utility 와 -A 옵션</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Error Table “mysql”.”innodb_table_stats” not found 는 왜 발생하는가?</title><link href="http://localhost:4000/blog/innodb_table_stats_not-found/" rel="alternate" type="text/html" title="Error Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found 는 왜 발생하는가?" /><published>2016-04-06T00:00:00+09:00</published><updated>2016-04-06T00:00:00+09:00</updated><id>http://localhost:4000/blog/innodb_table_stats_not%20found</id><content type="html" xml:base="http://localhost:4000/blog/innodb_table_stats_not-found/">&lt;h1 id=&quot;error-table-mysqlinnodb_table_stats-not-found-는-왜-발생하는가&quot;&gt;“Error: Table “mysql”.”innodb_table_stats” not found” 는 왜 발생하는가?&lt;/h1&gt;
-
-&lt;h2 id=&quot;발생현상&quot;&gt;발생현상&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2016-03-29 09:37:03 7f6c34610700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;asaa&quot; but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
-2016-03-29 09:37:38 7f6c35a53700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 09:37:38 7f6c35a53700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;asaa&quot; but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
-2016-03-29 09:38:26 3007 [Warning] InnoDB: Cannot open table mysql/innodb_index_stats from the internal data dictionary of InnoDB though the .frm file for the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.
-2016-03-29 09:38:42 3007 [Warning] InnoDB: Cannot open table mysql/innodb_index_stats from the internal data dictionary of InnoDB though the .frm file for the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.
-....
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;n1&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p1&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p2&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:21 7f263f7fa700 InnoDB: Error: Fetch of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
-2016-03-29 18:00:31 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:31 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p2&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
-2016-03-29 18:00:41 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:00:41 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
-2016-03-29 18:01:22 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not found.
-2016-03-29 18:01:22 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table &quot;aaa&quot;.&quot;members_i&quot; /* Partition &quot;p3&quot; */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
-2016-03-29 18:01:32 7f26361fc700 InnoDB: Error: Table &quot;mysql&quot;.&quot;innodb_table_stats&quot; not foun
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;왜-발생하는가&quot;&gt;왜 발생하는가?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;MySQL 5.6 부터 mysql database 에 통계정보나 slave 관련 정보를 저장하기 위해 새로운 InnoDB table 5개가 추가 되었다. (innodb_index_stats, innodb_table_stats, slave_master_info, slave_relay_log_info, slave_worker_info)
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.6/en/innodb-persistent-stats.html&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/innodb-persistent-stats.html&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;또한 모든 InnoDB 관련 meta 정보는 ibdata1 (system tablespace) 에 저장된다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;하지만,
-    &lt;ul&gt;
-      &lt;li&gt;5.5 의 data를 5.6 upgrade 한 후, mysql_upgrade를 해주지 않은 경우 이 경우, mysql database 의 구조는 5.5 로 되돌아 간다. 반드시 mysql_upgrade 를 진행해 주어야 한다.
-        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.7/en/mysql-upgrade.html&quot;&gt;http://dev.mysql.com/doc/refman/5.7/en/mysql-upgrade.html&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;ibdata1 을 새롭게 구성하는 경우 innodb_file_per_table 를 사용함에도 ibdata1 이 지속적으로 커진 경우 ( undo 로그저장을 위해 지속적으로 커질 수 있음), ibdata1의 사이즈를 줄이고자 MySQL을 중지하고 ibdata1 과 ib_logfile 들을 삭제한 후 다시 시작할 수 있다. 이 경우, ibdata1 이 초기화되며 MySQL 은 모든 mysql database 를 제외한 서비스 databas 의 모든 InnoDB 테이블의 meta 정보를 새롭게 저장하게 된다. 하지만 정작 mysql database 에 새롭게 만들어진 5개의 InnoDB 테이블에 대한 정보는 저장하지 않아, 위와 같은 에러가 발생한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;해결방법은-무엇인가&quot;&gt;해결방법은 무엇인가?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;mysql 에 존재하는 innodb 관련 테이블들을 깨끗하게 지우고 mysql_upgrade 를 통해 새로 생성하는 방법&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    MySQL startup
-        1) 관련된 5개 테이블 삭제
-            mysql&amp;gt; use mysql;  drop table innodb_index_stats ; drop table innodb_table_stats; drop table slave_master_info; drop table slave_relay_log_info; drop table slave_worker_info;
-                - 테이블이 없다고 에러가 발생하지만, frm 을 삭제하여 다시 MySQL 이 시작될때 해당 테이블의 존재를 알려주지 않기 위함
-
-    MySQL shutdown
-        2) mysql database 에 존재하는 ibd 파일 삭제 (frm 은 drop table 시 지워졌음)
-            shell$ ls -al *.ibd
-            -rw-r--r--. 1 mysql mysql 409600 Mar 10 11:04 innodb_index_stats.ibd
-            -rw-r--r--. 1 mysql mysql  98304 Mar 10 11:04 innodb_table_stats.ibd
-            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_master_info.ibd
-            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_relay_log_info.ibd
-            -rw-r--r--. 1 mysql mysql  98304 Oct  9 22:01 slave_worker_info.ibd
-
-            shell$ rm -rf innodb_index_stats.ibd innodb_table_stats.ibd slave_master_info.ibd slave_relay_log_info.ibd  slave_worker_info.ibd
-                - 기존의 ibd 파일은 모두 삭제한다. 3번 작업에서 5개의 테이블을 생성시 오류를 피하기 위함
-
-    MySQL startup
-        3) mysql 강제 upgrade
-            shell$ mysql_upgrade --force -uroot -p
-                - 위 작업을 통해 존재하지 않는 5개의 테이블이 새로 생성이 된다.
-    MySQL restart
-        4) err 로그를 확인하여, 정상적으로 동작하는지 확인.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">“Error: Table “mysql”.”innodb_table_stats” not found” 는 왜 발생하는가?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기</title><link href="http://localhost:4000/blog/performace_schema-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B5%9C%EA%B7%BC%EC%97%90-%EC%8B%A4%ED%96%89%EB%90%9C-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기" /><published>2016-02-01T00:00:00+09:00</published><updated>2016-02-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/performace_schema%20%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC%20%EC%B5%9C%EA%B7%BC%EC%97%90%20%EC%8B%A4%ED%96%89%EB%90%9C%20%EC%BF%BC%EB%A6%AC%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/performace_schema-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B5%9C%EA%B7%BC%EC%97%90-%EC%8B%A4%ED%96%89%EB%90%9C-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;performace_schema-를-이용하여-최근에-실행된-쿼리-확인하기&quot;&gt;performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기&lt;/h1&gt;
-
-&lt;p&gt;show processlist 와 show engine processlist 를 확인하면, 어떤 쿼리인지는 알 수 없으나 트랜잭션을 잡고 있는것을 확인할 수 있습니다. commit 되지 않은 트랜잭션이 존재한다면, MySQL InnoDB는 old image를 읽어오기 위해 시간이 지날수록 느려지고 다른 쿼리또한 lock 으로 인해 대기될 수 있습니다. 해당 쿼리를 tracking 하기 위해서는 기본적으로 performace_schema 가 ON (1) 되어 있어야 합니다. MySQL 5.6.6 이상에서는 은 기본적으로 해당값이 ON 되어 있으므로, 추가적인 설정이 필요없습니다. &lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    mysql&amp;gt; show global variables like 'performance_schema';
-    +--------------------+-------+
-    | Variable_name      | Value |
-    +--------------------+-------+
-    | performance_schema | ON    |
-    +--------------------+-------+
-    1 row in set (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;먼저 예제를 하나 만들도록 하겠습니다. session 1 에서 테이블을 만들고, 해당 테이블에 값을 넣습니다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 1&amp;gt;
-    mysql&amp;gt; create table p ( a int);
-    Query OK, 0 rows affected (0.03 sec)
-
-    mysql&amp;gt; begin;
-    Query OK, 0 rows affected (0.00 sec)
-
-    mysql&amp;gt; insert into p values (1);
-    Query OK, 1 row affected (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;다른 세션에서 show engine innodb status, show processlist;, information_schema.INNODB_TRX 를 조회해 보겠습니다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 2&amp;gt;
-    mysql&amp;gt; show engine innodb statusG
-    ------------
-    TRANSACTIONS
-    ------------
-    Trx id counter 632685
-    Purge done for trx's n:o &amp;lt; 632684 undo n:o &amp;lt; 0 state: running but idle
-    History list length 443
-    LIST OF TRANSACTIONS FOR EACH SESSION:
-    ---TRANSACTION 0, not started
-    MySQL thread id 53587, OS thread handle 0x7f6f0c0a2700, query id 498268 localhost root init
-    show engine innodb status
-    ---TRANSACTION 0, not started
-    MySQL thread id 15918, OS thread handle 0x7f6eec0ed700, query id 498176 localhost gu cleaning up
-    ---TRANSACTION 632684, ACTIVE 32 sec
-/* 해당 transaction 이 Active 상태로 32초동안 active 상태지만, 어떤 쿼리인지는 알 수 없습니다. 단순히 test.p 테이블에 실행된 쿼리로만 짐작이 됩니다.
-현재는 아무런 쿼리도 돌고 있지 않기 때문입니다. 물론 undo log entires 를 통해 DML이 실행되었을것이라고 짐작할 수 있습니다.
-undo log entries 가 없는 경우도 있는데, 이는 begin; select .... 구문을 실행했기 때문입니다.
-commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 성능정하를 일이키는 요소입니다.
-**/
-    1 lock struct(s), heap size 360, 0 row lock(s), undo log entries 1
-    sMySQL thread id 56604, OS thread handle 0x7f6f0c061700, query id 497985 localhost root cleaning up
-    TABLE LOCK table `test`.`p` trx id 632684 lock mode IX
-
-
-
-    mysql&amp;gt; show processlist;
-    +-------+------+-----------+-------+---------+------+-------+------------------+
-    | Id    | User | Host      | db    | Command | Time | State | Info             |
-    +-------+------+-----------+-------+---------+------+-------+------------------+
-    | 15918 | gu   | localhost | mysql | Sleep   |   24 |       | NULL             |
-    | 53587 | root | localhost | NULL  | Query   |    0 | init  | show processlist |
-    | 56604 | root | localhost | test  | Sleep   |   42 |       | NULL             |
-    +-------+------+-----------+-------+---------+------+-------+------------------+
-    5 rows in set (0.00 sec)
-
-/* show processlist; 에서는 현재 해당 thread가 아무런 작업을 하고 있지 않기 때문에 Sleep 상태만을 보여줍니다.**/
-
-    mysql&amp;gt; select * from information_schema.INNODB_TRXG
-    *************************** 1. row ***************************
-                trx_id: 632684
-             trx_state: RUNNING
-               trx_started: 2016-01-26 04:22:10
-         trx_requested_lock_id: NULL
-          trx_wait_started: NULL
-            trx_weight: 2
-           trx_mysql_thread_id: 56604
-             trx_query: NULL
-           trx_operation_state: NULL
-         trx_tables_in_use: 0
-         trx_tables_locked: 0
-          trx_lock_structs: 1
-         trx_lock_memory_bytes: 360
-           trx_rows_locked: 0
-         trx_rows_modified: 1
-       trx_concurrency_tickets: 0
-           trx_isolation_level: REPEATABLE READ
-         trx_unique_checks: 1
-        trx_foreign_key_checks: 1
-    trx_last_foreign_key_error: NULL
-     trx_adaptive_hash_latched: 0
-     trx_adaptive_hash_timeout: 10000
-          trx_is_read_only: 0
-    trx_autocommit_non_locking: 0
-    1 row in set (0.00 sec)
-
-/* information_schema.INNODB_TRX 에서는 현재 해당 thread가 아무런 작업을 하고 있지 않기 때문에 trx_rows_modified 를 통해 어떤 DML 이 실행되었고, 1개의 record를 수정한채 commit 하지 않았다는것만을 알 수 있습니다. **/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;performance_schema.events_statements_current 의 데이터를 조회해 보겠습니다. 해당 테이블은 마지막에 해당 thread에서 실행된 쿼리를 저장하고 있습니다. 해당 테이블의 값을 조회하기 위해서는 performance_schema.threads 와 조인이 필요합니다. processlist 에서 보여주는 mysql 이 만든 thread와 performance_schema 에서 만든 thread 값이 다르기 때문입니다. (performance_schema.threads 는 background thread의 값도 가지고 있기 때문입니다.)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session 2&amp;gt;
-    mysql&amp;gt; SELECT esc.THREAD_ID, t.processlist_id, esc.SQL_TEXT FROM performance_schema.events_statements_current esc JOIN performance_schema.threads t ON t.thread_id = esc.thread_id WHERE t.processlist_id = 56604;
-    +-----------+----------------+--------------------------+
-    | THREAD_ID | processlist_id | SQL_TEXT                 |
-    +-----------+----------------+--------------------------+
-    |     56624 |          56604 | insert into p values (1) |
-    +-----------+----------------+--------------------------+
-
-/* process_id 가 56604 의 thread 가 실행한 마지막 쿼리가 나타납니다. 56604 값은 show engine innodb statusG 의 transaction 값 중 thread id 56604 값을 통해 알아낼 수 있습니다. **/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;위는 default 로 동작되는 방법입니다. 그렇다면, 지나간 쿼리에 대해서는 어떻게 로그인을 하는지 확인해보겠습니다. - https://dev.mysql.com/doc/refman/5.6/en/performance-schema-statement-tables.html 먼저 performance_schema.setup_consumers 테이블의 events_statements_history, events_statements_history_long 의 값을 ON 시켜주어야 합니다. (default 로 events_statements_current 는 ON이 되어 있는것을 확인할 수 있습니다.)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    mysql&amp;gt; select * from performance_schema.setup_consumers where name like 'events_statements_%';
-    +--------------------------------+---------+
-    | NAME                           | ENABLED |
-    +--------------------------------+---------+
-    | events_statements_current      | YES     |
-    | events_statements_history      | NO      |
-    | events_statements_history_long | NO      |
-    +--------------------------------+---------+
-    3 rows in set (0.00 sec)
-
-
-    mysql&amp;gt; UPDATE performance_schema.setup_consumers SET ENABLED = 'YES' WHERE name like 'events_statements_%';
-    Query OK, 2 row affected (0.06 sec)
-    Rows matched: 3  Changed: 2  Warnings: 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;다시 session 1에서 쿼리를 실행해 보겠습니다.&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;Session&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------+&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Empty&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;다른 세션에서 events_statements_history_long 의 값을 조회하여 해당세션이 실행한 쿼리들을 확인할 수 있습니다.&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THREAD_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SQL_TEXT&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;performance_schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;events_statements_history_long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;JOIN&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;performance_schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;threads&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thread_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;esh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thread_id&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TIMER_END&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ASC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;THREAD_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;processlist_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQL_TEXT&lt;/span&gt;                  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;56624&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;          &lt;span class=&quot;mi&quot;&gt;56604&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-----------+----------------+---------------------------+&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;위와 같이 시간순으로 조회될 수 있습니다. 전체 쿼리를 저장할 수 있는 갯수는 아래의 설정을 통해 가능합니다. (performance_schema_events_statements_history_size, performance_schema_events_statements_history_long_size)
-5.6.6 이상부터는 default 값으로 MySQL 의 현재상태를 고려하여 값이 자동으로 늘어나거나 줄어들게 됩니다.
-물론 아래의 값으로 고정시킬 수도 있습니다.&lt;/p&gt;
-
-&lt;p&gt;https://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema_events_statements_history_size
-https://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema_events_statements_history_long_size&lt;/p&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">performace_schema 를 이용하여 최근에 실행된 쿼리 확인하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">유용한 mysql client tool 옵션 (my.cnf 에 설정)</title><link href="http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C-mysql-client-tool-%EC%98%B5%EC%85%98/" rel="alternate" type="text/html" title="유용한 mysql client tool 옵션 (my.cnf 에 설정)" /><published>2015-12-17T00:00:00+09:00</published><updated>2015-12-17T00:00:00+09:00</updated><id>http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C%20mysql%20client%20tool%20%EC%98%B5%EC%85%98</id><content type="html" xml:base="http://localhost:4000/blog/%EC%9C%A0%EC%9A%A9%ED%95%9C-mysql-client-tool-%EC%98%B5%EC%85%98/">&lt;h1 id=&quot;유용한-mysql-client-tool-옵션-mycnf-에-설정&quot;&gt;유용한 mysql client tool 옵션 (my.cnf 에 설정)&lt;/h1&gt;
-
-&lt;p&gt;현재 내가 사용하는 my.cnf 에는 다음과 같은 내용이 명시되어 있다.
-[mysqld] 가 아닌 [mysql] 에 명시해야 한다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;my.cnf&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysql]
-prompt=(\U) {\h}[\d] \R:\m:\s&amp;gt;_
-pager=head -n 50
-show-warnings
-i-am-a-dummy
-no-auto-rehash
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;promptu-hd-rms_&quot;&gt;prompt=(\U) {\h}[\d] \R:\m:\s&amp;gt;_&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;접속 시 prompt 에 보여 줄 내용을 명시한다. default 로는 mysql (자세한 옵션은 아래 메뉴얼에 존재한다.) Host 정보를 통해 실수를 줄이거나 실행시간을 체크해 볼 수 있다. TEST DB로 착각하고 데이터베이스를 drop 한 기억이… ㄷㄷㄷ
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;my.cnf에 명시할 수도 있고, mysql에서 직접 필요할때만 (시간측정을 통한 test) 실행할 수 도 있다.
-    &lt;ul&gt;
-      &lt;li&gt;직접 실행하는 경우는 mysql client tool 에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; prompt (U) {h}[d] R:m:s&amp;gt;_ &lt;/code&gt;를 실행한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [root@testvm2 ~]# /db/5.6/bin/mysql --defaults-file=/db/5.6/conf/my.cnf -uroot --host=192.168.74.203
-    Welcome to the MySQL monitor.  Commands end with ; or g.
-    Your MySQL connection id is 1152
-    Server version: 5.6.27-enterprise-commercial-advanced-log MySQL Enterprise Server - Advanced Edition (Commercial)
-
-    Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
-
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
-
-    Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
-
-    (root@192.168.74.202) {192.168.74.203}[(none)] 07:33:36&amp;gt;
-    (root@192.168.74.202) {192.168.74.203}[(none)] 07:34:55&amp;gt; use test
-    Database changed
-    (root@192.168.74.202) {192.168.74.203}[test] 07:34:56&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;pagerhead--n-50&quot;&gt;pager=head -n 50&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;pager는 결과값을 OS 명령어를 통해 이용할 수 있게 해준다. 잘 이용하면 아주 유익하게 사용할 수 있다. 결과만을 다른 파일로 저장할 수도 있고 less 를 사용하여 스크롤을 안 할 수 있다. 나는 주로 많은 양의 데이터를 테스트할때 이용하는데, 10000 row가 select 되었더라도 화면에 뿌려지는 것은 앞에서 50개로 자를 수 있다.
-    &lt;ul&gt;
-      &lt;li&gt;직접 실행하는 경우는 mysql client tool 에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt; pager less -n -i -F -X -E&lt;/code&gt; 를 실행한다.&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-commands.html&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;물론 &lt;code class=&quot;highlighter-rouge&quot;&gt;head, less, cat | &amp;gt;&lt;/code&gt;등도 모두 사용가능하다.&lt;/li&gt;
-      &lt;li&gt;해당내용은 &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql&amp;gt;s&lt;/code&gt; 를 통해 확인가능하다. (s, status 명령어는 통계를 잽싸게 보는데도 유리하다.)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:40:49&amp;gt; select * from test.abcd limit 10000;
-    +------+------------------------------------------------------------------------------------------------------+
-    | a    | b                                                                                                    |
-    +------+------------------------------------------------------------------------------------------------------+
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv |
-    |    2 | cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc |
-    |    2 | dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd |
-    |    1 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    |    2 | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa |
-    10000 rows in set (0.05 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;show-warnings&quot;&gt;show-warnings&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;warning 이 발생시, 자동으로 보여준다.
-가끔씩 warning을 보려고 show warnings 를 실행하다… 오타로 날라가는 슬픈현실을 막을 수 있다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:40:16&amp;gt; explain extended select * from test.abcd;
-    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
-    | id | select_type | table | type | possible_keys | key  | key_len | ref  | rows    | filtered | Extra |
-    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
-    |  1 | SIMPLE      | abcd  | ALL  | NULL          | NULL | NULL    | NULL | 2532999 |   100.00 | NULL  |
-    +----+-------------+-------+------+---------------+------+---------+------+---------+----------+-------+
-    1 row in set, 1 warning (0.00 sec)
-
-    Note (Code 1003): /* select#1 */ select `test`.`abcd`.`a` AS `a`,`test`.`abcd`.`b` AS `b` from `test`.`abcd`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;i-am-a-dummy&quot;&gt;i-am-a-dummy&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;나는 바보? 라는 뜻이다. 가끔 mysql client tool 에서 접속하여 오래걸리는 쿼리를 실행하여 서비스에 문제가 생기는일이 있다.&lt;/li&gt;
-  &lt;li&gt;delete 나 update 시 where 조건이 없으면 에러를 낸다.&lt;/li&gt;
-  &lt;li&gt;select시 limit 를 안 붙이면 자동으로 1000 이 붙는다.&lt;/li&gt;
-  &lt;li&gt;쿼리가 실행될때 row를 최대 1000000 개만 읽는다.&lt;/li&gt;
-  &lt;li&gt;정말 테이블의 모든 데이터에 대하여 변경으로 가하려면, where 1=1 을 넣을 수 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    (root@192.168.74.202) {192.168.74.203}[test] 07:48:52&amp;gt; delete from test.abcd;
-    ERROR 1175 (HY000): You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;no-auto-rehash&quot;&gt;no-auto-rehash&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql client tool에서 자동완성 기능을 사용할 수 있는데, 이는 접속시 오버헤드가 발생한다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">유용한 mysql client tool 옵션 (my.cnf 에 설정)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>

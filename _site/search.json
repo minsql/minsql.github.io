@@ -2,9 +2,41 @@
 
   
     {
+      "title"			: "MySQL range partition VS range columns partition",
+      "link"			: "http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/",
+      "excerpt"		: "MySQL range partition VS range columns partition"
+    }
+  
+
+  
+    ,{
       "title"			: "MySQL sandbox 설치와 이용방법",
       "link"			: "http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/",
       "excerpt"		: "MySQL sandbox 설치와 이용방법"
+    }
+  
+
+  
+    ,{
+      "title"			: "Make my replication to the InnoDB Cluster",
+      "link"			: "http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/",
+      "excerpt"		: "Make my replication to the InnoDB Cluster"
+    }
+  
+
+  
+    ,{
+      "title"			: "MySQL 통계정보",
+      "link"			: "http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/",
+      "excerpt"		: "MySQL 통계정보"
+    }
+  
+
+  
+    ,{
+      "title"			: "Semi-Synchronous Replication on MySQL",
+      "link"			: "http://localhost:4000/blog/semi-synchronous-replication-on-mysql/",
+      "excerpt"		: "Semi-Synchronous Replication on MySQL"
     }
   
 

@@ -1,9 +1,12 @@
 // TYPOGRAPHY ================================================
-$base-font                : 'source-sans-pro', sans-serif;
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+
+$base-font                : "Nanum Gothic", 'source-sans-pro', sans-serif;
 $heading-font             : $base-font;
 $caption-font             : $base-font;
-$code-font                : 'source-code-pro', monospace;
-$alt-font                 : 'source-sans-pro', sans-serif;
+$code-font                : "Nanum Gothic Coding",'source-code-pro', monospace;
+$alt-font                 : "Nanum Gothic", 'source-sans-pro', sans-serif;
 
 $doc-font-size            : 16;
 $doc-line-height          : 24;
@@ -20,7 +23,7 @@ body {
 
 // COLORS =====================================================
 $body-color               : #fff;
-$text-color               : #222;
+$text-color               : #505050;
 $base-color               : #343434;
 $comp-color               : adjust-hue($base-color, 180);
 $border-color             : #ddd;
