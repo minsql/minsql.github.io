@@ -5,7 +5,7 @@ locale: ko_KR
 description: 밥먹고 살기 힘든 부부 DBA
 logo: site-logo.png
 search: true
-url: #http://minsql.github.io
+url: http://minsql.com
 
 # Jekyll configuration
 
@@ -29,7 +29,8 @@ comments: true
 include: [".htaccess"]
 exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", ".less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "vendor"]
 
-
+paginate: 20 # amount of posts to show
+paginate_path: /page:num/
 
 # Site owner
 owner:

@@ -4,7 +4,7 @@ author: min_cho
 created: 2014/11/21 05:08:49
 modified:
 layout: post
-tags: Mysql
+tags: MySQL
 image:
   feature: mysql.png
 categories: blog
