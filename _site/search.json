@@ -490,14 +490,6 @@
 
   
     ,{
-      "title"			: "Override Author Byline Test Post",
-      "link"			: "http://localhost:4000/articles/author-override/",
-      "excerpt"		: "An article to test overriding the default site author."
-    }
-  
-
-  
-    ,{
       "title"			: "pg_stat_activity truncate query size at 1024",
       "link"			: "http://localhost:4000/blog/pg_stat_activity-truncate-query-size-at-1024/",
       "excerpt"		: "pg_stat_activity truncate query size at 1024"
@@ -533,62 +525,6 @@
       "title"			: "slave_sql_verify_checksum 성능에 미치는 영향",
       "link"			: "http://localhost:4000/blog/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/",
       "excerpt"		: "slave_sql_verify_checksum 성능에 미치는 영향"
-    }
-  
-
-  
-    ,{
-      "title"			: "Syntax Highlighting Post",
-      "link"			: "http://localhost:4000/articles/code-highlighting-post/",
-      "excerpt"		: "Demo post displaying the various ways of highlighting code in Markdown."
-    }
-  
-
-  
-    ,{
-      "title"			: "Sample Link Post",
-      "link"			: "http://localhost:4000/articles/sample-link-post/",
-      "excerpt"		: "Example and code for using link posts."
-    }
-  
-
-  
-    ,{
-      "title"			: "A Post with a Video",
-      "link"			: "http://localhost:4000/articles/video-post/",
-      "excerpt"		: "Custom written post descriptions are the way to go… if you’re not lazy."
-    }
-  
-
-  
-    ,{
-      "title"			: "Post with Large Feature Image and Text",
-      "link"			: "http://localhost:4000/articles/readability-feature-post/",
-      "excerpt"		: "Custom written post descriptions are the way to go… if you’re not lazy."
-    }
-  
-
-  
-    ,{
-      "title"			: "A Post with Images",
-      "link"			: "http://localhost:4000/articles/sample-post-images/",
-      "excerpt"		: "Examples and code for displaying images in posts."
-    }
-  
-
-  
-    ,{
-      "title"			: "Testing Readability with a Bunch of Text",
-      "link"			: "http://localhost:4000/articles/readability-post/",
-      "excerpt"		: "A ton of text to test readability."
-    }
-  
-
-  
-    ,{
-      "title"			: "Sample Post",
-      "link"			: "http://localhost:4000/articles/sample-post/",
-      "excerpt"		: "Just about everything you’ll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more."
     }
   
 
@@ -638,6 +574,30 @@
 
   
 
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page2/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page3/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page4/",
+      "excerpt"		: ""
+    }
   
 
 ]

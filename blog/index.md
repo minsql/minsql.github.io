@@ -13,5 +13,3 @@ search_omit: true
   </article></li>
 {% endfor %}
 </ul>
-
-{% include paginator.html %}
