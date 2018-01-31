@@ -31,12 +31,19 @@ exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.
 future: true
 timezone: Asia/Tokyo
 read_time: true
+
 # Pagination Settings
 pagination:
   enabled: true
   per_page: 30 # amount of posts to show
   permalink: '/:num/'
 
+# Plugins (previously gems:)
+plugins:
+  - jekyll-paginate-v2
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
 
 # Site owner
 owner:
