@@ -7,7 +7,7 @@ layout: post
 tags: MySQL
 image:
   feature: mysql.png
-categories: blog
+#categories: blog
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"
