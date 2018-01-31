@@ -163,13 +163,12 @@
 
 <h5 id="1-server1-준비">1. server1 준비</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./bin/initdb --pgdata=/data1/9.5/data -W
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/initdb --pgdata=/data1/9.5/data -W
+</code></pre></div></div>
 
 <h5 id="2-server1-postgresqlconf">2. server1 postgresql.conf</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>listen_addresses = '*'          # what IP address(es) to listen on;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5435                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
 wal_log_hints = on                      # also do full page writes of non-critical updates
@@ -179,30 +178,26 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # "on" allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="3-server1-pg_hbaconf">3. server1 pg_hba.conf</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>host    replication     postgres        ::1/128                 trust
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>host    replication     postgres        ::1/128                 trust
+</code></pre></div></div>
 
 <h5 id="4-server1-start">4. server1 start</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pg_ctl -D /data1/9.5/data start
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pg_ctl -D /data1/9.5/data start
+</code></pre></div></div>
 
 <h5 id="5-server2-준비">5. server2 준비</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
+</code></pre></div></div>
 
 <h5 id="6-server2-postgresqlconf">6. server2 postgresql.conf</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>listen_addresses = '*'          # what IP address(es) to listen on;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5445                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
 wal_log_hints = on                      # also do full page writes of non-critical updates
@@ -212,24 +207,21 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # "on" allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="7-server2-pg_hbaconf">7. server2 pg_hba.conf</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>host    replication     postgres        ::1/128                 trust
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>host    replication     postgres        ::1/128                 trust
+</code></pre></div></div>
 
 <h5 id="8-server2-recoveryconf">8. server2 recovery.conf</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>standby_mode = 'on'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>standby_mode = 'on'
 primary_conninfo = 'host=localhost port=5435'
 restore_command = 'cp /backup1/9.5/pg_arc/%f %p'
 recovery_target_timeline = 'latest'
 trigger_file = '/tmp/trigger_file_0'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="ii-failover-테스트">II. failover 테스트</h4>
 
@@ -239,17 +231,16 @@ trigger_file = '/tmp/trigger_file_0'
 
 <h5 id="1-master-failover하자">1. master failover하자</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@server 1
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@server 1
 touch /tmp/trigger_file_0
 @server2
 tail -f pg_log/postgresql-2016-06-10_123437.log
 pgbench -i -s 10 postgres
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="2-pg_rewind-테스트">2. pg_rewind 테스트</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@server1
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@server1
 [postgres@pgvm1 data]$ pg_ctl stop
 waiting for server to shut down.... done
 server stopped
@@ -265,8 +256,7 @@ need to copy 458 MB (total source directory size is 482 MB)
 469734/469734 kB (100%) copied
 creating backup label and updating control file
 Done!
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="3-recoveryconf-생성">3. recovery.conf 생성</h5>
 
@@ -275,15 +265,14 @@ Done!
   <li>server2꺼 recovery.done sync된것이 있으니 이걸 활용해서 변경</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvm1 data]$ cp recovery.done recovery.conf
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvm1 data]$ cp recovery.done recovery.conf
 [postgres@pgvm1 data]$ vi recovery.conf
 standby_mode = 'on'
 primary_conninfo = 'host=localhost port=5445'
 restore_command = 'cp /backup1/9.5s1/pg_arc/%f %p'
 recovery_target_timeline = 'latest'
 trigger_file = '/tmp/trigger_file_0'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="4-postgresqlconf-변경">4. postgresql.conf 변경</h5>
 
@@ -292,7 +281,7 @@ trigger_file = '/tmp/trigger_file_0'
   <li>내경우엔 port랑 archive command</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvm1 data]$ vi postgresql.conf
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvm1 data]$ vi postgresql.conf
 listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5435                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
@@ -303,19 +292,17 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # "on" allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="5-failback">5. failback</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvm1 data]$ pg_ctl start
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvm1 data]$ pg_ctl start
 server starting
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h5 id="6-failback-확인">6. failback 확인</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@server1(new slave)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@server1(new slave)
 #pg_log/로그파일 확인
 LOG:  database system was interrupted while in recovery at log time 2016-06-10 12:35:31 GMT-10
 HINT:  If this has occurred more than once some data might be corrupted and you might need to choose an earlier recovery target.
@@ -351,8 +338,7 @@ postgres=# select * from pg_stat_replication ;
 
 Time: 6.919 ms
 postgres=#
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

@@ -184,7 +184,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvreduce --size 9.5G /dev/vg_vm3/lv_data
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]# lvreduce --size 9.5G /dev/vg_vm3/lv_data
       WARNING: Reducing active and open logical volume to 9.50 GiB
       THIS MAY DESTROY YOUR DATA (filesystem etc.)
     Do you really want to reduce lv_data? [y/n]: y
@@ -193,17 +193,15 @@
     [root@testvm1 ~]# umount /data1
     [root@testvm1 ~]# e2fsck -f /dev/vg_vm3/lv_data
     [root@testvm1 ~]# resize2fs /dev/vg_vm3/lv_data
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>그리고 스냅샷 볼륨을 생성해본다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data
       Logical volume "mdb-snap01" created
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>만약 스냅샷 볼륨의 공간이 부족하게 되면, 이 스냅샷 이미지는 못쓰게 된다. 버리고 다시 생성해야한다.</li>
@@ -217,12 +215,11 @@
   <li>또는, backup image를 압축해서 옮길수도 있다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# dd if=/dev/vg_vm3/mdb-snap01 | gzip &gt; /db/mongo/mdb-snap01.gz &amp;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]# dd if=/dev/vg_vm3/mdb-snap01 | gzip &gt; /db/mongo/mdb-snap01.gz &amp;
     19922944+0 records in
     19922944+0 records out
     10200547328 bytes (10 GB) copied, 169.867 s, 60.1 MB/s
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="3-restore-a-snapshot">3. Restore a Snapshot</h3>
 
@@ -235,7 +232,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate -l 100%FREE --name lv_backupsnap vg_vm4
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate -l 100%FREE --name lv_backupsnap vg_vm4
       Logical volume "lv_backupsnap" created
     [root@testvm1 ~]# gzip -d -c /db/mongo/mdb-snap01.gz  | dd of=/dev/vg_vm4/lv_backupsnap
     19922944+0 records in
@@ -243,8 +240,7 @@
     10200547328 bytes (10 GB) copied, 343.295 s, 29.7 MB/s
 
     [root@testvm1 ~]# mount /dev/vg_vm4/lv_backupsnap /backupsnap/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="4-remove-a-snapshot">4. Remove a Snapshot</h3>
 
@@ -252,12 +248,11 @@
   <li>스냅샷 볼륨을 정리한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]#  lvremove /dev/vg_vm3/mdb-snap01
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]#  lvremove /dev/vg_vm3/mdb-snap01
     Do you really want to remove active logical volume mdb-snap01? [y/n]: y
       Logical volume "mdb-snap01" successfully removed
     [root@testvm1 ~]#
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

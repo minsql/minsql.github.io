@@ -170,7 +170,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
   <li>Dynamic variable이지만, sql thread는 재시작 해주어야 동작합니다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">@</span><span class="n">SLAVE</span> <span class="n">worker</span><span class="err">활성화</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">SLAVE</span> <span class="n">worker</span><span class="err">활성화</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'slave_parallel_workers'</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------------------------+-------+</span>
 <span class="o">|</span> <span class="n">Variable_name</span>          <span class="o">|</span> <span class="n">Value</span> <span class="o">|</span>
@@ -233,14 +233,13 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
 <span class="mi">5</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 <span class="n">mysql</span><span class="o">&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>테스트환경 구축 : 두개 데이터베이스, 테이블 생성</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="k">create</span> <span class="k">database</span><span class="p">,</span> <span class="k">table</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="k">create</span> <span class="k">database</span><span class="p">,</span> <span class="k">table</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">db1</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
@@ -252,8 +251,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
 
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">db2</span><span class="p">.</span><span class="n">t1</span> <span class="p">(</span><span class="n">a</span> <span class="n">INT</span><span class="p">);</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">03</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>DML 발생
@@ -263,7 +261,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="n">DML</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="n">DML</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db1</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db2</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">);</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span>
 <span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">0</span>
@@ -299,8 +297,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
      <span class="n">Checkpoint_group_size</span><span class="p">:</span> <span class="mi">64</span>
    <span class="n">Checkpoint_group_bitmap</span><span class="p">:</span>
 <span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -310,7 +307,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="n">DML</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">MASTER</span> <span class="n">DML</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db1</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db2</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">);</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db1</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">),(</span><span class="mi">2</span><span class="p">);</span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">db2</span><span class="p">.</span><span class="n">t1</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">3</span><span class="p">),(</span><span class="mi">4</span><span class="p">);</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 <span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">0</span>
@@ -352,8 +349,7 @@ slave-parallel-workers 옵션은 5.6.3에서 추가되었지만 버그가 존재
      <span class="n">Checkpoint_group_size</span><span class="p">:</span> <span class="mi">64</span>
    <span class="n">Checkpoint_group_bitmap</span><span class="p">:</span>
 <span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

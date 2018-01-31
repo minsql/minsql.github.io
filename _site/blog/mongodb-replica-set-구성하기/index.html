@@ -177,7 +177,7 @@
   <li>각 멤버간 network connection이 가능한지 확인한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 mongo]#  mongo --host testvm2 --port 27017
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 mongo]#  mongo --host testvm2 --port 27017
     MongoDB shell version: 2.6.9
     connecting to: testvm2:27017/test
     &gt; exit
@@ -188,8 +188,7 @@
     connecting to: testvm3:27017/test
     &gt; exit
     bye
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="3-고려사항">3. 고려사항</h3>
 
@@ -243,15 +242,14 @@
   <li>configuration file에 replica set name 지정하고, –config option에서 해당 configuration file명시하기</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [mongo@testvm1 ~]$ vi /db/mongo/mongod.conf
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mongo@testvm1 ~]$ vi /db/mongo/mongod.conf
     # in replicated mongo databases, specify the replica set name here
     replSet=rs0
     [mongo@testvm1 ~]$ mongod --config /db/mongo/mongod.conf
     about to fork child process, waiting until server is ready for connections.
     forked process: 27797
     child process started successfully, parent exiting
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>control script(/etc/rc.d or /etc/init.d)로 process관리한다면 해당 스크립트를 수정한다.</li>
@@ -259,12 +257,11 @@
 
 <h4 id="42-replica-set-멤버에-mongo-shell을-통해-접속해보자">4.2 replica set 멤버에 mongo shell을 통해 접속해보자.</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [mongo@testvm1 ~]$ mongo
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mongo@testvm1 ~]$ mongo
     MongoDB shell version: 2.6.9
     connecting to: test
     &gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="43-replica-set-초기화하기">4.3 replica set 초기화하기</h4>
 
@@ -277,7 +274,7 @@
   <li>PRIMARY 에서 커맨드하면 됨</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    &gt; rs.initiate()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &gt; rs.initiate()
     {
             "info2" : "no configuration explicitly specified -- making one",
             "me" : "testvm1:27017",
@@ -285,8 +282,7 @@
             "ok" : 1
     }
     &gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="44-replica-set-configuration-확인하기">4.4 replica set configuration 확인하기</h4>
 
@@ -294,7 +290,7 @@
   <li><strong>rs.conf()</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.conf()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.conf()
     {
             "_id" : "rs0",
             "version" : 1,
@@ -305,8 +301,7 @@
                     }
             ]
     }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="45-다른-멤버들을-replica-set으로-추가하자">4.5 다른 멤버들을 replica set으로 추가하자.</h4>
 
@@ -314,13 +309,12 @@
   <li><strong>rs.add()</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.add("testvm2:27017")
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.add("testvm2:27017")
     { "ok" : 1 }
     rs0:PRIMARY&gt; rs.add("testvm3:27017")
     { "ok" : 1 }
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="46-status-check">4.6 status check</h4>
 
@@ -328,7 +322,7 @@
   <li><strong>rs.status()</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.status()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.status()
     {
             "set" : "rs0",
             "date" : ISODate("2015-03-27T18:08:25Z"),
@@ -378,8 +372,7 @@
             ],
             "ok" : 1
     }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="5-simple-test">5. Simple test</h3>
 
@@ -389,22 +382,20 @@
   <li>wrietError 난다</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:SECONDARY&gt; db.test.insert({'message':'secondary'});
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:SECONDARY&gt; db.test.insert({'message':'secondary'});
     WriteResult({ "writeError" : { "code" : undefined, "errmsg" : "not master" } })
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="52-primary에서-write">5.2 primary에서 write</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; db
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; db
     test
     rs0:PRIMARY&gt; for (var i = 1; i &lt;= 10; i++) {
     ...    db.test.insert( { x : i } )
     ... }
     WriteResult({ "nInserted" : 1 })
     rs0:PRIMARY&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="53-secondary에서-find">5.3 secondary에서 find</h4>
 
@@ -412,17 +403,16 @@
   <li>slave read 허용이 안되어있음</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:SECONDARY&gt; db.test.find()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:SECONDARY&gt; db.test.find()
     error: { "$err" : "not master and slaveOk=false", "code" : 13435 }
     rs0:SECONDARY&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>slave read 허용 후 확인</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rs0:SECONDARY&gt; rs.slaveOk()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rs0:SECONDARY&gt; rs.slaveOk()
 rs0:SECONDARY&gt; db.test.find()
 { "_id" : ObjectId("55159e012f98258995d11a1b"), "x" : 1 }
 { "_id" : ObjectId("55159e012f98258995d11a1c"), "x" : 2 }
@@ -434,8 +424,7 @@ rs0:SECONDARY&gt; db.test.find()
 { "_id" : ObjectId("55159e012f98258995d11a22"), "x" : 8 }
 { "_id" : ObjectId("55159e012f98258995d11a23"), "x" : 9 }
 { "_id" : ObjectId("55159e012f98258995d11a24"), "x" : 10 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

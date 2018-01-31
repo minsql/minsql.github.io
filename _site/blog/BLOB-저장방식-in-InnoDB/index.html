@@ -170,7 +170,7 @@
   <li>또한 이 방식은 이상한 “bugs”를 일으키기도 한다. 200K blob은 쉽게 저장가능하지만, 10k blob 20개는 저장할 수 없다. 왜냐하면, 각 blob의 768bytes를 row page에 저장해야하는데 사이즈가 맞지 않기 때문이다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    CREATE TABLE `staff_image20` (
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    CREATE TABLE `staff_image20` (
     `staff_id` tinyint(3) unsigned NOT NULL,
     `first_name` varchar(45) NOT NULL,
     `last_name` varchar(45) NOT NULL,
@@ -209,8 +209,7 @@
         -&gt; select 3, first_name, last_name, concat(picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture) from sakila.staff where staff_id=1;
     Query OK, 1 row affected, 1 warning (0.11 sec)
     Records: 1  Duplicates: 0  Warnings: 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li> 한가지 더 염두해야하는 것은 external blob pages는 blobs 사이에서 shared가능하지 않다는 것이다. 각 blob은 1byte만 담고 있을지라도 16K 의 할당된 page를 혼자서 사용한다. 이는 비효율적이므로 한로우당 여러개의 blob컬럼을 가지기보다는 하나의 large blob으로 combine하는것을 권장한다. (compress해서 저장하는 방법이 있을수 있겠다)</li>

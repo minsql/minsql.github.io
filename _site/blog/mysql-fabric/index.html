@@ -278,7 +278,7 @@
 
 <h3 id="22-installing-mysql-fabric">2.2. Installing MySQL Fabric</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mydba]$ tar zxf mysql-utilities-1.5.3.tar.gz
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mydba]$ tar zxf mysql-utilities-1.5.3.tar.gz
 [mysql@testvm1 mydba]$ cd mysql-utilities-1.5.3
 [mysql@testvm1 mysql-utilities-1.5.3]$ python ./setup.py build
 [mysql@testvm1 mysql-utilities-1.5.3]$ su
@@ -294,8 +294,7 @@ Password:
 [root@testvm1 mysql-connector-python-2.0.2]# python ./setup.py install
 [root@testvm1 mysql-connector-python-2.0.2]# exit
 exit
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="23-configuring-mysql-fabric">2.3. Configuring MySQL Fabric</h3>
 <h4 id="231-create-a-mysql-user">2.3.1. Create a MySQL User</h4>
@@ -303,26 +302,24 @@ exit
   <li>backing store에 fabric user 생성 (testvm1)</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'localhost'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'fabric'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'localhost'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'fabric'</span><span class="p">;</span>
 <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">fabric</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>fabric group node에 fabric user 생성 (testvm2, testvm3) 이 유저로 replication 연결도 하기 때문에 서로 호스트에 대해서도 명시해야한다. 테스트에서는 편의상 subnet으로 명시하였다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'192.168.56.%'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'fabric'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'192.168.56.%'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'fabric'</span><span class="p">;</span>
 <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">'fabric'</span><span class="o">@</span><span class="s1">'192.168.56.%'</span><span class="p">;</span><span class="o">&lt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="232-configuration-file">2.3.2. Configuration File</h4>
 <ul>
   <li>fabric.cfg 파일 작성</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[DEFAULT]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[DEFAULT]
 prefix = /db/mysql
 sysconfdir = /db/mysql/conf
 logdir = /data1/mysql/log
@@ -386,12 +383,11 @@ ttl = 1
 
 [client]
 password =
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="233-setup-backing-store">2.3.3. Setup Backing Store</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage setup
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage setup
  [INFO] 1418111991.571184 - MainThread - Initializing persister: user (fabric), server (localhost:3306), database (fabric).
  Finishing initial setup
  =======================
@@ -401,18 +397,15 @@ password =
  Password set.
  Password set.
  No result returned
-</code></pre>
-</div>
+</code></pre></div></div>
 <h4 id="234-start">2.3.4 Start</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage start --daemonize
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage start --daemonize
+</code></pre></div></div>
 <h4 id="235-stop">2.3.5 Stop</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage stop
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg manage stop
+</code></pre></div></div>
 
 <h2 id="3-quick-start-example">3. Quick start Example</h2>
 
@@ -433,7 +426,7 @@ password =
 
 <h4 id="312-create-my_group">3.1.2 Create my_group</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group create my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group create my_group
 Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
@@ -447,12 +440,11 @@ state success          when                                                   de
     3       2   1.41812e+09 Triggered by .
     4       2   1.41812e+09                             Executing action (_create_group).
     5       2   1.41812e+09                              Executed action (_create_group).
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="313-add-nodes-to-my_group">3.1.3 add nodes to my_group</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> [mysql@testvm1 mysql]$ mysqlfabric group add my_group testvm2:3306
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [mysql@testvm1 mysql]$ mysqlfabric group add my_group testvm2:3306
 Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
@@ -483,12 +475,11 @@ state success          when                                                   de
     4       2   1.41812e+09                               Executing action (_add_server).
     5       2   1.41812e+09                                Executed action (_add_server).
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="314-show-information">3.1.4 show information</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group lookup_servers my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group lookup_servers my_group
 Password for admin:
 Fabric UUID: 5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
@@ -497,13 +488,12 @@ server_uuid address status mode weight
 ------------------------------------ ------------ --------- --------- ------
 43f777a0-7f4a-11e4-863b-08002713b36f testvm2:3306 SECONDARY READ_ONLY 1.0
 7f5ba91e-81d1-11e4-96b7-0800273900a5 testvm3:3306 SECONDARY READ_ONLY 1.0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="315-promote-server">3.1.5 promote server</h3>
 <p>한 서버를 master로 promote시켜준다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group promote my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group promote my_group
 Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
@@ -540,20 +530,18 @@ Time-To-Live: 1
 ------------------------------------ ------------ --------- ---------- ------
 43f777a0-7f4a-11e4-863b-08002713b36f testvm2:3306 SECONDARY  READ_ONLY    1.0
 7f5ba91e-81d1-11e4-96b7-0800273900a5 testvm3:3306   PRIMARY READ_WRITE    1.0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>다른서버가 master가 되도록 하려면, 다시 커맨드 수행하면 된다고 하는데
 2개 있을때는 candidate을 elect하지 못하는듯 한다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group promote my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ mysqlfabric group promote my_group
 Password for admin:
 Fabric UUID: 5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
 
 GroupError: There is no valid candidate that can be automatically chosen in group (my_group). Please, choose one manually.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>하나더 추가해서 테스트
@@ -566,9 +554,8 @@ Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1</p>
 
-        <div class="highlighter-rouge"><pre class="highlight"><code>                        uuid finished success result ------------------------------------ -------- ------- ------ 2e5f16ed-1864-4598-9c31-f8c1e6dd4879        1       1      1
-</code></pre>
-        </div>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                        uuid finished success result ------------------------------------ -------- ------- ------ 2e5f16ed-1864-4598-9c31-f8c1e6dd4879        1       1      1
+</code></pre></div>        </div>
       </li>
     </ul>
   </li>
@@ -600,9 +587,8 @@ Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>                     server_uuid      address    status       mode weight ------------------------------------ ------------ --------- ---------- ------ 1c70d9dd-84e5-11e4-aac7-0800279a65c5 testvm4:3306 SECONDARY  READ_ONLY    1.0 43f777a0-7f4a-11e4-863b-08002713b36f testvm2:3306   PRIMARY READ_WRITE    1.0 7f5ba91e-81d1-11e4-96b7-0800273900a5 testvm3:3306 SECONDARY  READ_ONLY    1.0 ```
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                     server_uuid      address    status       mode weight ------------------------------------ ------------ --------- ---------- ------ 1c70d9dd-84e5-11e4-aac7-0800279a65c5 testvm4:3306 SECONDARY  READ_ONLY    1.0 43f777a0-7f4a-11e4-863b-08002713b36f testvm2:3306   PRIMARY READ_WRITE    1.0 7f5ba91e-81d1-11e4-96b7-0800273900a5 testvm3:3306 SECONDARY  READ_ONLY    1.0 ```
+</code></pre></div></div>
 
 <h2 id="4-maintenance">4. maintenance</h2>
 
@@ -612,7 +598,7 @@ Time-To-Live: 1</p>
 다시 올려도 계속 FAULTY상태임.
 이건 spare로 status바꿨다가 다시 secondary로 넣어줘야함.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg group health my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg group health my_group
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
 
@@ -668,14 +654,13 @@ Time-To-Live: 1
 
 issue
 -----
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="42-master-stop">4.2 master stop</h3>
 
 <p>일단 failure detector를 activate시키자.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric group activate my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric group activate my_group
 Password for admin:
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
@@ -703,14 +688,13 @@ Time-To-Live: 1
 
 issue
 -----
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>master는 faulty되고 다른 하나가 primary됨.</p>
 
 <p>또 죽이면</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg group health my_group
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric --config=/db/mysql/conf/fabric.cfg group health my_group
 Fabric UUID:  5ca1ab1e-a007-feed-f00d-cab3fe13249e
 Time-To-Live: 1
 
@@ -722,8 +706,7 @@ Time-To-Live: 1
 
 issue
 -----
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>둘다 다시 올려보자.
 그래도 계속 faulty임</p>
@@ -736,7 +719,7 @@ issue
   <li>error</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric  --config=/db/mysql/conf/fabric.cfg manage setup
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 conf]$ mysqlfabric  --config=/db/mysql/conf/fabric.cfg manage setup
 [INFO] 1418110319.957376 - MainThread - Initializing persister: user (fabric), server (localhost:3306), database (fabric).
 Traceback (most recent call last):
   File "/usr/bin/mysqlfabric", line 443, in
@@ -753,8 +736,7 @@ Traceback (most recent call last):
     raise NoSectionError(section)
 ConfigParser.NoSectionError: No section: 'protocol.mysql'
 [mysql@testvm1 conf]$
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>solution
@@ -775,7 +757,7 @@ ConfigParser.NoSectionError: No section: 'protocol.mysql'
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm2 data]$ more auto.cnf
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm2 data]$ more auto.cnf
 [auto]
 server-uuid=63ff2650-0bfb-11e4-9653-080027637261
 [mysql@testvm2 data]$ mv auto.cnf  auto.cnf.bak
@@ -787,8 +769,7 @@ server-uuid=63ff2650-0bfb-11e4-9653-080027637261
 [mysql@testvm2 data]$ more auto.cnf
 [auto]
 server-uuid=43f777a0-7f4a-11e4-863b-08002713b36f
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

@@ -167,10 +167,9 @@
   <li>최신버전 다운로드 후 압축해제: https://github.com/dalibo/pgbadger/releases/latest</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
 tar xzf pgbadger-8.1.tar.gz
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>설치
@@ -180,7 +179,7 @@ tar xzf pgbadger-8.1.tar.gz
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># cd pgbadger-8.1
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cd pgbadger-8.1
 # perl Makefile.PL
 Checking if your kit is complete...
 Looks good
@@ -190,8 +189,7 @@ Writing MYMETA.yml and MYMETA.json
 Installing /usr/local/share/man/man1/pgbadger.1p
 Installing /usr/local/bin/pgbadger
 Appending installation info to /usr/lib64/perl5/perllocal.pod
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="2-postgresql-관련-파라메터-설정">2. PostgreSQL 관련 파라메터 설정</h3>
 
@@ -205,33 +203,30 @@ Appending installation info to /usr/lib64/perl5/perllocal.pod
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>log_min_duration_statement = 1000
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log_min_duration_statement = 1000
 log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>추가 정보를 로깅하고 싶다면 다음의 파라메터를 활성화할수 있다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>log_checkpoints = on
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log_checkpoints = on
 log_connections = on
 log_disconnections = on
 log_lock_waits = on
 log_temp_files = 0
 log_autovacuum_min_duration = 0
 log_error_verbosity = default
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>log_statement은 pgBadger로 parse되지 않으니 사용하지 않는다.</li>
   <li>lc_messages는 C로 한다</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>lc_messages='C'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lc_messages='C'
+</code></pre></div></div>
 
 <ul>
   <li>[Note] log_min_duration_statement, log_duration 설정관련 참조
@@ -244,12 +239,11 @@ log_error_verbosity = default
 
 <h3 id="3-레포트생성">3. 레포트생성</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
 [=============&gt;           ] Parsed 1639250 bytes of 2842188 (57.68%), queries: 8
 [========================&gt;] Parsed 2842188 bytes of 2842188 (100.00%), queries: 17221, events: 21
 LOG: Ok, generating html report...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>간단하게 html output을 뽑아 볼수 있다.
 <img src="/wp-content/uploads/2016/06/pgbadger_out.png" alt="pgbadger_out" /> 다른 옵션들은 필요하다면 사용해보시길.</p>

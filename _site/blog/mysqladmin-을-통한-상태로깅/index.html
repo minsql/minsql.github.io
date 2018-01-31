@@ -165,7 +165,7 @@
 
 <p>MySQL 에 대한 정보를 10초에 한번씩 1000번 뽑아내라는 명령어이다. relative 는 sleep 과 extended-status 옵션과 함께 사용하면 앞의 status 결과를 바탕으로 현재값과의 차이를 나타낸다. MySQL에 문제가 발생하면, 해당 스크립트를 통해 로깅을 시작하고 해당 파일을 이용하면 장애상황 분석시 용이한 자료로 사용할 수 있다. 이는 다음과 같이 간단하게 쓸 수 있다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/db/5.6/bin/mysqladmin proc stat ext -uroot -pxxx -i10 -c10000 -r
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/db/5.6/bin/mysqladmin proc stat ext -uroot -pxxx -i10 -c10000 -r
 
 
 
@@ -211,14 +211,13 @@ Uptime: 105298  Threads: 1  Questions: 208  Slow queries: 0  Opens: 98  Flush ta
 | Com_admin_commands                            | 0           |
 | Com_assign_to_keycache                        | 0           |
 .....
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="추가적인-tip">추가적인 Tip</h3>
 
 <p>갑자기 생각난것이 있는데… show global status 시 0이나 의미 없는값 모두 보여주기에 너무 많은 값을 보여준다. 이는 아래의 명령어를 통해 제거할 수 있다. 물론 해당 포스트의 내용이 적어 갑자기 생각난것은 아니다…후후 show global status where value; 를 통하여 0이나 String 값을 제거해보자.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show global status;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; show global status;
 +-----------------------------------------------+-------------+
 | Variable_name                                 | Value       |
 +-----------------------------------------------+-------------+
@@ -265,8 +264,7 @@ mysql&gt; show warnings;
 
 -- warning은 위와 같은데... 무시할 수 있다. warning을 확인하니, show global status의 value 값을 integer value로 바꾸고 해당값이 0이면 찍어내지 않는것 같다.
 -- show global status where value &lt;&gt; 0; 위와 같이 사용하는것이 더 괜찮은 방법일 수도 있겠다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

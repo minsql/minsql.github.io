@@ -170,7 +170,7 @@
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range</span> <span class="p">(</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range</span> <span class="p">(</span>
   <span class="n">id</span> <span class="n">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
   <span class="n">some_data</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
   <span class="n">createdAt</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
@@ -186,8 +186,7 @@
 <span class="n">partition</span> <span class="n">p201805</span> <span class="k">values</span> <span class="k">less</span> <span class="k">than</span> <span class="p">(</span><span class="n">to_days</span><span class="p">(</span><span class="s1">'2018-06-01'</span><span class="p">)),</span>
 <span class="n">partition</span> <span class="n">p201806</span> <span class="k">values</span> <span class="k">less</span> <span class="k">than</span> <span class="p">(</span><span class="n">to_days</span><span class="p">(</span><span class="s1">'2018-07-01'</span><span class="p">))</span>
 <span class="p">);</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><a href="https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html">https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html</a></p>
 
@@ -199,7 +198,7 @@
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range_columns</span> <span class="p">(</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range_columns</span> <span class="p">(</span>
   <span class="n">id</span> <span class="n">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
   <span class="n">some_data</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
   <span class="n">createdAt</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
@@ -214,8 +213,7 @@
  <span class="n">PARTITION</span> <span class="n">p201804</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="s1">'2018-05-01'</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">,</span>
  <span class="n">PARTITION</span> <span class="n">p201805</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="s1">'2018-06-01'</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">,</span>
  <span class="n">PARTITION</span> <span class="n">p201806</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="s1">'2018-07-01'</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">);</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><a href="https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html">https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html</a></p>
 
@@ -231,21 +229,21 @@
   <p>성능을 측정하기 위해 mysqlslap 을 이용하여, 단순 TEST를 진행해보자. 천건씩 (limit 1000) insert 를 10개의 세션 (–concurrency=10) 에서 모두 1000 번 (–number-of-queries=1000, 세션당 100번) 을 실행한다. 이를 10번 진행해보고 (–iterations=10) 결과를 확인해보자.</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@localhost msb_5_7_19]# cat bt.sh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost msb_5_7_19]# <span class="nb">cat </span>bt.sh
 <span class="nb">echo</span> <span class="s2">"========================================================"</span>
 <span class="nb">echo</span> <span class="s2">"Test for insert on range partition table"</span>
-date
-/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency<span class="o">=</span>10 --create-schema<span class="o">=</span><span class="nb">test</span> --iterations<span class="o">=</span>10  --number-of-queries<span class="o">=</span>1000 --pre-query<span class="o">=</span><span class="s2">"truncate table test.pt_range;"</span> --query<span class="o">=</span><span class="s2">"insert into test.pt_range (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;"</span>  --socket<span class="o">=</span>/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
-date
-<span class="nb">echo</span> <span class="s2">"========================================================"</span>
+<span class="nb">date</span>
+/MySQL_bianries/5.7.19/bin/mysqlslap  <span class="nt">--concurrency</span><span class="o">=</span>10 <span class="nt">--create-schema</span><span class="o">=</span><span class="nb">test</span> <span class="nt">--iterations</span><span class="o">=</span>10  <span class="nt">--number-of-queries</span><span class="o">=</span>1000 <span class="nt">--pre-query</span><span class="o">=</span><span class="s2">"truncate table test.pt_range;"</span> <span class="nt">--query</span><span class="o">=</span><span class="s2">"insert into test.pt_range (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;"</span>  <span class="nt">--socket</span><span class="o">=</span>/tmp/mysql_sandbox5719.sock <span class="nt">-umsandbox</span> <span class="nt">-pmsandbox</span>
+<span class="nb">date
+echo</span> <span class="s2">"========================================================"</span>
 <span class="nb">echo</span> <span class="s2">"Test for insert on range column partition table"</span>
-date
-/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency<span class="o">=</span>10 --create-schema<span class="o">=</span><span class="nb">test</span> --iterations<span class="o">=</span>10  --number-of-queries<span class="o">=</span>1000 --pre-query<span class="o">=</span><span class="s2">"truncate table test.pt_range_columns;"</span> --query<span class="o">=</span><span class="s2">"insert into pt_range_columns (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;"</span>  --socket<span class="o">=</span>/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
-date
-<span class="nb">echo</span> <span class="s2">"========================================================"</span>
+<span class="nb">date</span>
+/MySQL_bianries/5.7.19/bin/mysqlslap  <span class="nt">--concurrency</span><span class="o">=</span>10 <span class="nt">--create-schema</span><span class="o">=</span><span class="nb">test</span> <span class="nt">--iterations</span><span class="o">=</span>10  <span class="nt">--number-of-queries</span><span class="o">=</span>1000 <span class="nt">--pre-query</span><span class="o">=</span><span class="s2">"truncate table test.pt_range_columns;"</span> <span class="nt">--query</span><span class="o">=</span><span class="s2">"insert into pt_range_columns (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;"</span>  <span class="nt">--socket</span><span class="o">=</span>/tmp/mysql_sandbox5719.sock <span class="nt">-umsandbox</span> <span class="nt">-pmsandbox</span>
+<span class="nb">date
+echo</span> <span class="s2">"========================================================"</span>
 
-<span class="o">[</span>root@localhost msb_5_7_19]# ./bt.sh &gt; x
-<span class="o">[</span>root@localhost msb_5_7_19]# cat x
+<span class="o">[</span>root@localhost msb_5_7_19]# ./bt.sh <span class="o">&gt;</span> x
+<span class="o">[</span>root@localhost msb_5_7_19]# <span class="nb">cat </span>x
 <span class="o">========================================================</span>
 Test <span class="k">for </span>insert on range partition table
 Sun Jan 14 06:50:06 EST 2018
@@ -269,8 +267,7 @@ Benchmark
 
 Sun Jan 14 06:56:49 EST 2018
 <span class="o">========================================================</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong><em>크게 차이는 없지만, range partition table 에 데이터를 넣는것 (평균 19.477 vs 20.407) 이 insert 단위 테스트에서는 조금 더 빠른 결과를 보여준다. (큰 차이는 없었다)</em></strong></p>
 
@@ -278,7 +275,7 @@ Sun Jan 14 06:56:49 EST 2018
   <li>조건을 통해 partition pruning 을 할 경우 (정확히는 여러달에 걸친 조건 ( between ‘2018-03-30’ and ‘2018-04-02’;)) , 의도치 않게 “RANGE (to_days(createdAt))” 에서 첫번째 partition 을 추가로 읽을 수 있다. 이는 여러달에 걸친 data 를 조회할때는 추가적인 scan (첫번째 partiton 에 대한 scan) 이 필요함으로 성능이 떨어진다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span> <span class="p">[</span><span class="n">localhost</span><span class="p">]</span> <span class="err">{</span><span class="n">msandbox</span><span class="err">}</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">explain</span> <span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">pt_range</span> <span class="k">where</span> <span class="n">createdAt</span> <span class="k">between</span> <span class="s1">'2018-03-30 00:00:00'</span> <span class="k">and</span> <span class="s1">'2018-04-30 00:00:00'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span> <span class="p">[</span><span class="n">localhost</span><span class="p">]</span> <span class="err">{</span><span class="n">msandbox</span><span class="err">}</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">explain</span> <span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">pt_range</span> <span class="k">where</span> <span class="n">createdAt</span> <span class="k">between</span> <span class="s1">'2018-03-30 00:00:00'</span> <span class="k">and</span> <span class="s1">'2018-04-30 00:00:00'</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+</span>
 <span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">select_type</span> <span class="o">|</span> <span class="k">table</span>    <span class="o">|</span> <span class="n">partitions</span>              <span class="o">|</span> <span class="k">type</span>  <span class="o">|</span> <span class="n">possible_keys</span> <span class="o">|</span> <span class="k">key</span>     <span class="o">|</span> <span class="n">key_len</span> <span class="o">|</span> <span class="k">ref</span>  <span class="o">|</span> <span class="k">rows</span>   <span class="o">|</span> <span class="n">filtered</span> <span class="o">|</span> <span class="n">Extra</span>                    <span class="o">|</span>
 <span class="o">+</span><span class="c1">----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+</span>
@@ -298,8 +295,7 @@ Sun Jan 14 06:56:49 EST 2018
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span><span class="p">,</span> <span class="mi">1</span> <span class="n">warning</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
     <span class="c1">-- range columns partition 의 경우,  p201801 에 대한 partition 을 읽지 않는다.</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>이는 to_days 가 특정일짜에 대해서 null 을 return 할 수 있기때문에, null 이 저장된 첫번째 partition 을 읽어야 정확한 데이터를 추출해낼 수 있기 때문이다. 이는 bug 가 아닌 의도된 결과이다.</strong></p>
 
@@ -311,7 +307,7 @@ Sun Jan 14 06:56:49 EST 2018
 
 <p>아래의 예제를 확인해보자.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span> <span class="p">[</span><span class="n">localhost</span><span class="p">]</span> <span class="err">{</span><span class="n">msandbox</span><span class="err">}</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">select</span> <span class="n">to_days</span><span class="p">(</span><span class="s1">'2018-04-00 00:00:00'</span><span class="p">);</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span> <span class="p">[</span><span class="n">localhost</span><span class="p">]</span> <span class="err">{</span><span class="n">msandbox</span><span class="err">}</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">select</span> <span class="n">to_days</span><span class="p">(</span><span class="s1">'2018-04-00 00:00:00'</span><span class="p">);</span>
 <span class="o">+</span><span class="c1">--------------------------------+</span>
 <span class="o">|</span> <span class="n">to_days</span><span class="p">(</span><span class="s1">'2018-04-00 00:00:00'</span><span class="p">)</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">--------------------------------+</span>
@@ -411,14 +407,13 @@ mysql [localhost] {msandbox} (test) &gt; select @@session.sql_mode;
 1 row in set (0.00 sec)
 
     -- sys.list_add() 을 이용하여 다시 원래대로 세션의 sql_mode  값에 NO_ZERO_IN_DATE 를 추가할 수 있다.
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <ul>
   <li>이에대해 관련된 공식 문서와 버그는 아래와 같다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- http://bugs.mysql.com/bug.php?id=72383 (Pruning includes first partition when query range crosses month boundary)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- http://bugs.mysql.com/bug.php?id=72383 (Pruning includes first partition when query range crosses month boundary)
 - Bug 18621754 : PRUNING INCLUDES FIRST PARTITION WHEN QUERY RANGE CROSSES MONTH BOUNDARY
 
 
@@ -432,22 +427,20 @@ mysql [localhost] {msandbox} (test) &gt; select @@session.sql_mode;
 
     - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-31.html
     - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-11.html
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>추가로, range columns 에서 pruning 이 정확히 안되는 버그가 있었지만, 이는 5-5-33 과 5-6-13 에서 fix 되었다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- Bug 16447483 : PARTITION PRUNING IS NOT CORRECT FOR RANGE COLUMNS
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- Bug 16447483 : PARTITION PRUNING IS NOT CORRECT FOR RANGE COLUMNS
 
     - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-33.html
     - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-13.html
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="2-가독성-및-관리관점에서">2. 가독성 및 관리관점에서,</h4>
 <p>가독성 부분에서는 “PARTITION BY RANGE COLUMNS(createdAt)” 이 더 좋을 수 있다. show create table 등으로 확인할때 직관적으로 날짜를 확인하여 파티션구조를 확인할 수 있기 때문이다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
 <span class="cm">/*!50500 PARTITION BY RANGE  COLUMNS(createdAt)
 (PARTITION p201801 VALUES LESS THAN ('2018-02-01') ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN ('2018-03-01') ENGINE = InnoDB,
@@ -465,8 +458,7 @@ mysql [localhost] {msandbox} (test) &gt; select @@session.sql_mode;
  PARTITION p201804 VALUES LESS THAN (737180) ENGINE = InnoDB,
  PARTITION p201805 VALUES LESS THAN (737211) ENGINE = InnoDB,
  PARTITION p201806 VALUES LESS THAN (737241) ENGINE = InnoDB) */</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="결론">결론</h3>
 <p>일반적으로, 달이 넘어가는 데이터를 조회하지 않는 경우, “PARTITION BY RANGE COLUMNS(createdAt)” 과 “PARTITION BY RANGE (to_days(createdAt))” 는 성능에 큰 영향을 주지 않는다.</p>
@@ -477,7 +469,7 @@ mysql [localhost] {msandbox} (test) &gt; select @@session.sql_mode;
 
 <p>RANGE partiton 을 꼭 써야만한다면, 아래와 같이 첫번째 partition 을 추가하는것이 좋다. 첫번째 partition 을 확인하더라도 첫번째 파티션에 저장된 유효하지 않은 데이터만 확인함으로 성능상 유리할 수 있다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range</span> <span class="p">(</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">pt_range</span> <span class="p">(</span>
   <span class="n">id</span> <span class="n">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
   <span class="n">some_data</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
   <span class="n">createdAt</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
@@ -492,8 +484,7 @@ mysql [localhost] {msandbox} (test) &gt; select @@session.sql_mode;
  <span class="n">PARTITION</span> <span class="n">p201804</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="mi">737180</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">,</span>
  <span class="n">PARTITION</span> <span class="n">p201805</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="mi">737211</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">,</span>
  <span class="n">PARTITION</span> <span class="n">p201806</span> <span class="k">VALUES</span> <span class="k">LESS</span> <span class="k">THAN</span> <span class="p">(</span><span class="mi">737241</span><span class="p">)</span> <span class="n">ENGINE</span> <span class="o">=</span> <span class="n">InnoDB</span><span class="p">);</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

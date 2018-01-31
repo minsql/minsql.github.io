@@ -177,7 +177,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [mysqld]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysqld]
     plugin-load=audit_log.so
 
     -- MySQL Restart
@@ -188,8 +188,7 @@
     ...
     | audit_log                  | ACTIVE   | AUDIT              | audit_log.so | PROPRIETARY |
     +----------------------------+----------+--------------------+--------------+-------------+
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>INSTALL PLUGIN문으로 인스톨하는 방법
@@ -239,10 +238,9 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>     &lt;AUDIT_RECORD TIMESTAMP="2015-06-16T09:20:17 UTC" RECORD_ID="307_2015-06-16T08:23:17" NAME="Query" CONNECTION_ID="60" STATUS="1064" STATUS_CODE="1" USER="root[root] @ localhost []" OS_LOGIN="" HOST="localhost" IP="" COMMAND_CLASS="grant" SQLTEXT="grant all on *.* to 'dba'@'%' indentified by 'dba'"/&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     &lt;AUDIT_RECORD TIMESTAMP="2015-06-16T09:20:17 UTC" RECORD_ID="307_2015-06-16T08:23:17" NAME="Query" CONNECTION_ID="60" STATUS="1064" STATUS_CODE="1" USER="root[root] @ localhost []" OS_LOGIN="" HOST="localhost" IP="" COMMAND_CLASS="grant" SQLTEXT="grant all on *.* to 'dba'@'%' indentified by 'dba'"/&gt;
      &lt;AUDIT_RECORD TIMESTAMP="2015-06-16T09:21:01 UTC" RECORD_ID="308_2015-06-16T08:23:17" NAME="Query" CONNECTION_ID="60" STATUS="0" STATUS_CODE="0" USER="root[root] @ localhost []" OS_LOGIN="" HOST="localhost" IP="" COMMAND_CLASS="grant" SQLTEXT="GRANT ALL PRIVILEGES ON *.* TO 'dba'@'%' IDENTIFIED BY PASSWORD '*381AD08BBFA647B14C82AC1094A29AD4D7E4F51D'"/&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="5-audit-log-filtering">5. Audit Log Filtering</h3>
 
@@ -308,7 +306,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; CREATE TABLE audit_log_to_table (
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; CREATE TABLE audit_log_to_table (
     id bigint PRIMARY KEY auto_increment,
     TIMESTAMP timestamp,
     CONNECTION_ID bigint,
@@ -331,8 +329,7 @@ mysql&gt; LOAD XML LOCAL INFILE '/data1/5.6/data/audit.log.bak'
      ROWS IDENTIFIED BY ''
     (@TIMESTAMP, CONNECTION_ID, USER, HOST, IP, OS_LOGIN, RECORD_ID, NAME, STATUS, STATUS_CODE, COMMAND_CLASS, SQLTEXT)
     SET TIMESTAMP = CONVERT_TZ(STR_TO_DATE(@TIMESTAMP, '%Y-%m-%dT%H:%i:%s UTC'), 'UTC', '+9:00');
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

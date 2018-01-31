@@ -167,7 +167,7 @@
   <li>primary에서 <strong>rs.status()</strong> 로 확인</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt;  rs.status()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt;  rs.status()
     {
             "set" : "rs0",
             "date" : ISODate("2015-04-15T10:56:27Z"),
@@ -217,8 +217,7 @@
             ],
             "ok" : 1
     }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="2-check-the-replication-lag">2. Check the Replication Lag</h3>
 
@@ -226,7 +225,7 @@
   <li>primary에서 <strong>rs.printSlaveReplicationInfo()</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.printSlaveReplicationInfo()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.printSlaveReplicationInfo()
     source: testvm2:27017
             syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
             0 secs (0 hrs) behind the primary
@@ -234,8 +233,7 @@
             syncedTo: Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
             0 secs (0 hrs) behind the primary
     rs0:PRIMARY&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="3-check-the-size-of-the-oplog">3. Check the Size of the Oplog</h3>
 
@@ -243,14 +241,13 @@
   <li>멤버별로 체크 가능함. <strong>rs.printReplicationInfo()</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.printReplicationInfo()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.printReplicationInfo()
     configured oplog size:   990MB
     log length start to end: 1605625secs (446.01hrs)
     oplog first event time:  Sat Mar 28 2015 04:54:49 GMT+1100 (EST)
     oplog last event time:   Wed Apr 15 2015 17:55:14 GMT+1000 (EST)
     now:                     Wed Apr 15 2015 21:14:28 GMT+1000 (EST)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>oplog사이즈는 replication lag를 얼마나 허용할 건지에 따라서 용량을 산정해야한다.</li>

@@ -153,7 +153,7 @@
 
 <h2 id="발생현상">발생현상</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2016-03-29 09:37:03 7f6c34610700 InnoDB: Error: Table "mysql"."innodb_table_stats" not found.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2016-03-29 09:37:03 7f6c34610700 InnoDB: Error: Table "mysql"."innodb_table_stats" not found.
 2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Table "mysql"."innodb_table_stats" not found.
 2016-03-29 09:37:26 7f6c34610700 InnoDB: Error: Fetch of persistent statistics requested for table "aaa"."asaa" but the required system tables mysql.innodb_table_stats and mysql.innodb_index_stats are not present or have unexpected structure. Using transient stats instead.
 2016-03-29 09:37:38 7f6c35a53700 InnoDB: Error: Table "mysql"."innodb_table_stats" not found.
@@ -176,8 +176,7 @@
 2016-03-29 18:01:22 7f26361fc700 InnoDB: Error: Table "mysql"."innodb_table_stats" not found.
 2016-03-29 18:01:22 7f26361fc700 InnoDB: Recalculation of persistent statistics requested for table "aaa"."members_i" /* Partition "p3" */ but the required persistent statistics storage is not present or is corrupted. Using transient stats instead.
 2016-03-29 18:01:32 7f26361fc700 InnoDB: Error: Table "mysql"."innodb_table_stats" not foun
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="왜-발생하는가">왜 발생하는가?</h2>
 
@@ -208,7 +207,7 @@
   <li>mysql 에 존재하는 innodb 관련 테이블들을 깨끗하게 지우고 mysql_upgrade 를 통해 새로 생성하는 방법</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    MySQL startup
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    MySQL startup
         1) 관련된 5개 테이블 삭제
             mysql&gt; use mysql;  drop table innodb_index_stats ; drop table innodb_table_stats; drop table slave_master_info; drop table slave_relay_log_info; drop table slave_worker_info;
                 - 테이블이 없다고 에러가 발생하지만, frm 을 삭제하여 다시 MySQL 이 시작될때 해당 테이블의 존재를 알려주지 않기 위함
@@ -231,8 +230,7 @@
                 - 위 작업을 통해 존재하지 않는 5개의 테이블이 새로 생성이 된다.
     MySQL restart
         4) err 로그를 확인하여, 정상적으로 동작하는지 확인.
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

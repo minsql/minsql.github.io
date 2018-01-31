@@ -196,7 +196,7 @@
   <li>예제</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@myvm1 ~]$  git clone https://github.com/MarkLeith/mysql-sys.git /tmp/sys
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@myvm1 ~]$  git clone https://github.com/MarkLeith/mysql-sys.git /tmp/sys
     Initialized empty Git repository in /tmp/sys/.git/
     remote: Counting objects: 1704, done.
     remote: Total 1704 (delta 0), reused 0 (delta 0), pack-reused 1704
@@ -205,8 +205,7 @@
     [mysql@myvm1 ~]$ cd /tmp/sys
     [mysql@myvm1 sys]$ mysql -uroot -p --socket=/tmp/mysql56.sock &lt; sys_56.sql
     Enter password:
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="22-mysql-workbench-61-을-통한-설치">2.2 MySQL Workbench 6.1+ 을 통한 설치</h3>
 
@@ -220,7 +219,7 @@
   <li>git 로 설치한 예제임</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from sys.version;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; select * from sys.version;
     +-------------+---------------+
     | sys_version | mysql_version |
     +-------------+---------------+
@@ -241,8 +240,7 @@
     | sys | TRIGGER       |     2 |
     +-----+---------------+-------+
     6 rows in set (0.05 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="3-mysql-sys-schema-설명">3. MySQL SYS schema 설명</h2>
 
@@ -260,7 +258,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from waits_global_by_latency limit 1;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; select * from waits_global_by_latency limit 1;
     +------------------------------+-------+---------------+-------------+-------------+
     | events                       | total | total_latency | avg_latency | max_latency |
     +------------------------------+-------+---------------+-------------+-------------+
@@ -275,8 +273,7 @@
     | wait/io/file/sql/file_parser |  2077 |  623594918562 |   300238092 | 69796836648 |
     +------------------------------+-------+---------------+-------------+-------------+
     1 row in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="311-userhost-summary-views">3.1.1 User/Host Summary views</h4>
 
@@ -285,7 +282,7 @@
   <li>Breakdowns by : IO usage, Stages, Statement details</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from user_summaryG
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; select * from user_summaryG
     ...
     *************************** 2. row ***************************
        user: michaela
@@ -299,8 +296,7 @@
         total_connections: 7
              unique_hosts: 1
     ...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>user_summary : user가 실행한 statement 개수, latency, table_scans, file_ios, file_io_latency 등</li>

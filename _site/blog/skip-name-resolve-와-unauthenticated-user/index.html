@@ -156,20 +156,18 @@
 
 <p>MySQL 을 사용하다보면, DNS 서버가 응답을 하지 않음으로서 MySQL 이 커넥션을 빠르게 처리하지 못하고 show processlist 에 많은 수의 ‘unauthenticated user’ 가 발생할 수 있다. 이는 error log 에 아래와 같이 나타나며,</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
 [Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>porcesslist에는 다음과 같이 나타날 수 있다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
 | Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
 +-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
 | 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
 +-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="원인">원인</h2>
 
@@ -177,7 +175,7 @@
 
 <h2 id="문제-재현">문제 재현</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root@localhost:(none) 23:13:43&gt; show global variables like 'skip_name_resolve';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@localhost:(none) 23:13:43&gt; show global variables like 'skip_name_resolve';
 +-------------------+-------+
 | Variable_name     | Value |
 +-------------------+-------+
@@ -246,23 +244,21 @@ COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
 ^^^ host_cache 테이블에는 IP만 존재할 뿐 HOST는 NULL 로 되어있다. DNS로부터 HOST 값을 정확히 얻어내지 못했다. host_cache 에 HOST_VALIDATED 값이 NO 라면, 다음번 접속시에도 똑같이 느린 현상이 발생한다.
 만약 제대로 HOST 값이 저장된다면, 해당 테이블이 truncate 되기 전까지는 빠른 접속이 가능하다.
     - https://dev.mysql.com/doc/refman/5.6/en/host-cache-table.html
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Error log</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
 [Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
 ^^^ error log 에 다음과 같이 찍힐 수 있다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="해결방법">해결방법</h2>
 
 <h4 id="1-hosts-파일에-추가">1. hosts 파일에 추가</h4>
 
 <p>만약 DNS에서 자주 문제가 생긴다면, /etc/hosts 에 해당 서버로 접속하는 서버들에 대해 host를 명시해 줄 수 있다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm3 certs]# cat /etc/hosts
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm3 certs]# cat /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 192.168.74.203  testvm3
@@ -324,12 +320,11 @@ root@localhost:(none) 23:22:36&gt; show processlist;
 | 168 | au   | testvm2:52593 | NULL | Sleep   |    9 |       | NULL             |
 +-----+------+---------------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="2-mycnf-의-mysqld-섹션에-skip_name_resolve-를-추가하고-restart">2. my.cnf 의 [mysqld] 섹션에 skip_name_resolve 를 추가하고 restart</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root@localhost:(none) 23:24:56&gt; show global variables like 'skip_name_resolve';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@localhost:(none) 23:24:56&gt; show global variables like 'skip_name_resolve';
 +-------------------+-------+
 | Variable_name     | Value |
 +-------------------+-------+
@@ -364,8 +359,7 @@ root@localhost:(none) 23:25:57&gt; show processlist;
 root@localhost:(none) 23:25:57&gt; select * from performance_schema.host_cacheG
 Empty set (0.00 sec)
 ^^^ 물론 host_cache 테이블에는 아무것도 존재하지 않는다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

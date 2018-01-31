@@ -149,19 +149,18 @@
 
 <p>show processlist 와 show engine processlist 를 확인하면, 어떤 쿼리인지는 알 수 없으나 트랜잭션을 잡고 있는것을 확인할 수 있습니다. commit 되지 않은 트랜잭션이 존재한다면, MySQL InnoDB는 old image를 읽어오기 위해 시간이 지날수록 느려지고 다른 쿼리또한 lock 으로 인해 대기될 수 있습니다. 해당 쿼리를 tracking 하기 위해서는 기본적으로 performace_schema 가 ON (1) 되어 있어야 합니다. MySQL 5.6.6 이상에서는 은 기본적으로 해당값이 ON 되어 있으므로, 추가적인 설정이 필요없습니다. <a href="http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema">http://dev.mysql.com/doc/refman/5.6/en/performance-schema-system-variables.html#sysvar_performance_schema</a></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; show global variables like 'performance_schema';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; show global variables like 'performance_schema';
     +--------------------+-------+
     | Variable_name      | Value |
     +--------------------+-------+
     | performance_schema | ON    |
     +--------------------+-------+
     1 row in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>먼저 예제를 하나 만들도록 하겠습니다. session 1 에서 테이블을 만들고, 해당 테이블에 값을 넣습니다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Session 1&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session 1&gt;
     mysql&gt; create table p ( a int);
     Query OK, 0 rows affected (0.03 sec)
 
@@ -170,12 +169,11 @@
 
     mysql&gt; insert into p values (1);
     Query OK, 1 row affected (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>다른 세션에서 show engine innodb status, show processlist;, information_schema.INNODB_TRX 를 조회해 보겠습니다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Session 2&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session 2&gt;
     mysql&gt; show engine innodb statusG
     ------------
     TRANSACTIONS
@@ -242,12 +240,11 @@ commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 
     1 row in set (0.00 sec)
 
 /* information_schema.INNODB_TRX 에서는 현재 해당 thread가 아무런 작업을 하고 있지 않기 때문에 trx_rows_modified 를 통해 어떤 DML 이 실행되었고, 1개의 record를 수정한채 commit 하지 않았다는것만을 알 수 있습니다. **/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>performance_schema.events_statements_current 의 데이터를 조회해 보겠습니다. 해당 테이블은 마지막에 해당 thread에서 실행된 쿼리를 저장하고 있습니다. 해당 테이블의 값을 조회하기 위해서는 performance_schema.threads 와 조인이 필요합니다. processlist 에서 보여주는 mysql 이 만든 thread와 performance_schema 에서 만든 thread 값이 다르기 때문입니다. (performance_schema.threads 는 background thread의 값도 가지고 있기 때문입니다.)</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Session 2&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session 2&gt;
     mysql&gt; SELECT esc.THREAD_ID, t.processlist_id, esc.SQL_TEXT FROM performance_schema.events_statements_current esc JOIN performance_schema.threads t ON t.thread_id = esc.thread_id WHERE t.processlist_id = 56604;
     +-----------+----------------+--------------------------+
     | THREAD_ID | processlist_id | SQL_TEXT                 |
@@ -256,12 +253,11 @@ commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 
     +-----------+----------------+--------------------------+
 
 /* process_id 가 56604 의 thread 가 실행한 마지막 쿼리가 나타납니다. 56604 값은 show engine innodb statusG 의 transaction 값 중 thread id 56604 값을 통해 알아낼 수 있습니다. **/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>위는 default 로 동작되는 방법입니다. 그렇다면, 지나간 쿼리에 대해서는 어떻게 로그인을 하는지 확인해보겠습니다. - https://dev.mysql.com/doc/refman/5.6/en/performance-schema-statement-tables.html 먼저 performance_schema.setup_consumers 테이블의 events_statements_history, events_statements_history_long 의 값을 ON 시켜주어야 합니다. (default 로 events_statements_current 는 ON이 되어 있는것을 확인할 수 있습니다.)</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from performance_schema.setup_consumers where name like 'events_statements_%';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; select * from performance_schema.setup_consumers where name like 'events_statements_%';
     +--------------------------------+---------+
     | NAME                           | ENABLED |
     +--------------------------------+---------+
@@ -275,12 +271,11 @@ commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 
     mysql&gt; UPDATE performance_schema.setup_consumers SET ENABLED = 'YES' WHERE name like 'events_statements_%';
     Query OK, 2 row affected (0.06 sec)
     Rows matched: 3  Changed: 2  Warnings: 0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>다시 session 1에서 쿼리를 실행해 보겠습니다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">Session</span> <span class="mi">1</span><span class="o">&gt;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Session</span> <span class="mi">1</span><span class="o">&gt;</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">p</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------+</span>
 <span class="o">|</span> <span class="n">a</span>    <span class="o">|</span>
@@ -299,12 +294,11 @@ commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 
 
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">p</span> <span class="k">where</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="n">Empty</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>다른 세션에서 events_statements_history_long 의 값을 조회하여 해당세션이 실행한 쿼리들을 확인할 수 있습니다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
     <span class="n">esh</span><span class="p">.</span><span class="n">THREAD_ID</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">processlist_id</span><span class="p">,</span> <span class="n">esh</span><span class="p">.</span><span class="n">SQL_TEXT</span>
 <span class="k">FROM</span>
     <span class="n">performance_schema</span><span class="p">.</span><span class="n">events_statements_history_long</span> <span class="n">esh</span>
@@ -321,8 +315,7 @@ commit 이나 rollback 이 오랬동안 이루어지지 않았다면, 이또한 
 <span class="o">|</span>     <span class="mi">56624</span> <span class="o">|</span>          <span class="mi">56604</span> <span class="o">|</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">p</span> <span class="k">where</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">-----------+----------------+---------------------------+</span>
 <span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>위와 같이 시간순으로 조회될 수 있습니다. 전체 쿼리를 저장할 수 있는 갯수는 아래의 설정을 통해 가능합니다. (performance_schema_events_statements_history_size, performance_schema_events_statements_history_long_size)
 5.6.6 이상부터는 default 값으로 MySQL 의 현재상태를 고려하여 값이 자동으로 늘어나거나 줄어들게 됩니다.

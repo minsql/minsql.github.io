@@ -197,12 +197,11 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
 mysql&gt; flush logs; 정보 수집을 한 후, 원래의 값으로 돌려놓자.
 mysql&gt; set global log_queries_not_using_indexes = OFF, GLOBAL long_query_time = 2, GLOBAL slow_query_log_file = \'host_name-slow.log\';
 mysql&gt; flush logs;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.</li>
@@ -220,12 +219,11 @@ mysql&gt; flush logs;
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># User@Host: root[root] @  [192.168.74.202]  Id:    17
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># User@Host: root[root] @  [192.168.74.202]  Id:    17
 # Query_time: 3.362235  Lock_time: 0.007825 Rows_sent: 0  Rows_examined: 0
 SET timestamp=1469352147;
 alter table tester add index b(b);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="효율적으로-활용하기">효율적으로 활용하기</h2>
 
@@ -235,10 +233,9 @@ alter table tester add index b(b);
   <li>간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; set global long_query_time=0;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; set global long_query_time=0;
 shell# mysqldumpslow -s c slow-queries.log &gt; static.sql
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. <a href="\\&quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&quot;">https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html</a></li>
@@ -251,7 +248,7 @@ shell# mysqldumpslow -s c slow-queries.log &gt; static.sql
   <li>소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if (thd-&gt;enable_slow_log)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (thd-&gt;enable_slow_log)
 {
   ulonglong end_utime_of_query= thd-&gt;current_utime();
   thd_proc_info(thd, 'logging slow query');
@@ -268,8 +265,7 @@ shell# mysqldumpslow -s c slow-queries.log &gt; static.sql
                    end_utime_of_query);
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="추천하는-설정">추천하는 설정</h3>
 
@@ -277,23 +273,21 @@ shell# mysqldumpslow -s c slow-queries.log &gt; static.sql
   <li>MASTER</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysqld]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysqld]
 log-slow-queries=/log/slow_queries.log
 long-query-time=1
 log_slow_admin_statements
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>SLAVE</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[mysqld]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysqld]
 log-slow-queries=/log/slow_queries.log
 long-query-time=1
 log_slow_slave_statements
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

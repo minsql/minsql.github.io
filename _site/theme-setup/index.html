@@ -176,11 +176,10 @@
   <p>However, this is unreliable and is the source of considerable pain. Even if it looks like it works, it may not work in the future or on another machine.</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bundle <span class="nb">exec </span>jekyll build
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">exec </span>jekyll build
 
 bundle <span class="nb">exec </span>jekyll serve
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <hr />
 
@@ -188,7 +187,7 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>How So Simple is organized and what the various files are. All posts, layouts, includes, stylesheets, assets, and whatever else is grouped nicely under the root folder. The compiled Jekyll site outputs to <code class="highlighter-rouge">_site/</code>.</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>so-simple-theme/
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>so-simple-theme/
 ├── _includes/
 |    ├── browser-upgrade.html    <span class="c"># prompt to install a modern browser for &lt; IE9</span>
 |    ├── disqus-comments.html    <span class="c"># Disqus comments script</span>
@@ -219,8 +218,7 @@ bundle <span class="nb">exec </span>jekyll serve
 ├── feed.xml                     <span class="c"># Atom feed template</span>
 ├── index.md                     <span class="c"># sample homepage. lists 5 latest posts </span>
 └── theme-setup/                 <span class="c"># theme setup page. safe to remove</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <hr />
 
@@ -248,12 +246,11 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>Examples:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">url</span><span class="pi">:</span> <span class="s">https://mmistakes.github.io/so-simple-theme</span>
-<span class="s">url</span><span class="pi">:</span> <span class="s">http://localhost:4000</span>
-<span class="s">url</span><span class="pi">:</span> <span class="s">http://yourdomain.com</span>
-<span class="s">url</span><span class="pi">:</span> 
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">url</span><span class="pi">:</span> <span class="s">https://mmistakes.github.io/so-simple-theme</span>
+<span class="na">url</span><span class="pi">:</span> <span class="s">http://localhost:4000</span>
+<span class="na">url</span><span class="pi">:</span> <span class="s">http://yourdomain.com</span>
+<span class="na">url</span><span class="pi">:</span> 
+</code></pre></div></div>
 
 <h4 id="google-analytics-and-webmaster-tools">Google Analytics and Webmaster Tools</h4>
 
@@ -263,13 +260,12 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>To set what links appear in the top navigation edit <code class="highlighter-rouge">_data/navigation.yml</code>. Use the following format to set the URL and title for as many links as you’d like. <em>External links will open in a new window.</em></p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">title</span><span class="pi">:</span> <span class="s">Portfolio</span>
-  <span class="s">url</span><span class="pi">:</span> <span class="s">/portfolio/</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s">Portfolio</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">/portfolio/</span>
 
-<span class="pi">-</span> <span class="s">title</span><span class="pi">:</span> <span class="s">Made Mistakes</span>
-  <span class="s">url</span><span class="pi">:</span> <span class="s">http://mademistakes.com</span>  
-</code></pre>
-</div>
+<span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s">Made Mistakes</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">http://mademistakes.com</span>  
+</code></pre></div></div>
 
 <hr />
 
@@ -295,11 +291,10 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>For example. Say you want to group all your posts under blog/ instead of articles/. In your post add <code class="highlighter-rouge">categories: blog</code> to the YAML front matter, rename or duplicate articles/index.md to blog/index.md and update the <em>for loop</em> to limit posts to just the blog category.</p>
 
-<div class="language-liquid highlighter-rouge"><pre class="highlight"><code>
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span>post<span class="w"> </span>in<span class="w"> </span>site.categories.blog<span class="w"> </span><span class="p">%}</span>
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If done correctly /blog/ should be a page index of only posts with a category of <code class="highlighter-rouge">blog</code>.</p>
 
@@ -309,20 +304,18 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>The post and page layouts make the assumption that the feature images live in the <code class="highlighter-rouge">images/</code> folder. To add a feature image to a post or page just include the filename in the front matter like so.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">image</span><span class="pi">:</span>
-  <span class="s">feature</span><span class="pi">:</span> <span class="s">feature-image-filename.jpg</span>
-  <span class="s">thumb</span><span class="pi">:</span> <span class="s">thumbnail-image.jpg</span> <span class="c1">#keep it square 200x200 px is good</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">image</span><span class="pi">:</span>
+  <span class="na">feature</span><span class="pi">:</span> <span class="s">feature-image-filename.jpg</span>
+  <span class="na">thumb</span><span class="pi">:</span> <span class="s">thumbnail-image.jpg</span> <span class="c1">#keep it square 200x200 px is good</span>
+</code></pre></div></div>
 
 <p>To add attribution to a feature image use the following YAML front matter on posts or pages. Image credits appear directly below the feature image with a link back to the original source if supplied.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">image</span><span class="pi">:</span>
-  <span class="s">feature</span><span class="pi">:</span> <span class="s">feature-image-filename.jpg</span>
-  <span class="s">credit</span><span class="pi">:</span> <span class="s">Michael Rose</span> <span class="c1">#name of the person or site you want to credit</span>
-  <span class="s">creditlink</span><span class="pi">:</span> <span class="s">http://mademistakes.com</span> <span class="c1">#url to their site or licensing</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">image</span><span class="pi">:</span>
+  <span class="na">feature</span><span class="pi">:</span> <span class="s">feature-image-filename.jpg</span>
+  <span class="na">credit</span><span class="pi">:</span> <span class="s">Michael Rose</span> <span class="c1">#name of the person or site you want to credit</span>
+  <span class="na">creditlink</span><span class="pi">:</span> <span class="s">http://mademistakes.com</span> <span class="c1">#url to their site or licensing</span>
+</code></pre></div></div>
 
 <h3 id="videos">Videos</h3>
 
@@ -330,9 +323,8 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>Not sure if this only effects Kramdown or if it’s an issue with Markdown in general. But adding YouTube video embeds causes errors when building your Jekyll site. To fix add a space between the <code class="highlighter-rouge">&lt;iframe&gt;</code> tags and remove <code class="highlighter-rouge">allowfullscreen</code>. Example below:</p>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;iframe</span> <span class="na">width=</span><span class="s">"560"</span> <span class="na">height=</span><span class="s">"315"</span> <span class="na">src=</span><span class="s">"http://www.youtube.com/embed/PWf4WUoMXwg"</span> <span class="na">frameborder=</span><span class="s">"0"</span><span class="nt">&gt;</span> <span class="nt">&lt;/iframe&gt;</span>
-</code></pre>
-</div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;iframe</span> <span class="na">width=</span><span class="s">"560"</span> <span class="na">height=</span><span class="s">"315"</span> <span class="na">src=</span><span class="s">"http://www.youtube.com/embed/PWf4WUoMXwg"</span> <span class="na">frameborder=</span><span class="s">"0"</span><span class="nt">&gt;</span> <span class="nt">&lt;/iframe&gt;</span>
+</code></pre></div></div>
 
 <h3 id="link-post-type">Link Post Type</h3>
 
@@ -344,34 +336,32 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>Start by modifying <code class="highlighter-rouge">authors.yml</code> file in the <code class="highlighter-rouge">_data</code> folder and add your authors using the following format.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="c1"># Authors</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Authors</span>
 
-<span class="s">billy_rick</span><span class="pi">:</span>
-  <span class="s">name</span><span class="pi">:</span> <span class="s">Billy Rick</span>
-  <span class="s">web</span><span class="pi">:</span> <span class="s">http://thewhip.com</span>
-  <span class="s">email</span><span class="pi">:</span> <span class="s">billy@rick.com</span>
-  <span class="s">bio</span><span class="pi">:</span> <span class="s2">"</span><span class="s">What</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">want,</span><span class="nv"> </span><span class="s">jewels?</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">very</span><span class="nv"> </span><span class="s">extravagant</span><span class="nv"> </span><span class="s">man."</span>
-  <span class="s">avatar</span><span class="pi">:</span> <span class="s">bio-photo-2.jpg</span>
-  <span class="s">twitter</span><span class="pi">:</span> <span class="s">extravagantman</span>
-  <span class="s">google</span><span class="pi">:</span>
-    <span class="s">plus</span><span class="pi">:</span> <span class="s">+BillyRick</span>
+<span class="na">billy_rick</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Billy Rick</span>
+  <span class="na">web</span><span class="pi">:</span> <span class="s">http://thewhip.com</span>
+  <span class="na">email</span><span class="pi">:</span> <span class="s">billy@rick.com</span>
+  <span class="na">bio</span><span class="pi">:</span> <span class="s2">"</span><span class="s">What</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">want,</span><span class="nv"> </span><span class="s">jewels?</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">very</span><span class="nv"> </span><span class="s">extravagant</span><span class="nv"> </span><span class="s">man."</span>
+  <span class="na">avatar</span><span class="pi">:</span> <span class="s">bio-photo-2.jpg</span>
+  <span class="na">twitter</span><span class="pi">:</span> <span class="s">extravagantman</span>
+  <span class="na">google</span><span class="pi">:</span>
+    <span class="na">plus</span><span class="pi">:</span> <span class="s">+BillyRick</span>
 
-<span class="s">cornelius_fiddlebone</span><span class="pi">:</span>
-  <span class="s">name</span><span class="pi">:</span> <span class="s">Cornelius Fiddlebone</span>
-  <span class="s">email</span><span class="pi">:</span> <span class="s">cornelius@thewhip.com</span>
-  <span class="s">bio</span><span class="pi">:</span> <span class="s2">"</span><span class="s">I</span><span class="nv"> </span><span class="s">ordered</span><span class="nv"> </span><span class="s">what?"</span>
-  <span class="s">avatar</span><span class="pi">:</span> <span class="s">bio-photo.jpg</span>
-  <span class="s">twitter</span><span class="pi">:</span> <span class="s">rhymeswithsackit</span>
-  <span class="s">google</span><span class="pi">:</span>
-    <span class="s">plus</span><span class="pi">:</span> <span class="s">+CorneliusFiddlebone</span>
-</code></pre>
-</div>
+<span class="na">cornelius_fiddlebone</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Cornelius Fiddlebone</span>
+  <span class="na">email</span><span class="pi">:</span> <span class="s">cornelius@thewhip.com</span>
+  <span class="na">bio</span><span class="pi">:</span> <span class="s2">"</span><span class="s">I</span><span class="nv"> </span><span class="s">ordered</span><span class="nv"> </span><span class="s">what?"</span>
+  <span class="na">avatar</span><span class="pi">:</span> <span class="s">bio-photo.jpg</span>
+  <span class="na">twitter</span><span class="pi">:</span> <span class="s">rhymeswithsackit</span>
+  <span class="na">google</span><span class="pi">:</span>
+    <span class="na">plus</span><span class="pi">:</span> <span class="s">+CorneliusFiddlebone</span>
+</code></pre></div></div>
 
 <p>To assign Billy Rick as an author for our post. We’d add the following YAML front matter to a post:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">author</span><span class="pi">:</span> <span class="s">billy_rick</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">author</span><span class="pi">:</span> <span class="s">billy_rick</span>
+</code></pre></div></div>
 
 <hr />
 
@@ -379,9 +369,8 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>To add Facebook, Twitter, and Google+ share links to a post add the following YAML front matter.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">share</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">share</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
 
 <p>Share links appear below author details in the sidebar.</p>
 
@@ -391,17 +380,15 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>To enable comments <a href="https://disqus.com/admin/signup/?utm_source=New-Site">signup for a Disqus account</a> and create a shortname for your site. Then add it to your <code class="highlighter-rouge">_config.yml</code> under the site owner section like so:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">site</span><span class="pi">:</span>
-  <span class="s">owner</span><span class="pi">:</span>
-    <span class="s">disqus-shortname</span><span class="pi">:</span> <span class="s">shortname</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">site</span><span class="pi">:</span>
+  <span class="na">owner</span><span class="pi">:</span>
+    <span class="na">disqus-shortname</span><span class="pi">:</span> <span class="s">shortname</span>
+</code></pre></div></div>
 
 <p>If you would like comments to appear on every post or page that uses the <code class="highlighter-rouge">post.html</code> layout simply add the following line to your <code class="highlighter-rouge">_config.yml</code> and you’re done.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">comments</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">comments</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
 
 <p>To be more selective and granualar with which posts and pages Disqus comments appear on, add <code class="highlighter-rouge">comments: true</code> to the YAML Front Matter of each post or page instead.</p>
 
@@ -433,9 +420,8 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <p>To modify the site’s JavaScript files I setup a Grunt build script to lint/concatenate/minify all scripts into <code class="highlighter-rouge">scripts.min.js</code>. <a href="http://nodejs.org/">Install Node.js</a>, then <a href="http://gruntjs.com/getting-started">install Grunt</a>, and then finally install the dependencies for the theme contained in <code class="highlighter-rouge">package.json</code>:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npm install
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div></div>
 
 <p>From the theme’s root, run <code class="highlighter-rouge">grunt</code> to concatenate JavaScript files, and optimize all .jpg, .png, and .svg files in the <code class="highlighter-rouge">images/</code> folder. You can also use <code class="highlighter-rouge">grunt dev</code> in combination with <code class="highlighter-rouge">jekyll build --watch</code> to watch for updates JS files that Grunt will then automatically re-build as you write your code which will in turn auto-generate your Jekyll site when developing locally.</p>
 

@@ -222,9 +222,8 @@
   <li>gtid-mode에서 log-slave-updates를 사용하지 않으면 다음과 같은 에러가 발생한다고 합니다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[ERROR] --gtid-mode=ON or UPGRADE_STEP_1 or UPGRADE_STEP_2 requires --log-bin and --log-slave-updates
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ERROR] --gtid-mode=ON or UPGRADE_STEP_1 or UPGRADE_STEP_2 requires --log-bin and --log-slave-updates
+</code></pre></div></div>
 <ul>
   <li>Master와 Slave binlog에 같은 GTID가 기록되기 때문에 slave는 자신이 최근 적용한 GTID를 가지고 master의 position을 찾아갈수 있음. 즉, auto-positioning을 위해서는 –log-slave-updates가 반드시 활성화되어야함.</li>
 </ul>
@@ -244,10 +243,9 @@
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">create</span> <span class="k">table</span> <span class="n">tt_copy</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">tt</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">create</span> <span class="k">table</span> <span class="n">tt_copy</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">tt</span><span class="p">;</span>
 <span class="n">ERROR</span> <span class="mi">1786</span> <span class="p">(</span><span class="n">HY000</span><span class="p">):</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="p">...</span> <span class="k">SELECT</span> <span class="k">is</span> <span class="n">forbidden</span> <span class="k">when</span> <span class="o">@@</span><span class="k">GLOBAL</span><span class="p">.</span><span class="n">ENFORCE_GTID_CONSISTENCY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <ul>
   <li>
     <ul>
@@ -256,7 +254,7 @@
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">transaction</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">transaction</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">create</span> <span class="k">temporary</span> <span class="k">table</span> <span class="n">no_temp</span> <span class="p">(</span><span class="k">no</span> <span class="n">int</span><span class="p">);</span>
@@ -282,8 +280,7 @@
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">update</span> <span class="n">tt</span><span class="p">,</span> <span class="n">tt_myisam</span> <span class="k">set</span> <span class="n">tt</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="s1">'update innodb!!'</span><span class="p">,</span> <span class="n">tt_myisam</span><span class="p">.</span><span class="n">name</span><span class="o">=</span><span class="s1">'update myisam!!'</span> <span class="k">where</span> <span class="n">tt</span><span class="p">.</span><span class="k">no</span><span class="o">=</span><span class="n">tt_myisam</span><span class="p">.</span><span class="k">no</span> <span class="k">and</span> <span class="n">tt</span><span class="p">.</span><span class="k">no</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
 <span class="n">ERROR</span> <span class="mi">1785</span> <span class="p">(</span><span class="n">HY000</span><span class="p">):</span> <span class="k">When</span> <span class="o">@@</span><span class="k">GLOBAL</span><span class="p">.</span><span class="n">ENFORCE_GTID_CONSISTENCY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">updates</span> <span class="k">to</span> <span class="n">non</span><span class="o">-</span><span class="n">transactional</span> <span class="n">tables</span> <span class="n">can</span> <span class="k">only</span> <span class="n">be</span> <span class="n">done</span> <span class="k">in</span> <span class="n">either</span> <span class="n">autocommitted</span> <span class="n">statements</span> <span class="k">or</span> <span class="n">single</span><span class="o">-</span><span class="k">statement</span> <span class="n">transactions</span><span class="p">,</span> <span class="k">and</span> <span class="n">never</span> <span class="k">in</span> <span class="n">the</span> <span class="n">same</span> <span class="k">statement</span> <span class="k">as</span> <span class="n">updates</span> <span class="k">to</span> <span class="n">transactional</span> <span class="n">tables</span><span class="p">.</span>
 <span class="n">mysql</span><span class="o">&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>버젼별 주의사항(enforce-gtid-consistency)

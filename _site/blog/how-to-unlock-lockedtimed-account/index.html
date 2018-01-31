@@ -170,13 +170,12 @@ that means someone failed to access. ( w/ wrong password )</p>
 <h4 id="4-more">4. more…</h4>
 <p>default profile의 FAILED_LOGIN_ATTEMPTS를 변경하고 싶은 경우</p>
 <h5 id="41-check-dba_profile">4.1 check dba_profile</h5>
-<div class="highlighter-rouge"><pre class="highlight"><code>SELECT u.username, p.profile, p.resource_name, p.limit  
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT u.username, p.profile, p.resource_name, p.limit  
 FROM dba_users u, dba_profiles p  
 WHERE p.profile = u.profile  
 AND   p.resource_name = 'FAILED_LOGIN_ATTEMPTS'  
 ;
-</code></pre>
-</div>
+</code></pre></div></div>
 <h5 id="42-alter-default-profile">4.2. alter default profile</h5>
 <p><code class="highlighter-rouge">ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS UNLIMITED;</code></p>
 

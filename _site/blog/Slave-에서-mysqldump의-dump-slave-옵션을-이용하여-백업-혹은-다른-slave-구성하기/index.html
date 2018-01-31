@@ -171,7 +171,7 @@
 
 <h3 id="general-log-확인">General log 확인</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>        General-log
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        General-log
         /*
         141216  1:50:43    50 Connect   root@localhost on
                    50 Query /*!40100 SET @@SQL_MODE='' */
@@ -180,8 +180,7 @@
                    50 Query STOP SLAVE SQL_THREAD
                    ...
                    ...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="각-옵션에-따른-dump결과-비교">각 옵션에 따른 dump결과 비교</h3>
 
@@ -193,7 +192,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>        /*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        /*
         SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
         SET @@SESSION.SQL_LOG_BIN= 0;
 
@@ -205,8 +204,7 @@
 
         USE `cm`;
         */
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -220,7 +218,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>        /*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        /*
         SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
         SET @@SESSION.SQL_LOG_BIN= 0;
 
@@ -238,8 +236,7 @@
 
         USE `cm`;
         */
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>dump-slave 와 apply-slave-statements 옵션 추가
@@ -249,7 +246,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>        /*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        /*
         --
         -- stop slave statement to make a recovery dump)
         --
@@ -273,8 +270,7 @@
 
         USE `cm`;
         */
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>dump-slave 와 apply-slave-statements , include-master-host-port 옵션 추가
@@ -285,7 +281,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>        /*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        /*
         --
         -- stop slave statement to make a recovery dump)
         --
@@ -309,8 +305,7 @@
 
         USE `cm`;
         */
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

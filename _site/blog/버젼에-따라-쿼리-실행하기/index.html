@@ -152,28 +152,26 @@
 예를 들면, 5.5 이상에서만 performance_schema를 실행할 수 있는데.
 아래와 같이 명령어를 실행해도 5.1에서는 문제없이 실행된다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">/!</span><span class="mi">50503</span> <span class="k">show</span> <span class="n">engine</span> <span class="n">performance_schema</span> <span class="n">status</span> <span class="o">*/</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/!</span><span class="mi">50503</span> <span class="k">show</span> <span class="n">engine</span> <span class="n">performance_schema</span> <span class="n">status</span> <span class="o">*/</span><span class="p">;</span>
 <span class="o">/!</span><span class="mi">50503</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">performance_schema</span><span class="p">.</span><span class="n">threads</span> <span class="o">/</span><span class="p">;</span>
 <span class="o">/!</span><span class="mi">50503</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">innodb_trx</span> <span class="o">*/</span><span class="p">;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>이와같이 주석코드를 이용하면 이 문제를 해결할 수 있다. 또한 mysqldump 로 sql을 내리면 다음과 같은 코드를 확인할 수 있다.</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
 <span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">EXISTS</span> <span class="n">logs</span><span class="p">;</span>
 <span class="o">/!</span><span class="mi">40101</span> <span class="k">SET</span> <span class="o">@</span><span class="n">saved_cs_client</span> <span class="o">=</span> <span class="o">@@</span><span class="n">character_set_client</span> <span class="o">*/</span><span class="p">;</span>
 <span class="o">/!</span><span class="mi">40101</span> <span class="k">SET</span> <span class="n">character_set_client</span> <span class="o">=</span> <span class="n">utf8</span> <span class="o">*/</span><span class="p">;</span>
 <span class="p">...</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>위와 같은 포맷으로 /*!버젼 명령어 */; 를 명시하면 해당 버젼 이상에서만 쿼리가 실행되고 아닌 경우 에러 없이 0을 return 한다.</li>
   <li>아래의 예제를 보자. 버젼은 5.6.19 지만 쿼리 앞의 버젼 정보에 따라, 실행이 될 수도 안될 수도 있다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">ONE</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">@@</span><span class="k">global</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ONE</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">@@</span><span class="k">global</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------------------+</span>
 <span class="o">|</span> <span class="o">@@</span><span class="k">global</span><span class="p">.</span><span class="k">version</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">------------------+</span>
@@ -191,8 +189,7 @@
 <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="n">thread</span><span class="o">/</span><span class="k">sql</span><span class="o">/</span><span class="n">main</span> <span class="o">|</span> <span class="n">BACKGROUND</span> <span class="o">|</span> <span class="p">..</span>
 <span class="o">|</span> <span class="mi">2</span> <span class="o">|</span> <span class="n">thread</span><span class="o">/</span><span class="n">innodb</span><span class="o">/</span><span class="n">io_handler_thread</span> <span class="o">|</span> <span class="n">BACKGROUND</span> <span class="o">|</span> <span class="p">..</span>
 <span class="p">..</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

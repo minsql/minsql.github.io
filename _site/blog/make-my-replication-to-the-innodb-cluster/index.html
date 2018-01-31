@@ -179,7 +179,7 @@
 
 <p>@all servers</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:~]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:~]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 Initialized empty Git repository in /root/.pyenv/.git/
 remote: Counting objects: 15428, done.
 remote: Compressing objects: 100% (36/36), done.
@@ -207,8 +207,7 @@ Python 2.6.6
 [root@server1:/mysql]# pyenv local 2.7.13
 [root@server1:/mysql]# python --version
 Python 2.7.13
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="methods-of-installing">Methods of Installing</h2>
 
@@ -229,13 +228,12 @@ Python 2.7.13
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:/mysql]# tar zxf mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:/mysql]# tar zxf mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz
 [root@server1:/mysql]# tar zxf mysql-router-2.1.4-linux-glibc2.12-x86-64bit.tar.gz
 cd /usr/local/bin
 ln -s  /mysql/mysql-shell-1.0.10-linux-glibc2.12-x86-64bit/bin/mysqlsh /usr/local/bin/mysqlsh
 ln -s  /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin/mysqlrouter /usr/local/bin/mysqlrouter
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="production-deployment">Production Deployment</h2>
 
@@ -256,7 +254,7 @@ ln -s  /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin/mysqlrouter /usr/
 
 <p>@all servers</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>SET SQL_LOG_BIN=0;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET SQL_LOG_BIN=0;
 create user 'grgr'@'192.168.73.123' identified by 'grgr';
 
 GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
@@ -272,14 +270,13 @@ GRANT SELECT ON performance_schema.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 GRANT SELECT ON sys.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 SET SQL_LOG_BIN=1;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>위처럼 멤버의 모든 아이피를 넣어줘야하지만, 유연한 변경을 위해서 %를 사용한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>SET SQL_LOG_BIN=0;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET SQL_LOG_BIN=0;
 create user 'grgr'@'192.168.%' identified by 'grgr';
 GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT RELOAD, SHUTDOWN, PROCESS, FILE, SUPER, REPLICATION SLAVE, REPLICATION CLIENT, CREATE USER ON *.* TO grgr@'192.168.%' WITH GRANT OPTION;
@@ -287,8 +284,7 @@ GRANT SELECT ON performance_schema.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT SELECT ON sys.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.%' WITH GRANT OPTION;
 SET SQL_LOG_BIN=1;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -324,7 +320,7 @@ ERROR: 6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null 
 
 <h4 id="checking-instance-configuration">Checking Instance Configuration</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:~]# mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:~]# mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&gt; dba.checkInstanceConfiguration('grgr@192.168.73.123:3306')
 Please provide the password for 'grgr@192.168.73.123:3306':
@@ -446,8 +442,7 @@ The instance '192.168.73.123:3306' is valid for Cluster usage
 }
 mysql-js&gt;
 =&gt; status가 ok 라면 계속 진행한다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="creating-the-cluster">Creating the Cluster</h3>
 
@@ -457,7 +452,7 @@ mysql-js&gt;
   <li>Now create the cluster</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql-js&gt; var cluster = dba.createCluster('myCluster');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql-js&gt; var cluster = dba.createCluster('myCluster');
 A new InnoDB cluster will be created on instance 'grgr@192.168.73.123:3306'.
 
 Creating InnoDB cluster 'myCluster' on 'grgr@192.168.73.123:3306'...
@@ -468,14 +463,13 @@ At least 3 instances are needed for the cluster to be able to withstand up to
 one server failure.
 
 mysql-js&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>check the instance state:</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql-js&gt; cluster.checkInstanceState('grgr@192.168.73.123:3306')
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql-js&gt; cluster.checkInstanceState('grgr@192.168.73.123:3306')
 Please provide the password for 'grgr@192.168.73.123:3306':
 Analyzing the instance replication state...
 
@@ -486,14 +480,13 @@ The instance is fully recoverable.
     "reason": "recoverable",
     "state": "ok"
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>Check the cluster status:</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql-js&gt; cluster.status()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql-js&gt; cluster.status()
 {
     "clusterName": "myCluster",
     "defaultReplicaSet": {
@@ -513,36 +506,33 @@ The instance is fully recoverable.
     }
 }
 mysql-js&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="adding-instances">Adding instances</h4>
 <p>You need to add two more instances to the cluster to make it tolerant to a server failure.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&gt; cluster=dba.getCluster();
 
 mysql-js&gt; cluster.status();
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>다음과 같이 추가한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
 cluster.addInstance("grgr@192.168.81.192:3306")
 dba.checkInstanceConfiguration('grgr@192.168.85.198:3306')
 cluster.addInstance("grgr@192.168.85.198:3306")
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>logs</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Please provide the password for 'grgr@192.168.85.198:3306':
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Please provide the password for 'grgr@192.168.85.198:3306':
 Validating instance...
 
 The instance '192.168.85.198:3306' is valid for Cluster usage
@@ -572,8 +562,7 @@ Adding instance to the cluster ...
 The instance 'grgr@192.168.85.198:3306' was successfully added to the cluster.
 
 mysql-js&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>=&gt; 잘 추가된다면 다행이지만..
 역시 여러가지 에러케이스가 존재한다.
@@ -589,7 +578,7 @@ checkInstanceConfiguration에서 걸린 에러를 잘 확인하도록 한다.
   <li>User권한 부족</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql-js&gt; dba.verbose = 1
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql-js&gt; dba.verbose = 1
 1
 mysql-js&gt; dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
 Please provide the password for 'grgr@192.168.81.192:3306':
@@ -638,8 +627,7 @@ Please fix these issues and try again.
     "status": "error"
 }
 mysql-js&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>=&gt; 추가된 데이터베이스에 권한이 없다. 권한을 부여
 <code class="highlighter-rouge">GRANT SELECT ON *.* TO grgr@'192.168.73.123' WITH GRANT OPTION;</code></p>
 
@@ -652,15 +640,14 @@ mysql-js&gt;
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2017-09-19T12:09:08.639569+09:00 0 [Warning] Plugin group_replication reported: '[GCS] Connection attempt from IP address 192.168.81.192 refused. Address is not in the IP whitelist.'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-09-19T12:09:08.639569+09:00 0 [Warning] Plugin group_replication reported: '[GCS] Connection attempt from IP address 192.168.81.192 refused. Address is not in the IP whitelist.'
+</code></pre></div></div>
 
 <p>=&gt; 이런 에러를 발견했다면 whitelist문제일수 있다. group_replication_ip_whitelist= AUTOMATIC 이지만, C class를 벗어난 대역대 간의 통신에 대해서는 수동으로 추가해줄 필요가 있음. 물론 서로간에 방화벽이나 SElinux같은 것이 활성화 되지 않은 통신이 가능한 상태의 서버들간이어야함.</p>
 
 <p>@server1: group_replication_ip_whitelist를 설정한다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root@localhost:(none) 16:18:00&gt;stop group_replication;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@localhost:(none) 16:18:00&gt;stop group_replication;
 
 Query OK, 0 rows affected (35.04 sec)
 
@@ -691,8 +678,7 @@ The cluster was successfully rebooted.
 
  The instance 'grgr@192.168.81.192:3306' was successfully added to the cluster.
 =&gt; addInsatance 할때도 cluster.addInstance(“grgr@192.168.81.192:3306”, {ipWhitelist: “192.168.73.0/24,192.168.81.0/24,192.168.85.0/24”})와 같이 whitelist argument를 추가한다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>gtid에러
@@ -703,18 +689,17 @@ The cluster was successfully rebooted.
   </li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2017-09-19T12:16:32.035765+09:00 0 [ERROR] Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: 998a1dbd-7b3c-11e7-a6c0-fa163ed51496:1 &gt; Group transactions: 7f3e956c-98f7-11e7-84a4-fa163e110d6b:1-159,
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-09-19T12:16:32.035765+09:00 0 [ERROR] Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: 998a1dbd-7b3c-11e7-a6c0-fa163ed51496:1 &gt; Group transactions: 7f3e956c-98f7-11e7-84a4-fa163e110d6b:1-159,
 b5eafd39-2316-11e7-88c5-fa163e110d6b:1-24'
 =&gt; 트랜잭션이 더 있었다? 지금은 설정하면서 발생한 트랜잭션일 가능성이 높으므로, reset master해버린다.
 
 root@localhost:(none) 12:16:59&gt;reset master;
 Query OK, 0 rows affected (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="check-cluster-status">Check cluster status</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&gt; cluster=dba.getCluster();
 
@@ -751,12 +736,11 @@ mysql-js&gt; cluster.status();
         }
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="deploy-mysql-router">Deploy MySQL Router</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@server1:~]# cd /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@server1:~]# cd /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit
 [root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit]# cd bin
 [root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]#
 
@@ -837,8 +821,7 @@ mysql-sql&gt; select @@hostname;
 +-------------------------------+
 1 row in set (0.00 sec)
 mysql-sql&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

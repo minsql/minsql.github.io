@@ -160,7 +160,7 @@
 
 <h4 id="11-requirements-pip설치">1.1 requirements, pip설치</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@pgvm1 ~]# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@pgvm1 ~]# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 
 [root@pgvm1 ~]# python ez_setup.py
 
@@ -173,23 +173,21 @@
 [root@pgvm1 ~]# yum install python-devel
 
 [root@pgvm1 ~]# yum install python-psycopg2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="12-py-mysql2pgsql-설치">1.2 py-mysql2pgsql 설치</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[root@pgvm1 ~]# pip install py-mysql2pgsql
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@pgvm1 ~]# pip install py-mysql2pgsql
 
 [root@pgvm1 ~]# which py-mysql2pgsql
 /usr/bin/py-mysql2pgsql
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="2-configuration">2. Configuration</h3>
 
 <h4 id="21-usage-확인">2.1 Usage 확인</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvmll1 ~]$ py-mysql2pgsql -h
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvmll1 ~]$ py-mysql2pgsql -h
 usage: py-mysql2pgsql [-h] [-v] [-f FILE] [-V]
 
 Tool for migrating/converting data from mysql to postgresql.
@@ -203,12 +201,11 @@ optional arguments:
   -V, --version         Print version and exit.
 
 https://github.com/philipsoutham/py-mysql2pgsql
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="22-mysql2pgsqlyml-생성">2.2 mysql2pgsql.yml 생성</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvm1 py-mysql2pgsql]$ mkdir output
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvm1 py-mysql2pgsql]$ mkdir output
 [postgres@pgvm1 py-mysql2pgsql]$ vi mysql2pgsql.yml
 mysql:
  hostname: 192.168.56.111
@@ -227,12 +224,11 @@ destination:
   username: incarta
   password: incarta
   database: incartadb
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="23-target-usertablespacedatabaseschema-생성">2.3 target user/tablespace/database/schema 생성</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@pgvm1 9.4]$ mkdir -p pg_data/incarta_data
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@pgvm1 9.4]$ mkdir -p pg_data/incarta_data
 
 
 
@@ -280,14 +276,12 @@ CREATE SCHEMA core
   AUTHORIZATION incarta;
 
 alter database incartadb SET search_path TO core;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="3-py-mysql2pgsql-실행">3. py-mysql2pgsql 실행</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>py-mysql2pgsql -v -f mysql2pgsql.yml
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>py-mysql2pgsql -v -f mysql2pgsql.yml
+</code></pre></div></div>
 
 <ul>
   <li>socket을 주면 localhost의 socket 통신을 함.</li>
