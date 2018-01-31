@@ -123,14 +123,33 @@
       <div class="entry-content">
         <p>Sorry, but the page you were trying to view does not exist — perhaps you can try searching for it below.</p>
 
-<script type="text/javascript">
+<!-- Search form -->
+<form method="get" action="http://localhost:4000/search/" data-search-form="" class="simple-search">
+  <label for="q">Search MINSQL for:</label>
+  <input type="search" name="q" id="goog-wm-qt" placeholder="What are you looking for?" data-search-input="" autofocus="" />
+  <input type="submit" value="Search" id="goog-wm-sb" />
+</form>
+
+<!-- Search results placeholder -->
+<h6 data-search-found="">
+  <span data-search-found-count=""></span> result(s) found for &ldquo;<span data-search-found-term=""></span>&rdquo;.
+</h6>
+<ul class="post-list" data-search-results=""></ul>
+
+<!-- Search result template -->
+<script type="text/x-template" id="search-result">
+  <li><article>
+    <a href="##Url##">##Title## <span class="excerpt">##Excerpt##</span></a>
+  </article></li>
+</script>
+
+<!--script type="text/javascript">
   var GOOG_FIXURL_LANG = 'en';
   var GOOG_FIXURL_SITE = 'http://localhost:4000'
 </script>
-
-<script type="text/javascript" src="//linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js">
-</script>
-
+<script type="text/javascript"
+  src="//linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js">
+</script-->
 
       </div><!-- /.entry-content -->
     </div><!-- /.entry-wrapper -->
@@ -146,7 +165,7 @@
 <div class="social-icons">
 	
 	
-	<a href="https://plus.google.com/+minsqldba" title="MINSQL on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+115937891514728373630" title="MINSQL on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
 	
 	
 	
