@@ -268,9 +268,6 @@
 <loc>http://localhost:4000/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/blog/</loc>
-</url>
-<url>
 <loc>http://localhost:4000/collections/</loc>
 </url>
 <url>
@@ -284,15 +281,6 @@
 </url>
 <url>
 <loc>http://localhost:4000/articles/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page2/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page3/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page4/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/images/MySQL%205.6%20gtid%20replication%20manadatory%20options%20%E2%80%93%20MINSQL.htm</loc>

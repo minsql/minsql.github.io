@@ -24,6 +24,7 @@ body {
 // COLORS =====================================================
 $body-color               : #fff;
 $text-color               : #505050;
+$heading-color            : #1e1e1e;
 $base-color               : #343434;
 $comp-color               : adjust-hue($base-color, 180);
 $border-color             : #ddd;
@@ -109,6 +110,8 @@ $base0c: #89ddff !default;
 $base0d: #82aaff !default;
 $base0e: #c792ea !default;
 $base0f: #ff5370 !default;
+
+
 
 /*
    Other

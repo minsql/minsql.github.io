@@ -30,8 +30,12 @@ include: [".htaccess"]
 exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", ".less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "vendor"]
 
 read_time: true
-paginate: 20 # amount of posts to show
-paginate_path: /page:num/
+# Pagination Settings
+pagination:
+  enabled: true
+  per_page: 30 # amount of posts to show
+  permalink: '/:num/'
+
 
 # Site owner
 owner:
@@ -50,7 +54,7 @@ owner:
   pinterest: #username
   weibo: #userid
   google:
-    plus: 
+    plus:
     analytics:
     verify:
     ad-client:

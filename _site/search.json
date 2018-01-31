@@ -547,8 +547,6 @@
   
 
   
-
-  
     ,{
       "title"			: "Theme Setup",
       "link"			: "http://localhost:4000/theme-setup/",
@@ -577,27 +575,17 @@
   
 
   
-    ,{
-      "title"			: "Latest Posts",
-      "link"			: "http://localhost:4000/page2/",
-      "excerpt"		: ""
-    }
+
   
 
   
-    ,{
-      "title"			: "Latest Posts",
-      "link"			: "http://localhost:4000/page3/",
-      "excerpt"		: ""
-    }
+
   
 
   
-    ,{
-      "title"			: "Latest Posts",
-      "link"			: "http://localhost:4000/page4/",
-      "excerpt"		: ""
-    }
+
+  
+
   
 
 ]
