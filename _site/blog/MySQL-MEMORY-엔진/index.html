@@ -153,19 +153,20 @@
   <li>MySQL Daemon</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%heap%'</span><span class="p">;</span>  
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%heap%'</span><span class="p">;</span>  
 <span class="o">+</span><span class="c1">---------------------+-------------+  </span>
 <span class="o">|</span> <span class="n">Variable_name</span>       <span class="o">|</span> <span class="n">Value</span>       <span class="o">|</span>  
 <span class="o">+</span><span class="c1">---------------------+-------------+  </span>
 <span class="o">|</span> <span class="n">max_heap_table_size</span> <span class="o">|</span> <span class="mi">42949672960</span> <span class="o">|</span>  
 <span class="o">+</span><span class="c1">---------------------+-------------+</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="test">TEST</h4>
 
 <h4 id="sample-data-생성">sample data 생성</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE `MEM_UTF8` (  
+<div class="highlighter-rouge"><pre class="highlight"><code>CREATE TABLE `MEM_UTF8` (  
   `DB_SERVER_ID` smallint(5) unsigned NOT NULL DEFAULT '0',  
   `V_NAME` varchar(64) NOT NULL DEFAULT '',  
   `CTIME` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',  
@@ -193,7 +194,8 @@ Max_data_length: 41557785302
  Create_options:   
         Comment:   
 1 row in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="row_formatdynamic-옵션-추가">row_format=DYNAMIC 옵션 추가</h4>
 <ul>
@@ -201,7 +203,7 @@ Max_data_length: 41557785302
   <li>dynamic으로 바뀌지 않고 Create_options: row_format=DYNAMIC 에만 추가된다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_UTF8_DYNAMIC`</span> <span class="p">(</span>  
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_UTF8_DYNAMIC`</span> <span class="p">(</span>  
     <span class="o">-&gt;</span>   <span class="nv">`DB_SERVER_ID`</span> <span class="n">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span><span class="p">,</span>  
     <span class="o">-&gt;</span>   <span class="nv">`V_NAME`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>  
     <span class="o">-&gt;</span>   <span class="nv">`CTIME`</span> <span class="n">datetime</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0000-00-00 00:00:00'</span><span class="p">,</span>  
@@ -253,14 +255,15 @@ Max_data_length: 41557785302
  <span class="n">Create_options</span><span class="p">:</span> <span class="n">row_format</span><span class="o">=</span><span class="k">DYNAMIC</span>  
         <span class="k">Comment</span><span class="p">:</span>   
 <span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 <h4 id="character-set에-따른-size-차이">character set에 따른 size 차이</h4>
 <ul>
   <li>row format이 fixed라면, character set에 따라 DATA length는 변경되어야 한다.</li>
   <li>각 character set에 따라 DATA length는 변경된다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_latin1`</span> <span class="p">(</span>  
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_latin1`</span> <span class="p">(</span>  
     <span class="o">-&gt;</span>   <span class="nv">`DB_SERVER_ID`</span> <span class="n">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span><span class="p">,</span>  
     <span class="o">-&gt;</span>   <span class="nv">`V_NAME`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>  
     <span class="o">-&gt;</span>   <span class="nv">`CTIME`</span> <span class="n">datetime</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0000-00-00 00:00:00'</span><span class="p">,</span>  
@@ -346,7 +349,8 @@ Max_data_length: 41557785302
  <span class="n">Create_options</span><span class="p">:</span>   
         <span class="k">Comment</span><span class="p">:</span>   
 <span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="varcharchar에-따른-size차이">varchar,char에 따른 size차이</h4>
 <ul>
@@ -355,7 +359,7 @@ Max_data_length: 41557785302
   <li>varchar(40), char(40) 은 값은 Data length를 가진다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_UTF8_varchar40`</span> <span class="p">(</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`MEM_UTF8_varchar40`</span> <span class="p">(</span>
     <span class="o">-&gt;</span>   <span class="nv">`DB_SERVER_ID`</span> <span class="n">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span><span class="p">,</span>
     <span class="o">-&gt;</span>   <span class="nv">`V_NAME`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
     <span class="o">-&gt;</span>   <span class="nv">`CTIME`</span> <span class="n">datetime</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0000-00-00 00:00:00'</span><span class="p">,</span>
@@ -442,14 +446,15 @@ Max_data_length: 41557785302
         <span class="k">Comment</span><span class="p">:</span>
 <span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="dml을-통한-사이즈-확인">DML을 통한 사이즈 확인</h4>
 <ul>
   <li>Delete 및 Insert 후의 Data length 확인</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">table</span> <span class="n">statusG</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">db</span><span class="o">-</span><span class="n">dis</span><span class="o">-</span><span class="n">mdb</span><span class="p">][</span><span class="n">dis_mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">table</span> <span class="n">statusG</span>
 <span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
            <span class="n">Name</span><span class="p">:</span> <span class="n">MEM_UTF8</span>
          <span class="n">Engine</span><span class="p">:</span> <span class="n">MEMORY</span>
@@ -581,7 +586,8 @@ Max_data_length: 41557785302
  Create_options:
         Comment:
 1 row in set (0.00 sec)
-</span></code></pre></div></div>
+</span></code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->
@@ -613,7 +619,7 @@ Max_data_length: 41557785302
     </div><!-- /.entry-wrapper -->
     <nav class="pagination" role="navigation">
       
-        <a href="http://localhost:4000/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/" class="btn" title="slave_sql_verify_checksum 성능에 미치는 영향">Previous</a>
+        <a href="http://localhost:4000/blog/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/" class="btn" title="slave_sql_verify_checksum 성능에 미치는 영향">Previous</a>
       
       
         <a href="http://localhost:4000/blog/unique-index-with-nullable-column/" class="btn" title="unique index with nullable column">Next</a>

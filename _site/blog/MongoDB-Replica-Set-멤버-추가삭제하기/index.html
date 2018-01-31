@@ -197,11 +197,12 @@
 
 <p>새로운 멤버를 기존의 replica set에 추가하기전에, data directory를 단계에 따라 준비한다. * data directory를 준비. 다른 데이터를 포함하지 않은 빈 디렉터리여야한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm4 ~]# mkdir /db/mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm4 ~]# mkdir /db/mongo
     [root@testvm4 ~]# chown -R mongo. /db/mongo
     [root@testvm4 ~]# mkdir /data1/mongo
     [root@testvm4 ~]# chown -R mongo. /data1/mongo
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>수동으로 기존의 멤버의 data directory를 copy한다.
@@ -211,12 +212,13 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mongo@testvm4 ~]$ cd /data1/mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mongo@testvm4 ~]$ cd /data1/mongo
     [mongo@testvm4 mongo]$ ll
     total 0
     [mongo@testvm4 mongo]$ scp -pr testvm1:/backupsnap/mongo/* . #스냅샷백업본에서 카피
     ...
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="32-기존의-repica-set으로-mongod-instanace-시작한다">3.2 기존의 repica set으로 mongod instanace 시작한다.</h4>
 
@@ -224,7 +226,7 @@
   <li>configuration file 생성하고 시작한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mongo@testvm4 ~]$ cd /db/mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mongo@testvm4 ~]$ cd /db/mongo
     [mongo@testvm4 mongo]$ scp testvm1:/db/mongo/mongod.conf .
     mongo@testvm1's password:
     mongod.conf                                   100% 1513     1.5KB/s   00:00
@@ -234,11 +236,12 @@
     about to fork child process, waiting until server is ready for connections.
     forked process: 2131
     child process started successfully, parent exiting
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="33-replica-set의-primary로-접속">3.3 replica set의 primary로 접속</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mongo@testvm1 ~]$ mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mongo@testvm1 ~]$ mongo
     MongoDB shell version: 2.6.9
     connecting to: test
     rs0:PRIMARY&gt; db.isMaster()
@@ -262,7 +265,8 @@
             "minWireVersion" : 0,
             "ok" : 1
     }
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="34-멤버-추가-명령">3.4 멤버 추가 명령</h4>
 
@@ -270,17 +274,19 @@
   <li>추가하기전에 변경발생시켜두자</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; for (var i = 1; i &lt;= 100000; i++) {    db.test1.insert( { x : i } ) }
+<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; for (var i = 1; i &lt;= 100000; i++) {    db.test1.insert( { x : i } ) }
     WriteResult({ "nInserted" : 1 })
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>멤버추가</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.add("testvm4:27017")
+<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.add("testvm4:27017")
     { "ok" : 1 }
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="35-확인">3.5 확인</h4>
 
@@ -288,7 +294,7 @@
   <li>rs.conf()확인</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.conf()
+<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.conf()
     {
             "_id" : "rs0",
             "version" : 4,
@@ -311,13 +317,14 @@
                     }
             ]
     }
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>슬레이브 catch up확인</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm4 ~]# mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm4 ~]# mongo
     MongoDB shell version: 2.6.9
     connecting to: test
     rs0:SECONDARY&gt; rs.slaveOk()
@@ -325,7 +332,8 @@
     90018
     rs0:SECONDARY&gt; db.test1.count()
     100000
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="4-멤버-삭제하기">4. 멤버 삭제하기</h3>
 
@@ -335,7 +343,7 @@
   <li>삭제할 멤버의 인스턴스를 shutdown한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:SECONDARY&gt; use admin
+<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:SECONDARY&gt; use admin
     switched to db admin
     rs0:SECONDARY&gt;  db.shutdownServer()
     2015-04-16T11:08:33.496+1000 DBClientCursor::init call() failed
@@ -344,19 +352,21 @@
     2015-04-16T11:08:33.511+1000 warning: Failed to connect to 127.0.0.1:27017, reason: errno:111 Connection refused
     2015-04-16T11:08:33.511+1000 reconnect 127.0.0.1:27017 (127.0.0.1) failed failed couldn't connect to server 127.0.0.1:27017 (127.0.0.1), connection attempt failed
     &gt;
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>primary로 접속하여 rs.remove() 명령한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.remove("testvm4:27017")
+<div class="highlighter-rouge"><pre class="highlight"><code>    rs0:PRIMARY&gt; rs.remove("testvm4:27017")
     2015-04-15T17:21:48.106+1000 DBClientCursor::init call() failed
     2015-04-15T17:21:48.108+1000 Error: error doing query: failed at src/mongo/shell/query.js:81
     2015-04-15T17:21:48.110+1000 trying reconnect to 127.0.0.1:27017 (127.0.0.1) failed
     2015-04-15T17:21:48.112+1000 reconnect 127.0.0.1:27017 (127.0.0.1) ok
     rs0:PRIMARY&gt;
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

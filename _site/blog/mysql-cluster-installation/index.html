@@ -201,32 +201,35 @@
 
 <h3 id="3-sql-node-설치">3. SQL node 설치</h3>
 <h4 id="31-mysql-user-생성-root-user">3.1. mysql user 생성 (root user)</h4>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm2 ~]# groupadd mysql
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm2 ~]# groupadd mysql
 [root@testvm2 ~]# useradd -g mysql mysql
 [root@testvm2 ~]# passwd mysql
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="32-binary-압축해제-및-symbolic-link-생성-root-user">3.2. binary 압축해제 및 symbolic link 생성 (root user)</h4>
 <ul>
   <li>mysql direcotry : /db/mysql</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm2 db]# tar -xzf mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64.tar.gz
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm2 db]# tar -xzf mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64.tar.gz
 [root@testvm2 db]# ln -s mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64 mysql
 [root@testvm2 db]# chown -R mysql. mysql
 [root@testvm2 db]# chown -R mysql. mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="33-data-directory-준비-및-mysql_install_db-root-user">3.3. data directory 준비 및 mysql_install_db (root user)</h4>
 <ul>
   <li>data directory : /data1/mysql-cluster</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm2 db]# mkdir -p /data1/mysql-cluster
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm2 db]# mkdir -p /data1/mysql-cluster
 [root@testvm2 db]# chown -R mysql. /data1/mysql-cluster
 [root@testvm2 db]# cd mysql
 [root@testvm2 mysql]# ./scripts/mysql_install_db --datadir=/data1/mysql-cluster --user=mysql
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="4-data-node-설치">4. Data node 설치</h3>
 <ul>
@@ -236,10 +239,11 @@
 
 <h4 id="41-mysql-user-생성-root-user">4.1. mysql user 생성 (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm3 ~]# groupadd mysql
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm3 ~]# groupadd mysql
 [root@testvm3 ~]# useradd -g mysql mysql
 [root@testvm3 ~]# passwd mysql
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="42-directory-설정-root-user">4.2. directory 설정 (root user)</h4>
 <ul>
@@ -247,15 +251,16 @@
   <li>data directory : /data1/mysql-cluster</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm3 /]# mkdir -p /db/mysql/bin
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm3 /]# mkdir -p /db/mysql/bin
 [root@testvm3 /]# chown -R mysql. /db/mysql
 [root@testvm3 /]# mkdir -p /data1/mysql-cluster
 [root@testvm3 /]# chown -R mysql. /data1/mysql-cluster/
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="43-sql-node에서-data-node로-ndbd-ndbmtd-바이너리-copy-mysql-user">4.3. SQL node에서 data node로 ndbd, ndbmtd 바이너리 copy (mysql user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm2 bin]$ scp ndbd ndbmtd testvm3:/db/mysql/bin
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm2 bin]$ scp ndbd ndbmtd testvm3:/db/mysql/bin
 The authenticity of host 'testvm3 (192.168.137.203)' can't be established.
 RSA key fingerprint is 91:21:ef:c7:9b:52:2a:44:f3:8d:09:a0:69:bc:71:ac.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -263,7 +268,8 @@ Warning: Permanently added 'testvm3,192.168.137.203' (RSA) to the list of known 
 mysql@testvm3's password:
 ndbd                                                                                                                                100%   28MB  27.7MB/s   00:00
 ndbmtd
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="5-management-node-설치">5. Management node 설치</h3>
 <ul>
@@ -272,22 +278,24 @@ ndbmtd
 
 <h4 id="51-mysql-user-생성-root-user">5.1. mysql user 생성 (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm1 ~]# groupadd mysql
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm1 ~]# groupadd mysql
 [root@testvm1 ~]# useradd -g mysql mysql
 [root@testvm1 ~]# passwd mysql
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="52-directory-설정-root-user">5.2. directory 설정 (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm1 ~]# mkdir -p /db/mysql/bin
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm1 ~]# mkdir -p /db/mysql/bin
 [root@testvm1 ~]# chown -R mysql. /db/mysql
 [root@testvm1 ~]# mkdir -p /data1/mysql-cluster
 [root@testvm1 ~]# chown -R mysql. /data1/mysql-cluster/
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="53-sql-node에서-management-node로-ndb_mgmd-ndb_mgm-바이너리-copy-mysql-user">5.3. SQL node에서 Management node로 ndb_mgmd, ndb_mgm 바이너리 copy (mysql user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm2 bin]$ scp ndb_mgmd ndb_mgm testvm1:/db/mysql/bin
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm2 bin]$ scp ndb_mgmd ndb_mgm testvm1:/db/mysql/bin
 The authenticity of host 'testvm1 (192.168.137.201)' can't be established.
 RSA key fingerprint is 91:21:ef:c7:9b:52:2a:44:f3:8d:09:a0:69:bc:71:ac.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -295,7 +303,8 @@ Warning: Permanently added 'testvm1,192.168.137.201' (RSA) to the list of known 
 mysql@testvm1's password:
 ndb_mgmd                                                                                                               100%   15MB  15.4MB/s   00:00
 ndb_mgm                                                                                                               100% 6964KB   6.8MB/s   00:00
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="6initial-configuration">6.Initial Configuration</h3>
 <ul>
@@ -306,7 +315,7 @@ ndb_mgm                                                                         
 
 <h4 id="61-configuring-the-sql-nodes-root-user">6.1. Configuring the SQL nodes (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm2 mysql]$ vi /etc/my.cnf
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm2 mysql]$ vi /etc/my.cnf
 [mysqld]
 # Options for mysqld process:
 ndbcluster                      # run NDB storage engine
@@ -320,11 +329,12 @@ ndb-connectstring=192.168.137.201  # location of management server
 
 [mysql]
 socket = /tmp/mysql.sock
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="62-configuring-the-data-nodes-root-user">6.2. Configuring the data nodes (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm3 etc]# vi /etc/my.cnf
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm3 etc]# vi /etc/my.cnf
 [mysqld]
 # Options for mysqld process:
 ndbcluster                      # run NDB storage engine
@@ -334,11 +344,12 @@ ndbcluster                      # run NDB storage engine
 ndb-connectstring=192.168.137.201  # location of management server
 
 [root@testvm3 etc]# chown -R mysql. /etc/my.cnf
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="63-configuring-the-management-node-root-user">6.3. Configuring the management node. (root user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm1 etc]# vi /etc/config.ini
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm1 etc]# vi /etc/config.ini
 [ndbd default]
 # Options affecting ndbd processes on all data nodes:
 NoOfReplicas=2    # Number of replicas
@@ -373,7 +384,8 @@ hostname=192.168.137.202           # Hostname or IP address
                                 # purposes such as running ndb_restore)
 
 [root@testvm1 etc]# chown -R mysql. /etc/config.ini
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="7-initial-startup-of-mysql-cluster">7. Initial Startup of MySQL Cluster</h3>
 <h4 id="71-management-node-ndb_mgmd-실행">7.1. management node ndb_mgmd 실행</h4>
@@ -381,7 +393,7 @@ hostname=192.168.137.202           # Hostname or IP address
   <li>mysql direcotry : /db/mysql 에서 실행 (mysql user)</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 etc]$ cd /db/mysql
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 etc]$ cd /db/mysql
 [mysql@testvm1 mysql]$ ./bin/ndb_mgmd -f /etc/config.ini --configdir=/data1/mysql-cluster
 MySQL Cluster Management Server mysql-5.6.21 ndb-7.3.7
 [mysql@testvm1 mysql]$ ps -ef | grep ndb
@@ -402,38 +414,41 @@ id=1 @192.168.137.201  (mysql-5.6.21 ndb-7.3.7)
 
 [mysqld(API)] 1 node(s)
 id=4 (not connected, accepting connect from 192.168.137.202)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="72--data-node-ndbd-실행">7.2.  data node ndbd 실행</h4>
 <ul>
   <li>mysql direcotry : /db/mysql 에서 실행 (mysql user)</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm3 mysql]$ ./bin/ndbd
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm3 mysql]$ ./bin/ndbd
 2014-11-01 16:34:11 [ndbd] INFO     -- Angel connected to '192.168.137.201:1186'
 2014-11-01 16:34:11 [ndbd] INFO     -- Angel allocated nodeid: 2
 [mysql@testvm4 mysql]$ ./bin/ndbd
 2014-11-01 16:43:28 [ndbd] INFO     -- Angel connected to '192.168.137.201:1186'
 2014-11-01 16:43:28 [ndbd] INFO     -- Angel allocated nodeid: 3
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="73-sql-node-mysqld-실행">7.3. sql node mysqld 실행</h4>
 <ul>
   <li>mysql direcotry : /db/mysql 에서 실행 (mysql user)</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm2 mysql]$ ./bin/mysqld_safe &amp;
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm2 mysql]$ ./bin/mysqld_safe &amp;
 [1] 26070
 [mysql@testvm2 mysql]$ 141111 16:40:18 mysqld_safe Logging to '/data1/mysql-cluster/testvm2.err'.
 141111 16:40:18 mysqld_safe Starting mysqld daemon with databases from /data1/mysql-cluster
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="74-다-띄웠으면-ndb_mgm에서-확인">7.4. 다 띄웠으면 ndb_mgm에서 확인</h4>
 <ul>
   <li>ndb_mgm</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ ./bin/ndb_mgm
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ ./bin/ndb_mgm
 -- NDB Cluster -- Management Client --
 ndb_mgm&gt; show
 Cluster Configuration
@@ -447,7 +462,8 @@ id=1 @192.168.137.201  (mysql-5.6.21 ndb-7.3.7)
 
 [mysqld(API)] 1 node(s)
 id=4 @192.168.137.202  (mysql-5.6.21 ndb-7.3.7)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="8-safe-shutdown-and-restart-of-mysql-cluster">8. Safe Shutdown and Restart of MySQL Cluster</h3>
 <h4 id="81-shutdown">8.1. shutdown</h4>
@@ -455,7 +471,7 @@ id=4 @192.168.137.202  (mysql-5.6.21 ndb-7.3.7)
   <li>ndb_mgm -e shutdown를 통해서 shutdown 할 수 있다. 이 커맨드는 ndb_mgm, ndb_mgmd, and any ndbd or ndbmtd processes 를 gracefully 종료시킨다. SQL nodes 는 따로 mysqladmin shutdown 등을 통해 종료시켜야함.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ ./bin/ndb_mgm -e shutdown
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ ./bin/ndb_mgm -e shutdown
 Connected to Management Server at: localhost:1186
 3 NDB Cluster node(s) have shutdown.
 Disconnecting to allow management server to shutdown.
@@ -463,20 +479,22 @@ Disconnecting to allow management server to shutdown.
 141111 17:37:06 mysqld_safe mysqld from pid file /data1/mysql-cluster/testvm2.pid ended
 [1]+  Done                    ./bin/mysqld_safe
 [mysql@testvm2 mysql]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="82-restart">8.2. restart</h4>
 <ul>
   <li>잘되는거 같으니 PATH 넣고 다시 시작해서 잘 사용해보면 되겠다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@testvm1 mysql]$ vi ~/.bash_profile
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@testvm1 mysql]$ vi ~/.bash_profile
 MYSQL_HOME=/db/mysql
 PATH=$PATH:$HOME/bin:$MYSQL_HOME/bin
 
 export MYSQL_HOME PATH
 [mysql@testvm1 mysql]$ . ~/.bash_profile
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

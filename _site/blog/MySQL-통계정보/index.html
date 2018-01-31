@@ -193,7 +193,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/***********************************//*
+<div class="highlighter-rouge"><pre class="highlight"><code>/***********************************//*
 Updates the table modification counter and calculates new estimates
 for table and index statistics if necessary. */
 UNIV_INLINE
@@ -239,7 +239,8 @@ row_update_statistics_if_needed(
   dict_stats_update(table, DICT_STATS_RECALC_TRANSIENT);
  }
 }
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>Default 값 (innodb_stats_persistent=ON,innodb_stats_auto_recalc=ON,innodb_stats_persistent_sample_pages=20)으로 사용한다 하더라도, TABLE 을 만들때 해당 데이터 변화량에 의해 자동으로 통계정보가 수집될지 아닐지를 결정할 수 있다. (https://dev.mysql.com/doc/refman/5.6/en/create-table.html)

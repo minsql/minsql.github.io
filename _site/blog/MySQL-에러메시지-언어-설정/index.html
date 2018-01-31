@@ -176,7 +176,7 @@
 
 <h4 id="한국어로-설정해봅시다">한국어로 설정해봅시다.</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; show variables like '%message%';
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show variables like '%message%';
 +-----------------+-----------------------------------------------+
 | Variable_name   | Value                                         |
 +-----------------+-----------------------------------------------+
@@ -189,11 +189,12 @@ mysql&gt;  select * from zzzz;
 ERROR 1046 (3D000): No database selected
 mysql&gt; use dsfsfa;
 ERROR 1049 (42000): Unknown database 'dsfsfa'
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="시스템-온라인상태에서-세션레벨-파라메터만-변경하는-테스트">시스템 온라인상태에서 세션레벨 파라메터만 변경하는 테스트</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; SET lc_messages = 'ko_KR';
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; SET lc_messages = 'ko_KR';
 
 
 mysql&gt; show variables like '%messages%';
@@ -209,11 +210,12 @@ mysql&gt; show variables like '%messages%';
 
 mysql&gt;  select * from zzzz;
 ERROR 1046 (3D000): C120D0DDB41C B370C774D0C0BCA0C774C2A4AC00 C5C6C2B5B2C8B2E4.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>오잉 이렇게 나온다면? 이경우에는 에러메시지를 character_set_results 에 지정된 캐릭터셋으로 표현할수가 없는 경우입니다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; show variables like '%char%';
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show variables like '%char%';
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -227,24 +229,27 @@ ERROR 1046 (3D000): C120D0DDB41C B370C774D0C0BCA0C774C2A4AC00 C5C6C2B5B2C8B2E4.
 | character_sets_dir       | /db/mysql-5.6.19-linux-glibc2.5-x86_64/share/charsets/ |
 +--------------------------+--------------------------------------------------------+
 8 rows in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>역시 latin1으로 되어있었네요. utf8로 변경하고 테스트해봅시다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; set names utf8;
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; set names utf8;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql&gt; select * from zzzz;
 ERROR 1046 (3D000): 선택된 데이타베이스가 없습니다.
 mysql&gt; use dsfsfa;
 ERROR 1049 (42000): 데이타베이스 'dsfsfa'는 알수 없음
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>아름다운 우리말이 나오네요.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; select * from mysql.user limitas 1;
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; select * from mysql.user limitas 1;
 ERROR 1064 (42000): 'SQL 구문에 오류가 있습니다.' 에러 같읍니다. ('1' 명령어 라인 1)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>아쉽게도 정확한 표현을 구사하진 못하지만요.</p>
 
@@ -252,7 +257,7 @@ ERROR 1064 (42000): 'SQL 구문에 오류가 있습니다.' 에러 같읍니다.
 
 <p>my.cnf 에 lc_messages=ko_KR 추가. (캐릭터셋 설정도 보너스로)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>character-set-filesystem=utf8
+<div class="highlighter-rouge"><pre class="highlight"><code>character-set-filesystem=utf8
 character-set-server=utf8
 collation_server=utf8_bin
 lc_messages=ko_KR
@@ -284,7 +289,8 @@ mysql&gt; show variables like '%messages%';
 | lc_messages_dir | /db/mysql-5.6.19-linux-glibc2.5-x86_64/share/ |
 +-----------------+-----------------------------------------------+
 2 rows in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="references">References</h5>
 

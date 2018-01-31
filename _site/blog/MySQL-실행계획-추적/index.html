@@ -159,7 +159,7 @@
 <h3 id="2-테스트-방법">2. 테스트 방법 </h3>
 <h4 id="테스트-데이터-생성">테스트 데이터 생성</h4>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`optimizer_test`</span> <span class="p">(</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`optimizer_test`</span> <span class="p">(</span>
   <span class="nv">`no`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
   <span class="nv">`datetime`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="n">CHARACTER</span> <span class="k">SET</span> <span class="n">latin1</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
   <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="nv">`no`</span><span class="p">),</span>
@@ -179,7 +179,8 @@
 <span class="o">+</span><span class="c1">----+-------------+----------------+-------+-----------------------+----------+---------+------+------+--------------------------+</span>
 <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="k">SIMPLE</span> <span class="o">|</span> <span class="n">optimizer_test</span> <span class="o">|</span> <span class="k">index</span> <span class="o">|</span> <span class="n">DATETIME</span><span class="p">,</span><span class="n">datetimedesc</span> <span class="o">|</span> <span class="n">DATETIME</span> <span class="o">|</span> <span class="mi">33</span> <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="k">Using</span> <span class="k">where</span><span class="p">;</span> <span class="k">Using</span> <span class="k">index</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">----+-------------+----------------+-------+-----------------------+----------+---------+------+------+--------------------------+</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="optimizer_trace">OPTIMIZER_TRACE</h4>
 <ul>
@@ -187,7 +188,7 @@
   <li>사용법 <a href="http://dev.mysql.com/doc/internals/en/optimizer-tracing-typical-usage.html">http://dev.mysql.com/doc/internals/en/optimizer-tracing-typical-usage.html</a></li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="n">optimizer_trace</span><span class="o">=</span><span class="nv">"enabled=on"</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">SET</span> <span class="n">optimizer_trace</span><span class="o">=</span><span class="nv">"enabled=on"</span><span class="p">;</span>
 <span class="k">select</span> <span class="k">no</span><span class="p">,</span><span class="n">datetime</span> <span class="k">FROM</span> <span class="n">optimizer_test</span> <span class="k">WHERE</span> <span class="n">datetime</span> <span class="k">between</span> <span class="s1">'2014-09-24 00:00:00'</span> <span class="k">and</span> <span class="s1">'2014-10-01 23:59:59'</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">datetime</span> <span class="k">DESC</span><span class="p">;</span>
 <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">INFORMATION_SCHEMA</span><span class="p">.</span><span class="n">OPTIMIZER_TRACEG</span>
 
@@ -195,7 +196,8 @@
 <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">INFORMATION_SCHEMA</span><span class="p">.</span><span class="n">OPTIMIZER_TRACEG</span>
 
 <span class="k">SET</span> <span class="n">optimizer_trace</span><span class="o">=</span><span class="nv">"enabled=off"</span><span class="p">;</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="3-결과">3. 결과</h3>
 <ul>

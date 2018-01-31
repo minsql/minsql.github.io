@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-31T23:51:52+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL range partition VS range columns partition</title><link href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" rel="alternate" type="text/html" title="MySQL range partition VS range columns partition" /><published>2018-01-22T14:46:49+09:00</published><updated>2018-01-22T14:46:49+09:00</updated><id>http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition</id><content type="html" xml:base="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/">&lt;h1 id=&quot;mysql-range-partition-vs-range-columns-partition&quot;&gt;MySQL range partition VS range columns partition&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-31T23:53:03+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL range partition VS range columns partition</title><link href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" rel="alternate" type="text/html" title="MySQL range partition VS range columns partition" /><published>2018-01-22T14:46:49+09:00</published><updated>2018-01-22T14:46:49+09:00</updated><id>http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition</id><content type="html" xml:base="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/">&lt;h1 id=&quot;mysql-range-partition-vs-range-columns-partition&quot;&gt;MySQL range partition VS range columns partition&lt;/h1&gt;
 
 &lt;p&gt;날짜를 이용하여 파티션시, range 를 사용할 것인가? range colums 를 사용할 것인가?&lt;/p&gt;
 
@@ -18,7 +18,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -34,7 +34,8 @@
 &lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-06-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;less&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;than&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-07-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html&quot;&gt;https://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html&lt;/a&gt;&lt;/p&gt;
 
@@ -46,7 +47,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range_columns&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range_columns&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -61,7 +62,8 @@
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-05-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-06-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-07-01'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html&quot;&gt;https://dev.mysql.com/doc/refman/5.7/en/partitioning-columns-range.html&lt;/a&gt;&lt;/p&gt;
 
@@ -77,21 +79,21 @@
   &lt;p&gt;성능을 측정하기 위해 mysqlslap 을 이용하여, 단순 TEST를 진행해보자. 천건씩 (limit 1000) insert 를 10개의 세션 (–concurrency=10) 에서 모두 1000 번 (–number-of-queries=1000, 세션당 100번) 을 실행한다. 이를 10번 진행해보고 (–iterations=10) 결과를 확인해보자.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;bt.sh
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# cat bt.sh
 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Test for insert on range partition table&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;
-/MySQL_bianries/5.7.19/bin/mysqlslap  &lt;span class=&quot;nt&quot;&gt;--concurrency&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 &lt;span class=&quot;nt&quot;&gt;--create-schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--iterations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  &lt;span class=&quot;nt&quot;&gt;--number-of-queries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nt&quot;&gt;--pre-query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into test.pt_range (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock &lt;span class=&quot;nt&quot;&gt;-umsandbox&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pmsandbox&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;date
-echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
+date
+/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 --create-schema&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --iterations&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  --number-of-queries&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 --pre-query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range;&quot;&lt;/span&gt; --query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into test.pt_range (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  --socket&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
+date
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Test for insert on range column partition table&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;
-/MySQL_bianries/5.7.19/bin/mysqlslap  &lt;span class=&quot;nt&quot;&gt;--concurrency&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 &lt;span class=&quot;nt&quot;&gt;--create-schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--iterations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  &lt;span class=&quot;nt&quot;&gt;--number-of-queries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nt&quot;&gt;--pre-query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range_columns;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into pt_range_columns (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock &lt;span class=&quot;nt&quot;&gt;-umsandbox&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pmsandbox&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;date
-echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
+date
+/MySQL_bianries/5.7.19/bin/mysqlslap  --concurrency&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 --create-schema&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --iterations&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10  --number-of-queries&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 --pre-query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;truncate table test.pt_range_columns;&quot;&lt;/span&gt; --query&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;insert into pt_range_columns (some_data, createdAt, modifiedAt) select 'some_data',DATE_ADD(now(),INTERVAL round(rand() *150) DAY), now() from information_schema.tables a ,  information_schema.tables b limit 1000;&quot;&lt;/span&gt;  --socket&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/mysql_sandbox5719.sock -umsandbox -pmsandbox
+date
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;========================================================&quot;&lt;/span&gt;
 
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# ./bt.sh &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; x
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;x
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# ./bt.sh &amp;gt; x
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@localhost msb_5_7_19]# cat x
 &lt;span class=&quot;o&quot;&gt;========================================================&lt;/span&gt;
 Test &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;insert on range partition table
 Sun Jan 14 06:50:06 EST 2018
@@ -115,7 +117,8 @@ Benchmark
 
 Sun Jan 14 06:56:49 EST 2018
 &lt;span class=&quot;o&quot;&gt;========================================================&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;크게 차이는 없지만, range partition table 에 데이터를 넣는것 (평균 19.477 vs 20.407) 이 insert 단위 테스트에서는 조금 더 빠른 결과를 보여준다. (큰 차이는 없었다)&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
@@ -123,7 +126,7 @@ Sun Jan 14 06:56:49 EST 2018
   &lt;li&gt;조건을 통해 partition pruning 을 할 경우 (정확히는 여러달에 걸친 조건 ( between ‘2018-03-30’ and ‘2018-04-02’;)) , 의도치 않게 “RANGE (to_days(createdAt))” 에서 첫번째 partition 을 추가로 읽을 수 있다. 이는 여러달에 걸친 data 를 조회할때는 추가적인 scan (첫번째 partiton 에 대한 scan) 이 필요함으로 성능이 떨어진다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;explain&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-03-30 00:00:00'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-04-30 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;explain&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-03-30 00:00:00'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'2018-04-30 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;select_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt;              &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;possible_keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key_len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ref&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Extra&lt;/span&gt;                    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+-------------+----------+-------------------------+-------+---------------+---------+---------+------+--------+----------+--------------------------+&lt;/span&gt;
@@ -143,7 +146,8 @@ Sun Jan 14 06:56:49 EST 2018
 &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
     &lt;span class=&quot;c1&quot;&gt;-- range columns partition 의 경우,  p201801 에 대한 partition 을 읽지 않는다.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;이는 to_days 가 특정일짜에 대해서 null 을 return 할 수 있기때문에, null 이 저장된 첫번째 partition 을 읽어야 정확한 데이터를 추출해낼 수 있기 때문이다. 이는 bug 가 아닌 의도된 결과이다.&lt;/strong&gt;&lt;/p&gt;
 
@@ -155,7 +159,7 @@ Sun Jan 14 06:56:49 EST 2018
 
 &lt;p&gt;아래의 예제를 확인해보자.&lt;/p&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msandbox&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------------------+&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'2018-04-00 00:00:00'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------------------+&lt;/span&gt;
@@ -255,13 +259,14 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 1 row in set (0.00 sec)
 
     -- sys.list_add() 을 이용하여 다시 원래대로 세션의 sql_mode  값에 NO_ZERO_IN_DATE 를 추가할 수 있다.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;이에대해 관련된 공식 문서와 버그는 아래와 같다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- http://bugs.mysql.com/bug.php?id=72383 (Pruning includes first partition when query range crosses month boundary)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- http://bugs.mysql.com/bug.php?id=72383 (Pruning includes first partition when query range crosses month boundary)
 - Bug 18621754 : PRUNING INCLUDES FIRST PARTITION WHEN QUERY RANGE CROSSES MONTH BOUNDARY
 
 
@@ -275,20 +280,22 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 
     - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-31.html
     - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-11.html
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;추가로, range columns 에서 pruning 이 정확히 안되는 버그가 있었지만, 이는 5-5-33 과 5-6-13 에서 fix 되었다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- Bug 16447483 : PARTITION PRUNING IS NOT CORRECT FOR RANGE COLUMNS
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- Bug 16447483 : PARTITION PRUNING IS NOT CORRECT FOR RANGE COLUMNS
 
     - https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-33.html
     - https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-13.html
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h4 id=&quot;2-가독성-및-관리관점에서&quot;&gt;2. 가독성 및 관리관점에서,&lt;/h4&gt;
 &lt;p&gt;가독성 부분에서는 “PARTITION BY RANGE COLUMNS(createdAt)” 이 더 좋을 수 있다. show create table 등으로 확인할때 직관적으로 날짜를 확인하여 파티션구조를 확인할 수 있기 때문이다.&lt;/p&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;cm&quot;&gt;/*!50500 PARTITION BY RANGE  COLUMNS(createdAt)
 (PARTITION p201801 VALUES LESS THAN ('2018-02-01') ENGINE = InnoDB,
  PARTITION p201802 VALUES LESS THAN ('2018-03-01') ENGINE = InnoDB,
@@ -306,7 +313,8 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
  PARTITION p201804 VALUES LESS THAN (737180) ENGINE = InnoDB,
  PARTITION p201805 VALUES LESS THAN (737211) ENGINE = InnoDB,
  PARTITION p201806 VALUES LESS THAN (737241) ENGINE = InnoDB) */&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;결론&quot;&gt;결론&lt;/h3&gt;
 &lt;p&gt;일반적으로, 달이 넘어가는 데이터를 조회하지 않는 경우, “PARTITION BY RANGE COLUMNS(createdAt)” 과 “PARTITION BY RANGE (to_days(createdAt))” 는 성능에 큰 영향을 주지 않는다.&lt;/p&gt;
@@ -317,7 +325,7 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 
 &lt;p&gt;RANGE partiton 을 꼭 써야만한다면, 아래와 같이 첫번째 partition 을 추가하는것이 좋다. 첫번째 partition 을 확인하더라도 첫번째 파티션에 저장된 유효하지 않은 데이터만 확인함으로 성능상 유리할 수 있다.&lt;/p&gt;
 
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pt_range&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;some_data&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;createdAt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -332,7 +340,8 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201804&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201805&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737211&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
  &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p201806&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LESS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;THAN&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;737241&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL range partition VS range columns partition</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL range partition VS range columns partition</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
 
 &lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
 
@@ -366,7 +375,7 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
   &lt;li&gt;아래의 명령어는 sandbox 를 설치하기 위한 명령어이다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    shell# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    shell# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
     shell# unzip master.zip
     shell# cd mysql-sandbox-master
     shell# perl Makefile.PL
@@ -374,13 +383,14 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
     shell# make
     shell# make test
     shell# make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;log&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost sandbox]# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost sandbox]# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
     --2017-07-20 04:16:45--  https://github.com/datacharmer/mysql-sandbox/archive/master.zip
     Resolving jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)... 10.188.53.53
     Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
@@ -501,7 +511,8 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
     -rw-r--r--. 1 root root  1011 Jul 18 14:24 repo_list.pl
     drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
     -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Make my replication to the InnoDB Cluster</title><link href="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/" rel="alternate" type="text/html" title="Make my replication to the InnoDB Cluster" /><published>2017-09-19T00:00:00+09:00</published><updated>2017-09-19T00:00:00+09:00</updated><id>http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster</id><content type="html" xml:base="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/">&lt;h1 id=&quot;make-my-replication-to-the-innodb-cluster&quot;&gt;Make my replication to the InnoDB Cluster&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Make my replication to the InnoDB Cluster</title><link href="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/" rel="alternate" type="text/html" title="Make my replication to the InnoDB Cluster" /><published>2017-09-19T00:00:00+09:00</published><updated>2017-09-19T00:00:00+09:00</updated><id>http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster</id><content type="html" xml:base="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/">&lt;h1 id=&quot;make-my-replication-to-the-innodb-cluster&quot;&gt;Make my replication to the InnoDB Cluster&lt;/h1&gt;
 
 &lt;p&gt;내 리플리케이션을 cluster로 관리해보자. 빈서버를 cluster로 구성하는 것도 유사한 스텝으로 작업한다. 데이터가 있는 경우라면, cluster생성시 첫 인스턴스를 master를 선택하면 된다. 이데이터가 seed가 되어 전체 클러스터에 복제되게 된다.&lt;/p&gt;
 
@@ -522,7 +533,7 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 
 &lt;p&gt;@all servers&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 Initialized empty Git repository in /root/.pyenv/.git/
 remote: Counting objects: 15428, done.
 remote: Compressing objects: 100% (36/36), done.
@@ -550,7 +561,8 @@ Python 2.6.6
 [root@server1:/mysql]# pyenv local 2.7.13
 [root@server1:/mysql]# python --version
 Python 2.7.13
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;methods-of-installing&quot;&gt;Methods of Installing&lt;/h2&gt;
 
@@ -571,12 +583,13 @@ Python 2.7.13
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:/mysql]# tar zxf mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:/mysql]# tar zxf mysql-shell-1.0.10-linux-glibc2.12-x86-64bit.tar.gz
 [root@server1:/mysql]# tar zxf mysql-router-2.1.4-linux-glibc2.12-x86-64bit.tar.gz
 cd /usr/local/bin
 ln -s  /mysql/mysql-shell-1.0.10-linux-glibc2.12-x86-64bit/bin/mysqlsh /usr/local/bin/mysqlsh
 ln -s  /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin/mysqlrouter /usr/local/bin/mysqlrouter
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;production-deployment&quot;&gt;Production Deployment&lt;/h2&gt;
 
@@ -597,7 +610,7 @@ ln -s  /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin/mysqlrouter /usr/
 
 &lt;p&gt;@all servers&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
 create user 'grgr'@'192.168.73.123' identified by 'grgr';
 
 GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.73.123' WITH GRANT OPTION;
@@ -613,13 +626,14 @@ GRANT SELECT ON performance_schema.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 GRANT SELECT ON sys.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.81.192' WITH GRANT OPTION;
 SET SQL_LOG_BIN=1;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;위처럼 멤버의 모든 아이피를 넣어줘야하지만, 유연한 변경을 위해서 %를 사용한다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET SQL_LOG_BIN=0;
 create user 'grgr'@'192.168.%' identified by 'grgr';
 GRANT ALL PRIVILEGES ON mysql_innodb_cluster_metadata.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT RELOAD, SHUTDOWN, PROCESS, FILE, SUPER, REPLICATION SLAVE, REPLICATION CLIENT, CREATE USER ON *.* TO grgr@'192.168.%' WITH GRANT OPTION;
@@ -627,7 +641,8 @@ GRANT SELECT ON performance_schema.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT SELECT ON sys.* TO grgr@'192.168.%' WITH GRANT OPTION;
 GRANT SELECT, INSERT, UPDATE, DELETE ON mysql.* TO grgr@'192.168.%' WITH GRANT OPTION;
 SET SQL_LOG_BIN=1;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -663,7 +678,7 @@ ERROR: 6 table(s) do not have a Primary Key or Primary Key Equivalent (non-null 
 
 &lt;h4 id=&quot;checking-instance-configuration&quot;&gt;Checking Instance Configuration&lt;/h4&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&amp;gt; dba.checkInstanceConfiguration('grgr@192.168.73.123:3306')
 Please provide the password for 'grgr@192.168.73.123:3306':
@@ -785,7 +800,8 @@ The instance '192.168.73.123:3306' is valid for Cluster usage
 }
 mysql-js&amp;gt;
 =&amp;gt; status가 ok 라면 계속 진행한다.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;creating-the-cluster&quot;&gt;Creating the Cluster&lt;/h3&gt;
 
@@ -795,7 +811,7 @@ mysql-js&amp;gt;
   &lt;li&gt;Now create the cluster&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; var cluster = dba.createCluster('myCluster');
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; var cluster = dba.createCluster('myCluster');
 A new InnoDB cluster will be created on instance 'grgr@192.168.73.123:3306'.
 
 Creating InnoDB cluster 'myCluster' on 'grgr@192.168.73.123:3306'...
@@ -806,13 +822,14 @@ At least 3 instances are needed for the cluster to be able to withstand up to
 one server failure.
 
 mysql-js&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;check the instance state:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.checkInstanceState('grgr@192.168.73.123:3306')
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.checkInstanceState('grgr@192.168.73.123:3306')
 Please provide the password for 'grgr@192.168.73.123:3306':
 Analyzing the instance replication state...
 
@@ -823,13 +840,14 @@ The instance is fully recoverable.
     &quot;reason&quot;: &quot;recoverable&quot;,
     &quot;state&quot;: &quot;ok&quot;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Check the cluster status:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.status()
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; cluster.status()
 {
     &quot;clusterName&quot;: &quot;myCluster&quot;,
     &quot;defaultReplicaSet&quot;: {
@@ -849,33 +867,36 @@ The instance is fully recoverable.
     }
 }
 mysql-js&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h4 id=&quot;adding-instances&quot;&gt;Adding instances&lt;/h4&gt;
 &lt;p&gt;You need to add two more instances to the cluster to make it tolerant to a server failure.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&amp;gt; cluster=dba.getCluster();
 
 mysql-js&amp;gt; cluster.status();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;다음과 같이 추가한다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
 cluster.addInstance(&quot;grgr@192.168.81.192:3306&quot;)
 dba.checkInstanceConfiguration('grgr@192.168.85.198:3306')
 cluster.addInstance(&quot;grgr@192.168.85.198:3306&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;logs&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please provide the password for 'grgr@192.168.85.198:3306':
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please provide the password for 'grgr@192.168.85.198:3306':
 Validating instance...
 
 The instance '192.168.85.198:3306' is valid for Cluster usage
@@ -905,7 +926,8 @@ Adding instance to the cluster ...
 The instance 'grgr@192.168.85.198:3306' was successfully added to the cluster.
 
 mysql-js&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;=&amp;gt; 잘 추가된다면 다행이지만..
 역시 여러가지 에러케이스가 존재한다.
@@ -921,7 +943,7 @@ checkInstanceConfiguration에서 걸린 에러를 잘 확인하도록 한다.
   &lt;li&gt;User권한 부족&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; dba.verbose = 1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql-js&amp;gt; dba.verbose = 1
 1
 mysql-js&amp;gt; dba.checkInstanceConfiguration('grgr@192.168.81.192:3306')
 Please provide the password for 'grgr@192.168.81.192:3306':
@@ -970,7 +992,8 @@ Please fix these issues and try again.
     &quot;status&quot;: &quot;error&quot;
 }
 mysql-js&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;=&amp;gt; 추가된 데이터베이스에 권한이 없다. 권한을 부여
 &lt;code class=&quot;highlighter-rouge&quot;&gt;GRANT SELECT ON *.* TO grgr@'192.168.73.123' WITH GRANT OPTION;&lt;/code&gt;&lt;/p&gt;
 
@@ -983,14 +1006,15 @@ mysql-js&amp;gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:09:08.639569+09:00 0 [Warning] Plugin group_replication reported: '[GCS] Connection attempt from IP address 192.168.81.192 refused. Address is not in the IP whitelist.'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:09:08.639569+09:00 0 [Warning] Plugin group_replication reported: '[GCS] Connection attempt from IP address 192.168.81.192 refused. Address is not in the IP whitelist.'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;=&amp;gt; 이런 에러를 발견했다면 whitelist문제일수 있다. group_replication_ip_whitelist= AUTOMATIC 이지만, C class를 벗어난 대역대 간의 통신에 대해서는 수동으로 추가해줄 필요가 있음. 물론 서로간에 방화벽이나 SElinux같은 것이 활성화 되지 않은 통신이 가능한 상태의 서버들간이어야함.&lt;/p&gt;
 
 &lt;p&gt;@server1: group_replication_ip_whitelist를 설정한다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 16:18:00&amp;gt;stop group_replication;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 16:18:00&amp;gt;stop group_replication;
 
 Query OK, 0 rows affected (35.04 sec)
 
@@ -1021,7 +1045,8 @@ The cluster was successfully rebooted.
 
  The instance 'grgr@192.168.81.192:3306' was successfully added to the cluster.
 =&amp;gt; addInsatance 할때도 cluster.addInstance(“grgr@192.168.81.192:3306”, {ipWhitelist: “192.168.73.0/24,192.168.81.0/24,192.168.85.0/24”})와 같이 whitelist argument를 추가한다.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;gtid에러
@@ -1032,17 +1057,18 @@ The cluster was successfully rebooted.
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:16:32.035765+09:00 0 [ERROR] Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: 998a1dbd-7b3c-11e7-a6c0-fa163ed51496:1 &amp;gt; Group transactions: 7f3e956c-98f7-11e7-84a4-fa163e110d6b:1-159,
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-09-19T12:16:32.035765+09:00 0 [ERROR] Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: 998a1dbd-7b3c-11e7-a6c0-fa163ed51496:1 &amp;gt; Group transactions: 7f3e956c-98f7-11e7-84a4-fa163e110d6b:1-159,
 b5eafd39-2316-11e7-88c5-fa163e110d6b:1-24'
 =&amp;gt; 트랜잭션이 더 있었다? 지금은 설정하면서 발생한 트랜잭션일 가능성이 높으므로, reset master해버린다.
 
 root@localhost:(none) 12:16:59&amp;gt;reset master;
 Query OK, 0 rows affected (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;check-cluster-status&quot;&gt;Check cluster status&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]#  mysqlsh  --log-level=DEBUG3 --uri grgr@192.168.73.123:3306
 
 mysql-js&amp;gt; cluster=dba.getCluster();
 
@@ -1079,11 +1105,12 @@ mysql-js&amp;gt; cluster.status();
         }
     }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;deploy-mysql-router&quot;&gt;Deploy MySQL Router&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# cd /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@server1:~]# cd /mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit
 [root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit]# cd bin
 [root@server1:/mysql/mysql-router-2.1.4-linux-glibc2.12-x86-64bit/bin]#
 
@@ -1164,7 +1191,8 @@ mysql-sql&amp;gt; select @@hostname;
 +-------------------------------+
 1 row in set (0.00 sec)
 mysql-sql&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Make my replication to the InnoDB Cluster</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL 통계정보</title><link href="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/" rel="alternate" type="text/html" title="MySQL 통계정보" /><published>2017-04-02T00:00:00+09:00</published><updated>2017-04-02T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/">&lt;h1 id=&quot;mysql-통계정보&quot;&gt;MySQL 통계정보&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Make my replication to the InnoDB Cluster</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL 통계정보</title><link href="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/" rel="alternate" type="text/html" title="MySQL 통계정보" /><published>2017-04-02T00:00:00+09:00</published><updated>2017-04-02T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/">&lt;h1 id=&quot;mysql-통계정보&quot;&gt;MySQL 통계정보&lt;/h1&gt;
 
 &lt;h1 id=&quot;mysql-55--51&quot;&gt;MySQL 5.5 , 5.1&lt;/h1&gt;
 
@@ -1212,7 +1240,7 @@ mysql-sql&amp;gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/***********************************//*
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/***********************************//*
 Updates the table modification counter and calculates new estimates
 for table and index statistics if necessary. */
 UNIV_INLINE
@@ -1258,7 +1286,8 @@ row_update_statistics_if_needed(
   dict_stats_update(table, DICT_STATS_RECALC_TRANSIENT);
  }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Default 값 (innodb_stats_persistent=ON,innodb_stats_auto_recalc=ON,innodb_stats_persistent_sample_pages=20)으로 사용한다 하더라도, TABLE 을 만들때 해당 데이터 변화량에 의해 자동으로 통계정보가 수집될지 아닐지를 결정할 수 있다. (https://dev.mysql.com/doc/refman/5.6/en/create-table.html)
@@ -1515,11 +1544,12 @@ AFTER_SYNC(By default on MySQL 5.7.2)&lt;/th&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
 mysql&amp;gt; flush logs; 정보 수집을 한 후, 원래의 값으로 돌려놓자.
 mysql&amp;gt; set global log_queries_not_using_indexes = OFF, GLOBAL long_query_time = 2, GLOBAL slow_query_log_file = \'host_name-slow.log\';
 mysql&amp;gt; flush logs;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.&lt;/li&gt;
@@ -1537,11 +1567,12 @@ mysql&amp;gt; flush logs;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# User@Host: root[root] @  [192.168.74.202]  Id:    17
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# User@Host: root[root] @  [192.168.74.202]  Id:    17
 # Query_time: 3.362235  Lock_time: 0.007825 Rows_sent: 0  Rows_examined: 0
 SET timestamp=1469352147;
 alter table tester add index b(b);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;효율적으로-활용하기&quot;&gt;효율적으로 활용하기&lt;/h2&gt;
 
@@ -1551,9 +1582,10 @@ alter table tester add index b(b);
   &lt;li&gt;간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global long_query_time=0;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global long_query_time=0;
 shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. &lt;a href=&quot;\\&amp;quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&amp;quot;&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html&lt;/a&gt;&lt;/li&gt;
@@ -1566,7 +1598,7 @@ shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
   &lt;li&gt;소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (thd-&amp;gt;enable_slow_log)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (thd-&amp;gt;enable_slow_log)
 {
   ulonglong end_utime_of_query= thd-&amp;gt;current_utime();
   thd_proc_info(thd, 'logging slow query');
@@ -1583,7 +1615,8 @@ shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
                    end_utime_of_query);
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;추천하는-설정&quot;&gt;추천하는 설정&lt;/h3&gt;
 
@@ -1591,21 +1624,23 @@ shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
   &lt;li&gt;MASTER&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
 log-slow-queries=/log/slow_queries.log
 long-query-time=1
 log_slow_admin_statements
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;SLAVE&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
 log-slow-queries=/log/slow_queries.log
 long-query-time=1
 log_slow_slave_statements
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL slow query 를 효율적으로 이용해보자!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">PostgreSQL synchronous_commit 개념도</title><link href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" rel="alternate" type="text/html" title="PostgreSQL synchronous_commit 개념도" /><published>2016-07-01T00:00:00+09:00</published><updated>2016-07-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/PostgreSQL%20synchronous_commit%20%EA%B0%9C%EB%85%90%EB%8F%84</id><content type="html" xml:base="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/">&lt;h1 id=&quot;postgresql-synchronous_commit-개념도&quot;&gt;PostgreSQL synchronous_commit 개념도&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL slow query 를 효율적으로 이용해보자!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">PostgreSQL synchronous_commit 개념도</title><link href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" rel="alternate" type="text/html" title="PostgreSQL synchronous_commit 개념도" /><published>2016-07-01T00:00:00+09:00</published><updated>2016-07-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/PostgreSQL%20synchronous_commit%20%EA%B0%9C%EB%85%90%EB%8F%84</id><content type="html" xml:base="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/">&lt;h1 id=&quot;postgresql-synchronous_commit-개념도&quot;&gt;PostgreSQL synchronous_commit 개념도&lt;/h1&gt;
 
 &lt;h3 id=&quot;synchronous_commit-개념도&quot;&gt;synchronous_commit 개념도&lt;/h3&gt;
 
@@ -1660,9 +1695,10 @@ log_slow_slave_statements
   &lt;li&gt;최신버전 다운로드 후 압축해제: https://github.com/dalibo/pgbadger/releases/latest&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
 tar xzf pgbadger-8.1.tar.gz
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;설치
@@ -1672,7 +1708,7 @@ tar xzf pgbadger-8.1.tar.gz
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cd pgbadger-8.1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cd pgbadger-8.1
 # perl Makefile.PL
 Checking if your kit is complete...
 Looks good
@@ -1682,7 +1718,8 @@ Writing MYMETA.yml and MYMETA.json
 Installing /usr/local/share/man/man1/pgbadger.1p
 Installing /usr/local/bin/pgbadger
 Appending installation info to /usr/lib64/perl5/perllocal.pod
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;2-postgresql-관련-파라메터-설정&quot;&gt;2. PostgreSQL 관련 파라메터 설정&lt;/h3&gt;
 
@@ -1696,30 +1733,33 @@ Appending installation info to /usr/lib64/perl5/perllocal.pod
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_min_duration_statement = 1000
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_min_duration_statement = 1000
 log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;추가 정보를 로깅하고 싶다면 다음의 파라메터를 활성화할수 있다.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_checkpoints = on
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_checkpoints = on
 log_connections = on
 log_disconnections = on
 log_lock_waits = on
 log_temp_files = 0
 log_autovacuum_min_duration = 0
 log_error_verbosity = default
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;log_statement은 pgBadger로 parse되지 않으니 사용하지 않는다.&lt;/li&gt;
   &lt;li&gt;lc_messages는 C로 한다&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lc_messages='C'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lc_messages='C'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;[Note] log_min_duration_statement, log_duration 설정관련 참조
@@ -1732,11 +1772,12 @@ log_error_verbosity = default
 
 &lt;h3 id=&quot;3-레포트생성&quot;&gt;3. 레포트생성&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
 [=============&amp;gt;           ] Parsed 1639250 bytes of 2842188 (57.68%), queries: 8
 [========================&amp;gt;] Parsed 2842188 bytes of 2842188 (100.00%), queries: 17221, events: 21
 LOG: Ok, generating html report...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;간단하게 html output을 뽑아 볼수 있다.
 &lt;img src=&quot;/wp-content/uploads/2016/06/pgbadger_out.png&quot; alt=&quot;pgbadger_out&quot; /&gt; 다른 옵션들은 필요하다면 사용해보시길.&lt;/p&gt;
@@ -1757,12 +1798,13 @@ LOG: Ok, generating html report...
 
 &lt;h5 id=&quot;1-server1-준비&quot;&gt;1. server1 준비&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/initdb --pgdata=/data1/9.5/data -W
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/initdb --pgdata=/data1/9.5/data -W
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;2-server1-postgresqlconf&quot;&gt;2. server1 postgresql.conf&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5435                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
 wal_log_hints = on                      # also do full page writes of non-critical updates
@@ -1772,26 +1814,30 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # &quot;on&quot; allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;3-server1-pg_hbaconf&quot;&gt;3. server1 pg_hba.conf&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;4-server1-start&quot;&gt;4. server1 start&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_ctl -D /data1/9.5/data start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_ctl -D /data1/9.5/data start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;5-server2-준비&quot;&gt;5. server2 준비&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;6-server2-postgresqlconf&quot;&gt;6. server2 postgresql.conf&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5445                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
 wal_log_hints = on                      # also do full page writes of non-critical updates
@@ -1801,21 +1847,24 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # &quot;on&quot; allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;7-server2-pg_hbaconf&quot;&gt;7. server2 pg_hba.conf&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;8-server2-recoveryconf&quot;&gt;8. server2 recovery.conf&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;standby_mode = 'on'
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;standby_mode = 'on'
 primary_conninfo = 'host=localhost port=5435'
 restore_command = 'cp /backup1/9.5/pg_arc/%f %p'
 recovery_target_timeline = 'latest'
 trigger_file = '/tmp/trigger_file_0'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h4 id=&quot;ii-failover-테스트&quot;&gt;II. failover 테스트&lt;/h4&gt;
 
@@ -1825,16 +1874,17 @@ trigger_file = '/tmp/trigger_file_0'
 
 &lt;h5 id=&quot;1-master-failover하자&quot;&gt;1. master failover하자&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server 1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server 1
 touch /tmp/trigger_file_0
 @server2
 tail -f pg_log/postgresql-2016-06-10_123437.log
 pgbench -i -s 10 postgres
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;2-pg_rewind-테스트&quot;&gt;2. pg_rewind 테스트&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1
 [postgres@pgvm1 data]$ pg_ctl stop
 waiting for server to shut down.... done
 server stopped
@@ -1850,7 +1900,8 @@ need to copy 458 MB (total source directory size is 482 MB)
 469734/469734 kB (100%) copied
 creating backup label and updating control file
 Done!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;3-recoveryconf-생성&quot;&gt;3. recovery.conf 생성&lt;/h5&gt;
 
@@ -1859,14 +1910,15 @@ Done!
   &lt;li&gt;server2꺼 recovery.done sync된것이 있으니 이걸 활용해서 변경&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ cp recovery.done recovery.conf
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ cp recovery.done recovery.conf
 [postgres@pgvm1 data]$ vi recovery.conf
 standby_mode = 'on'
 primary_conninfo = 'host=localhost port=5445'
 restore_command = 'cp /backup1/9.5s1/pg_arc/%f %p'
 recovery_target_timeline = 'latest'
 trigger_file = '/tmp/trigger_file_0'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;4-postgresqlconf-변경&quot;&gt;4. postgresql.conf 변경&lt;/h5&gt;
 
@@ -1875,7 +1927,7 @@ trigger_file = '/tmp/trigger_file_0'
   &lt;li&gt;내경우엔 port랑 archive command&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ vi postgresql.conf
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ vi postgresql.conf
 listen_addresses = '*'          # what IP address(es) to listen on;
 port = 5435                             # (change requires restart)
 wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
@@ -1886,17 +1938,19 @@ max_wal_senders = 3             # max number of walsender processes
 wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
 hot_standby = on                        # &quot;on&quot; allows queries during recovery
 logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;5-failback&quot;&gt;5. failback&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ pg_ctl start
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ pg_ctl start
 server starting
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h5 id=&quot;6-failback-확인&quot;&gt;6. failback 확인&lt;/h5&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1(new slave)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1(new slave)
 #pg_log/로그파일 확인
 LOG:  database system was interrupted while in recovery at log time 2016-06-10 12:35:31 GMT-10
 HINT:  If this has occurred more than once some data might be corrupted and you might need to choose an earlier recovery target.
@@ -1932,24 +1986,27 @@ postgres=# select * from pg_stat_replication ;
 
 Time: 6.919 ms
 postgres=#
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">skip-name-resolve 와 unauthenticated user</title><link href="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/" rel="alternate" type="text/html" title="skip-name-resolve 와 unauthenticated user" /><published>2016-04-18T00:00:00+09:00</published><updated>2016-04-18T00:00:00+09:00</updated><id>http://localhost:4000/blog/skip-name-resolve%20%EC%99%80%20unauthenticated%20user</id><content type="html" xml:base="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/">&lt;h1 id=&quot;skip-name-resolve-와-unauthenticated-user&quot;&gt;skip-name-resolve 와 unauthenticated user&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">skip-name-resolve 와 unauthenticated user</title><link href="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/" rel="alternate" type="text/html" title="skip-name-resolve 와 unauthenticated user" /><published>2016-04-18T00:00:00+09:00</published><updated>2016-04-18T00:00:00+09:00</updated><id>http://localhost:4000/blog/skip-name-resolve%20%EC%99%80%20unauthenticated%20user</id><content type="html" xml:base="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/">&lt;h1 id=&quot;skip-name-resolve-와-unauthenticated-user&quot;&gt;skip-name-resolve 와 unauthenticated user&lt;/h1&gt;
 
 &lt;h2 id=&quot;문제발생&quot;&gt;문제발생&lt;/h2&gt;
 
 &lt;p&gt;MySQL 을 사용하다보면, DNS 서버가 응답을 하지 않음으로서 MySQL 이 커넥션을 빠르게 처리하지 못하고 show processlist 에 많은 수의 ‘unauthenticated user’ 가 발생할 수 있다. 이는 error log 에 아래와 같이 나타나며,&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
 [Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;porcesslist에는 다음과 같이 나타날 수 있다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
 | Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
 +-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
 | 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
 +-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;원인&quot;&gt;원인&lt;/h2&gt;
 
@@ -1957,7 +2014,7 @@ postgres=#
 
 &lt;h2 id=&quot;문제-재현&quot;&gt;문제 재현&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:13:43&amp;gt; show global variables like 'skip_name_resolve';
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:13:43&amp;gt; show global variables like 'skip_name_resolve';
 +-------------------+-------+
 | Variable_name     | Value |
 +-------------------+-------+
@@ -2026,21 +2083,23 @@ COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
 ^^^ host_cache 테이블에는 IP만 존재할 뿐 HOST는 NULL 로 되어있다. DNS로부터 HOST 값을 정확히 얻어내지 못했다. host_cache 에 HOST_VALIDATED 값이 NO 라면, 다음번 접속시에도 똑같이 느린 현상이 발생한다.
 만약 제대로 HOST 값이 저장된다면, 해당 테이블이 truncate 되기 전까지는 빠른 접속이 가능하다.
     - https://dev.mysql.com/doc/refman/5.6/en/host-cache-table.html
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Error log&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
 [Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
 ^^^ error log 에 다음과 같이 찍힐 수 있다.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;해결방법&quot;&gt;해결방법&lt;/h2&gt;
 
 &lt;h4 id=&quot;1-hosts-파일에-추가&quot;&gt;1. hosts 파일에 추가&lt;/h4&gt;
 
 &lt;p&gt;만약 DNS에서 자주 문제가 생긴다면, /etc/hosts 에 해당 서버로 접속하는 서버들에 대해 host를 명시해 줄 수 있다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@testvm3 certs]# cat /etc/hosts
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@testvm3 certs]# cat /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 192.168.74.203  testvm3
@@ -2102,11 +2161,12 @@ root@localhost:(none) 23:22:36&amp;gt; show processlist;
 | 168 | au   | testvm2:52593 | NULL | Sleep   |    9 |       | NULL             |
 +-----+------+---------------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h4 id=&quot;2-mycnf-의-mysqld-섹션에-skip_name_resolve-를-추가하고-restart&quot;&gt;2. my.cnf 의 [mysqld] 섹션에 skip_name_resolve 를 추가하고 restart&lt;/h4&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:24:56&amp;gt; show global variables like 'skip_name_resolve';
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:24:56&amp;gt; show global variables like 'skip_name_resolve';
 +-------------------+-------+
 | Variable_name     | Value |
 +-------------------+-------+
@@ -2141,4 +2201,5 @@ root@localhost:(none) 23:25:57&amp;gt; show processlist;
 root@localhost:(none) 23:25:57&amp;gt; select * from performance_schema.host_cacheG
 Empty set (0.00 sec)
 ^^^ 물론 host_cache 테이블에는 아무것도 존재하지 않는다.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>

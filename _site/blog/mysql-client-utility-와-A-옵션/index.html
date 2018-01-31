@@ -149,7 +149,7 @@
 
 <p>mysql client utility 는 기본적으로 데이터베이스를 use 하는 순간, 해당 database의 테이블을 비롯하여 컬럼까지 읽어들여 캐시에 저장한 후 자동완성 기능을 제공한다. - <a href="http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash">http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_auto-rehash</a> 이를 막고자, 접속시에 –no-auto-rehash 옵션을 두거나, -A 옵션을 사용할 수 있다. - <a href="http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash">http://dev.mysql.com/doc/refman/5.6/en/mysql-command-options.html#option_mysql_no-auto-rehash</a> 이때문에 간편하기도 하지만 테이블이 많아진다면, mysql client에서 use database; 시에 몇 초동안이나 기다려야 할 수도 있다. 서버가 바쁜경우는 더욱 오래걸린다. 아래는 간단한 예제이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---- #no-auto-rehash (해당 옵션을 사용하지 않은 경우)
+<div class="highlighter-rouge"><pre class="highlight"><code>---- #no-auto-rehash (해당 옵션을 사용하지 않은 경우)
     [root@testvm2 db]# m
     Welcome to the MySQL monitor.  Commands end with ; or g.
     Your MySQL connection id is 34983
@@ -189,11 +189,12 @@
     root@localhost:(none) 17:07:07&gt;use test
     Database changed
     root@localhost:test 17:07:10&gt;       &lt;-- tab을 눌러도 아무런 변화가 없습니다.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>이와 같이 굳이 자동완성기능을 사용하지 않는경우, -A 옵션을 주는 것이 일반적이다. 또한 사용되지도 않을 테이블들을 모두 열어야 하기 때문에 서버가 바쁜경우라면 더욱 문제가 될 수 있다. 장애로 이어질 수도… 아래의 예제를 확인해보자</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---- no-auto-rehash
+<div class="highlighter-rouge"><pre class="highlight"><code>---- no-auto-rehash
     root@localhost:test 17:08:48&gt;show open tables;
     ...
     70 rows in set (0.00 sec)
@@ -222,15 +223,17 @@
 
     test database 의 모든 테이블을 열었다. 이는 엄청난 오버헤드를 발생시킨다.
         - http://dev.mysql.com/doc/refman/5.7/en/table-cache.html
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>혹은 범용적으로 사용될 수 있는 my.cnf 인 /etc/my.cnf 의 [mysql] 항목에 아래와 같이 명시하여, mysql client 가 실행될때 아래의 옵션에 따라 실행될 수 있도록 조절할 수 있다. 이 경우에는 굳이 -A 옵션을 주지 않아도 자동으로 비활성화 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql]
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql]
 no-auto-rehash
 show-warnings
 prompt=u@h:d_R:m:\s&gt;
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>추가로 show-warnings 는 warning 이 발생하였을시, show warnings 로 확인하는 것이 아닌 바로 warning을 볼 수 있게 해주는 옵션이다 show warnings 를 치기 귀찮은 사람은 강추. prompt 옵션은 mysql&gt; 대신 좀 더 유익한 정보를 찍어주는 옵션이다. 현재 접속된 host 및 database, 시간등…</p>
 

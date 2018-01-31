@@ -173,7 +173,7 @@
   <li>slave auto discover를 위해서는 master-info-repository=TABLE이어야하고, report-host, report-port 옵션 설정되어야함.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root:@localhost:3366 --discover-slaves-login=root health
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root:@localhost:3366 --discover-slaves-login=root health
 # Discovering slaves for master at localhost:3366
 # Discovering slave at localhost:3367
 # Found slave: localhost:3367
@@ -190,12 +190,13 @@
 | localhost  | 3368  | SLAVE   | UP     | ON         | OK      |
 +------------+-------+---------+--------+------------+---------+
 # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 <ul>
   <li>slave auto discover없이 –slaves에 slave list를 명시하여 체크 가능</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root@localhost:3366 --slaves=root@localhost:3367,root@localhost:3368 health
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root@localhost:3366 --slaves=root@localhost:3367,root@localhost:3368 health
 # Checking privileges.
 #
 # Replication Topology Health:
@@ -207,7 +208,8 @@
 | localhost  | 3368  | SLAVE   | UP     | ON         | OK      |
 +------------+-------+---------+--------+------------+---------+
 # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="32-elect">3.2. elect</h4>
 <ul>
@@ -215,7 +217,7 @@
   <li>replication user가 있는데도 check fail난 경우가 있었는데, ip 주소로 체크하면 에러안난다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root@localhost:3366 --slaves=root@localhost:3367,root@localhost:3368 --verbose elect
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --master=root@localhost:3366 --slaves=root@localhost:3367,root@localhost:3368 --verbose elect
 # Checking privileges.
 # WARNING: You may be mixing host names and IP addresses. This may result in negative status reporting if your DNS services do not support reverse name lookup.
 # Electing candidate slave from known slaves.
@@ -242,13 +244,14 @@ ERROR: No slave found that meets eligilibility requirements.
 #   Replication user exists ... Ok
 # Best slave found is located on 127.0.0.1:3367.
 # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>address resolving에 문제가 있나봄. hostname에 대해서도 replication user생성 해두면 OK</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; GRANT REPLICATION SLAVE ON *.* TO 'replication'@'localhost' IDENTIFIED BY 'replication';
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; GRANT REPLICATION SLAVE ON *.* TO 'replication'@'localhost' IDENTIFIED BY 'replication';
 Query OK, 0 rows affected (0.00 sec)
 
 mysql&gt; flush privileges;
@@ -276,7 +279,8 @@ Query OK, 0 rows affected (0.00 sec)
 #   Replication user exists ... Ok
 # Best slave found is located on 127.0.0.1:3367.
 # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="33-switchover">3.3. switchover</h4>
 <ul>
@@ -284,7 +288,7 @@ Query OK, 0 rows affected (0.00 sec)
   <li><strong>--demote-master</strong>을 사용하면, new master가 구성된 이후, old master를 slave로 자동으로 붙인다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --demote-master --master=root@localhost:3366 --new-master=root@localhost:3367 --slaves=root@localhost:3367,root@localhost:3368 --verbose switchover
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 conf]$ mysqlrpladmin --demote-master --master=root@localhost:3366 --new-master=root@localhost:3367 --slaves=root@localhost:3367,root@localhost:3368 --verbose switchover
 # Checking privileges.
 # WARNING: You may be mixing host names and IP addresses. This may result in negative status reporting if your DNS services do not support reverse name lookup.
 # Performing switchover from master at localhost:3366 to slave at localhost:3367.
@@ -326,7 +330,8 @@ Query OK, 0 rows affected (0.00 sec)
 # Starting all slaves.
 # Performing START on all slaves.
 #   Executing start on slave localhost:3368 Ok
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

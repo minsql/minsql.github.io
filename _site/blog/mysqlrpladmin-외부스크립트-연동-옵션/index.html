@@ -164,7 +164,7 @@
 
 <h4 id="다음과-같이-disk-availability-checkup하는-스크립트를-미리-수행하길-원하는-경우를-테스트해봅시다">다음과 같이 disk availability checkup하는 스크립트를 미리 수행하길 원하는 경우를 테스트해봅시다.</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$ more test_disk_mysql56m3.sh
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ more test_disk_mysql56m3.sh
 touch /data1/multi/5.6/data3/test.out 2 &gt; /dev/null
 
 if [ $? -eq 0 ]
@@ -175,13 +175,14 @@ else
   echo "Could not create file" &gt;&amp;2
   exit 1
 fi
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="1-현-replication구성-현황-확인">1. 현 Replication구성 현황 확인</h4>
 
 <p>참고로 connection information에는 login-path를 사용하였습니다. login-path 구성은 다음 게시글 참조해주세요 : <a href="http://minsql.890m.com/mysql/mysql-login-path/">MySQL login-path</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$  mysqlrpladmin --master=multi56_mysql2 --discover-slaves-login=multi56_mysql2 health
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$  mysqlrpladmin --master=multi56_mysql2 --discover-slaves-login=multi56_mysql2 health
 # Discovering slaves for master at localhost:3367
 # Discovering slave at localhost:3366
 # Found slave: localhost:3366
@@ -199,11 +200,12 @@ fi
 +------------+-------+---------+--------+------------+---------+
 # ...done.
 [mysql@myvm1 db]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="2-port-3368-mysql-instance의-data-directory가-사용불가능한-상태에서-테스트">2. port 3368 mysql instance의 data directory가 사용불가능한 상태에서 테스트</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
 Password:
 [root@myvm1 ~]# cd /data1/multi/5.6/
 [root@myvm1 5.6]# chown -R root. data3
@@ -232,11 +234,12 @@ Could not create file
 +------------+-------+---------+--------+------------+---------+
 # ...done.
 [mysql@myvm1 db]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="switchover-시도">switchover 시도</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
 WARNING: You have chosen to use external script return code checking. Depending on which script fails, this can leave the operation in an undefined state. Please check your results carefully if the operation aborts.
 # Checking privileges.
 # Performing switchover from master at localhost:3367 to slave at localhost:3368.
@@ -256,13 +259,14 @@ ERROR: External script '/db/test_disk_mysql56m3.sh' failed. Result = 1.
 Specified threshold exceeded. Operation aborted.
 WARNING: The operation did not complete. Depending on when the external script was called, you should check the topology for inconsistencies.
 [mysql@myvm1 db]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p><strong>외부 스크립트가 result=1로 fail했기 때문에 Operation이 멈추었습니다.</strong>  </p>
 
 <h4 id="3-디스크가-사용가능한-상태에서-테스트">3. 디스크가 사용가능한 상태에서 테스트</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
 Password:
 [root@myvm1 ~]# cd /data1/multi/5.6/
 [root@myvm1 5.6]# chown -R mysql. data3
@@ -270,11 +274,12 @@ Password:
 logout
 [mysql@myvm1 db]$ ./test_disk_mysql56m3.sh
 Successfully created file
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>switchover 시도</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
 WARNING: You have chosen to use external script return code checking. Depending on which script fails, this can leave the operation in an undefined state. Please check your results carefully if the operation aborts.
 # Checking privileges.
 # Performing switchover from master at localhost:3367 to slave at localhost:3368.
@@ -340,7 +345,8 @@ Successfully created file
 +------------+-------+---------+--------+------------+---------+-------------+-----------------------+-----------------+------------+-------------+--------------+------------------+---------------+-----------+----------------+------------+---------------+
 # ...done.
 [mysql@myvm1 db]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>이번에는 before 스크립트가 성공하고 switchover동작도 성공하였습니다.
 실전에서는 요구사항에 따라 유용하게 사용할수 있을 듯합니다.</p>

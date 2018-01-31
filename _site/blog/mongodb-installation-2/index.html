@@ -153,7 +153,7 @@
 
 <h3 id="1yum-install-mongodb">1.yum install mongodb</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm3 ~]# yum install mongodb
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm3 ~]# yum install mongodb
 Loaded plugins: fastestmirror
 Determining fastest mirrors
 ...
@@ -163,11 +163,12 @@ Determining fastest mirrors
 Installing:
  mongodb                  x86_64    2.4.12-3.el6               epel        35 M
 ...
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>: repository에 있는 버전은 2.4.6임 <strong>최신버전을 깔겠음. repository update후 다시 yum install</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm1 ~]# cd /etc/yum.repos.d/
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm1 ~]# cd /etc/yum.repos.d/
 [root@testvm1 yum.repos.d]# vi mongodb.repo
 [mongodb]
 name=MongoDB Repository
@@ -188,7 +189,7 @@ mongodb/primary                                                                 
 mongodb                                                                                                                                                       240/240
 Setting up Install Process
 Resolving Dependencies
-<span class="gd">--&gt; Running transaction check
+--&gt; Running transaction check
 ---&gt; Package mongodb-org.x86_64 0:2.6.5-1 will be installed
 --&gt; Processing Dependency: mongodb-org-shell = 2.6.5 for package: mongodb-org-2.6.5-1.x86_64
 --&gt; Processing Dependency: mongodb-org-server = 2.6.5 for package: mongodb-org-2.6.5-1.x86_64
@@ -200,13 +201,13 @@ Resolving Dependencies
 ---&gt; Package mongodb-org-shell.x86_64 0:2.6.5-1 will be installed
 ---&gt; Package mongodb-org-tools.x86_64 0:2.6.5-1 will be installed
 --&gt; Finished Dependency Resolution
-</span>
+
 Dependencies Resolved
 
-<span class="gh">======================================================================================================================================================================
-</span> Package                                         Arch                                Version                               Repository                            Size
-<span class="gh">======================================================================================================================================================================
-</span>Installing:
+======================================================================================================================================================================
+ Package                                         Arch                                Version                               Repository                            Size
+======================================================================================================================================================================
+Installing:
  mongodb-org                                     x86_64                              2.6.5-1                               mongodb                              4.6 k
 Installing for dependencies:
  mongodb-org-mongos                              x86_64                              2.6.5-1                               mongodb                              6.8 M
@@ -215,8 +216,8 @@ Installing for dependencies:
  mongodb-org-tools                               x86_64                              2.6.5-1                               mongodb                               89 M
 
 Transaction Summary
-<span class="gh">======================================================================================================================================================================
-</span>Install       5 Package(s)
+======================================================================================================================================================================
+Install       5 Package(s)
 
 Total download size: 109 M
 Installed size: 276 M
@@ -227,8 +228,8 @@ Downloading Packages:
 (3/5): mongodb-org-server-2.6.5-1.x86_64.rpm                                                                                                   | 9.0 MB     00:09     
 (4/5): mongodb-org-shell-2.6.5-1.x86_64.rpm                                                                                                    | 4.3 MB     00:06     
 (5/5): mongodb-org-tools-2.6.5-1.x86_64.rpm                                                                                                    |  89 MB     01:57     
-<span class="gd">----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-</span>Total                                                                                                                                 733 kB/s | 109 MB     02:32     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                 733 kB/s | 109 MB     02:32     
 Running rpm_check_debug
 Running Transaction Test
 Transaction Test Succeeded
@@ -252,7 +253,8 @@ Dependency Installed:
   mongodb-org-mongos.x86_64 0:2.6.5-1      mongodb-org-server.x86_64 0:2.6.5-1      mongodb-org-shell.x86_64 0:2.6.5-1      mongodb-org-tools.x86_64 0:2.6.5-1     
 
 Complete!
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <hr />
 
@@ -260,7 +262,7 @@ Complete!
 
 <h4 id="21-유저디렉터리-준비root">2.1. 유저,디렉터리 준비(root)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@testvm1 db]# useradd mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@testvm1 db]# useradd mongo
 [root@testvm1 db]# passwd mongo
 
 [root@testvm1 db]# mkdir /db/mongo
@@ -269,11 +271,12 @@ Complete!
 [root@testvm1 db]# mv /etc/mongod.conf /db/mongo/
 [root@testvm1 db]# chown -R mongo. /db/mongo
 [root@testvm1 db]# chown -R mongo. /data1/mongo
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="22-configuration-file-수정mongo-user">2.2. configuration file 수정(mongo user)</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mongo@testvm1 ~]$ vi /db/mongo/mongod.conf
+<div class="highlighter-rouge"><pre class="highlight"><code>[mongo@testvm1 ~]$ vi /db/mongo/mongod.conf
 # mongod.conf
 
 #where to log
@@ -294,27 +297,30 @@ pidfilepath=/db/mongo/mongod.pid
 #bind_ip=127.0.0.1
 
 ...
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="23-startup">2.3 startup</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mongo@testvm1 journal]$ mongod -f /db/mongo/mongod.conf
+<div class="highlighter-rouge"><pre class="highlight"><code>[mongo@testvm1 journal]$ mongod -f /db/mongo/mongod.conf
 about to fork child process, waiting until server is ready for connections.
 forked process: 3894
 child process started successfully, parent exiting
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="24-shutdown">2.4 shutdown</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mongo@testvm1 journal]$ mongod -f /db/mongo/mongod.conf --shutdown
+<div class="highlighter-rouge"><pre class="highlight"><code>[mongo@testvm1 journal]$ mongod -f /db/mongo/mongod.conf --shutdown
 killing process with pid: 3894
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="3-간단-crud">3. 간단 CRUD</h3>
 
 <h4 id="31-insert-select">3.1 insert, select</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mongo@testvm1 db]$ mongo
+<div class="highlighter-rouge"><pre class="highlight"><code>[mongo@testvm1 db]$ mongo
 MongoDB shell version: 2.6.9
 connecting to: test
 Welcome to the MongoDB shell.
@@ -331,23 +337,26 @@ WriteResult({ "nInserted" : 1 })
 &gt; db.test.find();
 { "_id" : ObjectId("5510b4b76f965f5632f726dc"), "message" : "hello" }
 &gt; db.test.count();
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="32-update">3.2 update</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; db.test.update({'message':'hello'},{'message':'bye'});
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.test.update({'message':'hello'},{'message':'bye'});
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 &gt; db.test.find();
 { "_id" : ObjectId("5510b4b76f965f5632f726dc"), "message" : "bye" }
 &gt;
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="33-remove">3.3 remove</h4>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; db.test.remove({ "_id" : ObjectId("5510b4b76f965f5632f726dc")});
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.test.remove({ "_id" : ObjectId("5510b4b76f965f5632f726dc")});
 WriteResult({ "nRemoved" : 1 })
 &gt; db.test.count();
 0
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->
