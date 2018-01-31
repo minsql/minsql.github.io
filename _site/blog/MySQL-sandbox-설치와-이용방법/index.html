@@ -1,0 +1,398 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MySQL sandbox 설치와 이용방법 &#8211; MINSQL</title>
+<meta name="description" content="MySQL sandbox 설치와 이용방법
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MySQL sandbox 설치와 이용방법">
+<meta name="twitter:description" content="MySQL sandbox 설치와 이용방법
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL sandbox 설치와 이용방법">
+<meta property="og:description" content="MySQL sandbox 설치와 이용방법
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="MySQL sandbox 설치와 이용방법" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MySQL sandbox 설치와 이용방법</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/makayal-photo.jpg" class="bio-photo" alt="MIN CHO bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN CHO</span></span>
+        <span class="entry-date date published"><time datetime="2018-01-22T00:00:00+09:00"><i class="fa fa-calendar-o"></i> January 22, 2018</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#개요">개요</a></li>
+  <li><a href="#설치">설치</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysql-sandbox-설치와-이용방법">MySQL sandbox 설치와 이용방법</h1>
+
+<h3 id="개요">개요</h3>
+
+<ul>
+  <li>
+    <p>MySQL 을 이용하여 여러 TEST 를 진행하는 경우, 설치 및 설정하는데 많은 시간이 소요된다. 이러한 수고를 줄이고자 MySQL sandbox (한국에는 놀이터에 없는것 같지만, 외국에는 모래를 가지고 뭔가를 만들고 부셔버리는 모래놀이장이 있는데 이것이 sandbox 라고 불린다) 라는것이 존재하고 아주 유용하다.</p>
+  </li>
+  <li>해당 sandbox 를 이용하면 손쉽게 다음과 같은일을 진행할 수 있다.
+    <ul>
+      <li>instance 통제</li>
+      <li>$HOME/sandboxes 에서 현재 설치된 모든 instance 들을 통제할 수 있다.</li>
+      <li>
+        <p>$HOME/sandboxes/msb_$version 혹은 $HOME/sandboxes/$rsandbox_mysql-$verstion 으로 들어가서 각 instance 를 개별적으로 통제할 수 있다.</p>
+      </li>
+      <li>instance 구성
+        <ul>
+          <li>single instance 구성</li>
+          <li>여러개의 single instance 구성</li>
+          <li>여러가지 replication 구성</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>자세한 사용법은 아래를 참고하자. <a href="https://github.com/datacharmer/mysql-sandbox">https://github.com/datacharmer/mysql-sandbox</a></li>
+</ul>
+
+<h3 id="설치">설치</h3>
+
+<p>설치는 간단하다. 소스를 github 에서 받아 설치해주면 된다.</p>
+<ul>
+  <li>아래의 명령어는 sandbox 를 설치하기 위한 명령어이다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    shell# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    shell# unzip master.zip
+    shell# cd mysql-sandbox-master
+    shell# perl Makefile.PL
+
+    shell# make
+    shell# make test
+    shell# make install
+</code></pre>
+</div>
+
+<ul>
+  <li>log</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@localhost sandbox]# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    --2017-07-20 04:16:45--  https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+    Resolving jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)... 10.188.53.53
+    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+    Proxy request sent, awaiting response... 302 Found
+    Location: https://codeload.github.com/datacharmer/mysql-sandbox/zip/master [following]
+    --2017-07-20 04:16:46--  https://codeload.github.com/datacharmer/mysql-sandbox/zip/master
+    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+    Proxy request sent, awaiting response... 200 OK
+    Length: unspecified [application/zip]
+    Saving to: ‘master.zip’
+
+        [  &lt;=&gt;                                                                                                                                   ] 167,877      414KB/s   in 0.4s   
+
+    2017-07-20 04:16:48 (414 KB/s) - ‘master.zip’ saved [167877]
+
+    [root@localhost sandbox]# ll
+    total 288
+    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+
+    [root@localhost sandbox]# unzip master.zip
+    Archive:  master.zip
+    a3d6e43f5c5f8baee3794c98a157ee0c8fe8a2a4
+       creating: mysql-sandbox-master/
+      inflating: mysql-sandbox-master/Changelog  
+      inflating: mysql-sandbox-master/LICENSE  
+      inflating: mysql-sandbox-master/MANIFEST  
+      inflating: mysql-sandbox-master/Makefile.PL  
+      inflating: mysql-sandbox-master/README.md  
+       creating: mysql-sandbox-master/bin/
+      inflating: mysql-sandbox-master/bin/deploy_to_remote_sandboxes.sh  
+      inflating: mysql-sandbox-master/bin/low_level_make_sandbox  
+      inflating: mysql-sandbox-master/bin/make_multiple_custom_sandbox  
+      inflating: mysql-sandbox-master/bin/make_multiple_sandbox  
+      inflating: mysql-sandbox-master/bin/make_replication_sandbox  
+      inflating: mysql-sandbox-master/bin/make_sandbox  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_installed  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_source  
+      inflating: mysql-sandbox-master/bin/make_sandbox_from_url  
+      inflating: mysql-sandbox-master/bin/msandbox  
+      inflating: mysql-sandbox-master/bin/msb  
+      inflating: mysql-sandbox-master/bin/sbtool  
+      inflating: mysql-sandbox-master/bin/test_sandbox  
+       creating: mysql-sandbox-master/lib/
+       creating: mysql-sandbox-master/lib/MySQL/
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox.pm  
+       creating: mysql-sandbox-master/lib/MySQL/Sandbox/
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Recipes.pm  
+      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Scripts.pm  
+      inflating: mysql-sandbox-master/mkdist.sh  
+      inflating: mysql-sandbox-master/repo_list.pl  
+       creating: mysql-sandbox-master/t/
+      inflating: mysql-sandbox-master/t/01_modules.t  
+      inflating: mysql-sandbox-master/t/02_test_binaries.t  
+      inflating: mysql-sandbox-master/t/03_test_sandbox.t  
+      inflating: mysql-sandbox-master/t/04_test_sbtool.t  
+      inflating: mysql-sandbox-master/t/05_test_smoke.t  
+      inflating: mysql-sandbox-master/t/06_test_user_defined.t  
+      inflating: mysql-sandbox-master/t/07_test_user_defined.t  
+      inflating: mysql-sandbox-master/t/08_test_single_port_checking.t  
+      inflating: mysql-sandbox-master/t/09_test_multiple_port_checking.t  
+      inflating: mysql-sandbox-master/t/10_check_start_restart.t  
+      inflating: mysql-sandbox-master/t/11_replication_parameters.t  
+      inflating: mysql-sandbox-master/t/12_custom_user_pwd.t  
+      inflating: mysql-sandbox-master/t/13_innodb_plugin_install.t  
+      inflating: mysql-sandbox-master/t/14_semi_synch_plugin_install.t  
+      inflating: mysql-sandbox-master/t/15_user_privileges.t  
+      inflating: mysql-sandbox-master/t/16_replication_options.t  
+      inflating: mysql-sandbox-master/t/17_replication_flow.t  
+      inflating: mysql-sandbox-master/t/18_force_creation.t  
+      inflating: mysql-sandbox-master/t/19_replication_gtid.t  
+      inflating: mysql-sandbox-master/t/20_add_option.t  
+      inflating: mysql-sandbox-master/t/21_replication_gtid_option.t  
+      inflating: mysql-sandbox-master/t/22_init_exec_sql.t  
+      inflating: mysql-sandbox-master/t/23_mysqlx_plugin.t  
+      inflating: mysql-sandbox-master/t/24_dd_expose.t  
+      inflating: mysql-sandbox-master/t/Test_Helper.pm  
+      inflating: mysql-sandbox-master/t/add_option.sb.pl  
+      inflating: mysql-sandbox-master/t/check_replication.sb  
+      inflating: mysql-sandbox-master/t/check_single_server.sb  
+      inflating: mysql-sandbox-master/t/custom_user_pwd.sb.pl  
+      inflating: mysql-sandbox-master/t/dd_expose.sb.pl  
+      inflating: mysql-sandbox-master/t/force.sb.pl  
+      inflating: mysql-sandbox-master/t/group_port_checking.sb.pl  
+      inflating: mysql-sandbox-master/t/init_exec_sql.sb.pl  
+      inflating: mysql-sandbox-master/t/innodb_plugin_install.sb.pl  
+      inflating: mysql-sandbox-master/t/mysqlx_plugin.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_flow.sh  
+      inflating: mysql-sandbox-master/t/replication_gtid.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_options.sb.pl  
+      inflating: mysql-sandbox-master/t/replication_parameters.sb.pl  
+      inflating: mysql-sandbox-master/t/semi_synch_plugin_install.sb.pl  
+      inflating: mysql-sandbox-master/t/single_port_checking.sb.pl  
+      inflating: mysql-sandbox-master/t/start_restart_arguments.sb.pl  
+      inflating: mysql-sandbox-master/t/test_init_exec.sh  
+      inflating: mysql-sandbox-master/t/user_privileges.sb.pl  
+      inflating: mysql-sandbox-master/test_all_latest.sh  
+    [root@localhost sandbox]# ll
+    total 288
+    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+    drwxr-xr-x. 5 root root     184 Jul 18 14:24 mysql-sandbox-master
+
+    [root@localhost sandbox]# cd mysql-sandbox-master
+
+    [root@localhost mysql-sandbox-master]# ll
+    total 120
+    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 bin
+    -rw-r--r--. 1 root root 41076 Jul 18 14:24 Changelog
+    drwxr-xr-x. 3 root root    19 Jul 18 14:24 lib
+    -rw-r--r--. 1 root root 11358 Jul 18 14:24 LICENSE
+    -rw-r--r--. 1 root root  2927 Jul 18 14:24 Makefile.PL
+    -rw-r--r--. 1 root root  1498 Jul 18 14:24 MANIFEST
+    -rwxr-xr-x. 1 root root  1659 Jul 18 14:24 mkdist.sh
+    -rw-r--r--. 1 root root 33848 Jul 18 14:24 README.md
+    -rw-r--r--. 1 root root  1011 Jul 18 14:24 repo_list.pl
+    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
+    -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
+</code></pre>
+</div>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/" class="btn" title="Make my replication to the InnoDB Cluster">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" class="btn" title="MySQL range partition VS range columns partition">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Slony-I Replication Configuration &#8211; MINSQL</title>
+<meta name="description" content="Slony-I Replication Configuration
+
+">
+<meta name="keywords" content="Postgres">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Slony-I Replication Configuration">
+<meta name="twitter:description" content="Slony-I Replication Configuration
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/postgres.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Slony-I Replication Configuration">
+<meta property="og:description" content="Slony-I Replication Configuration
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/slony-i-replication-configuration/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/slony-i-replication-configuration/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/postgres.png" class="entry-feature-image" alt="Slony-I Replication Configuration" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#Postgres" title="Pages tagged Postgres">Postgres</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Slony-I Replication Configuration</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2014-12-10T00:00:00+09:00"><i class="fa fa-calendar-o"></i> December 10, 2014</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#slony-i-구성해보자-왜-">Slony-I 구성해보자. 왜 ?</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#replication-configuration">Replication Configuration</a>
+    <ul>
+      <li><a href="#0-create-replication-user">0. Create replication user</a></li>
+      <li><a href="#1-creating-pgbench-user-and-db">1. Creating pgbench user and DB</a></li>
+      <li><a href="#2-preparing-pgbench-db">2. Preparing pgbench DB</a></li>
+      <li><a href="#3-configuring-the-database-for-replication">3. Configuring the database for replication</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="slony-i-replication-configuration">Slony-I Replication Configuration</h1>
+
+<h2 id="slony-i-구성해보자-왜-">Slony-I 구성해보자. 왜 ?</h2>
+
+<ul>
+  <li>PostgreSQL 9.0부터 streaming replication이 지원되었다. 보통의 경우 streaming이 더 간단하다.</li>
+  <li>그럼 Slony-I이 필요한 경우는 ?
+    <ul>
+      <li>WAL-based replication구성이 불가능한 경우, 예를 들어 서로다른 버전간의 repliaction.</li>
+      <li>부분 replication. (일부 테이블만 지정가능)</li>
+      <li>slave에서 추가 작업하려는 경우.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="installation">Installation</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ bzip2 -d slony1-2.2.3.tar.bz2
+[postgres@testvm1 ~]$ tar xf slony1-2.2.3.tar
+[postgres@testvm1 ~]$ cd slony1-2.2.3
+[postgres@testvm1 slony1-2.2.3]$ ./configure --prefix=$PGHOME --with-pgconfigdir=$PGHOME/bin --with-perltools
+[postgres@testvm1 slony1-2.2.3]$ gmake all; gmake install
+</code></pre>
+</div>
+
+<h2 id="replication-configuration">Replication Configuration</h2>
+
+<ul>
+  <li>Master : testvm1</li>
+  <li>Slave : testvm2</li>
+  <li>cluster name : slony1</li>
+  <li>master db name : pgbench</li>
+  <li>slave db name : pgbench</li>
+  <li>replication user : slony</li>
+  <li>pgbench user : pgbench</li>
+</ul>
+
+<h3 id="0-create-replication-user">0. Create replication user</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -s slony -W
+Password:
+[postgres@testvm1 ~]$ vi $PGDATA/pg_hba.conf
+host	all	slony	testvm1	trust
+host	all	slony	testvm2	trust
+[postgres@testvm1 ~]$ pg_ctl reload
+LOG:  received SIGHUP, reloading configuration files
+server signaled
+
+
+
+[postgres@testvm2 slony1-2.2.3]$ createuser -s slony -W
+Password:
+postgres@testvm1 ~]$ vi $PGDATA/pg_hba.conf
+host	all	slony	testvm1	trust
+host	all	slony	testvm2	trust
+[postgres@testvm1 ~]$ pg_ctl reload
+LOG:  received SIGHUP, reloading configuration files
+server signaled
+</code></pre>
+</div>
+
+<h3 id="1-creating-pgbench-user-and-db">1. Creating pgbench user and DB</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -SRD pgbench -W
+Password:
+[postgres@testvm1 ~]$ createdb -O pgbench pgbench
+
+
+
+[postgres@testvm2 ~]$ createuser -SRD pgbench -W
+Password:
+[postgres@testvm2 ~]$ createdb -O pgbench pgbench
+</code></pre>
+</div>
+
+<h3 id="2-preparing-pgbench-db">2. Preparing pgbench DB</h3>
+<ul>
+  <li>Master에서만 pgbench tool 설치후 data 생성</li>
+  <li>Slony-I에서는 PK가 필수임. PK가 없는 테이블(pgbench_history)에 PK추가해줘야함.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ cd /db/postgres-9.3.5/contrib/pgbench/
+[postgres@testvm1 pgbench]$ make install
+/bin/mkdir -p '/db/postgres/bin'
+/usr/bin/install -c  pgbench '/db/postgres/bin'
+[postgres@testvm1 pgbench]$ pgbench -i -s 1 -U pgbench pgbench
+NOTICE:  table "pgbench_history" does not exist, skipping
+NOTICE:  table "pgbench_tellers" does not exist, skipping
+NOTICE:  table "pgbench_accounts" does not exist, skipping
+NOTICE:  table "pgbench_branches" does not exist, skipping
+creating tables...
+100000 of 100000 tuples (100%) done (elapsed 0.41 s, remaining 0.00 s).
+vacuum...
+set primary keys...
+done.
+[postgres@testvm1 pgbench]$ psql -U pgbench pgbench
+psql (9.3.5)
+Type "help" for help.
+
+pgbench=&gt; d+ pgbench_history;
+                              Table "public.pgbench_history"
+ Column |            Type             | Modifiers | Storage  | Stats target | Description
+--------+-----------------------------+-----------+----------+--------------+-------------
+ tid    | integer                     |           | plain    |              |
+ bid    | integer                     |           | plain    |              |
+ aid    | integer                     |           | plain    |              |
+ delta  | integer                     |           | plain    |              |
+ mtime  | timestamp without time zone |           | plain    |              |
+ filler | character(22)               |           | extended |              |
+Has OIDs: no
+
+pgbench=&gt; begin;
+BEGIN
+pgbench=&gt; alter table pgbench_history add column id serial;
+ALTER TABLE
+pgbench=&gt; update pgbench_history set id=nextval('pgbench_history_id_seq');
+UPDATE 0
+pgbench=&gt; alter table pgbench_history add primary key(id);
+ALTER TABLE
+pgbench=&gt; commit;
+COMMIT
+pgbench=&gt;
+
+</code></pre>
+</div>
+
+<ul>
+  <li>Slony-I에서 pl/pgSQL 을 사용함. 없다면 install 해줘야한다. 설치되어 있었다면 스킵.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createlang plpgsql pgbench
+createlang: language "plpgsql" is already installed in database "pgbench"
+
+</code></pre>
+</div>
+<ul>
+  <li>Slony-I은 table definition을 copy주진 않는다. slave에 pg_dump로 밀 schema 카피해줘야함.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ pg_dump -s pgbench | psql -U slony -h testvm2 pgbench
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE EXTENSION
+COMMENT
+SET
+SET
+SET
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+ALTER SEQUENCE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+REVOKE
+REVOKE
+GRANT
+GRANT
+</code></pre>
+</div>
+
+<h3 id="3-configuring-the-database-for-replication">3. Configuring the database for replication</h3>
+<ul>
+  <li>slonik tool을 사용하여 configuration tool, stored procedures, triggers를 생성하고 구성해야한다. slonik command를 바로 날릴 수도 있지만, 보통은 slonik script를 작성해주는 tool 을 사용한다.
+    <ul>
+      <li>altperl Scripts : perl script, 하나의 slon_tools.conf를 기반으로 slonik script를 생성</li>
+      <li>mkslonconf.sh : shell script, 입력받은 변수 및 환경변수를 기반으로 전체 cluster에 대한 slonik scripts를 생성.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="31-slonik_build_env-slon_toolsconf을-작성하는-파일">3.1 slonik_build_env slon_tools.conf을 작성하는 파일</h4>
+<ul>
+  <li>option은 host:database:user[:password:port]</li>
+  <li>output slon_tools.conf 을 확인 후, @PKEYEDTABLES, @SEQUENCES의 ()을 []로 변경한다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ vi slon_build.sh
+#!/bin/sh
+SLONDIR=/db/pgdba/slony1
+mkdir -p $SLONDIR/conf
+mkdir -p $SLONDIR/logs
+CONF=/db/pgdba/slony1/conf/slon_tools.conf
+cat &lt;&lt; EOF &gt; $CONF
+$CLUSTER_NAME = 'slony1';
+$LOGDIR = '$SLONDIR/logs';
+$PIDFILE_DIR = '$SLONDIR';
+$MASTERNODE = 1;
+EOF
+slonik_build_env
+-node testvm1:pgbench:slony:slony
+-node testvm2:pgbench:slony:slony &gt;&gt; $CONF
+cat &lt;&lt; EOF &gt;&gt; $CONF
+$SLONY_SETS = {
+    "set1" =&gt; {
+        "set_id" =&gt; 1,
+        "table_id" =&gt; 1,
+        "sequence_id" =&gt; 1,
+        "pkeyedtables" =&gt; @PKEYEDTABLES,
+        "sequences" =&gt; @SEQUENCES,
+    }
+}
+EOF
+
+[postgres@testvm1 pgdba]$ sh +x slon_build.sh
+[postgres@testvm1 pgdba]$ vi slony1/conf/slon_tools.conf
+$CLUSTER_NAME = 'slony1';
+$LOGDIR = '/db/pgdba/slony1/logs';
+$PIDFILE_DIR = '/db/pgdba/slony1';
+$MASTERNODE = 1;
+&amp;add;_node(host =&gt; 'testvm1', dbname =&gt; 'pgbench', port =&gt;5432,
+        user=&gt;'slony', password=&gt;'slony', node=&gt;1 );
+&amp;add;_node(host =&gt; 'testvm2', dbname =&gt; 'pgbench', port =&gt;5432,
+        user=&gt;'slony', password=&gt;'slony', node=&gt;2 , parent=&gt;1);
+@PKEYEDTABLES=(
+	"public.pgbench_accounts",
+	"public.pgbench_branches",
+	"public.pgbench_history",
+	"public.pgbench_tellers",
+);
+@SEQUENCES=(
+	"public.pgbench_history_id_seq",
+);
+$SLONY_SETS = {
+    "set1" =&gt; {
+        "set_id" =&gt; 1,
+        "table_id" =&gt; 1,
+        "sequence_id" =&gt; 1,
+        "pkeyedtables" =&gt; @PKEYEDTABLES,
+        "sequences" =&gt; @SEQUENCES,
+    }
+}
+</code></pre>
+</div>
+
+<h4 id="32-initialize-cluster---_slony-schema-및-table-생성">3.2 initialize cluster - _slony schema 및 table 생성</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ slonik_init_cluster --config=/db/pgdba/slony1/conf/slon_tools.conf |slonik
+:10: Set up replication nodes
+:13: Next: configure paths for each node/origin
+:16: Replication nodes prepared
+:17: Please start a slon replication daemon for each node
+[postgres@testvm1 pgdba]$
+</code></pre>
+</div>
+
+<h4 id="33-start-slon">3.3 start slon</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$  slon_start --config=/db/pgdba/slony1/conf/slon_tools.conf 1
+Invoke slon for node 1 - /db/postgres/bin/slon -p /db/pgdba/slony1/slony1_node1.pid -s 1000 -d0  slony1 'host=testvm1 dbname=pgbench user=slony port=5432 password=slony' &gt; /db/pgdba/slony1/logs/node1/pgbench-2014-12-09.log 2&gt;&amp;1 &amp;
+Slon successfully started for cluster slony1, node node1
+PID [32334]
+Start the watchdog process as well...
+[postgres@testvm1 pgdba]$  slon_start --config=/db/pgdba/slony1/conf/slon_tools.conf 2
+</code></pre>
+</div>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/oracle-11gr2-installation-on-centos6/" class="btn" title="Oracle 11gR2 Installation on CentOS6">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/BLOB-%EC%A0%80%EC%9E%A5%EB%B0%A9%EC%8B%9D-in-InnoDB/" class="btn" title="BLOB 저장방식 in InnoDB">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

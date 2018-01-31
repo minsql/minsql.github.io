@@ -1,0 +1,311 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MySQL InnoDB architecture - doublewrite buffer &#8211; MINSQL</title>
+<meta name="description" content="MySQL InnoDB architecture - doublewrite buffer
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MySQL InnoDB architecture - doublewrite buffer">
+<meta name="twitter:description" content="MySQL InnoDB architecture - doublewrite buffer
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL InnoDB architecture - doublewrite buffer">
+<meta property="og:description" content="MySQL InnoDB architecture - doublewrite buffer
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/mysql-architecture-doublewrite-buffer/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="MySQL InnoDB architecture - doublewrite buffer" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MySQL InnoDB architecture - doublewrite buffer</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-04-17T00:00:00+09:00"><i class="fa fa-calendar-o"></i> April 17, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#doublewrite-buffer">Doublewrite Buffer</a>
+    <ul>
+      <li><a href="#1-관련파라메터">1. 관련파라메터</a></li>
+      <li><a href="#2-목적">2. 목적</a></li>
+      <li><a href="#3-동작">3. 동작</a></li>
+      <li><a href="#4-성능">4. 성능</a></li>
+      <li><a href="#5-비활성화-할수-있나">5. 비활성화 할수 있나</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysql-innodb-architecture---doublewrite-buffer">MySQL InnoDB architecture - doublewrite buffer</h1>
+
+<h2 id="doublewrite-buffer">Doublewrite Buffer</h2>
+
+<blockquote>
+  <p>InnoDB는 file flush관련 독특한 technique을 사용하는데, 그것이 바로 doublewrite buffer이다.</p>
+</blockquote>
+
+<h3 id="1-관련파라메터">1. 관련파라메터</h3>
+
+<ul>
+  <li>innodb_doublewrite
+    <ul>
+      <li>default로 활성화 되어있다.</li>
+      <li><code class="highlighter-rouge">innodb_doublewrite=ON</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-목적">2. 목적</h3>
+
+<ul>
+  <li>시스템 crash, 전원공급중단 등 장애시 보다 안전한 리커버리
+    <ul>
+      <li>특히 page의 일부분만 쓰다가 장애가 난 경우, 리커버리 어떻게 할 것인가.</li>
+      <li>예를 들어, 16K innodb page중에 첫 4KB를 썼는데, 갑자기 OS crash가 났다거나 전원공급이 중단되어 나머지는 이전 상태로 남아있는 경우. 대부분의 file system의 default block size는 4k이다.
+        <ul>
+          <li>여기서 내 시스템의 block size가 궁금하다면; : <code class="highlighter-rouge">dumpe2fs /dev/sda1 | grep "^Block size"</code></li>
+        </ul>
+      </li>
+      <li>로그파일을 이용해서 복구한다? : InnoDB는 log file에 full pages를 로깅하는 것이 아니라, page number, 변경내용, log sequence 정보를 로깅한다. 하지만, page가 항상 consistent하다는 것을 전제로 한다. 즉, page version이 “현재” 버전이면, page 변경을 skip하고, “이전” 버전이면 변경을 반영한다. page가 inconsistent하다면, 리커버리 할수가 없다.</li>
+    </ul>
+  </li>
+  <li>Unix시스템에서 fsync() 콜을 줄임으로써 성능 향상</li>
+</ul>
+
+<h3 id="3-동작">3. 동작</h3>
+
+<ul>
+  <li>innodb buffer pool의 변경된 pages를 data files로 write하기 전에, InnoDB는 먼저 그 pages들을 doublewrite buffer라는 contiguous tablespace area에 먼저 쓴다.
+    <ul>
+      <li>contiguous라는 건 인접한 블럭으로 append하는 식으로 쓰는 형식으로 사용하는 공간을 말한다.</li>
+      <li>InnoDB가 innodb buffer pool로 부터 page를 flush할때 multiple pages를 한번에 flush 하는데 이 pages들이 sequential하게 doublewrite buffer에 쓰여지는 것이다.</li>
+    </ul>
+  </li>
+  <li>doublewrite buffer로 write하고 flush까지 한후(fsync())에, InnoDB는 data file의 적절한 position에다가 변경된 pages를 write(2차 fsync())한다.</li>
+  <li>page write중에 만약 OS나 스토리지시스템에 문제가 발생하거나, mysql이 crash되었다면, (partial page write, torn page), InnoDB는 recovery시, doublewrite buffer로부터 해당 page를 찾아서 간단히 복구할 수 있다.
+    <ul>
+      <li>만약 doublewrite buffer의 page가 inconsistent하다면 그냥 버려버리고, 로그파일로 부터 복구하게 된다.</li>
+      <li>실제 data file의 page가 inconsistent한 경우, doublewrite buffer에서 복구한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="4-성능">4. 성능</h3>
+
+<ul>
+  <li>doublewrite를 사용하면 page를 두번 써야하니까 overhead가 있을까?
+    <ul>
+      <li>적어도 두배의 overhead는 아니다.</li>
+      <li>doublewrite buffer는 sequential 하게 쓰여지기때문에 매우 빠르다.</li>
+    </ul>
+  </li>
+  <li>fsync()횟수를 줄인다
+    <ul>
+      <li>매 page마다 fsync()를 콜하는게 아니라, multiple page를 한번에 쓰고 fsync()한다.</li>
+    </ul>
+  </li>
+  <li>일반적으로 doublewrite를 활성화에 의해서 발생하는 성능 저하는 5-10%정도라고 본다.</li>
+</ul>
+
+<h3 id="5-비활성화-할수-있나">5. 비활성화 할수 있나</h3>
+
+<ul>
+  <li>데이터가 소중하지 않다면, 혹은 file system 단에서 partial page write가 발생하지 않는다고 보장할수 있다면, disable할수 있다.</li>
+  <li><code class="highlighter-rouge">innodb_doublewrite=0</code></li>
+  <li>하지만 대부분의 경우, 이런 위험을 감수할 필요는 없다고 본다.</li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/MongoDB-Replica-Set-%EB%A9%A4%EB%B2%84-%EC%B6%94%EA%B0%80%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0/" class="btn" title="MongoDB Replica Set 멤버 추가삭제하기">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/" class="btn" title="MySQL architecture - Adaptive Hash Indexes">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

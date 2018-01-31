@@ -1,0 +1,428 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>mysqlrpladmin 외부스크립트 연동 옵션 &#8211; MINSQL</title>
+<meta name="description" content="mysqlrpladmin 외부스크립트 연동 옵션
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="mysqlrpladmin 외부스크립트 연동 옵션">
+<meta name="twitter:description" content="mysqlrpladmin 외부스크립트 연동 옵션
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysqlrpladmin 외부스크립트 연동 옵션">
+<meta property="og:description" content="mysqlrpladmin 외부스크립트 연동 옵션
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/mysqlrpladmin-%EC%99%B8%EB%B6%80%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%97%B0%EB%8F%99-%EC%98%B5%EC%85%98/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/mysqlrpladmin-%EC%99%B8%EB%B6%80%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%97%B0%EB%8F%99-%EC%98%B5%EC%85%98/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="mysqlrpladmin 외부스크립트 연동 옵션" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">mysqlrpladmin 외부스크립트 연동 옵션</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-02-12T00:00:00+09:00"><i class="fa fa-calendar-o"></i> February 12, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#mysqlrpladmin-외부스크립트-연동-옵션-1">mysqlrpladmin 외부스크립트 연동 옵션</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysqlrpladmin-외부스크립트-연동-옵션">mysqlrpladmin 외부스크립트 연동 옵션</h1>
+
+<h3 id="mysqlrpladmin-외부스크립트-연동-옵션-1">mysqlrpladmin 외부스크립트 연동 옵션</h3>
+
+<blockquote>
+  <p>mysqlrpladmin failover/switchover 에서 활용가능한 외부스크립트 연동 옵션입니다.</p>
+</blockquote>
+
+<p> </p>
+
+<ul>
+  <li>mysqlrpladmin을 통한 failover/switchover하기 전이나 후에 외부 스크립트를 수행하게 할수 있습니다. (** _--exec-before=<script>, --exec-after=<script>_** )</script></script></li>
+  <li>만약 mysqlrpladmin전에 외부 스크립트를 사용하는 경우, 해당 스크립트의 결과값에 따라 mysqlrpladmin 동작을 제어할수 있습니다. (** _--script-threshold=<return_code>_** )</return_code></li>
+</ul>
+
+<h4 id="다음과-같이-disk-availability-checkup하는-스크립트를-미리-수행하길-원하는-경우를-테스트해봅시다">다음과 같이 disk availability checkup하는 스크립트를 미리 수행하길 원하는 경우를 테스트해봅시다.</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ more test_disk_mysql56m3.sh
+touch /data1/multi/5.6/data3/test.out 2 &gt; /dev/null
+
+if [ $? -eq 0 ]
+then
+  echo "Successfully created file"
+  exit 0
+else
+  echo "Could not create file" &gt;&amp;2
+  exit 1
+fi
+</code></pre>
+</div>
+
+<h4 id="1-현-replication구성-현황-확인">1. 현 Replication구성 현황 확인</h4>
+
+<p>참고로 connection information에는 login-path를 사용하였습니다. login-path 구성은 다음 게시글 참조해주세요 : <a href="http://minsql.890m.com/mysql/mysql-login-path/">MySQL login-path</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$  mysqlrpladmin --master=multi56_mysql2 --discover-slaves-login=multi56_mysql2 health
+# Discovering slaves for master at localhost:3367
+# Discovering slave at localhost:3366
+# Found slave: localhost:3366
+# Discovering slave at localhost:3368
+# Found slave: localhost:3368
+# Checking privileges.
+#
+# Replication Topology Health:
++------------+-------+---------+--------+------------+---------+
+| host       | port  | role    | state  | gtid_mode  | health  |
++------------+-------+---------+--------+------------+---------+
+| localhost  | 3367  | MASTER  | UP     | ON         | OK      |
+| localhost  | 3366  | SLAVE   | UP     | ON         | OK      |
+| localhost  | 3368  | SLAVE   | UP     | ON         | OK      |
++------------+-------+---------+--------+------------+---------+
+# ...done.
+[mysql@myvm1 db]$
+</code></pre>
+</div>
+
+<h4 id="2-port-3368-mysql-instance의-data-directory가-사용불가능한-상태에서-테스트">2. port 3368 mysql instance의 data directory가 사용불가능한 상태에서 테스트</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
+Password:
+[root@myvm1 ~]# cd /data1/multi/5.6/
+[root@myvm1 5.6]# chown -R root. data3
+[root@myvm1 5.6]# exit
+logout
+
+[mysql@myvm1 db]$ ./test_disk_mysql56m3.sh
+Could not create file
+
+
+[mysql@myvm1 db]$ mysqlrpladmin --master=multi56_mysql2 --discover-slaves-login=multi56_mysql2 health
+# Discovering slaves for master at localhost:3367
+# Discovering slave at localhost:3366
+# Found slave: localhost:3366
+# Discovering slave at localhost:3368
+# Found slave: localhost:3368
+# Checking privileges.
+#
+# Replication Topology Health:
++------------+-------+---------+--------+------------+---------+
+| host       | port  | role    | state  | gtid_mode  | health  |
++------------+-------+---------+--------+------------+---------+
+| localhost  | 3367  | MASTER  | UP     | ON         | OK      |
+| localhost  | 3366  | SLAVE   | UP     | ON         | OK      |
+| localhost  | 3368  | SLAVE   | UP     | ON         | OK      |
++------------+-------+---------+--------+------------+---------+
+# ...done.
+[mysql@myvm1 db]$
+</code></pre>
+</div>
+
+<h5 id="switchover-시도">switchover 시도</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
+WARNING: You have chosen to use external script return code checking. Depending on which script fails, this can leave the operation in an undefined state. Please check your results carefully if the operation aborts.
+# Checking privileges.
+# Performing switchover from master at localhost:3367 to slave at localhost:3368.
+# Checking candidate slave prerequisites.
+# GTID_MODE=ON is set for all servers.
+# Checking eligibility of slave localhost:3368 for candidate.
+#   Slave connected to master ... Ok
+#   GTID_MODE=ON ... Ok
+#   Logging filters agree ... Ok
+#   Replication user exists ... Ok
+# Checking slaves configuration to master.
+# Creating replication user if it does not exist.
+# Spawning external script.
+# SCRIPT EXECUTED: /db/test_disk_mysql56m3.sh localhost 3367 localhost 3368
+Could not create file
+ERROR: External script '/db/test_disk_mysql56m3.sh' failed. Result = 1.
+Specified threshold exceeded. Operation aborted.
+WARNING: The operation did not complete. Depending on when the external script was called, you should check the topology for inconsistencies.
+[mysql@myvm1 db]$
+</code></pre>
+</div>
+
+<p><strong>외부 스크립트가 result=1로 fail했기 때문에 Operation이 멈추었습니다.</strong>  </p>
+
+<h4 id="3-디스크가-사용가능한-상태에서-테스트">3. 디스크가 사용가능한 상태에서 테스트</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ su - root
+Password:
+[root@myvm1 ~]# cd /data1/multi/5.6/
+[root@myvm1 5.6]# chown -R mysql. data3
+[root@myvm1 5.6]# exit
+logout
+[mysql@myvm1 db]$ ./test_disk_mysql56m3.sh
+Successfully created file
+</code></pre>
+</div>
+
+<p>switchover 시도</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 db]$ mysqlrpladmin --exec-before=/db/test_disk_mysql56m3.sh --script-threshold=1 --demote-master --master=multi56_mysql2 --new-master=multi56_mysql3 --slaves=multi56_mysql1,multi56_mysql3 --verbose switchover
+WARNING: You have chosen to use external script return code checking. Depending on which script fails, this can leave the operation in an undefined state. Please check your results carefully if the operation aborts.
+# Checking privileges.
+# Performing switchover from master at localhost:3367 to slave at localhost:3368.
+# Checking candidate slave prerequisites.
+# GTID_MODE=ON is set for all servers.
+# Checking eligibility of slave localhost:3368 for candidate.
+#   Slave connected to master ... Ok
+#   GTID_MODE=ON ... Ok
+#   Logging filters agree ... Ok
+#   Replication user exists ... Ok
+# Checking slaves configuration to master.
+# Creating replication user if it does not exist.
+# Spawning external script.
+# SCRIPT EXECUTED: /db/test_disk_mysql56m3.sh localhost 3367 localhost 3368
+Successfully created file
+# Script completed Ok.
+# Blocking writes on master.
+# LOCK STRING: FLUSH TABLES WITH READ LOCK
+# Waiting for slaves to catch up to old master.
+# Slave localhost:3366:
+# QUERY = SELECT WAIT_UNTIL_SQL_THREAD_AFTER_GTIDS('141c523b-4747-11e4-98fb-000c298227a2:1-1531', 300)
+# Return Code = 0
+# Slave localhost:3366:
+# QUERY = SELECT WAIT_UNTIL_SQL_THREAD_AFTER_GTIDS('8e95986b-4747-11e4-98fe-000c298227a2:1-15', 300)
+# Return Code = 0
+# Slave localhost:3368:
+# QUERY = SELECT WAIT_UNTIL_SQL_THREAD_AFTER_GTIDS('141c523b-4747-11e4-98fb-000c298227a2:1-1531', 300)
+# Return Code = 0
+# Slave localhost:3368:
+# QUERY = SELECT WAIT_UNTIL_SQL_THREAD_AFTER_GTIDS('8e95986b-4747-11e4-98fe-000c298227a2:1-15', 300)
+# Return Code = 0
+# Stopping slaves.
+# Performing STOP on all slaves.
+#   Executing stop on slave localhost:3366 Ok
+#   Executing stop on slave localhost:3368 Ok
+# UNLOCK STRING: UNLOCK TABLES
+# Demoting old master to be a slave to the new master.
+# Switching slaves to new master.
+# Executing CHANGE MASTER on localhost:3366.
+# CHANGE MASTER TO MASTER_HOST = 'localhost', MASTER_USER = 'replication', MASTER_PASSWORD = 'replication', MASTER_PORT = 3368, MASTER_AUTO_POSITION=1
+# Executing CHANGE MASTER on localhost:3367.
+# CHANGE MASTER TO MASTER_HOST = 'localhost', MASTER_USER = 'replication', MASTER_PASSWORD = 'replication', MASTER_PORT = 3368, MASTER_AUTO_POSITION=1
+# Starting all slaves.
+# Performing START on all slaves.
+#   Executing start on slave localhost:3366 Ok
+#   Executing start on slave localhost:3367 Ok
+# Checking slaves for errors.
+# localhost:3366 status: Ok
+# localhost:3367 status: Ok
+# Switchover complete.
+# Attempting to contact localhost ... Success
+# Attempting to contact localhost ... Success
+# Attempting to contact localhost ... Success
+#
+# Replication Topology Health:
+# Replication Topology Health:
++------------+-------+---------+--------+------------+---------+-------------+-----------------------+-----------------+------------+-------------+--------------+------------------+---------------+-----------+----------------+------------+---------------+
+| host       | port  | role    | state  | gtid_mode  | health  | version     | master_log_file       | master_log_pos  | IO_Thread  | SQL_Thread  | Secs_Behind  | Remaining_Delay  | IO_Error_Num  | IO_Error  | SQL_Error_Num  | SQL_Error  | Trans_Behind  |
++------------+-------+---------+--------+------------+---------+-------------+-----------------------+-----------------+------------+-------------+--------------+------------------+---------------+-----------+----------------+------------+---------------+
+| localhost  | 3368  | MASTER  | UP     | ON         | OK      | 5.6.19-log  | mysql56m3-bin.000013  | 864             |            |             |              |                  |               |           |                |            |               |
+| localhost  | 3366  | SLAVE   | UP     | ON         | OK      | 5.6.19-log  | mysql56m3-bin.000013  | 864             | Yes        | Yes         | 0            | No               | 0             |           | 0              |            | 0             |
+| localhost  | 3367  | SLAVE   | UP     | ON         | OK      | 5.6.19-log  | mysql56m3-bin.000013  | 864             | Yes        | Yes         | 0            | No               | 0             |           | 0              |            | 0             |
++------------+-------+---------+--------+------------+---------+-------------+-----------------------+-----------------+------------+-------------+--------------+------------------+---------------+-----------+----------------+------------+---------------+
+# ...done.
+[mysql@myvm1 db]$
+</code></pre>
+</div>
+
+<p>이번에는 before 스크립트가 성공하고 switchover동작도 성공하였습니다.
+실전에서는 요구사항에 따라 유용하게 사용할수 있을 듯합니다.</p>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/MySQL-%EC%97%90%EB%9F%AC%EB%A9%94%EC%8B%9C%EC%A7%80-%EC%96%B8%EC%96%B4-%EC%84%A4%EC%A0%95/" class="btn" title="MySQL 에러메시지 언어 설정">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/MySQL-%EC%9D%98-show-slave-status-%EC%97%90%EC%84%9C-Seconds_Behind_Master-%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%84-%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C-%EA%B2%B0%EC%A0%95%EB%90%98%EB%8A%94%EA%B0%80/" class="btn" title="MySQL 의 show slave status 에서 Seconds_Behind_Master 는 무엇을 기준으로 결정되는가">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

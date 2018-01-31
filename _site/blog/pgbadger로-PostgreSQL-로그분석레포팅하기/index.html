@@ -1,0 +1,334 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>pgbadger로 PostgreSQL 로그분석레포팅하기 &#8211; MINSQL</title>
+<meta name="description" content="pgbadger로 PostgreSQL 로그분석레포팅하기
+
+">
+<meta name="keywords" content="Postgres">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="pgbadger로 PostgreSQL 로그분석레포팅하기">
+<meta name="twitter:description" content="pgbadger로 PostgreSQL 로그분석레포팅하기
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/postgres.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pgbadger로 PostgreSQL 로그분석레포팅하기">
+<meta property="og:description" content="pgbadger로 PostgreSQL 로그분석레포팅하기
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/postgres.png" class="entry-feature-image" alt="pgbadger로 PostgreSQL 로그분석레포팅하기" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#Postgres" title="Pages tagged Postgres">Postgres</a></li>
+        </ul>
+        
+          <h1 class="entry-title">pgbadger로 PostgreSQL 로그분석레포팅하기</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2016-06-30T00:00:00+09:00"><i class="fa fa-calendar-o"></i> June 30, 2016</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#pgbadger---a-fast-postgresql-log-analysis-report">pgBadger - a fast PostgreSQL log analysis report</a>
+    <ul>
+      <li><a href="#1-설치">1. 설치</a></li>
+      <li><a href="#2-postgresql-관련-파라메터-설정">2. PostgreSQL 관련 파라메터 설정</a></li>
+      <li><a href="#3-레포트생성">3. 레포트생성</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="pgbadger로-postgresql-로그분석레포팅하기">pgbadger로 PostgreSQL 로그분석레포팅하기</h1>
+
+<h2 id="pgbadger---a-fast-postgresql-log-analysis-report">pgBadger - a fast PostgreSQL log analysis report</h2>
+
+<blockquote>
+  <p>너무 간단해서 쓸것도 없지만, 기록을 남겨두겠음</p>
+</blockquote>
+
+<h3 id="1-설치">1. 설치</h3>
+
+<ul>
+  <li>최신버전 다운로드 후 압축해제: https://github.com/dalibo/pgbadger/releases/latest</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
+tar xzf pgbadger-8.1.tar.gz
+</code></pre>
+</div>
+
+<ul>
+  <li>설치
+    <ul>
+      <li>root user로</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># cd pgbadger-8.1
+# perl Makefile.PL
+Checking if your kit is complete...
+Looks good
+Writing Makefile for pgBadger
+Writing MYMETA.yml and MYMETA.json
+# make &amp;&amp; make install
+Installing /usr/local/share/man/man1/pgbadger.1p
+Installing /usr/local/bin/pgbadger
+Appending installation info to /usr/lib64/perl5/perllocal.pod
+</code></pre>
+</div>
+
+<h3 id="2-postgresql-관련-파라메터-설정">2. PostgreSQL 관련 파라메터 설정</h3>
+
+<ul>
+  <li>log_min_durtion_statement를 0 이상으로 설정하자. 0은 모든 문장을 로깅하므로, 서비스서버에서는 알맞는 duration을 지정한다.</li>
+  <li>log_line_prefix
+    <ul>
+      <li>‘stderr’ log format을 사용하는 경우, log_line_prefix에 최소한 ‘%t [%p]: [%l-1] ‘(timestamp,process id,session line number)를 설정해야한다. user, dbname, application name, client ip까지 로깅하기를 원한다면, ‘%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h ‘을 사용하자.</li>
+      <li>syslog log format을 사용하는 경우, ‘user=%u,db=%d,app=%aclient=%h ‘로 설정하자.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>log_min_duration_statement = 1000
+log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '
+</code></pre>
+</div>
+
+<ul>
+  <li>추가 정보를 로깅하고 싶다면 다음의 파라메터를 활성화할수 있다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+log_autovacuum_min_duration = 0
+log_error_verbosity = default
+</code></pre>
+</div>
+
+<ul>
+  <li>log_statement은 pgBadger로 parse되지 않으니 사용하지 않는다.</li>
+  <li>lc_messages는 C로 한다</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>lc_messages='C'
+</code></pre>
+</div>
+
+<ul>
+  <li>[Note] log_min_duration_statement, log_duration 설정관련 참조
+    <ul>
+      <li>수행된 쿼리문장까지 로깅하고 싶다면 log_min_duration_statement 을 0이상으로 설정하여 사용한다. 쿼리문은 로깅하지 않고, 단지 수행시간과 횟수만 로깅하고 싶다면 log_min_duration_statement는 -1로 설정하여 disable하고, log_duration을 사용한다.</li>
+      <li>log_min_duration_statement을 사용하면 가장 수행시간이 많이 걸리는 쿼리에 대한 레포트를 생성할수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-레포트생성">3. 레포트생성</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
+[=============&gt;           ] Parsed 1639250 bytes of 2842188 (57.68%), queries: 8
+[========================&gt;] Parsed 2842188 bytes of 2842188 (100.00%), queries: 17221, events: 21
+LOG: Ok, generating html report...
+</code></pre>
+</div>
+
+<p>간단하게 html output을 뽑아 볼수 있다.
+<img src="/wp-content/uploads/2016/06/pgbadger_out.png" alt="pgbadger_out" /> 다른 옵션들은 필요하다면 사용해보시길.</p>
+<ul>
+  <li>github 참조 <a href="https://github.com/dalibo/pgbadger">https://github.com/dalibo/pgbadger</a></li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/" class="btn" title="pg_rewind로 좀더 편해진 Streaming replication Failback">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" class="btn" title="PostgreSQL synchronous_commit 개념도">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>BLOB 저장방식 in InnoDB &#8211; MINSQL</title>
+<meta name="description" content="BLOB 저장방식 in InnoDB
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="BLOB 저장방식 in InnoDB">
+<meta name="twitter:description" content="BLOB 저장방식 in InnoDB
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BLOB 저장방식 in InnoDB">
+<meta property="og:description" content="BLOB 저장방식 in InnoDB
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/BLOB-%EC%A0%80%EC%9E%A5%EB%B0%A9%EC%8B%9D-in-InnoDB/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/BLOB-%EC%A0%80%EC%9E%A5%EB%B0%A9%EC%8B%9D-in-InnoDB/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="BLOB 저장방식 in InnoDB" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">BLOB 저장방식 in InnoDB</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-01-09T00:00:00+09:00"><i class="fa fa-calendar-o"></i> January 09, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="blob-저장방식-in-innodb">BLOB 저장방식 in InnoDB</h1>
+
+<blockquote>
+  <p>참고원문 : <a href="http://www.percona.com/blog/2010/02/09/blob-storage-in-innodb/">http://www.percona.com/blog/2010/02/09/blob-storage-in-innodb/</a></p>
+</blockquote>
+
+<p>저장방식 부분에서 볼때, InnoDB에서는 BLOB, TEXT, long VARCHAR가 같은 방식으로 처리된다. 이하 BLOB으로 통일. InnoDB에 blob데이터가 어떻게 저장되나? 3가지 factor에 의해서 달라진다. <em>- BLOB size</em> <em>- Full row size</em> <em>- InnoDB row format</em> <strong>row format이 COMPACT, REDUNDANT인 경우</strong></p>
+
+<ul>
+  <li>InnoDB 는 InnoDB page에 전체 row를 저장하려고 시도한다. 적어도 2 rows + some page data가 하나의 page에 들어갈수 있어야한다. 따라서 limit을 8000 bytes이다.(innodb_page_size가 default 16kb인 경우) 만약 row가 완벽하게 저장될수 있다면 innodb는 external blob storage pages를 사용하지 않고 원래 row Page에 데이터를 저장한다. 즉, 7KB의 blob은 하나의 page에 들어갈수 있다. 2개의 7KB blob을 가지는 rows를 생각해보자. 전체 row가 해당 page에 들어갈수 없으니, innodb는 일부분을 external blob pages에 저장해야한다. external blob page를 사용하더라도 각 blob의 first 768bytes씩은 row page에 저장된다. 결과적으로 2개의 7KB blob중 하나의 blob은 row page에 저장되고, 다른 하나는 768bytes는 row page에 나머지는 external page에 저장하게 될것이다.</li>
+  <li>first 768 bytes만 저장하는 방식은 어디에서 나왔을까. 사실 MySQL 내부적으로 blob의 일부분만 읽는 것이 최적화되어있지 않다. blob은 전체를 읽거나 읽지 않거나이다. blob조회가 일어나면 무조건 external page까지 읽는다. 아마 이 방식은 기존 코드에서 blob을 지원할때 코드를 simple하게 유지하기 위해서 나온 방식일 듯하다.</li>
+  <li>blob의 prefix가 row page에 저장되기 때문에 blob은 prefix index를 가질수 있다.
+    <ul>
+      <li>BLOB 및 TEXT 컬럼에 인덱스를 걸때는 prefix length를 지정해야한다.
+        <ul>
+          <li>CREATE TABLE test (blob_col BLOB, INDEX(blob_col(10)));</li>
+          <li>Prefixe는 최대 1000 bytes 까지 가능하다. (InnoDB table에서는 최대 767 bytes 임)</li>
+          <li>innodb_large_prefix 옵션이 5.6.3부터 나왔는데 3072 byte까지 올릴 수 있다. 테이블 row format을 ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED으로 생성한 경우 (물론 innodb_file_format=barracuda, innodb_file_per_table=true이어야함).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>또한 이 방식은 이상한 “bugs”를 일으키기도 한다. 200K blob은 쉽게 저장가능하지만, 10k blob 20개는 저장할 수 없다. 왜냐하면, 각 blob의 768bytes를 row page에 저장해야하는데 사이즈가 맞지 않기 때문이다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    CREATE TABLE `staff_image20` (
+    `staff_id` tinyint(3) unsigned NOT NULL,
+    `first_name` varchar(45) NOT NULL,
+    `last_name` varchar(45) NOT NULL,
+    `image1` blob,
+    `image2` blob,
+    `image3` blob,
+    `image4` blob,
+    `image5` blob,
+    `image6` blob,
+    `image7` blob,
+    `image8` blob,
+    `image9` blob,
+    `image10` blob,
+    `image11` blob,
+    `image12` blob,
+    `image13` blob,
+    `image14` blob,
+    `image15` blob,
+    `image16` blob,
+    `image17` blob,
+    `image18` blob,
+    `image19` blob,
+    `image20` blob
+     );
+
+    mysql&gt; insert into staff_image20 (staff_id, first_name, last_name, image1)
+        -&gt; select 1, first_name, last_name, picture from sakila.staff where staff_id=1;
+    cture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture from sakila.staff where staff_id=1;Query OK, 1 row affected (0.01 sec)
+    Records: 1  Duplicates: 0  Warnings: 0
+
+    mysql&gt; insert into staff_image20
+        -&gt; select 2, first_name, last_name, picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture from sakila.staff where staff_id=1;
+    ERROR 1118 (42000): Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
+
+    mysql&gt; insert into staff_image20 (staff_id, first_name, last_name, image1)
+        -&gt; select 3, first_name, last_name, concat(picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture,picture) from sakila.staff where staff_id=1;
+    Query OK, 1 row affected, 1 warning (0.11 sec)
+    Records: 1  Duplicates: 0  Warnings: 1
+</code></pre>
+</div>
+
+<ul>
+  <li> 한가지 더 염두해야하는 것은 external blob pages는 blobs 사이에서 shared가능하지 않다는 것이다. 각 blob은 1byte만 담고 있을지라도 16K 의 할당된 page를 혼자서 사용한다. 이는 비효율적이므로 한로우당 여러개의 blob컬럼을 가지기보다는 하나의 large blob으로 combine하는것을 권장한다. (compress해서 저장하는 방법이 있을수 있겠다)</li>
+  <li>
+    <p>로우가 하나의 page에 저장될수 없으면 innodb는 자동으로 그중 몇몇을 externally 저장한다고 했다. 이부분은 document화되어있지 않아서 알수 없다. 게다가 column size에 따라서 row마다 저장방식이 다를 수도 있을 것이다. 어떤 컬럼을 inline store에 넣고 어떤 컬럼을 external storage에 넣을지 튜닝이 가능하도록 되길 바란다.
+<strong>row format이 DYNAMIC, COMPRESSED 경우</strong></p>
+  </li>
+  <li>BLOB 은 REDUNDANT(MySQL 4.1이하)와 COMPACT(MySQL 5.0 이상) format에서 비효율적이다. Barracuda InnoDB Plugin에서의 ROW_FORMAT=DYNAMIC 에서 향상이 있었다. 이 format에서는 전체 blob을 row page에 저장하거나 only 20 bytes의 BLOB pointer만을 저장한다. 여전히 BLOB은 prefix index를 가질 수 있다. 이 prefix 부분이 row page에 저장되어 있지 않아도 external page에 저장되어있더라도 prefix index를 생성할수 있는 것이다.</li>
+  <li>COMPRESSED row format은 blob handling에 있어 DYNAMIC과 비슷하다. 다만 이 포맷은 row page에 안들어가는 blob을 compress한다. (KEY_BLOCK_SIZE나 normal data, index page에 대한 compression이 활성화되어있지 않아도)</li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/slony-i-replication-configuration/" class="btn" title="Slony-I Replication Configuration">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-fabric/" class="btn" title="MySQL Fabric">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

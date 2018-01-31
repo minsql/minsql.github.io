@@ -1,0 +1,323 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MySQL InnoDB architecture - change buffer &#8211; MINSQL</title>
+<meta name="description" content="MySQL InnoDB architecture - change buffer
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MySQL InnoDB architecture - change buffer">
+<meta name="twitter:description" content="MySQL InnoDB architecture - change buffer
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL InnoDB architecture - change buffer">
+<meta property="og:description" content="MySQL InnoDB architecture - change buffer
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/mysql-innodb-architecture-change-buffer/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/mysql-innodb-architecture-change-buffer/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="MySQL InnoDB architecture - change buffer" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MySQL InnoDB architecture - change buffer</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-03-18T00:00:00+09:00"><i class="fa fa-calendar-o"></i> March 18, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#change-bufferinsert-buffer">change buffer(insert buffer)</a>
+    <ul>
+      <li><a href="#왜">왜?</a></li>
+      <li><a href="#change-buffering-조건">change buffering 조건</a></li>
+      <li><a href="#merge일어나는-경우">merge일어나는 경우</a></li>
+      <li><a href="#change-buffer-status-확인">change buffer status 확인</a></li>
+      <li><a href="#change-buffer-장점">change buffer 장점</a></li>
+      <li><a href="#물리적-structure">물리적 structure</a></li>
+      <li><a href="#관련-parameter">관련 parameter</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysql-innodb-architecture---change-buffer">MySQL InnoDB architecture - change buffer</h1>
+
+<h2 id="change-bufferinsert-buffer">change buffer(insert buffer)</h2>
+
+<blockquote>
+  <p>secondary index의 변경사항을 저장한다.</p>
+</blockquote>
+
+<h3 id="왜"><strong>왜?</strong></h3>
+
+<ul>
+  <li>DML에 의해서 secondary index의 컬럼 값이 변경되는 경우, secondary index의 leaf node를 update하려면, 디스크로부터 index page를 읽어서 변경해야하는데 이는 부수적으로 추가 IO가 필요한 작업이다. innodb는 인덱스 leaf node를 업데이트하지 않고 buffer만 해두는데 이때 change buffer(insert buffer)를 사용한다.</li>
+  <li>이를 change buffering이라고 하며, 이는 insert buffering, delete buffering, purge buffering을 포함한다.</li>
+</ul>
+
+<h3 id="change-buffering-조건">change buffering 조건</h3>
+
+<ul>
+  <li><strong>secondary non-unique indexes</strong>에 대한 변경사항을 저장한다.
+    <ul>
+      <li>변경사항 merge가 일어나지 않으면 uniqueness를 체크 할수가 없지 않은가.</li>
+    </ul>
+  </li>
+  <li>변경작업에 <strong>해당하는 page가 buffer pool에 존재하지 않을때</strong>만 change buffer에 변경을 저장한다.</li>
+</ul>
+
+<h3 id="merge일어나는-경우">merge일어나는 경우</h3>
+
+<ul>
+  <li><strong>해당 page가 다른 read operation에 의해서 buffer pool로 불려읽혀졌을 때</strong>
+    <ul>
+      <li>change buffer에 저장해둔 변경사항이 아직 반영되지 않은 채로 해당 page가 buffer pool에 로드된 경우, 먼저 change buffer에 cache되어있던 변경사항을 buffer pool에 불려진 page에 적용(merge)해야한다. 이후, 업데이트된 page는 flush mechanism에 따라 flush 되게 될 것이다.</li>
+    </ul>
+  </li>
+  <li>background thread에 의한 주기적인 merge 작업
+    <ul>
+      <li><strong>system이 거의 idle일 때</strong>
+        <ul>
+          <li>DB를 안쓰고 IO작업도 안하고 있는데, high IO load를 목격했다면, 내부적으로 merge operation이 진행중인 것일 수 있다.</li>
+        </ul>
+      </li>
+      <li><strong>slow shutdown 시</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="change-buffer-status-확인">change buffer status 확인</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">SHOW ENGINE INNODB STATUSG</code>
+    <ul>
+      <li>INSERT BUFFER AND ADAPTIVE HASH INDEX항목에서 확인할 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="change-buffer-장점">change buffer 장점</h3>
+
+<ul>
+  <li>매번 인덱스를 업데이트 하는 것보다 하나의 page내의 여러 update를 한번에 수행할 수 있으므로 효율적이다.</li>
+  <li>disk reads, writes를 줄일 수 있어 특히 I/O bound workload가 많은 경우 유리하다.</li>
+</ul>
+
+<h3 id="물리적-structure">물리적 structure</h3>
+
+<ul>
+  <li>물리적으로, change buffer는 system tablespace에 위치한다. 그러므로 DB restart가 발생하더라도 buffered된 변경사항은 유지 보관된다.</li>
+</ul>
+
+<h3 id="관련-parameter">관련 parameter</h3>
+
+<ul>
+  <li><strong>innodb_change_buffering</strong>
+    <ul>
+      <li><em>all</em> : The default value: buffer inserts, delete-marking operations, and purges.</li>
+      <li>none : Do not buffer any operations.</li>
+      <li>inserts : Buffer insert operations.</li>
+      <li>deletes : Buffer delete-marking operations.</li>
+      <li>changes : Buffer both inserts and delete-marking.</li>
+      <li>purges : Buffer the physical deletion operations that happen in the background.</li>
+    </ul>
+  </li>
+  <li><strong>innodb_change_buffer_max_size</strong>
+    <ul>
+      <li>a percentage of the total size of the buffer pool</li>
+    </ul>
+  </li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/innodb_flush_log_at_trx_commit-%EA%B0%9C%EB%85%90%EB%8F%84%EC%99%80-%ED%8A%9C%EB%8B%9D-%ED%8F%AC%EC%9D%B8%ED%8A%B8/" class="btn" title="innodb_flush_log_at_trx_commit 개념도와 튜닝 포인트">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-innodb-architecture-innodb-io-threads/" class="btn" title="MySQL InnoDB architecture – InnoDB I/O threads">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

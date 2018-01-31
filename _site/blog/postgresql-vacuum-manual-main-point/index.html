@@ -1,0 +1,288 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>PostgreSQL VACUUM main point &#8211; MINSQL</title>
+<meta name="description" content="PostgreSQL VACUUM main point
+
+">
+<meta name="keywords" content="Postgres">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="PostgreSQL VACUUM main point">
+<meta name="twitter:description" content="PostgreSQL VACUUM main point
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/postgres.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostgreSQL VACUUM main point">
+<meta property="og:description" content="PostgreSQL VACUUM main point
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/postgresql-vacuum-manual-main-point/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/postgresql-vacuum-manual-main-point/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/postgres.png" class="entry-feature-image" alt="PostgreSQL VACUUM main point" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#Postgres" title="Pages tagged Postgres">Postgres</a></li>
+        </ul>
+        
+          <h1 class="entry-title">PostgreSQL VACUUM main point</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2014-09-25T00:00:00+09:00"><i class="fa fa-calendar-o"></i> September 25, 2014</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#postgresql-vacuum">PostgreSQL VACUUM..</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="postgresql-vacuum-main-point">PostgreSQL VACUUM main point</h1>
+
+<h3 id="postgresql-vacuum">PostgreSQL VACUUM..</h3>
+
+<h4 id="맨날-다시-찾아보게되는-이놈의-청소작업-좀-정리해두자">맨날 다시 찾아보게되는 이놈의 청소작업. 좀 정리해두자.</h4>
+<h5 id="1-reason-why-vacuum-is-needed">1. reason why VACUUM is needed!</h5>
+<ol>
+  <li>디스크 공간 회수 To recover or reuse disk space occupied by updated or deleted rows.</li>
+  <li>통계정보 업데이트 To update data statistics used by the PostgreSQL query planner.</li>
+  <li>visibility map 업데이트 To update the visibility map, which speeds up index-only scans.</li>
+  <li>xid wraparound 방지 To protect against loss of very old data due to transaction ID wraparound or multixact ID wraparound.</li>
+</ol>
+
+<h5 id="2-basics">2. Basics</h5>
+<ol>
+  <li>VACUUM을 사용.
+    <ul>
+      <li>online가능 (query, dml가능)</li>
+      <li>ALTER TABLE 테이블 정의변경 안됨</li>
+      <li>I/O를 많이 쓰기 때문에 타 세션, 타 테이블 사용에도 성능 영향 있을 수 있음.</li>
+    </ul>
+  </li>
+  <li>VACUUM FULL은 안한다.
+    <ul>
+      <li>ACCESS EXCLUSIVE lock 잠금. select도 안됨.</li>
+    </ul>
+  </li>
+</ol>
+
+<h5 id="3-details">3. Details</h5>
+<ol>
+  <li>디스크 공간 회수
+Oracle, InnoDB는 rollback segment를 사용하여 MVCC 구현하지만, Postgres에서는 내부페이지를 사용함. 즉 update, delete된 행을 즉시 제거하지 않음. 결국에는 이공간을 VACUUM작업을 통해서 회수해야함.
+    <ul>
+      <li>vacuum : dead row marking만 함. OS 상에 공간반환하지는 않음. (테이블 마지막 pages가 완전 비워지고 exclusive table lock을 쉽게 잡을 수 있는 Special한 경우에만 반환이 된다고함. 아마도 목격하기 힘들듯)</li>
+      <li>vacuum full : new version table copy로 동작, 그만큼 여유공간 있어야하고 시간이 오래걸림. 최종적으로는 테이블 크기 줄일 수 있고 OS 디스크 공간 확보 가능</li>
+      <li>autovacuum : vacuum full하지 않고 디스크 무제한 소비를 막으려면, vacuum을 자주해야함. autovacuum은 사실 vacuum만 수행하며 vacuum full 수행하지 않는다. 최소 크기는 아니더라도 적당한 크기로 관리 할 수는 있다.</li>
+      <li>manual하게 관리 싶은 경우 : 완전히 autovacuum을 끄는 것은 바람직하지 못하다. 예상치 못하게 update가 많이 되어 vacuum full이 필요하게 되면 더 문제이다. 완벽하게 workload를 산정할수 있는 경우에만 manual하게 관리해야함.</li>
+      <li>Tip1 : 대규모 update/delete 작업이 있는 경우, vacuum결과가 만족스럽지 못할 수 있음. 이런 경우에는 vacuum full, cluster, table-rewriting하는 ALTER TABLE 작업을 통해서 table rewrite해야함. — 이게 무슨 팀이람.</li>
+      <li>Tip2 : 전체 내용 삭제시에는 TRUNCATE. vacuum full 안해도 disk 반환함. MVCC에는 위배됨.</li>
+    </ul>
+  </li>
+  <li>통계정보 업데이트
+통계정보는 ANALYZE 명령어나 VACUUM에 의해 업데이트 된다. 통계정보는 올바른 실행계획을 세울수 있도록 최신으로 관리되어야한다.
+    <ul>
+      <li>autovacuum : 일정량 이상의 변경이 발생한 경우 ANALYZE 커맨드를 자동으로 수행한다. 변경이 많은 테이블에 대해서는 통계정보 갱신을 자주 하는 것이 좋다. 통계적으로 분포가 유사하게 업데이트 되는 경우에는 통계정보 업데이트 자주 할 필요가 없을 수도 있다. 예를들어 URL같은 경우, 자주 업데이트 되더라도 통계 분포는 상대적으로 천천히 변경될 것이다. 하지만, timestamp 열과 같이 최대값이 끊임없이 증가하는 경우에는 더 자주 통계를 업데이트 해야한다.</li>
+      <li>ANALYZE : 특정 테이블, 특정 컬럼에 대해서만 analyze돌릴 수 있다. 특성에 따라서 유연하게 통계정보를 관리할 수 있다. 하지만, analyze는 실제로 random sampling하는 것이라 고속으로 동작하기 떄문에 전체 데이터베이스에 대해서 analyze하는 것이 좋다.</li>
+      <li>Tip1 :  특정 컬럼 analyze가 매우 생산적인건 아니지만, 특별한 경우에는 사용할 수 있다. where조건에 자주 사용되지만, 매우 불규칙한 데이터의 경우, 해당 컬럼만 통계정보 수준을 높여 세밀한 데이터 히스토그램을 관리할 수도 있다. ALTER TABLE SET STATISTICS으로 컬럼별 통계수준을 변경(alter table tablename alter no set statistics 1000; 0-10000까지 가능 default는 -1(system default target 따름) )할 수 있고, 데이터베이스 전체에 대해서는 default_statistics_target 의 기본값(default 100)을 변경할 수도 있다.</li>
+      <li>Tip2 : autovacuum은 forien table에 대해서는 analyze를 수행하지 않는다. foreign table에 대해 통계정보 갱신하려면 manually analyze해야함.</li>
+    </ul>
+  </li>
+  <li>visibility map 업데이트
+    <ul>
+      <li>visibility map의 용도 : visibility map은 heap page당 one bit를 저장하며, set이면 해당 page에 있는 모든 tuple이 visible한 것임. vacuum할 tuple이 없다는 의미이므로 다음 vacuum시 해당 page는 vacuum 대상에서 제외시길 수 있음. 또한 visibility map은 index-only scan이 index tuple만 읽어도 됨을 의미하는 것으로 heap tuple액세스를 줄일 수 있음.</li>
+      <li>visibility map 업데이트 : visibility map bit는 vacuum에 의해서만 set되며, 해당 페이지에 변경이 발생하면 clear됨.</li>
+    </ul>
+  </li>
+  <li>xid wraparound 방지
+    <ul>
+      <li>xid에 의한 MVCC : xid comparision rule은 modulo-2^32 연산임. 약 40억 트랜잭션중에 -20억은 현 xid보다 오래된것 +20억은 새로운 트랜잭션이라는 의미임. xid 차원은 원형으로 생각하면됨. 만약 vacuum을 통해 매우 오래된 트랜잭션을 freeze하지 않으면 wraparound되었을때 해당 튜플이 보이지 않게 될수가 있다.(예를들면 6개월전에 1억번으로 xid가 삽입한 행, 지금은 내가 21억이라는 xid를 가짐. 아직은 내 이전 20억이니깐. 근데 내일 내가 22억이 됨. 그럼 난 2억에서 22억까지가 내 과거의 트랜잭션임. 오잉 그럼 1억번이라는 애는 내 미래인것임. 갑자기 안보이게 되는것. ) 이 문제를 방지하려면 20억 이상 시대가 흐르기전에 충분히 오래된 트랜잭션은 frozenid로 freeze해줘야함. frozenid는 어떤 xid와 비교해도 과거의 xid임을 의미함.</li>
+    </ul>
+  </li>
+</ol>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/detecting-lock-problems/" class="btn" title="Detecting lock problems">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/MySQL-%EC%8B%A4%ED%96%89%EA%B3%84%ED%9A%8D-%EC%B6%94%EC%A0%81/" class="btn" title="MySQL 실행계획 추적">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

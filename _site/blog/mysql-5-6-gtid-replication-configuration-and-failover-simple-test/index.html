@@ -1,0 +1,505 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MySQL 5.6 gtid replication configuration and failover simple test &#8211; MINSQL</title>
+<meta name="description" content="MySQL 5.6 gtid replication configuration and failover simple test
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MySQL 5.6 gtid replication configuration and failover simple test">
+<meta name="twitter:description" content="MySQL 5.6 gtid replication configuration and failover simple test
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 5.6 gtid replication configuration and failover simple test">
+<meta property="og:description" content="MySQL 5.6 gtid replication configuration and failover simple test
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/mysql-5-6-gtid-replication-configuration-and-failover-simple-test/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/mysql-5-6-gtid-replication-configuration-and-failover-simple-test/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="MySQL 5.6 gtid replication configuration and failover simple test" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MySQL 5.6 gtid replication configuration and failover simple test</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2014-11-03T00:00:00+09:00"><i class="fa fa-calendar-o"></i> November 03, 2014</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#mysql-56-gtid-replication-구성">mysql 5.6 gtid replication 구성</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysql-56-gtid-replication-configuration-and-failover-simple-test">MySQL 5.6 gtid replication configuration and failover simple test</h1>
+
+<h3 id="mysql-56-gtid-replication-구성">mysql 5.6 gtid replication 구성</h3>
+
+<p>테스트할땐 역시 mysqld_multi가 편리하네요.</p>
+
+<h5 id="1-일단-바이너리-엔진-준비해주고원하는-위치에-두고-심볼릭-링크-생성">1. 일단 바이너리 엔진 준비해주고..원하는 위치에 두고 심볼릭 링크 생성</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/db/multi/mysql-5.6.19-linux-glibc2.5-x86_64/
+ln -s mysql-5.6.19-linux-glibc2.5-x86_64/ 5.6
+</code></pre>
+</div>
+
+<h5 id="2-configuration-mycnf-수정">2. configuration my.cnf 수정</h5>
+<ul>
+  <li>log-bin # 필수 </li>
+  <li>log-slave-updates # 필수</li>
+  <li>gtid-mode=on # GTID 모드</li>
+  <li>enforce-gtid-consistency # 여기까지 필수. transactionally safe하지 않는 애는 실패한다. 나중에 자세히 살펴봅시다. </li>
+  <li>master-info-repository=TABLE # master.info File로 관리하던거 mysql.slave_master_info 테이블에 담음</li>
+  <li>relay-log-info-repository=TABLE # relay-log.info File로 관리하던거 mysql.slave_relay_log_info테이블에 담음 </li>
+  <li>slave-parallel-workers=2 # slave parallel-worker 사용가능. worker정보는 mysql.slave_worker_info에서 확인가능</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysqld1]
+datadir=/data1/multi/5.6/data1
+log-error=multi_mysql56m1.err
+port            = 3366
+socket          = /tmp/mysql56m1.sock
+pid-file = /data1/multi/5.6/data1/mysql56m2.pid
+log-bin=mysql56m1-bin
+binlog_format=mixed
+server-id       = 561
+expire_logs_days=30
+log-slave-updates=true
+gtid-mode=on
+enforce-gtid-consistency=true
+master-info-repository=TABLE
+relay-log-info-repository=TABLE
+
+[mysqld2]
+datadir=/data1/multi/5.6/data2
+log-error=multi_mysql56m2.err
+port = 3367
+socket = /tmp/mysql56m2.sock
+pid-file = /data1/multi/5.6/data2/mysql56m2.pid
+log-bin=mysql56m2-bin
+binlog_format=mixed
+server-id = 562
+log-slave-updates=true
+gtid-mode=on
+enforce-gtid-consistency=true
+master-info-repository=TABLE
+relay-log-info-repository=TABLE
+slave-parallel-workers=2
+</code></pre>
+</div>
+
+<h5 id="3-multi-instance들이-사용할-data-directory-생성">3. multi instance들이 사용할 data directory 생성</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p /data1/multi/5.6/data1
+mkdir -p /data1/multi/5.6/data2
+/db/multi/5.6/scripts/mysql_install_db --user=mysql --basedir=/db/multi/5.6 --datadir=/data1/multi/5.6/data1
+/db/multi/5.6/scripts/mysql_install_db --user=mysql --basedir=/db/multi/5.6 --datadir=/data1/multi/5.6/data2
+</code></pre>
+</div>
+
+<h5 id="4-mysql-instance-시작">4. mysql instance 시작</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./bin/mysqld_multi --defaults-file=/db/multi/5.6/conf/my.cnf start
+./bin/mysqld_multi --defaults-file=/db/multi/5.6/conf/my.cnf stop
+</code></pre>
+</div>
+
+<h5 id="5master-replication-user-생성">5. @MASTER replication user 생성</h5>
+<ul>
+  <li>@MASTER</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="n">REPLICATION</span> <span class="n">SLAVE</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">replication</span><span class="o">@</span><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'replication'</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">master</span> <span class="n">statusG</span>
+<span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
+<span class="n">File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000002</span>
+<span class="k">Position</span><span class="p">:</span> <span class="mi">549</span>
+<span class="n">Binlog_Do_DB</span><span class="p">:</span>
+<span class="n">Binlog_Ignore_DB</span><span class="p">:</span>
+<span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+
+<h5 id="6replication-구성">6. Replication 구성</h5>
+<ul>
+  <li>6.1  @SLAVE</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CHANGE</span> <span class="n">MASTER</span> <span class="k">TO</span> <span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">'127.0.0.1'</span><span class="p">,</span>  <span class="n">MASTER_PORT</span> <span class="o">=</span> <span class="mi">3366</span><span class="p">,</span> <span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="n">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">07</span> <span class="n">sec</span><span class="p">)</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">slave</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
+<span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
+<span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="k">to</span> <span class="n">send</span> <span class="n">event</span>
+<span class="n">Master_Host</span><span class="p">:</span> <span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
+<span class="n">Master_User</span><span class="p">:</span> <span class="n">replication</span>
+<span class="n">Master_Port</span><span class="p">:</span> <span class="mi">3366</span>
+<span class="n">Connect_Retry</span><span class="p">:</span> <span class="mi">60</span>
+<span class="n">Master_Log_File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+<span class="n">Read_Master_Log_Pos</span><span class="p">:</span> <span class="mi">539</span>
+<span class="n">Relay_Log_File</span><span class="p">:</span> <span class="n">mysql56m2</span><span class="o">-</span><span class="n">relay</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000002</span>
+<span class="n">Relay_Log_Pos</span><span class="p">:</span> <span class="mi">757</span>
+<span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+<span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">Yes</span>
+<span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
+<span class="n">Replicate_Do_DB</span><span class="p">:</span>
+<span class="n">Replicate_Ignore_DB</span><span class="p">:</span>
+<span class="n">Replicate_Do_Table</span><span class="p">:</span>
+<span class="n">Replicate_Ignore_Table</span><span class="p">:</span>
+<span class="n">Replicate_Wild_Do_Table</span><span class="p">:</span>
+<span class="n">Replicate_Wild_Ignore_Table</span><span class="p">:</span>
+<span class="n">Last_Errno</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Last_Error</span><span class="p">:</span>
+<span class="n">Skip_Counter</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Exec_Master_Log_Pos</span><span class="p">:</span> <span class="mi">549</span>
+<span class="n">Relay_Log_Space</span><span class="p">:</span> <span class="mi">975</span>
+<span class="n">Until_Condition</span><span class="p">:</span> <span class="k">None</span>
+<span class="n">Until_Log_File</span><span class="p">:</span>
+<span class="n">Until_Log_Pos</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Master_SSL_Allowed</span><span class="p">:</span> <span class="k">No</span>
+<span class="n">Master_SSL_CA_File</span><span class="p">:</span>
+<span class="n">Master_SSL_CA_Path</span><span class="p">:</span>
+<span class="n">Master_SSL_Cert</span><span class="p">:</span>
+<span class="n">Master_SSL_Cipher</span><span class="p">:</span>
+<span class="n">Master_SSL_Key</span><span class="p">:</span>
+<span class="n">Seconds_Behind_Master</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Master_SSL_Verify_Server_Cert</span><span class="p">:</span> <span class="k">No</span>
+<span class="n">Last_IO_Errno</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Last_IO_Error</span><span class="p">:</span>
+<span class="n">Last_SQL_Errno</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Last_SQL_Error</span><span class="p">:</span>
+<span class="n">Replicate_Ignore_Server_Ids</span><span class="p">:</span>
+<span class="n">Master_Server_Id</span><span class="p">:</span> <span class="mi">561</span>
+<span class="n">Master_UUID</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span>
+<span class="n">Master_Info_File</span><span class="p">:</span> <span class="n">mysql</span><span class="p">.</span><span class="n">slave_master_info</span>
+<span class="n">SQL_Delay</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">SQL_Remaining_Delay</span><span class="p">:</span> <span class="k">NULL</span>
+<span class="n">Slave_SQL_Running_State</span><span class="p">:</span> <span class="n">Slave</span> <span class="n">has</span> <span class="k">read</span> <span class="k">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="n">the</span> <span class="n">slave</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span> <span class="n">thread</span> <span class="k">to</span> <span class="k">update</span> <span class="n">it</span>
+<span class="n">Master_Retry_Count</span><span class="p">:</span> <span class="mi">86400</span>
+<span class="n">Master_Bind</span><span class="p">:</span>
+<span class="n">Last_IO_Error_Timestamp</span><span class="p">:</span>
+<span class="n">Last_SQL_Error_Timestamp</span><span class="p">:</span>
+<span class="n">Master_SSL_Crl</span><span class="p">:</span>
+<span class="n">Master_SSL_Crlpath</span><span class="p">:</span>
+<span class="n">Retrieved_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">Auto_Position</span><span class="p">:</span> <span class="mi">1</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>6.2 @MASTER show slave hots;</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">hosts</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
+<span class="o">|</span> <span class="n">Server_id</span> <span class="o">|</span> <span class="k">Host</span> <span class="o">|</span> <span class="n">Port</span> <span class="o">|</span> <span class="n">Master_id</span> <span class="o">|</span> <span class="n">Slave_UUID</span>                           <span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
+<span class="o">|</span>       <span class="mi">562</span> <span class="o">|</span>      <span class="o">|</span> <span class="mi">3367</span> <span class="o">|</span>       <span class="mi">561</span> <span class="o">|</span> <span class="mi">8</span><span class="n">e95986b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fe</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h5 id="7-리플리케이션-동작-확인">7.  리플리케이션 동작 확인</h5>
+<ul>
+  <li>7.1 @MASTER</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">master</span> <span class="n">statusG</span>
+<span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
+             <span class="n">File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+         <span class="k">Position</span><span class="p">:</span> <span class="mi">539</span>
+     <span class="n">Binlog_Do_DB</span><span class="p">:</span>
+ <span class="n">Binlog_Ignore_DB</span><span class="p">:</span>
+<span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">create</span> <span class="k">database</span> <span class="n">reptest</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">use</span> <span class="n">reptest</span><span class="p">;</span>
+<span class="k">Database</span> <span class="n">changed</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`tt`</span> <span class="p">(</span> <span class="nv">`no`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span> <span class="nv">`name`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="nv">`no`</span><span class="p">)</span> <span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span> <span class="n">tt</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="s1">'hihi'</span><span class="p">);</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">tt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="k">no</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="n">hihi</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">master</span> <span class="n">statusG</span>
+<span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
+<span class="n">File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+<span class="k">Position</span><span class="p">:</span> <span class="mi">1262</span>
+<span class="n">Binlog_Do_DB</span><span class="p">:</span>
+<span class="n">Binlog_Ignore_DB</span><span class="p">:</span>
+<span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>141c523b-4747-11e4-98fb-000c298227a2:1-5
+    <ul>
+      <li> 정확하게 트랜잭션 개수만큼 gtid 가 증가한다. 지금까지 5개. (grant, flush, create databse, create table, insert)</li>
+    </ul>
+  </li>
+  <li>7.2 @SLAVE</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
+<span class="p">...</span>
+           <span class="n">Retrieved_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
+            <span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
+                <span class="n">Auto_Position</span><span class="p">:</span> <span class="mi">1</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">reptest</span><span class="p">.</span><span class="n">tt</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="k">no</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="n">hihi</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h5 id="8-failover-시나리오-간단히-테스트해보자">8. Failover 시나리오 간단히 테스트해보자.</h5>
+<ul>
+  <li>8.1. MASTER CRASHED</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 5.6]$ kill -9 30829 30551
+</code></pre>
+</div>
+
+<ul>
+  <li>8.2.  SLAVE -&gt; new MASTER reset slave all</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code>    <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
+<span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
+               <span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Reconnecting</span> <span class="k">after</span> <span class="n">a</span> <span class="n">failed</span> <span class="n">master</span> <span class="n">event</span> <span class="k">read</span>
+                  <span class="n">Master_Host</span><span class="p">:</span> <span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
+                  <span class="n">Master_User</span><span class="p">:</span> <span class="n">replication</span>
+                  <span class="n">Master_Port</span><span class="p">:</span> <span class="mi">3366</span>
+                <span class="n">Connect_Retry</span><span class="p">:</span> <span class="mi">60</span>
+              <span class="n">Master_Log_File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+          <span class="n">Read_Master_Log_Pos</span><span class="p">:</span> <span class="mi">1262</span>
+               <span class="n">Relay_Log_File</span><span class="p">:</span> <span class="n">mysql56m2</span><span class="o">-</span><span class="n">relay</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000002</span>
+                <span class="n">Relay_Log_Pos</span><span class="p">:</span> <span class="mi">757</span>
+        <span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
+             <span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">Connecting</span>
+            <span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
+</code></pre>
+</div>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/windows-mysql-root-password-reset/" class="btn" title="Windows MySQL root password reset">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-5-6-gtid-replication-manadatory-options/" class="btn" title="MySQL 5.6 gtid replication manadatory options">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

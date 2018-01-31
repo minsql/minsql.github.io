@@ -1,0 +1,367 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기 &#8211; MINSQL</title>
+<meta name="description" content="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기">
+<meta name="twitter:description" content="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기">
+<meta property="og:description" content="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Linux-%EC%9D%98-OOM-(Out-of-memory)-killer-%EB%A1%9C-%EC%9D%B8%ED%95%9C-mysqld-shutdown-%ED%94%BC%ED%95%98%EA%B8%B0/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/makayal-photo.jpg" class="bio-photo" alt="MIN CHO bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN CHO</span></span>
+        <span class="entry-date date published"><time datetime="2015-04-21T00:00:00+09:00"><i class="fa fa-calendar-o"></i> April 21, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#1-해당-원인은-크게-3가지로-나눈다-여기서-볼것은-oom으로-인해-os가-mysqld-를-죽인-경우이다">1. 해당 원인은 크게 3가지로 나눈다. 여기서 볼것은 oom으로 인해 O/S가 mysqld 를 죽인 경우이다.</a></li>
+  <li><a href="#2-그렇다면-oom-killer를-피할-수-있는방법을-생각해보자">2. 그렇다면 OOM killer를 피할 수 있는방법을 생각해보자</a></li>
+  <li><a href="#3-그렇다면-mysqld에-대한-process-id를-띄울때마다-확인해서-해당-작업을-해야하는것일까">3. 그렇다면, mysqld에 대한 process id를 띄울때마다 확인해서 해당 작업을 해야하는것일까?</a></li>
+  <li><a href="#4-해당-스크립트-이외에-또-어떤것을-쓸-수-있나">4. 해당 스크립트 이외에 또 어떤것을 쓸 수 있나?</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="linux-의-oom-out-of-memory-killer-로-인한-mysqld-shutdown-피하기">Linux 의 OOM (Out of memory) killer 로 인한 mysqld shutdown 피하기</h1>
+
+<blockquote>
+  <p>갑자기 MySQL 이 kill 되는 수가 있다. 이는 여러가지 원인이 있을 수 있다.</p>
+</blockquote>
+
+<h3 id="1-해당-원인은-크게-3가지로-나눈다-여기서-볼것은-oom으로-인해-os가-mysqld-를-죽인-경우이다">1. 해당 원인은 크게 3가지로 나눈다. 여기서 볼것은 oom으로 인해 O/S가 mysqld 를 죽인 경우이다.</h3>
+
+<ul>
+  <li>3가지는 다음과 같다.
+    <ul>
+      <li>메모리 부족으로 인해 OS 가 kill 을 시킨 경우 (이는 /var/log/message 를 확인함으로서 알 수 있다.)</li>
+      <li>Hardware fault로 stop 된 경우 (이는 /var/log 및의 여러로그를 확인함으로서 알 수 있다.)</li>
+      <li>bug로 인해 restart 된 경우 (이는 mysql error log file 을 확인함으로서 알 수 있다.)</li>
+    </ul>
+  </li>
+  <li>대부분의 경우 mysql 이 restart 되면 /var/log/message 를 확인하지 않는 경우가 많고 갑자기 죽었다고 생각하는데 대부분의 경우 OOM killer에 의해 죽게된다.
+    <ul>
+      <li>err 을 살펴보자</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    150317 11:21:46 mysqld_safe Number of processes running now: 0
+    150317 11:21:46 mysqld_safe mysqld restarted
+    2015-03-17 11:21:49 14235 [Note] Plugin 'FEDERATED' is disabled.
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using atomics to ref count buffer pool pages
+    2015-03-17 11:21:49 14235 [Note] InnoDB: The InnoDB memory heap is disabled
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Compressed tables use zlib 1.2.3
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using Linux native AIO
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Using CPU crc32 instructions
+    2015-03-17 11:21:49 14235 [Note] InnoDB: Initializing buffer pool, size = 24.0G
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Completed initialization of buffer pool
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Highest supported file format is Barracuda.
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Log scan progressed past the checkpoint lsn 2603553789682
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Database was not shutdown normally!
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Starting crash recovery.
+    2015-03-17 11:21:51 14235 [Note] InnoDB: Reading tablespace information from the .ibd files...
+    2015-03-17 11:22:03 14235 [Note] InnoDB: Restoring possible half-written data pages
+    2015-03-17 11:22:03 14235 [Note] InnoDB: from the doublewrite buffer...
+    InnoDB: Doing recovery: scanned up to log sequence number 2603559032320
+    InnoDB: Doing recovery: scanned up to log sequence number 2603564275200
+    InnoDB: Doing recovery: scanned up to log sequence number 2603569518080
+    --- 죽었다는 메세지 없이 다시 시작되었다.
+</code></pre>
+</div>
+
+<ul>
+  <li>system의 log message 를 살펴보자</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    vi /var/log/message
+    ....
+    Mar 17 11:21:42 testvm1 kernel: mysqld invoked oom-killer: gfp_mask=0x200da, order=0, oom_adj=0, oom_score_adj=0
+    Mar 17 11:21:42 testvm1 kernel: [ pid ]   uid  tgid total_vm      rss cpu oom_adj oom_score_adj name
+    Mar 17 11:21:42 testvm1 kernel: [ 4144]   497  4144 10443009  7862020   0       0             0 mysqld
+    Mar 17 11:21:42 testvm1 kernel: Out of memory: Kill process 4144 (mysqld) score 963 or sacrifice child
+    Mar 17 11:21:42 testvm1 kernel: Killed process 4144, UID 497, (mysqld) total-vm:41772036kB, anon-rss:31443592kB, file-rss:4512kB
+    ...
+    --- OOM-Killer 에 의해 죽은것이 관찰된다.
+</code></pre>
+</div>
+
+<h3 id="2-그렇다면-oom-killer를-피할-수-있는방법을-생각해보자">2. 그렇다면 OOM killer를 피할 수 있는방법을 생각해보자</h3>
+
+<ul>
+  <li>oom_score_adj 의 값을 조정함으로서 해결 할 수 있다.</li>
+  <li>해당값은 1000 ~ -1000 까지 줄 수 있다. oom_score_adj 에 대한 공식이 궁금하다면 구글링을 해보자.</li>
+  <li>-1000 으로 값을 설정한다면, oom killer 는 해당 process를 죽이지 않을것이다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    cat /proc/[pid]/oom_score_adj
+    echo "-1000" &gt; /proc/self/oom_score_adj
+</code></pre>
+</div>
+
+<h3 id="3-그렇다면-mysqld에-대한-process-id를-띄울때마다-확인해서-해당-작업을-해야하는것일까">3. 그렇다면, mysqld에 대한 process id를 띄울때마다 확인해서 해당 작업을 해야하는것일까?</h3>
+
+<ul>
+  <li>mysql 은 mysqld가 시작되기전에 특정 script를 호출할 수 있다.</li>
+  <li>my.cnf의 mysqld_safe section에 mysqld=xxx.sh 를 추가함으로서 mysqld 가 시작될때 해당 script를 실행시킬 수 있다.</li>
+  <li>https://dev.mysql.com/doc/refman/5.6/en/mysqld-safe.html#option_mysqld_safe_mysqld</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 bin]# cat /db/5.6/conf/my.cnf
+    ...
+    [mysqld_safe]
+    mysqld=pre_mysqld_safe.sh
+    user=mysql
+    ...
+
+    [root@testvm1 bin]# pwd
+    /db/5.6/bin
+    [root@testvm1 bin]# ls -al pre_mysqld_safe.sh
+    -rwxr-xr-x. 1 root root 94 Mar 31 01:38 pre_mysqld_safe.sh
+    -- mysqld와 같은 디렉토리에 해당 sh를 놓자.
+
+    [root@testvm1 bin]# cat pre_mysqld_safe.sh
+    #!/bin/sh
+    echo "-1000" &gt; /proc/self/oom_score_adj
+    BIN_DIR=$(dirname "$0")
+    exec "$BIN_DIR/mysqld" "$@"
+
+
+    [root@testvm1 db]# cd /db/5.6
+    [root@testvm1 5.6]# ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf &amp;
+    [1] 27626
+    [root@testvm1 5.6]# 150331 01:42:07 mysqld_safe Logging to '/data1/5.6/data/mysql.err'.
+    150331 01:42:07 mysqld_safe Starting pre_mysqld_safe.sh daemon with databases from /data1/5.6/data
+    -- pre_mysqld_safe.sh 로 시작되었음을 알려준다.
+
+    [root@testvm1 5.6]# ps -ef | grep mysql
+    root     27626 27539  0 01:42 pts/0    00:00:00 /bin/sh ./bin/mysqld_safe --defaults-file=/db/5.6/conf/my.cnf
+    mysql    27986 27626  0 01:42 pts/0    00:00:00 /db/5.6/bin/mysqld --defaults-file=/db/5.6/conf/my.cnf --basedir=/db/5.6 --datadir=/data1/5.6/data --plugin-dir=/db/5.6/lib/plugin --user=mysql --log-error=/data1/5.6/data/mysql.err --pid-file=/data1/5.6/data/testvm1.pid --socket=/tmp/mysql.sock --port=3306
+    root     28011 27539  0 01:42 pts/0    00:00:00 grep mysql
+    -- mysqld 의 process id 는 27986 이다. user 는 mysql로 뜬것도 확인할 수 있다.
+
+    [root@testvm1 5.6]# cat /proc/27986/oom_score_adj
+    -1000
+    -- 값이 -1000 이 된것을 알 수 있다.
+</code></pre>
+</div>
+
+<h3 id="4-해당-스크립트-이외에-또-어떤것을-쓸-수-있나">4. 해당 스크립트 이외에 또 어떤것을 쓸 수 있나?</h3>
+
+<ul>
+  <li>ulimit 명령어로 해당 값을 조절할 수 있다. (echo “-1000” &gt; /proc/self/oom_score_adj 대신 아래의 명령어를 사용한다)
+    <ul>
+      <li>ulimit -u 10000</li>
+      <li>ulimit -c unlimited</li>
+    </ul>
+  </li>
+  <li>NUMA 도 조절가능하다.
+    <ul>
+      <li>exec /usr/bin/numactl –interleave all “BIN_DIR/mysqld” “$@”</li>
+    </ul>
+  </li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/mysql-architecture-adaptive-hash-indexes/" class="btn" title="MySQL architecture - Adaptive Hash Indexes">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysql-to-postgresql-migration-tool/" class="btn" title="MySQL to PostgreSQL Migration tool">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

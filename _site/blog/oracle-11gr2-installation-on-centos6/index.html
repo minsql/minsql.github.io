@@ -1,0 +1,367 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Oracle 11gR2 Installation on CentOS6 &#8211; MINSQL</title>
+<meta name="description" content="Oracle 11gR2 Installation on CentOS6
+
+">
+<meta name="keywords" content="Oracle">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Oracle 11gR2 Installation on CentOS6">
+<meta name="twitter:description" content="Oracle 11gR2 Installation on CentOS6
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/oracle.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 11gR2 Installation on CentOS6">
+<meta property="og:description" content="Oracle 11gR2 Installation on CentOS6
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/oracle-11gr2-installation-on-centos6/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/oracle-11gr2-installation-on-centos6/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/oracle.png" class="entry-feature-image" alt="Oracle 11gR2 Installation on CentOS6" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#Oracle" title="Pages tagged Oracle">Oracle</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Oracle 11gR2 Installation on CentOS6</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2014-12-09T00:00:00+09:00"><i class="fa fa-calendar-o"></i> December 09, 2014</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#1-checking-the-software-requirements">1. Checking the Software Requirements</a></li>
+  <li><a href="#2-creating-required-operating-system-groups-and-users">2. Creating Required Operating System Groups and Users</a></li>
+  <li><a href="#3-configuring-os">3. Configuring OS</a>
+    <ul>
+      <li><a href="#31-kernel-parameter">3.1 Kernel Parameter</a></li>
+      <li><a href="#32-etchosts-file">3.2 /etc/hosts file</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-installing-x-server">4. Installing X Server</a></li>
+  <li><a href="#5-configuring-the-oracle-users-environment">5. Configuring the oracle User’s Environment</a></li>
+  <li><a href="#6-run-installer">6. run installer</a></li>
+  <li><a href="#7-installing-through-gui-installer-blahblah-8-setting-environment">7. Installing through GUI Installer blahblah. 8. Setting Environment</a></li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="oracle-11gr2-installation-on-centos6">Oracle 11gR2 Installation on CentOS6</h1>
+
+<h2 id="1-checking-the-software-requirements">1. Checking the Software Requirements</h2>
+<p><a href="https://docs.oracle.com/cd/E11882_01/install.112/e47689/pre_install.htm#BABCFJFG">https://docs.oracle.com/cd/E11882_01/install.112/e47689/pre_install.htm#BABCFJFG</a></p>
+
+<p>Oracle Linux 6 and Red Hat Enterprise Linux 6
+The following packages (or later versions) must be installed: binutils-2.20.51.0.2-5.11.el6 (x86_64) compat-libcap1-1.10-1 (x86_64) compat-libstdc++-33-3.2.3-69.el6 (x86_64) compat-libstdc++-33-3.2.3-69.el6.i686 gcc-4.4.4-13.el6 (x86_64) gcc-c++-4.4.4-13.el6 (x86_64) glibc-2.12-1.7.el6 (i686) glibc-2.12-1.7.el6 (x86_64) glibc-devel-2.12-1.7.el6 (x86_64) glibc-devel-2.12-1.7.el6.i686 ksh libgcc-4.4.4-13.el6 (i686) libgcc-4.4.4-13.el6 (x86_64) libstdc++-4.4.4-13.el6 (x86_64) libstdc++-4.4.4-13.el6.i686 libstdc++-devel-4.4.4-13.el6 (x86_64) libstdc++-devel-4.4.4-13.el6.i686 libaio-0.3.107-10.el6 (x86_64) libaio-0.3.107-10.el6.i686 libaio-devel-0.3.107-10.el6 (x86_64) libaio-devel-0.3.107-10.el6.i686 make-3.81-19.el6 sysstat-9.0.4-11.el6 (x86_64)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>yum install binutils
+yum install compat-libcap1
+yum install compat-libstdc++
+yum install gcc
+yum install gcc-c++
+yum install glibc
+yum install glibc-2.12-1.149.el6.i686
+yum install glibc-devel
+yum install glibc-devel-2.12-1.149.el6.i686
+yum install ksh
+yum install libgcc
+yum install libgcc-4.4.7-11.el6.i686
+yum install libstdc++
+yum install libstdc++-4.4.7-11.el6.i686
+yum install libstdc++-devel
+yum install libstdc++-devel-4.4.7-11.el6.i686
+yum install libaio
+yum install libaio-0.3.107-10.el6.i686
+yum install libaio-devel
+yum install libaio-devel-0.3.107-10.el6.i686
+yum install sysstat
+yum install make
+yum install java
+</code></pre>
+</div>
+
+<h2 id="2-creating-required-operating-system-groups-and-users">2. Creating Required Operating System Groups and Users</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>groupadd oinstall
+groupadd dba
+useradd -g oinstall -G dba oracle
+passwd oracle
+</code></pre>
+</div>
+
+<h2 id="3-configuring-os">3. Configuring OS</h2>
+<h3 id="31-kernel-parameter">3.1 Kernel Parameter</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@oravm2 ~]# vi /etc/sysctl.conf
+#########
+# oracle
+#########
+fs.aio-max-nr = 1048576
+fs.file-max = 6815744
+kernel.shmall = 2097152
+kernel.shmmax = 536870912
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default = 262144
+net.core.rmem_max = 4194304
+net.core.wmem_default = 262144
+net.core.wmem_max = 1048576
+
+[root@oravm2 ~]# reboot
+</code></pre>
+</div>
+
+<h3 id="32-etchosts-file">3.2 /etc/hosts file</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@oravm2 /]# vi /etc/hosts
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.56.121 oravm2
+[root@oravm2 /]#
+</code></pre>
+</div>
+
+<h2 id="4-installing-x-server">4. Installing X Server</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@oravm2 ~]$ yum -y groupinstall "Desktop" "Desktop Platform" "X Window System" "Fonts"
+[root@oravm2 ~]$ yum install gdm
+[root@oravm2 ~]$ vi /etc/inittab
+id:5:initdefault:
+[root@oravm2 ~]$ init 5
+</code></pre>
+</div>
+
+<h2 id="5-configuring-the-oracle-users-environment">5. Configuring the oracle User’s Environment</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[root@oravm2 ~]# chown -R oracle. /db /data1
+
+[root@oravm2 ~]# su - oracle
+
+[oracle@oravm2 ~]# vi ~/.bash_profile
+ORACLE_BASE=/db/app/oracle
+ORACLE_SID=orcl
+export ORACLE_BASE ORACLE_SID
+export DISPLAY=:0.0
+</code></pre>
+</div>
+
+<h2 id="6-run-installer">6. run installer</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[oracle@oravm2 ~]$ cd database/
+[oracle@oravm2 ~]$ ./runInstaller
+</code></pre>
+</div>
+
+<h2 id="7-installing-through-gui-installer-blahblah-8-setting-environment">7. Installing through GUI Installer blahblah. 8. Setting Environment</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[oracle@oravm2 ~]$ vi ~/.bash_profile
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+ORACLE_BASE=/db/app/oracle
+ORACLE_SID=orcl
+ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1
+
+export ORACLE_BASE ORACLE_SID ORACLE_HOME
+export DISPLAY=:0.0
+
+PATH=$PATH:$HOME/bin:$ORACLE_HOME/bin
+
+export PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
+</code></pre>
+</div>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/mysql-login-path/" class="btn" title="MySQL login-path">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/slony-i-replication-configuration/" class="btn" title="Slony-I Replication Configuration">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

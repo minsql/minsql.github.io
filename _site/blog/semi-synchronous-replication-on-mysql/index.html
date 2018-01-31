@@ -1,0 +1,439 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Semi-Synchronous Replication on MySQL &#8211; MINSQL</title>
+<meta name="description" content="Semi-Synchronous Replication on MySQL
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Semi-Synchronous Replication on MySQL">
+<meta name="twitter:description" content="Semi-Synchronous Replication on MySQL
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Semi-Synchronous Replication on MySQL">
+<meta property="og:description" content="Semi-Synchronous Replication on MySQL
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/semi-synchronous-replication-on-mysql/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/semi-synchronous-replication-on-mysql/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="Semi-Synchronous Replication on MySQL" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Semi-Synchronous Replication on MySQL</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2017-03-10T00:00:00+09:00"><i class="fa fa-calendar-o"></i> March 10, 2017</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#loss-less-semi-synchronous-replication-on-mysql-572">Loss-less Semi-Synchronous Replication on MySQL 5.7.2</a></li>
+  <li><a href="#strong-durability">Strong Durability</a></li>
+  <li><a href="#distributed-transaction-processing-using-xa">Distributed Transaction Processing Using XA</a>
+    <ul>
+      <li><a href="#2-phase-commit">2 Phase commit</a></li>
+      <li><a href="#crash-safety">Crash safety</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="semi-synchronous-replication-on-mysql">Semi-Synchronous Replication on MySQL</h1>
+
+<h2 id="loss-less-semi-synchronous-replication-on-mysql-572">Loss-less Semi-Synchronous Replication on MySQL 5.7.2</h2>
+
+<ul>
+  <li>5.7.2이전, 이후 semi-sync replication방식 비교</li>
+</ul>
+
+<table class="relative-table wrapped confluenceTable"><colgroup> <col /> <col /> <col /></colgroup>
+<tbody>
+<tr>
+<th class="confluenceTh">MySQL Version
+
+rpl_semi_sync_master_wait_point
+
+(introduced from 5.7)</th>
+<th class="confluenceTh">MySQL 5.5 and 5.6
+
+AFTER_COMMIT(MySQL 5.7.2)</th>
+<th class="confluenceTh">MySQL 5.7.2
+
+AFTER_SYNC(By default on MySQL 5.7.2)</th>
+</tr>
+<tr>
+<th class="confluenceTh"> Feature view</th>
+<td class="confluenceTd" width="50%">
+<div class="content-wrapper">
+
+<a href="/uploads/after_commit.png"><img class="alignnone wp-image-927 size-full" src="/uploads/after_commit.png" alt="" width="400" /></a>
+
+</div></td>
+<td class="confluenceTd" width="50%">
+<div class="content-wrapper">
+
+<a href="/uploads/after_sync.png"><img class="alignnone wp-image-928 size-full" src="/uploads/after_sync.png" alt="" width="400" /></a>
+
+</div></td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Workflow</th>
+<td class="confluenceTd" colspan="1">1. User transaction commit
+
+2. Engine prepare
+
+3. Binlog flush (writing to fscache)
+
+4. Binlog commit (fsync if sync_binlog=1)
+
+5-1. Engine commit (releasing row locks, changes are visible to other users)
+
+5-2. Binlog dump thread send event with ACK Request
+
+6. <strong>semisync wait (AFTER_COMMIT)</strong>
+
+7. User Commit OK</td>
+<td class="confluenceTd" colspan="1">1. User transaction commit
+
+2. Engine prepare
+
+3. Binlog flush (writing to fscache)
+
+4. Binlog commit (fsync if sync_binlog=1)
+
+5. Binlog dump thread send event with ACK Request
+
+6.<strong> loss-less semisync wait (AFTER_SYNC)</strong>
+
+7. Engine commit (releasing row locks, changes are visible to other users)
+
+8. User Commit OK</td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Master crash</th>
+<td class="confluenceTd" colspan="1">If master is crashed at step 6.
+<ul>
+ 	<li>Master에 이미 Engine commit됨</li>
+ 	<li>slave로 부터 ack를 기다리고 있는 중인데, 다른 세션은 해당 데이터를 읽을 수 있다.</li>
+ 	<li>이 상태에서 master가 crash된다면, slave에는 해당 데이터가 없다. (Phantom Read)</li>
+</ul>
+</td>
+<td class="confluenceTd" colspan="1">If master is crashed at step 6.
+<ul>
+ 	<li>Slave에서 ACK를 받지 못했다면, master에도 commit되지 않는다.</li>
+ 	<li>Phantom Read가 일어나지 않는다.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Data Integrity - 1. Master에만 존재하고 Slave에 존재하지않는 데이터</th>
+<td class="confluenceTd" colspan="1">
+<ul>
+ 	<li>Possible</li>
+ 	<li>slave에 replicated되지 않고 master에만 commit된 transaction을 manually rollback해야한다.</li>
+</ul>
+</td>
+<td class="confluenceTd" colspan="1">
+<ul>
+ 	<li>None</li>
+ 	<li>slave에 replicated되지 않고 master에만 commit된 transaction은 없다.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Data Integrity - 2. Slave에만 존재하고 Master에 존재하지않는 데이터</th>
+<td class="confluenceTd" colspan="1">
+<ul>
+ 	<li>workflow단계 중 3, 4 단계에서 master가 crash된 경우, master의 binlog에는 쓰여지지 않았는데, slave에는 이미 데이터가 전송되었을 가능성이 있었다.</li>
+ 	<li>→ 5.6.17이후 fix됨(3 단계에서 user session 이 binlog lock(LOCK_log)를 hold 한다.</li>
+</ul>
+</td>
+<td class="confluenceTd" colspan="1">
+<div class="content-wrapper">
+<ul>
+ 	<li>None</li>
+</ul>
+</div></td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Strong Durability설정에서 binlog와 redo log(ib_logfile)관계
+
+1. sync_binlog=1
+
+2. innodb_flush_log_at_trx_commit=1
+
+3. innodb_support_xa=1</th>
+<td class="confluenceTd" colspan="2">
+<ul>
+ 	<li>sync_binlog=1이라면, Binlog commit 단계에서 바로 file로 fsync한다.</li>
+ 	<li>innodb_flush_log_at_trx_commit=1이라면, Engine commit단계에서 바로 redo log file 로 flush한다.</li>
+ 	<li>binlog와 redo log의 synchronize를 manage하는 옵션이 innodb_support_xa=1이다. crash recovery시 redo log뿐 아니라 binary log까지 참조하여 transaction event를 recovery해준다.
+<ul>
+ 	<li>세부 내용은 하단 참조.</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<th class="confluenceTh" colspan="1">Strong Durability설정에서 Crashed master recovery</th>
+<td class="confluenceTd" colspan="2">
+<ul>
+ 	<li>Binlog commit 후 Binlog dump가 slave IO thread에 binlog event를 전달한다. (binlog commit 완료)</li>
+ 	<li>ACK 를 받지 않은 상태에서 master가 crash되었다면, slave에 데이터가 있을 수도 있고 없을 수도 있다.</li>
+ 	<li>Master에는 binlog commit까지 된것이므로 recovery 시 데이터 복구 된다.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="strong-durability">Strong Durability</h2>
+<ol>
+  <li>sync_binlog=1</li>
+  <li>innodb_flush_log_at_trx_commit=1</li>
+  <li>innodb_support_xa=1</li>
+</ol>
+
+<h2 id="distributed-transaction-processing-using-xa">Distributed Transaction Processing Using XA</h2>
+<ul>
+  <li>In version 5.0, the server uses XA internally to coordinate the binary log and the storage engines.</li>
+  <li>XA protocol을 사용한 트랜잭션에 대해서 2 phase commit을 지원하는 기능이지만, 내부적으로 MySQL은 이 기능을 사용해서 binary log와 storage engines의 commit 프로세스를 2 PC로 수행한다.
+    <ul>
+      <li>XA includes a transaction manager that coordinates a set of resource managers so that they commit a global transaction as an atomic unit. Each transaction is assigned a unique XID, which is used by the transaction manager and the resource managers. When used internally in the MySQL server, the transaction manager is usually the binary log and the resource managers are the storage engines.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-phase-commit">2 Phase commit</h3>
+
+<p><img src="/uploads/msha_0408.png" alt="" width="400px" /></p>
+
+<ul>
+  <li>Phase 1. Innodb prepare
+    <ul>
+      <li>Error : rollback</li>
+      <li>OK : Phase 2</li>
+    </ul>
+  </li>
+  <li>Before Phase 2. Binlog commit (XID 저장하고 있음)</li>
+  <li>Phase 2. InnoDB commit
+    <ul>
+      <li>이때 commit이 fail하는 일은 보통 일어나지 않는다. phase1에서 prepare를 했다는 이야기는 commit을 할 수 있다는 것을 확인한 것이다. 그러므로 fail했을때에 대한 로직이 없다.</li>
+      <li>하지만 여전히 HW fail은 발생할 수 있다. 다음의 Crash safety에서 recovery 단계를 살펴본다.</li>
+    </ul>
+  </li>
+  <li>After phase 2. XA cleanup. Binary log do nothing.</li>
+</ul>
+
+<h3 id="crash-safety">Crash safety</h3>
+
+<p><img src="/uploads/msha_0409.png" alt="" width="400px" /></p>
+
+<ul>
+  <li>InnoDB crash recovery.
+    <ul>
+      <li>Phase 2의 InnoDB commit까지 일어났다면, 변경분이 redo에 정상적으로 저장되었으므로 recover된다.</li>
+      <li>InnoDB commit되기전, binlog에만 써진 변경사항이 존재할 수 있다.</li>
+    </ul>
+  </li>
+  <li>The last binary log recovery.
+    <ul>
+      <li>마지막 binary log를 연다.</li>
+      <li><code class="highlighter-rouge">Format_description</code> event를 확인하여 <code class="highlighter-rouge">binlog-in-use</code> flag 가 설정되었다면, binlog가 제대로 쓰여졌다는 것을 의미한다. 그 Xid들에 대해서는 recovery해준다.</li>
+      <li>binlog-in-use=0 이라면 제대로 쓰고 닫힌 것으로 볼수 없으므로  truncate한다.</li>
+    </ul>
+  </li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/" class="btn" title="MySQL slow query 를 효율적으로 이용해보자!">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/MySQL-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4/" class="btn" title="MySQL 통계정보">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MySQL SYS schema overview &#8211; MINSQL</title>
+<meta name="description" content="MySQL SYS schema overview
+
+">
+<meta name="keywords" content="MySQL">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MySQL SYS schema overview">
+<meta name="twitter:description" content="MySQL SYS schema overview
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mysql.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL SYS schema overview">
+<meta property="og:description" content="MySQL SYS schema overview
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/mysql-sys-schema-overview/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/mysql-sys-schema-overview/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mysql.png" class="entry-feature-image" alt="MySQL SYS schema overview" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#MySQL" title="Pages tagged MySQL">MySQL</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MySQL SYS schema overview</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-08-06T00:00:00+09:00"><i class="fa fa-calendar-o"></i> August 06, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#1-sys-schema란">1. SYS schema란</a>
+    <ul>
+      <li><a href="#11-sys-schema-소개">1.1 SYS schema 소개</a></li>
+      <li><a href="#12-왜-sys-schema가-필요한가">1.2 왜 SYS schema가 필요한가?</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-설치">2. 설치</a>
+    <ul>
+      <li><a href="#21-command-line설치">2.1 command line설치</a></li>
+      <li><a href="#22-mysql-workbench-61-을-통한-설치">2.2 MySQL Workbench 6.1+ 을 통한 설치</a></li>
+      <li><a href="#23-설치-확인">2.3 설치 확인</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-mysql-sys-schema-설명">3. MySQL SYS schema 설명</a>
+    <ul>
+      <li><a href="#31-mysql-sys-views">3.1 MySQL sys views</a></li>
+      <li><a href="#32-functions">3.2 Functions</a></li>
+      <li><a href="#33-procedures">3.3 Procedures</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mysql-sys-schema-overview">MySQL SYS schema overview</h1>
+
+<h2 id="1-sys-schema란">1. SYS schema란</h2>
+
+<h3 id="11-sys-schema-소개">1.1 SYS schema 소개</h3>
+
+<ul>
+  <li>DBA, Developer, Ops 를 위한 views, procedures, functions 제공</li>
+  <li>일반적인 DBA, Developer의 debugging, tunning 작업에 필요한 기능을 제공함</li>
+  <li>MySQL 5.7.7 부터 New Feature로 소개되어 default로 포함되고 5.7.7 미만 5.6 이상에서는 따로 설치가능하다.</li>
+</ul>
+
+<h3 id="12-왜-sys-schema가-필요한가">1.2 왜 SYS schema가 필요한가?</h3>
+
+<ul>
+  <li>performance_schema를 통해 원하는 데이터를 추출하기가 까다롭다.</li>
+  <li>performance_schema의 대량 데이터는 여러 방면으로 유용하게 쓰일수 있는데, 목적에 따라 쉽게 사용할수 있도록 views, procedures, functions 제공한다.</li>
+</ul>
+
+<h2 id="2-설치">2. 설치</h2>
+
+<h3 id="21-command-line설치">2.1 command line설치</h3>
+
+<ul>
+  <li>git clone https://github.com/MarkLeith/mysql-sys.git /tmp/sys</li>
+  <li>cd /tmp/sys</li>
+  <li>mysql -u user -p &lt; sys_.sql</li>
+  <li>예제</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@myvm1 ~]$  git clone https://github.com/MarkLeith/mysql-sys.git /tmp/sys
+    Initialized empty Git repository in /tmp/sys/.git/
+    remote: Counting objects: 1704, done.
+    remote: Total 1704 (delta 0), reused 0 (delta 0), pack-reused 1704
+    Receiving objects: 100% (1704/1704), 663.39 KiB | 310 KiB/s, done.
+    Resolving deltas: 100% (1146/1146), done.
+    [mysql@myvm1 ~]$ cd /tmp/sys
+    [mysql@myvm1 sys]$ mysql -uroot -p --socket=/tmp/mysql56.sock &lt; sys_56.sql
+    Enter password:
+</code></pre>
+</div>
+
+<h3 id="22-mysql-workbench-61-을-통한-설치">2.2 MySQL Workbench 6.1+ 을 통한 설치</h3>
+
+<ul>
+  <li>Performance Reports -&gt; Install Helper</li>
+</ul>
+
+<h3 id="23-설치-확인">2.3 설치 확인</h3>
+
+<ul>
+  <li>git 로 설치한 예제임</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from sys.version;
+    +-------------+---------------+
+    | sys_version | mysql_version |
+    +-------------+---------------+
+    | 1.4.0       | 5.6.19-log    |
+    +-------------+---------------+
+    1 row in set (0.00 sec)
+
+
+    mysql&gt; select * from sys.schema_object_overview where db='sys';
+    +-----+---------------+-------+
+    | db  | object_type   | count |
+    +-----+---------------+-------+
+    | sys | FUNCTION      |    14 |
+    | sys | PROCEDURE     |    22 |
+    | sys | VIEW          |    81 |
+    | sys | BASE TABLE    |     1 |
+    | sys | INDEX (BTREE) |     1 |
+    | sys | TRIGGER       |     2 |
+    +-----+---------------+-------+
+    6 rows in set (0.05 sec)
+</code></pre>
+</div>
+
+<h2 id="3-mysql-sys-schema-설명">3. MySQL SYS schema 설명</h2>
+
+<h3 id="31-mysql-sys-views">3.1 MySQL sys views</h3>
+
+<ul>
+  <li>DB운영시 참조할만한 뷰들이 들어있다.</li>
+  <li>sys 스키마의 뷰를 사용해서 커스터마이징한 뷰를 생성해서 사용할 수 있다.</li>
+  <li>모두 performance_schema와 information_schema를 기반으로 한다.</li>
+  <li>formatted view와 raw view를 제공함
+    <ul>
+      <li>formatted views : 사람용, command line 용, 사람이 식별하기 쉬운 데이터로 되어있다. 예를들면 시간데이터들 raw views는 pico second로 되어있는데, formatted view에서는 ms, us로 보여줌</li>
+      <li>raw views : x$로 시작한다. tool용.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from waits_global_by_latency limit 1;
+    +------------------------------+-------+---------------+-------------+-------------+
+    | events                       | total | total_latency | avg_latency | max_latency |
+    +------------------------------+-------+---------------+-------------+-------------+
+    | wait/io/file/sql/file_parser |  2077 | 623.59 ms     | 300.24 us   | 69.80 ms    |
+    +------------------------------+-------+---------------+-------------+-------------+
+    1 row in set (0.00 sec)
+
+    mysql&gt; select * from x$waits_global_by_latency limit 1;
+    +------------------------------+-------+---------------+-------------+-------------+
+    | events                       | total | total_latency | avg_latency | max_latency |
+    +------------------------------+-------+---------------+-------------+-------------+
+    | wait/io/file/sql/file_parser |  2077 |  623594918562 |   300238092 | 69796836648 |
+    +------------------------------+-------+---------------+-------------+-------------+
+    1 row in set (0.00 sec)
+</code></pre>
+</div>
+
+<h4 id="311-userhost-summary-views">3.1.1 User/Host Summary views</h4>
+
+<ul>
+  <li>user_summary_%, host_summary_% : user/host 정보를 보여주는 뷰</li>
+  <li>Breakdowns by : IO usage, Stages, Statement details</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; select * from user_summaryG
+    ...
+    *************************** 2. row ***************************
+       user: michaela
+               statements: 2189
+        statement_latency: 7.19 s
+    statement_avg_latency: 3.28 ms
+              table_scans: 1960
+                 file_ios: 6803
+          file_io_latency: 5.91 h
+      current_connections: 4
+        total_connections: 7
+             unique_hosts: 1
+    ...
+</code></pre>
+</div>
+
+<ul>
+  <li>user_summary : user가 실행한 statement 개수, latency, table_scans, file_ios, file_io_latency 등</li>
+  <li>user_summary_by_% : breakdown 조건에 따른 뷰들</li>
+</ul>
+
+<h4 id="312-io-summary-views">3.1.2 IO Summary views</h4>
+
+<ul>
+  <li>io_by_thread_by_latency : current threads의 IO정보
+    <ul>
+      <li>thread별 IO latency 정보, foreground process(processlist_id가 있는 것)뿐 아니라 background thread에 대한 정보도 포함됨.</li>
+    </ul>
+  </li>
+  <li>io_global_by_% : file별 클래스별 Global 요약정보</li>
+  <li>latest_file_io : 마지막 file IO events에 대한 정보</li>
+</ul>
+
+<h4 id="313-schema-analysis-views">3.1.3 Schema Analysis views</h4>
+
+<ul>
+  <li>schema_object_overview : Object overview</li>
+  <li>schema_table_% : Table 사용 통계정보
+    <ul>
+      <li>schema_tables_with_full_table_scans : full table scan한 테이블들 확인할 수 있다. 스키마 변경, 인덱스 추가를 고려하는 경우 참조할수 있다.</li>
+    </ul>
+  </li>
+  <li>schema_index_statistics, schema_unused_indexes : Index 사용 통계정보
+    <ul>
+      <li>schema_unused_indexes : drop index등의 스키마 변경을 고려하는 경우 unused indexes정보 확인할 수 있다. 반드시 어플리케이션 특성에 따라 인덱스 사용빈도 확인후 충분히 모니터링 하고 작업해야한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="314-wait-analysis-views">3.1.4 Wait Analysis views</h4>
+
+<ul>
+  <li>wait_classes_% : event class별 wait summaries</li>
+  <li>waits_by_user%, waits_by_host% waits_global_% : user, host, global wait details</li>
+</ul>
+
+<h4 id="315-statement-analysis-views">3.1.5 Statement Analysis views</h4>
+
+<ul>
+  <li>statement_analysis : Statement overview</li>
+  <li>튜닝업무시 참조할수 있다.</li>
+  <li>다음 조건에 해당하는 statement를 찾을 수 있다.
+    <ul>
+      <li>statements_with_errors_or_warnings : 에러난 구문</li>
+      <li>statements_with_full_table_scans : full table scan한 구문</li>
+      <li>statements_with_temp_tables : temp table 만든 구문</li>
+      <li>statements_with_sorting : sorting 일으킨 구문</li>
+      <li>statements_with_runtimes_in_95th_percentile : 95%(상위 5%) latency 구문</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="316-기타-views">3.1.6 기타 views</h4>
+
+<ul>
+  <li>processlist : show processlist 및 추가정보 확인할수 있는 view
+    <ul>
+      <li>no mutex contention</li>
+      <li>해당 쿼리의 현재 통계정보</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="32-functions">3.2 Functions</h3>
+
+<ul>
+  <li>format_path, format_statement : 식별가능한 포맷으로 변경하는 펑션</li>
+  <li>format_time : 적절한 time 포맷으로 바꾸는 펑션</li>
+  <li>format_bytes : 적절한 bytes 포맷으로 바꾸는 펑션</li>
+  <li>extract_%_from_file_name : object name 추출</li>
+  <li>ps_is_% : performace_schema의 측정도구인지 확인</li>
+  <li>ps_thread_id : 해당 connection_id의 performance_schema의 thread_id 반환</li>
+  <li>ps_thread_stack : thread stack dump내리는 펑션</li>
+  <li>sys_get_config</li>
+</ul>
+
+<h3 id="33-procedures">3.3 Procedures</h3>
+
+<h4 id="331-performance-schema-config-helper-procedures">3.3.1 Performance Schema Config Helper Procedures</h4>
+
+<ul>
+  <li>ps_setup_%</li>
+</ul>
+
+<h4 id="332-statement-tracing-procedures">3.3.2 Statement Tracing Procedures</h4>
+
+<ul>
+  <li>ps_trace_thread : thread trace를 위해서 performace_schema 데이터 dump
+    <ul>
+      <li>특정 기간동안의 특정 thread 모니터링</li>
+      <li>thread activity관련 가능한한 많은 정보를 캡처</li>
+      <li>graph를 그려주는 dot fommatted file을 return한다.</li>
+    </ul>
+  </li>
+  <li>ps_trace_statement_digest : statement history table를 확인해서 statement digest상세정보 캡쳐
+    <ul>
+      <li>현재 라이브 traffic 정보를 분석하여 특정 기간동안의 statement digest를 구한다.</li>
+      <li>각각의 statement 통계정보를 캡처한다.</li>
+    </ul>
+  </li>
+</ul>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/Slave-%EC%97%90%EC%84%9C-mysqldump%EC%9D%98-dump-slave-%EC%98%B5%EC%85%98%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EB%B0%B1%EC%97%85-%ED%98%B9%EC%9D%80-%EB%8B%A4%EB%A5%B8-slave-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0/" class="btn" title="Slave 에서 mysqldump의 dump-slave 옵션을 이용하여 백업 혹은 다른 slave 구성하기">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/mysqltest-command%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-mockup-test-%EB%B0%8F-%EC%9E%84%EC%9D%98%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%83%9D%EC%84%B1/" class="btn" title="mysqltest command를 이용한 mockup test 및 임의의 데이터 생성">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

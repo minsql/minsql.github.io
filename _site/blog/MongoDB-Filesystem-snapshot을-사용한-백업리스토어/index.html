@@ -1,0 +1,336 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MongoDB Filesystem snapshot을 사용한 백업리스토어 &#8211; MINSQL</title>
+<meta name="description" content="MongoDB Filesystem snapshot을 사용한 백업/리스토어
+
+">
+<meta name="keywords" content="Mongo">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="MongoDB Filesystem snapshot을 사용한 백업리스토어">
+<meta name="twitter:description" content="MongoDB Filesystem snapshot을 사용한 백업/리스토어
+
+">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/images/mongo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB Filesystem snapshot을 사용한 백업리스토어">
+<meta property="og:description" content="MongoDB Filesystem snapshot을 사용한 백업/리스토어
+
+">
+<meta property="og:url" content="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/">
+<meta property="og:site_name" content="MINSQL">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/MongoDB-Filesystem-snapshot%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%B0%B1%EC%97%85%EB%A6%AC%EC%8A%A4%ED%86%A0%EC%96%B4/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="MINSQL Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/blog/" >Blog</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/tags/" >Tags</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="entry">
+    
+  <!--  <img src="http://localhost:4000/images/mongo.png" class="entry-feature-image" alt="MongoDB Filesystem snapshot을 사용한 백업리스토어" >-->
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#Mongo" title="Pages tagged Mongo">Mongo</a></li>
+        </ul>
+        
+          <h1 class="entry-title">MongoDB Filesystem snapshot을 사용한 백업리스토어</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="http://localhost:4000/images/fabmichaela-photo.jpg" class="bio-photo" alt="MIN KIM bio photo"/>
+        
+        <span class="author vcard">By <span class="fn">MIN KIM</span></span>
+        <span class="entry-date date published"><time datetime="2015-04-16T00:00:00+09:00"><i class="fa fa-calendar-o"></i> April 16, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        
+        
+
+        
+
+          <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> My Table of Contents</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#mongodb-filesystem-snapshot을-사용한-백업리스토어-1">MongoDB Filesystem snapshot을 사용한 백업/리스토어</a>
+    <ul>
+      <li><a href="#1-create-a-snapshot">1. Create a Snapshot</a></li>
+      <li><a href="#2-archive-a-snapshot">2. Archive a Snapshot</a></li>
+      <li><a href="#3-restore-a-snapshot">3. Restore a Snapshot</a></li>
+      <li><a href="#4-remove-a-snapshot">4. Remove a Snapshot</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="mongodb-filesystem-snapshot을-사용한-백업리스토어">MongoDB Filesystem snapshot을 사용한 백업/리스토어</h1>
+
+<p>MongoDB Filesystem snapshot을 사용한 백업/리스토어</p>
+
+<h2 id="mongodb-filesystem-snapshot을-사용한-백업리스토어-1">MongoDB Filesystem snapshot을 사용한 백업/리스토어</h2>
+
+<blockquote>
+  <p>system-level 툴을 사용하여 MongoDB의 백업을 생성해보자. Filesystem snapshot(“block-level” backup)은 system level 툴을 사용하여 생성한 MongoDB의 데이터파일의 copy본을 의미한다. 이 방식은 빠르고 신뢰할만 하지만 MongoDB외의 system 관련 구성이 필요하다. 간단하게 Linux system 의 LVM을 사용하여 백업을 진행해 보자.</p>
+</blockquote>
+
+<h3 id="1-create-a-snapshot">1. Create a Snapshot</h3>
+
+<ul>
+  <li>lvcreate 명령을 사용한다 다음의 옵션을 확인한다.
+    <ul>
+      <li>예시 : <code class="highlighter-rouge">lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data</code></li>
+      <li>LVM 스냅샷을 생성한다. : <strong>--snapshot</strong> option</li>
+      <li>스냅샷 이름 : mdb-snap01</li>
+      <li>스냅샷 받을 볼륨 그룹 : /dev/vg_vm2/lv_data</li>
+      <li>size : 이건 전체 스냅샷의 사이즈를 의미하는 것이 아니라 현재 볼륨과 snapshot볼륨간의 difference를 저장할 용량을 의미한다.</li>
+      <li>스냅샷 위치 : /dev/vg_vm2/mdb-snap01</li>
+    </ul>
+  </li>
+  <li>생성해보자
+    <ul>
+      <li>([필요시에만..) 사용중인 볼륨 사이즈를 조정한다. 지금 100%에 대해 logical volumn생성한 상태인데, vgreduce를 통해 줄인다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvreduce --size 9.5G /dev/vg_vm3/lv_data
+      WARNING: Reducing active and open logical volume to 9.50 GiB
+      THIS MAY DESTROY YOUR DATA (filesystem etc.)
+    Do you really want to reduce lv_data? [y/n]: y
+      Reducing logical volume lv_data to 9.50 GiB
+      Logical volume lv_data successfully resized
+    [root@testvm1 ~]# umount /data1
+    [root@testvm1 ~]# e2fsck -f /dev/vg_vm3/lv_data
+    [root@testvm1 ~]# resize2fs /dev/vg_vm3/lv_data
+</code></pre>
+</div>
+
+<ul>
+  <li>그리고 스냅샷 볼륨을 생성해본다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate --size 100M --snapshot --name mdb-snap01 /dev/vg_vm3/lv_data
+      Logical volume "mdb-snap01" created
+</code></pre>
+</div>
+
+<ul>
+  <li>만약 스냅샷 볼륨의 공간이 부족하게 되면, 이 스냅샷 이미지는 못쓰게 된다. 버리고 다시 생성해야한다.</li>
+  <li>스냅샷이 백업을 빠르게 생성하는 방법이긴 하지만, 사실 백업 데이터를 보관하는데에는 좋은 포맷이 아니다. 오리지널과 동일한 storage환경에서만 동작하기 때문에, 이 스냅샷을 별도 장비에 archive하는 것은 좋은 방법이 아니다.</li>
+</ul>
+
+<h3 id="2-archive-a-snapshot">2. Archive a Snapshot</h3>
+
+<ul>
+  <li>shapshot을 mount하고, 다른 시스템을 copy할 수 있다.</li>
+  <li>또는, backup image를 압축해서 옮길수도 있다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# dd if=/dev/vg_vm3/mdb-snap01 | gzip &gt; /db/mongo/mdb-snap01.gz &amp;
+    19922944+0 records in
+    19922944+0 records out
+    10200547328 bytes (10 GB) copied, 169.867 s, 60.1 MB/s
+</code></pre>
+</div>
+
+<h3 id="3-restore-a-snapshot">3. Restore a Snapshot</h3>
+
+<ul>
+  <li>snapshot을 restore해보자
+    <ul>
+      <li>새로운 logical volume lv_backupsnap을 만들고, 거기에 snapshot을 restore한다.</li>
+      <li>사이즈는 original file system 사이즈와 같거나 더 커야한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# lvcreate -l 100%FREE --name lv_backupsnap vg_vm4
+      Logical volume "lv_backupsnap" created
+    [root@testvm1 ~]# gzip -d -c /db/mongo/mdb-snap01.gz  | dd of=/dev/vg_vm4/lv_backupsnap
+    19922944+0 records in
+    19922944+0 records out
+    10200547328 bytes (10 GB) copied, 343.295 s, 29.7 MB/s
+
+    [root@testvm1 ~]# mount /dev/vg_vm4/lv_backupsnap /backupsnap/
+</code></pre>
+</div>
+
+<h3 id="4-remove-a-snapshot">4. Remove a Snapshot</h3>
+
+<ul>
+  <li>스냅샷 볼륨을 정리한다.</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]#  lvremove /dev/vg_vm3/mdb-snap01
+    Do you really want to remove active logical volume mdb-snap01? [y/n]: y
+      Logical volume "mdb-snap01" successfully removed
+    [root@testvm1 ~]#
+</code></pre>
+</div>
+
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'minsql'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/blog/information_schema.INNODB_XXX-%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-lock-%EC%A0%95%EB%B3%B4-%ED%99%95%EC%9D%B8/" class="btn" title="information_schema.INNODB_XXX 를 활용한 lock 정보 확인">Previous</a>
+      
+      
+        <a href="http://localhost:4000/blog/MongoDB-Replica-Set-status-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="btn" title="MongoDB Replica Set status 확인하기">Next</a>
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2018 MINSQL<!--. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.--></span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>
