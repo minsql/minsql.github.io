@@ -1,0 +1,29 @@
+{% if paginator %}
+    <div class="pagination">
+        {% if paginator.total_pages > 1 and  paginator.previous_page %}
+              <li class="pagination-item--wide first">
+                <a class="pagination-link--wide first" href="{{ paginator.previous_page_path | prepend: site.baseurl }}#scroll"><i class="fa fa-angle-left"></i></a>
+              </li>
+        {% endif %}
+
+        {% if paginator.page_trail %}
+          {% for trail in paginator.page_trail %}
+              {% assign x = trail.path | append: 'index.html' %}
+              {% if page.url == x %}
+                <li class="pagination-item is-active">
+              {% else %}
+                 <li class="pagination-item">
+              {% endif %}
+                <a href="{{ trail.path | prepend: site.baseurl }}#scroll" title="{{trail.title}}">{{ trail.num }}</a>
+
+            </li>
+          {% endfor %}
+        {% endif %}
+
+        {% if paginator.total_pages > 1 and paginator.next_page %}
+              <li class="pagination-item--wide last">
+                <a class="pagination-link--wide last" href="{{ paginator.next_page_path | prepend: site.baseurl }}#scroll"><i class="fa fa-angle-right"></i></a>
+              </li>
+        {% endif %}
+    </div>
+{% endif %}

@@ -547,6 +547,8 @@
   
 
   
+
+  
     ,{
       "title"			: "Theme Setup",
       "link"			: "http://localhost:4000/theme-setup/",
@@ -575,9 +577,51 @@
   
 
   
-
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page2/",
+      "excerpt"		: ""
+    }
   
 
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page3/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page4/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page5/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page6/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/blog/page7/",
+      "excerpt"		: ""
+    }
   
 
 ]
