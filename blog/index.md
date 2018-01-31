@@ -10,7 +10,7 @@ pagination:
     before: 2 # The number of links before the current page
     after: 2  # The number of links after the current page
 ---
-<!-- This loops through the paginated posts for post in paginator.posts  -->
+<!-- This loops through the paginated posts for post in paginator.posts } -->
 
 <ul class="post-list">
 {% for post in site.categories.blog %}
