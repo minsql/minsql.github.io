@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: http://minsql.com/sitemap.xml
