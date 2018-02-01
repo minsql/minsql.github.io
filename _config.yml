@@ -69,5 +69,6 @@ owner:
     ad-client:
     ad-slot:
   bing-verify:
-google_analytics:
-  ua: 'UA-56786998-2'
+    
+# Google Analytics
+google_analytics: UA-56786998-2
