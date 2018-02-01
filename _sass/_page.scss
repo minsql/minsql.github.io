@@ -423,3 +423,31 @@ th {
 	}
 }
 */
+
+/* ==========================================================================
+   Authors List
+   ========================================================================== */
+.author-columns {
+ 	text-align: center;
+
+	ul {
+		-webkit-column-count: 2;
+	  -moz-column-count: 2;
+	  column-count: 2;
+	  list-style-position: inside;
+  }
+
+	li {
+		width: 150px;
+		display: inline-block;
+	  list-style-type: none;
+	}
+	li > a {
+		border-bottom: 1px
+	}
+	img {
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+  }
+}
