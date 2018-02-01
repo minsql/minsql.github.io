@@ -165,7 +165,7 @@
   </li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=========</span> <span class="k">Session</span> <span class="n">A</span> <span class="o">==========</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="o">=========</span> <span class="k">Session</span> <span class="n">A</span> <span class="o">==========</span>
     <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="n">connection_id</span><span class="p">();</span>
     <span class="o">+</span><span class="c1">-----------------+</span>
     <span class="o">|</span> <span class="n">connection_id</span><span class="p">()</span> <span class="o">|</span>
@@ -203,13 +203,14 @@
 <span class="o">|</span> <span class="mi">1003</span> <span class="o">|</span> <span class="n">root</span>            <span class="o">|</span> <span class="n">localhost</span>          <span class="o">|</span> <span class="n">ch</span>   <span class="o">|</span> <span class="n">Sleep</span>   <span class="o">|</span>  <span class="mi">724</span> <span class="o">|</span>                             <span class="o">|</span> <span class="k">NULL</span>                                        <span class="o">|</span>
 <span class="o">+</span><span class="c1">------+-----------------+--------------------+------+---------+------+-----------------------------+---------------------------------------------+</span>
 <span class="mi">6</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>INNODB_LOCK_WAITS 은 현재 wait 으로 대기하고 있는 session에 대해 나타낸다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_LOCK_WAITS</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_LOCK_WAITS</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">-------------------+-------------------+-----------------+------------------+</span>
 <span class="o">|</span> <span class="n">requesting_trx_id</span> <span class="o">|</span> <span class="n">requested_lock_id</span> <span class="o">|</span> <span class="n">blocking_trx_id</span> <span class="o">|</span> <span class="n">blocking_lock_id</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">-------------------+-------------------+-----------------+------------------+</span>
@@ -221,13 +222,14 @@
 <span class="c1">-- 96B 를 가진 transaction_id 가 block 시켰다.</span>
 <span class="c1">-- 97E:0:480:310 는 lock_trx_id:lock_space:lock_page:lock_rec 이다. INNODB_LOCKS 에 나타난다.</span>
 <span class="c1">-- 해당 transaction_id 에 대해 알아보자</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>INNODB_LOCKS 은 현재 lock 정보를 보여준다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_LOCKS</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_LOCKS</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">---------------+-------------+-----------+-----------+------------+------------+------------+-----------+----------+-----------+</span>
 <span class="o">|</span> <span class="n">lock_id</span>       <span class="o">|</span> <span class="n">lock_trx_id</span> <span class="o">|</span> <span class="n">lock_mode</span> <span class="o">|</span> <span class="n">lock_type</span> <span class="o">|</span> <span class="n">lock_table</span> <span class="o">|</span> <span class="n">lock_index</span> <span class="o">|</span> <span class="n">lock_space</span> <span class="o">|</span> <span class="n">lock_page</span> <span class="o">|</span> <span class="n">lock_rec</span> <span class="o">|</span> <span class="n">lock_data</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">---------------+-------------+-----------+-----------+------------+------------+------------+-----------+----------+-----------+</span>
@@ -237,13 +239,14 @@
 <span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 <span class="c1">-- 97E 를 가진 transaction_id 가 lock_mode S (해당 값을 읽기 위함)를 `ch`.`abc` 테이블의 `PRIMARY` 에 걸었다.  lock_page는 480번이며, lock_rec 는 310번이다. lock_data는 insert 하려는 pk 값이다.</span>
 <span class="c1">-- 96B 를 가진 transaction_id 가 lock_mode X (해당 값을 수정하기 위함)를 `ch`.`abc` 테이블의 `PRIMARY` 에 걸었다. lock_page는 480번이며, lock_rec 는 310번이다. lock_data는 insert 한 pk 값이다.</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>INNODB_TRX 은 해당 lock을 걸고 있는 transaction이 어떤 상태인가를 보여준다.</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_TRX</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_TRX</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">--------+-----------+---------------------+-----------------------+---------------------+------------+---------------------+---------------------------------------------+---------------------+-------------------+-------------------+------------------+-----------------------+-----------------+-------------------+-------------------------+---------------------+-------------------+------------------------+----------------------------+---------------------------+---------------------------+</span>
 <span class="o">|</span> <span class="n">trx_id</span> <span class="o">|</span> <span class="n">trx_state</span> <span class="o">|</span> <span class="n">trx_started</span>         <span class="o">|</span> <span class="n">trx_requested_lock_id</span> <span class="o">|</span> <span class="n">trx_wait_started</span>    <span class="o">|</span> <span class="n">trx_weight</span> <span class="o">|</span> <span class="n">trx_mysql_thread_id</span> <span class="o">|</span> <span class="n">trx_query</span>                                   <span class="o">|</span> <span class="n">trx_operation_state</span> <span class="o">|</span> <span class="n">trx_tables_in_use</span> <span class="o">|</span> <span class="n">trx_tables_locked</span> <span class="o">|</span> <span class="n">trx_lock_structs</span> <span class="o">|</span> <span class="n">trx_lock_memory_bytes</span> <span class="o">|</span> <span class="n">trx_rows_locked</span> <span class="o">|</span> <span class="n">trx_rows_modified</span> <span class="o">|</span> <span class="n">trx_concurrency_tickets</span> <span class="o">|</span> <span class="n">trx_isolation_level</span> <span class="o">|</span> <span class="n">trx_unique_checks</span> <span class="o">|</span> <span class="n">trx_foreign_key_checks</span> <span class="o">|</span> <span class="n">trx_last_foreign_key_error</span> <span class="o">|</span> <span class="n">trx_adaptive_hash_latched</span> <span class="o">|</span> <span class="n">trx_adaptive_hash_timeout</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">--------+-----------+---------------------+-----------------------+---------------------+------------+---------------------+---------------------------------------------+---------------------+-------------------+-------------------+------------------+-----------------------+-----------------+-------------------+-------------------------+---------------------+-------------------+------------------------+----------------------------+---------------------------+---------------------------+</span>
@@ -253,12 +256,13 @@
 <span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span>
 <span class="c1">-- 97E 를 가진 transaction_id 가 현재 lock을 기다리고 있으며, 해당 thread_id 는 994 이다. 이 외에도 다양한 정보를 보여준다.</span>
 <span class="c1">-- 96B 를 가진 transaction_id 가 현재 실행중이며, 2015-03-22 23:40:05 에 시작되었고 해당 thread_id는 1003 이다</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="lock-관련-정보-한번에-보기">lock 관련 정보 한번에 보기.</h3>
 <p>해당 lock 정보를 한번에 볼 수 있는 쿼리는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; SELECT straight_join
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; SELECT straight_join
  w.trx_mysql_thread_id waiting_thread,
      w.trx_id waiting_trx_id,
      w.trx_query waiting_query,
@@ -306,12 +310,13 @@ blocking_lock_index: `PRIMARY`
 1 row in set (0.11 sec)
 
 -- 어떤 transaction에 의해 해당 쿼리가 block 되었는지 알 수 있다. (blocking_thread 를 통해 processlist 에서 해당 session을 kill 시킬 수도 있다.)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>물론 show engine innodb status 를 통해서도 확인할 수 있다.
 undo log entries 를 통해 유추해서 볼 수는 있지만, 정확한 원인을 찾기 위해서는 위의 테이블을 조회하는것이 좋다.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">engine</span> <span class="n">innodb</span> <span class="n">statusG</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">engine</span> <span class="n">innodb</span> <span class="n">statusG</span>
 
 <span class="c1">---TRANSACTION 9B2, ACTIVE 16 sec inserting</span>
 <span class="n">mysql</span> <span class="n">tables</span> <span class="k">in</span> <span class="n">use</span> <span class="mi">1</span><span class="p">,</span> <span class="n">locked</span> <span class="mi">1</span>
@@ -331,7 +336,8 @@ undo log entries 를 통해 유추해서 볼 수는 있지만, 정확한 원인�
 <span class="c1">---TRANSACTION 96B, ACTIVE 3757 sec</span>
 <span class="mi">3</span> <span class="k">lock</span> <span class="n">struct</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">heap</span> <span class="k">size</span> <span class="mi">1248</span><span class="p">,</span> <span class="mi">3</span> <span class="k">row</span> <span class="k">lock</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">undo</span> <span class="n">log</span> <span class="n">entries</span> <span class="mi">1</span>
 <span class="n">MySQL</span> <span class="n">thread</span> <span class="n">id</span> <span class="mi">1003</span><span class="p">,</span> <span class="n">OS</span> <span class="n">thread</span> <span class="n">handle</span> <span class="mi">0</span><span class="n">x7fd7a1b64700</span><span class="p">,</span> <span class="n">query</span> <span class="n">id</span> <span class="mi">12678</span> <span class="n">localhost</span> <span class="n">root</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

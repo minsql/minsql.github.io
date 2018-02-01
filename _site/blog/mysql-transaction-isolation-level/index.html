@@ -154,14 +154,15 @@
 
 <h3 id="transaction-level-확인">Transaction level 확인</h3>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">13</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="mi">16</span><span class="o">-</span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'tx_isolation'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="mi">13</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="mi">16</span><span class="o">-</span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'tx_isolation'</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">---------------+-----------------+</span>
 <span class="o">|</span> <span class="n">Variable_name</span> <span class="o">|</span> <span class="n">Value</span>           <span class="o">|</span>
 <span class="o">+</span><span class="c1">---------------+-----------------+</span>
 <span class="o">|</span> <span class="n">tx_isolation</span>  <span class="o">|</span> <span class="k">REPEATABLE</span><span class="o">-</span><span class="k">READ</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">---------------+-----------------+</span>
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 <p> </p>
 
 <h3 id="read_uncommited">READ_UNCOMMITED</h3>
@@ -413,12 +414,13 @@
   <li><code class="highlighter-rouge">log-bin=mysql-bin</code></li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">14</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">13</span><span class="o">-</span><span class="p">[</span><span class="n">test</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">transaction</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="mi">14</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">13</span><span class="o">-</span><span class="p">[</span><span class="n">test</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">transaction</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 <span class="mi">14</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">20</span><span class="o">-</span><span class="p">[</span><span class="n">test</span><span class="p">]</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span> <span class="n">xxx</span> <span class="k">values</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">ERROR</span> <span class="mi">1665</span> <span class="p">(</span><span class="n">HY000</span><span class="p">):</span> <span class="n">Cannot</span> <span class="k">execute</span> <span class="k">statement</span><span class="p">:</span> <span class="n">impossible</span> <span class="k">to</span> <span class="k">write</span> <span class="k">to</span> <span class="n">binary</span> <span class="n">log</span> <span class="n">since</span> <span class="n">BINLOG_FORMAT</span> <span class="o">=</span> <span class="k">STATEMENT</span> <span class="k">and</span> <span class="k">at</span> <span class="n">least</span> <span class="n">one</span> <span class="k">table</span> <span class="n">uses</span> <span class="n">a</span> <span class="k">storage</span> <span class="n">engine</span> <span class="n">limited</span> <span class="k">to</span> <span class="k">row</span><span class="o">-</span><span class="n">based</span> <span class="n">logging</span><span class="p">.</span> <span class="n">InnoDB</span> <span class="k">is</span> <span class="n">limited</span> <span class="k">to</span> <span class="k">row</span><span class="o">-</span><span class="n">logging</span> <span class="k">when</span> <span class="n">transaction</span> <span class="k">isolation</span> <span class="k">level</span> <span class="k">is</span> <span class="k">READ</span> <span class="k">COMMITTED</span> <span class="k">or</span> <span class="k">READ</span> <span class="k">UNCOMMITTED</span><span class="p">.</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

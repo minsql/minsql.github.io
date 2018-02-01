@@ -155,9 +155,10 @@
 
 <h5 id="1-일단-바이너리-엔진-준비해주고원하는-위치에-두고-심볼릭-링크-생성">1. 일단 바이너리 엔진 준비해주고..원하는 위치에 두고 심볼릭 링크 생성</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/db/multi/mysql-5.6.19-linux-glibc2.5-x86_64/
+<div class="highlighter-rouge"><pre class="highlight"><code>/db/multi/mysql-5.6.19-linux-glibc2.5-x86_64/
 ln -s mysql-5.6.19-linux-glibc2.5-x86_64/ 5.6
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="2-configuration-mycnf-수정">2. configuration my.cnf 수정</h5>
 <ul>
@@ -170,7 +171,7 @@ ln -s mysql-5.6.19-linux-glibc2.5-x86_64/ 5.6
   <li>slave-parallel-workers=2 # slave parallel-worker 사용가능. worker정보는 mysql.slave_worker_info에서 확인가능</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysqld1]
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysqld1]
 datadir=/data1/multi/5.6/data1
 log-error=multi_mysql56m1.err
 port            = 3366
@@ -201,28 +202,31 @@ enforce-gtid-consistency=true
 master-info-repository=TABLE
 relay-log-info-repository=TABLE
 slave-parallel-workers=2
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="3-multi-instance들이-사용할-data-directory-생성">3. multi instance들이 사용할 data directory 생성</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p /data1/multi/5.6/data1
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p /data1/multi/5.6/data1
 mkdir -p /data1/multi/5.6/data2
 /db/multi/5.6/scripts/mysql_install_db --user=mysql --basedir=/db/multi/5.6 --datadir=/data1/multi/5.6/data1
 /db/multi/5.6/scripts/mysql_install_db --user=mysql --basedir=/db/multi/5.6 --datadir=/data1/multi/5.6/data2
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="4-mysql-instance-시작">4. mysql instance 시작</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/mysqld_multi --defaults-file=/db/multi/5.6/conf/my.cnf start
+<div class="highlighter-rouge"><pre class="highlight"><code>./bin/mysqld_multi --defaults-file=/db/multi/5.6/conf/my.cnf start
 ./bin/mysqld_multi --defaults-file=/db/multi/5.6/conf/my.cnf stop
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="5master-replication-user-생성">5. @MASTER replication user 생성</h5>
 <ul>
   <li>@MASTER</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="n">REPLICATION</span> <span class="n">SLAVE</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">replication</span><span class="o">@</span><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'replication'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="n">REPLICATION</span> <span class="n">SLAVE</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">replication</span><span class="o">@</span><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'replication'</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
@@ -237,14 +241,15 @@ mkdir -p /data1/multi/5.6/data2
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 <span class="n">mysql</span><span class="o">&gt;</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="6replication-구성">6. Replication 구성</h5>
 <ul>
   <li>6.1  @SLAVE</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CHANGE</span> <span class="n">MASTER</span> <span class="k">TO</span> <span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">'127.0.0.1'</span><span class="p">,</span>  <span class="n">MASTER_PORT</span> <span class="o">=</span> <span class="mi">3366</span><span class="p">,</span> <span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CHANGE</span> <span class="n">MASTER</span> <span class="k">TO</span> <span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">'127.0.0.1'</span><span class="p">,</span>  <span class="n">MASTER_PORT</span> <span class="o">=</span> <span class="mi">3366</span><span class="p">,</span> <span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">'replication'</span><span class="p">,</span> <span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="n">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">07</span> <span class="n">sec</span><span class="p">)</span>
 <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">slave</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span> <span class="n">sec</span><span class="p">)</span>
@@ -308,27 +313,29 @@ mkdir -p /data1/multi/5.6/data2
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 <span class="n">mysql</span><span class="o">&gt;</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>6.2 @MASTER show slave hots;</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">hosts</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">hosts</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
 <span class="o">|</span> <span class="n">Server_id</span> <span class="o">|</span> <span class="k">Host</span> <span class="o">|</span> <span class="n">Port</span> <span class="o">|</span> <span class="n">Master_id</span> <span class="o">|</span> <span class="n">Slave_UUID</span>                           <span class="o">|</span>
 <span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
 <span class="o">|</span>       <span class="mi">562</span> <span class="o">|</span>      <span class="o">|</span> <span class="mi">3367</span> <span class="o">|</span>       <span class="mi">561</span> <span class="o">|</span> <span class="mi">8</span><span class="n">e95986b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fe</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">-----------+------+------+-----------+--------------------------------------+</span>
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="7-리플리케이션-동작-확인">7.  리플리케이션 동작 확인</h5>
 <ul>
   <li>7.1 @MASTER</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">master</span> <span class="n">statusG</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">master</span> <span class="n">statusG</span>
 <span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
              <span class="n">File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
          <span class="k">Position</span><span class="p">:</span> <span class="mi">539</span>
@@ -363,7 +370,8 @@ mkdir -p /data1/multi/5.6/data2
 <span class="n">Binlog_Ignore_DB</span><span class="p">:</span>
 <span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>141c523b-4747-11e4-98fb-000c298227a2:1-5
@@ -374,7 +382,7 @@ mkdir -p /data1/multi/5.6/data2
   <li>7.2 @SLAVE</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
 <span class="p">...</span>
            <span class="n">Retrieved_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
             <span class="n">Executed_Gtid_Set</span><span class="p">:</span> <span class="mi">141</span><span class="n">c523b</span><span class="o">-</span><span class="mi">4747</span><span class="o">-</span><span class="mi">11</span><span class="n">e4</span><span class="o">-</span><span class="mi">98</span><span class="n">fb</span><span class="o">-</span><span class="mi">000</span><span class="n">c298227a2</span><span class="p">:</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span>
@@ -387,21 +395,23 @@ mkdir -p /data1/multi/5.6/data2
 <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="n">hihi</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">----+------+</span>
 <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="8-failover-시나리오-간단히-테스트해보자">8. Failover 시나리오 간단히 테스트해보자.</h5>
 <ul>
   <li>8.1. MASTER CRASHED</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mysql@myvm1 5.6]$ kill -9 30829 30551
-</code></pre></div></div>
+<div class="highlighter-rouge"><pre class="highlight"><code>[mysql@myvm1 5.6]$ kill -9 30829 30551
+</code></pre>
+</div>
 
 <ul>
   <li>8.2.  SLAVE -&gt; new MASTER reset slave all</li>
 </ul>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code>    <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">slave</span> <span class="n">statusG</span>
 <span class="o">***************************</span> <span class="mi">1</span><span class="p">.</span> <span class="k">row</span> <span class="o">***************************</span>
                <span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Reconnecting</span> <span class="k">after</span> <span class="n">a</span> <span class="n">failed</span> <span class="n">master</span> <span class="n">event</span> <span class="k">read</span>
                   <span class="n">Master_Host</span><span class="p">:</span> <span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
@@ -415,7 +425,8 @@ mkdir -p /data1/multi/5.6/data2
         <span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">mysql56m1</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span>
              <span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">Connecting</span>
             <span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

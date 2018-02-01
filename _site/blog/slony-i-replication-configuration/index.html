@@ -173,12 +173,13 @@
 
 <h2 id="installation">Installation</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ bzip2 -d slony1-2.2.3.tar.bz2
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ bzip2 -d slony1-2.2.3.tar.bz2
 [postgres@testvm1 ~]$ tar xf slony1-2.2.3.tar
 [postgres@testvm1 ~]$ cd slony1-2.2.3
 [postgres@testvm1 slony1-2.2.3]$ ./configure --prefix=$PGHOME --with-pgconfigdir=$PGHOME/bin --with-perltools
 [postgres@testvm1 slony1-2.2.3]$ gmake all; gmake install
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h2 id="replication-configuration">Replication Configuration</h2>
 
@@ -194,7 +195,7 @@
 
 <h3 id="0-create-replication-user">0. Create replication user</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -s slony -W
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -s slony -W
 Password:
 [postgres@testvm1 ~]$ vi $PGDATA/pg_hba.conf
 host	all	slony	testvm1	trust
@@ -213,11 +214,12 @@ host	all	slony	testvm2	trust
 [postgres@testvm1 ~]$ pg_ctl reload
 LOG:  received SIGHUP, reloading configuration files
 server signaled
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="1-creating-pgbench-user-and-db">1. Creating pgbench user and DB</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -SRD pgbench -W
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createuser -SRD pgbench -W
 Password:
 [postgres@testvm1 ~]$ createdb -O pgbench pgbench
 
@@ -226,7 +228,8 @@ Password:
 [postgres@testvm2 ~]$ createuser -SRD pgbench -W
 Password:
 [postgres@testvm2 ~]$ createdb -O pgbench pgbench
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="2-preparing-pgbench-db">2. Preparing pgbench DB</h3>
 <ul>
@@ -234,7 +237,7 @@ Password:
   <li>Slony-I에서는 PK가 필수임. PK가 없는 테이블(pgbench_history)에 PK추가해줘야함.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ cd /db/postgres-9.3.5/contrib/pgbench/
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ cd /db/postgres-9.3.5/contrib/pgbench/
 [postgres@testvm1 pgbench]$ make install
 /bin/mkdir -p '/db/postgres/bin'
 /usr/bin/install -c  pgbench '/db/postgres/bin'
@@ -276,21 +279,23 @@ pgbench=&gt; commit;
 COMMIT
 pgbench=&gt;
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>Slony-I에서 pl/pgSQL 을 사용함. 없다면 install 해줘야한다. 설치되어 있었다면 스킵.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ createlang plpgsql pgbench
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ createlang plpgsql pgbench
 createlang: language "plpgsql" is already installed in database "pgbench"
 
-</code></pre></div></div>
+</code></pre>
+</div>
 <ul>
   <li>Slony-I은 table definition을 copy주진 않는다. slave에 pg_dump로 밀 schema 카피해줘야함.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 ~]$ pg_dump -s pgbench | psql -U slony -h testvm2 pgbench
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 ~]$ pg_dump -s pgbench | psql -U slony -h testvm2 pgbench
 SET
 SET
 SET
@@ -323,7 +328,8 @@ REVOKE
 REVOKE
 GRANT
 GRANT
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="3-configuring-the-database-for-replication">3. Configuring the database for replication</h3>
 <ul>
@@ -341,7 +347,7 @@ GRANT
   <li>output slon_tools.conf 을 확인 후, @PKEYEDTABLES, @SEQUENCES의 ()을 []로 변경한다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ vi slon_build.sh
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ vi slon_build.sh
 #!/bin/sh
 SLONDIR=/db/pgdba/slony1
 mkdir -p $SLONDIR/conf
@@ -396,27 +402,30 @@ $SLONY_SETS = {
         "sequences" =&gt; @SEQUENCES,
     }
 }
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="32-initialize-cluster---_slony-schema-및-table-생성">3.2 initialize cluster - _slony schema 및 table 생성</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ slonik_init_cluster --config=/db/pgdba/slony1/conf/slon_tools.conf |slonik
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$ slonik_init_cluster --config=/db/pgdba/slony1/conf/slon_tools.conf |slonik
 :10: Set up replication nodes
 :13: Next: configure paths for each node/origin
 :16: Replication nodes prepared
 :17: Please start a slon replication daemon for each node
 [postgres@testvm1 pgdba]$
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="33-start-slon">3.3 start slon</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[postgres@testvm1 pgdba]$  slon_start --config=/db/pgdba/slony1/conf/slon_tools.conf 1
+<div class="highlighter-rouge"><pre class="highlight"><code>[postgres@testvm1 pgdba]$  slon_start --config=/db/pgdba/slony1/conf/slon_tools.conf 1
 Invoke slon for node 1 - /db/postgres/bin/slon -p /db/pgdba/slony1/slony1_node1.pid -s 1000 -d0  slony1 'host=testvm1 dbname=pgbench user=slony port=5432 password=slony' &gt; /db/pgdba/slony1/logs/node1/pgbench-2014-12-09.log 2&gt;&amp;1 &amp;
 Slon successfully started for cluster slony1, node node1
 PID [32334]
 Start the watchdog process as well...
 [postgres@testvm1 pgdba]$  slon_start --config=/db/pgdba/slony1/conf/slon_tools.conf 2
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

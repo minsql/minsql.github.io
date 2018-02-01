@@ -170,14 +170,15 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; show variables like 'open_files_limit';
+<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; show variables like 'open_files_limit';
     +------------------+-------+
     | Variable_name    | Value |
     +------------------+-------+
     | open_files_limit | 1024  |
     +------------------+-------+
     1 row in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>왜냐? OS ulimit을 확인하자.</li>
@@ -193,11 +194,12 @@
     * 해당 유저의 현재 설정된 최대값. user가 직접 변경가능하고, hard limit까지 늘릴 수 있다.</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm1 mysql]$ ulimit -H -n
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm1 mysql]$ ulimit -H -n
     4096
     [mysql@testvm1 mysql]$ ulimit -S -n
     1024
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li><strong>즉, 내 머신의 open_files_limit은 1024~4096의 값으로 설정할수 있다.</strong></li>
@@ -216,7 +218,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm1 ~]$ ulimit -Sn
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm1 ~]$ ulimit -Sn
     1024
     [mysql@testvm1 ~]$ ulimit -Hn
     4096
@@ -232,7 +234,8 @@
     1024
     [mysql@testvm1 ~]$
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>영구적으로 변경적용하기
@@ -242,7 +245,7 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [root@testvm1 ~]# vi /etc/security/limits.conf
+<div class="highlighter-rouge"><pre class="highlight"><code>    [root@testvm1 ~]# vi /etc/security/limits.conf
     # mysql open-files
     mysql soft nofile 2048
     mysql hard nofile 65536
@@ -251,7 +254,8 @@
     2048
     [mysql@testvm1 ~]$ ulimit -Hn
     65536
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h3 id="mysql-open_files_limit-변경하기-1">MySQL open_files_limit 변경하기</h3>
 
@@ -261,14 +265,15 @@
   <li>확인</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    mysql&gt; show variables like 'open_files_limit';
+<div class="highlighter-rouge"><pre class="highlight"><code>    mysql&gt; show variables like 'open_files_limit';
     +------------------+-------+
     | Variable_name    | Value |
     +------------------+-------+
     | open_files_limit | 5000  |
     +------------------+-------+
     1 row in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

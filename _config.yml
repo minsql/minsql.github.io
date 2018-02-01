@@ -33,14 +33,15 @@ timezone: Asia/Tokyo
 read_time: true
 
 # Pagination Settings
-pagination:
-  enabled: true
-  per_page: 30 # amount of posts to show
-  permalink: '/:num/'
-
+#pagination:
+#  enabled: true
+#  per_page: 30 # amount of posts to show
+#  permalink: '/:num/'
+paginate: 20 # amount of posts to show
+paginate_path: "/blog/page:num/"
 # Plugins (previously gems:)
 plugins:
-  - jekyll-paginate-v2
+  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed

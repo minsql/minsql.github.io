@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/blog/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/</loc>
+<loc>http://localhost:4000/edge-case-nested-and-mixed-lists/</loc>
+<lastmod>2009-05-15T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/slave_sql_verify_checksum-%EC%84%B1%EB%8A%A5%EC%97%90-%EB%AF%B8%EC%B9%98%EB%8A%94-%EC%98%81%ED%96%A5/</loc>
 <lastmod>2013-12-17T00:00:00+09:00</lastmod>
 </url>
 <url>
@@ -268,7 +272,7 @@
 <loc>http://localhost:4000/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/collections/</loc>
+<loc>http://localhost:4000/blog/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/tags/</loc>
@@ -281,6 +285,18 @@
 </url>
 <url>
 <loc>http://localhost:4000/articles/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/collections/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/page2/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/page3/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/page4/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/googleac63fd6c1f753f6b.html</loc>

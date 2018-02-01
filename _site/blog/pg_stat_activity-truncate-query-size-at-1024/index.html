@@ -163,17 +163,19 @@ query식별가능하도록 comment 사용하거나.</p>
   <p>Specifies the number of bytes reserved to track the currently executing command for each active session, for the <code class="highlighter-rouge">pg_stat_activity</code>.<code class="highlighter-rouge">current_query</code> field. The default value is 1024. <em>This parameter can only be set at server start.</em></p>
 </blockquote>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="k">show</span> <span class="n">track_activity_query_size</span><span class="p">;</span>  
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="k">show</span> <span class="n">track_activity_query_size</span><span class="p">;</span>  
  <span class="n">track_activity_query_size</span>   
 <span class="c1">---------------------------  </span>
  <span class="mi">1024</span>  
 <span class="p">(</span><span class="mi">1</span> <span class="k">row</span><span class="p">)</span>  
-</code></pre></div></div>
+</code></pre>
+</div>
 <h4 id="2-use-query-identified-comment">2. Use query-identified comment</h4>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="cm">/* user statistics */</span>  
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">select</span> <span class="cm">/* user statistics */</span>  
 <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">,...</span>  
 <span class="k">from</span> <span class="p">...</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
         
           <div id="disqus_thread"></div><!-- /#disqus_thread -->

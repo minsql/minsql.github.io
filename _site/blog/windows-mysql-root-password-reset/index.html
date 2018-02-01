@@ -156,15 +156,17 @@
 
 <h5 id="1-mysql-inittxt-파일을-생성">1.  mysql-init.txt 파일을 생성</h5>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">mysql</span><span class="p">.</span><span class="k">user</span> <span class="k">SET</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">(</span><span class="s1">'newpasswd'</span><span class="p">)</span> <span class="k">WHERE</span> <span class="k">User</span><span class="o">=</span><span class="s1">'root'</span><span class="p">;</span>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">mysql</span><span class="p">.</span><span class="k">user</span> <span class="k">SET</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">(</span><span class="s1">'newpasswd'</span><span class="p">)</span> <span class="k">WHERE</span> <span class="k">User</span><span class="o">=</span><span class="s1">'root'</span><span class="p">;</span>
 <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h5 id="2-stop-instance">2. stop instance</h5>
 <h5 id="3-start-mysql-instance-with-init-file-option">3. start mysql instance with init-file option</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"C:Program FilesMySQLMySQL Server 5.5binmysqld" --defaults-file="C:Program FilesMySQLMySQL Server 5.5my.ini" --init-file="C:Program FilesMySQLMySQL Server 5.5mysql-init.txt"
-</code></pre></div></div>
+<div class="highlighter-rouge"><pre class="highlight"><code>"C:Program FilesMySQLMySQL Server 5.5binmysqld" --defaults-file="C:Program FilesMySQLMySQL Server 5.5my.ini" --init-file="C:Program FilesMySQLMySQL Server 5.5mysql-init.txt"
+</code></pre>
+</div>
 
 <h5 id="4-root-access-잘되는지-확인">4. root access 잘되는지 확인</h5>
 <h5 id="5-잘되면-stopstart-mysql-instance-without-init-file-option">5. 잘되면, stop/start mysql instance without init-file option</h5>

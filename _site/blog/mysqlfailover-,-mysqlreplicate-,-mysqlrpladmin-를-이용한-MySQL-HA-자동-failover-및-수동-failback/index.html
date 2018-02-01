@@ -213,8 +213,9 @@ enforce-gtid-consistency</p>
 
 <p>가장 핵심적인 유틸로서, 서버가 죽었는지 살았는지를 체크하고 죽거나 문제가 생겼다면 자동으로 failover를 해주는 유틸</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>예제 - SHELL) mysqlfailover --master=root@localhost:3301 --slave=root@localhost:3302,root@localhost:3303 --candidates=root@localhost:3302 --daemon=start --pidfile=/tmp/mysqlFailover.pid --log=/tmp/mysqlFailover.log failover
-</code></pre></div></div>
+<div class="highlighter-rouge"><pre class="highlight"><code>예제 - SHELL) mysqlfailover --master=root@localhost:3301 --slave=root@localhost:3302,root@localhost:3303 --candidates=root@localhost:3302 --daemon=start --pidfile=/tmp/mysqlFailover.pid --log=/tmp/mysqlFailover.log failover
+</code></pre>
+</div>
 
 <p>http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlfailover.html</p>
 
@@ -235,8 +236,9 @@ enforce-gtid-consistency</p>
 
 <p>해당 유틸은 마스터의 계획된 작업으로 slave를 master로 승격시키거나, 이미 failover 된 master를 원래 상태로 원복하는 switchover 하는 유틸</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>예제 - SHELL) mysqlrpladmin --master=root@localhost:3302 --slave=root@localhost:3301,root@localhost:3303 --new-master=root@localhost:3301 --demote-master --rpl-user=rpl:rpl  switchover
-</code></pre></div></div>
+<div class="highlighter-rouge"><pre class="highlight"><code>예제 - SHELL) mysqlrpladmin --master=root@localhost:3302 --slave=root@localhost:3301,root@localhost:3303 --new-master=root@localhost:3301 --demote-master --rpl-user=rpl:rpl  switchover
+</code></pre>
+</div>
 
 <p>http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlrpladmin.html</p>
 
@@ -256,9 +258,10 @@ enforce-gtid-consistency</p>
 
 <p>mysql replication을 자동으로 만들어주는주는 유틸</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>예제 ) SHELL&gt; mysqlreplicate --master=root@localhost:3302 --slave=root@localhost:3301 --rpl-user=rpl:rpl
+<div class="highlighter-rouge"><pre class="highlight"><code>예제 ) SHELL&gt; mysqlreplicate --master=root@localhost:3302 --slave=root@localhost:3301 --rpl-user=rpl:rpl
 http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>--master master는 이렇게 접속해라!
@@ -275,7 +278,7 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
   <li>mysqlfailover 를 다음의 옵션으로 띄운다. –daemon, –pidfile=, –log options</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm_multi db]$ mysqlfailover --master=root@localhost:3301 --slave=root@localhost:3302,root@localhost:3303 --candidates=root@localhost:3302 --daemon=start --pidfile=/tmp/mysqlFailover.pid --log=/tmp/mysqlFailover.log failover
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm_multi db]$ mysqlfailover --master=root@localhost:3301 --slave=root@localhost:3302,root@localhost:3303 --candidates=root@localhost:3302 --daemon=start --pidfile=/tmp/mysqlFailover.pid --log=/tmp/mysqlFailover.log failover
     WARNING: Using a password on the command line interface can be insecure.
     NOTE: Log file '/tmp/mysqlFailover.log' does not exist. Will be created.
     Starting failover daemon...
@@ -291,13 +294,14 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     2014-12-18 08:28:48 AM INFO host: localhost, port: 3301, role: MASTER, state: UP, gtid_mode: ON, health: OK
     2014-12-18 08:28:48 AM INFO host: localhost, port: 3302, role: SLAVE, state: UP, gtid_mode: ON, health: OK
     2014-12-18 08:28:48 AM INFO host: localhost, port: 3303, role: SLAVE, state: UP, gtid_mode: ON, health: OK
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>기존에 쓰던 Master를 내리고 Failover 가 잘되는지 살펴보자!</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm_multi db]$  ./multi/5.6/bin/mysqladmin -uroot --socket=/tmp/multi1.sock  shutdown
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm_multi db]$  ./multi/5.6/bin/mysqladmin -uroot --socket=/tmp/multi1.sock  shutdown
     141218 08:29:56 mysqld_safe mysqld from pid file /data1/multi1/data/multi1.pid ended
 
     [mysql@testvm_multi db]$ tail -f /tmp/mysqlFailover.log
@@ -325,13 +329,14 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     2014-12-18 08:30:27 AM INFO Health Status:
     2014-12-18 08:30:27 AM INFO host: localhost, port: 3302, role: MASTER, state: UP, gtid_mode: ON, health: OK
     2014-12-18 08:30:27 AM INFO host: localhost, port: 3303, role: SLAVE, state: UP, gtid_mode: ON, health: OK
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>예전 master를 올리고 새로운 master로 replication을 붙이자!</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm_multi 5.6]$ ./bin/mysqld_safe --master-info-repository=TABLE --skip-name-resolve --log-slave-updates --gtid-mode=ON --enforce-gtid-consistency --datadir=/data1/multi1/data --log-error=mysql.err --port=3301 --socket=/tmp/multi1.sock --pid-file=multi1.pid --key_buffer_size=16M --max_allowed_packet=1M --table_open_cache=64 --sort_buffer_size=512K --net_buffer_length=8K --read_buffer_size=256K --read_rnd_buffer_size=512K --myisam_sort_buffer_size=8M --log-bin=mysql-bin --binlog_format=mixed --server-id=201 &amp;
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm_multi 5.6]$ ./bin/mysqld_safe --master-info-repository=TABLE --skip-name-resolve --log-slave-updates --gtid-mode=ON --enforce-gtid-consistency --datadir=/data1/multi1/data --log-error=mysql.err --port=3301 --socket=/tmp/multi1.sock --pid-file=multi1.pid --key_buffer_size=16M --max_allowed_packet=1M --table_open_cache=64 --sort_buffer_size=512K --net_buffer_length=8K --read_buffer_size=256K --read_rnd_buffer_size=512K --myisam_sort_buffer_size=8M --log-bin=mysql-bin --binlog_format=mixed --server-id=201 &amp;
     [1] 26964
 
     [mysql@testvm_multi 5.6]$ mysqlreplicate --master=root@localhost:3302 --slave=root@localhost:3301 --rpl-user=rpl:rpl
@@ -341,13 +346,14 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     # Checking for binary logging on master...
     # Setting up replication...
     # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <ul>
   <li>상태를 check해 보자!</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm_multi db]$  mysqlrpladmin --master=root@localhost:3302 --slave=root@localhost:3301,root@localhost:3303 --verbose health
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm_multi db]$  mysqlrpladmin --master=root@localhost:3302 --slave=root@localhost:3301,root@localhost:3303 --verbose health
     WARNING: Using a password on the command line interface can be insecure.
     # Checking privileges.
     # Attempting to contact localhost ... Success
@@ -363,14 +369,15 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     | localhost  | 3303  | SLAVE   | UP     | ON         | OK      | 5.6.19-log  | mysql-bin.000009  | 848             | Yes        | Yes         | 0            | No               | 0             |           | 0              |            | 0             |
     +------------+-------+---------+--------+------------+---------+-------------+-------------------+-----------------+------------+-------------+--------------+------------------+---------------+-----------+----------------+------------+---------------+
     # ...done.
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h2 id="4-failback-예제">4. Failback 예제</h2>
 <ul>
   <li>mysqlfailover 를 stop 시키자!</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [mysql@testvm_multi db]$ mysqlfailover --daemon=stop --pidfile=/tmp/mysqlFailover.pid
+<div class="highlighter-rouge"><pre class="highlight"><code>    [mysql@testvm_multi db]$ mysqlfailover --daemon=stop --pidfile=/tmp/mysqlFailover.pid
     Stopping failover daemon...
     예전에 쓰던 master로 다시 failback (switchover) 시키자!
     [mysql@testvm_multi 5.6]$  mysqlrpladmin --master=root@localhost:3302 --slave=root@localhost:3301,root@localhost:3303 --new-master=root@localhost:3301 --demote-master --rpl-user=rpl:rpl  switchover
@@ -428,14 +435,15 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     2014-12-18 08:40:34 AM INFO host: localhost, port: 3302, role: SLAVE, state: UP, gtid_mode: ON, health: OK
     2014-12-18 08:40:34 AM INFO host: localhost, port: 3303, role: SLAVE, state: UP, gtid_mode: ON, health: OK
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h2 id="5-번외-1-master가-failover-되었는데-만약-slave-중-하나가-적용하지-못한-log를-받아서-적용할-수-있을까">5. 번외 1 (master가 failover 되었는데…. 만약 slave 중 하나가 적용하지 못한 log를 받아서 적용할 수 있을까?)</h2>
 <ul>
   <li>GTID임으로 가능하다!</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    기본 세팅
+<div class="highlighter-rouge"><pre class="highlight"><code>    기본 세팅
     mysql_1&gt; insert into gtid_test values (1,'a'),(2,'b'),(3,'c');
     Query OK, 3 rows affected (0.03 sec)
     Records: 3  Duplicates: 0  Warnings: 0
@@ -570,7 +578,8 @@ http://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqlreplicate.html
     |    3 | z    |
     +------+------+
     3 rows in set (0.00 sec)
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h2 id="6-번외-2-master가-failover-될때-vip-같은것을-옮겨주는-script를-실행할-수-있을까">6. 번외 2 (master가 failover 될때, vip 같은것을 옮겨주는 script를 실행할 수 있을까?)</h2>
 <ul>
