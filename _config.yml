@@ -66,6 +66,6 @@ owner:
     plus:
     analytics: UA-56786998-2
     verify:
-    ad-client: ca-pub-2669792816970567
+    ad-client: 'ca-pub-2669792816970567'
     ad-slot:
   bing-verify:
