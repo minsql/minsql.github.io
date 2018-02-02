@@ -8,7 +8,7 @@ min_cho:
   avatar: makayal-photo.jpg
   facebook: makayal46
   google:
-    plus: makayal46
+    userid: 112306379734211499674
 
 
 min_kim:
@@ -18,4 +18,15 @@ min_kim:
   avatar: fabmichaela-photo.jpg
   facebook: fabmichaela
   google:
-    plus: fabmichaela
+    userid: 104178381400203630849
+    plus:
+
+min_kim2:
+  name: MIN KIM
+  email: fabmichaela@gmail.com
+  bio: "패뷸러스 김부인"
+  avatar: fabmichaela-photo.jpg
+  facebook: fabmichaela
+  google:
+    userid: 104178381400203630849
+    plus:

@@ -22,6 +22,7 @@ modified: 2014-08-08T19:44:38.564948-04:00
         	{% if author[1].twitter %}<a href="https://twitter.com/{{ author[1].twitter }}" title="{{ author[1].name}} on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>{% endif %}
         	{% if author[1].facebook %}<a href="https://facebook.com/{{ author[1].facebook }}" title="{{ author[1].name}} on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>{% endif %}
         	{% if author[1].google.plus %}<a href="https://plus.google.com/+{{ author[1].google.plus }}" title="{{ author[1].name}} on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>{% endif %}
+        	{% if author[1].google.userid %}<a href="https://plus.google.com/u/0{{ author[1].google.userid }}" title="{{ author[1].name}} on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>{% endif %}          
         	{% if author[1].linkedin %}<a href="https://linkedin.com/in/{{ author[1].linkedin }}" title="{{ author[1].name}} on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>{% endif %}
         	{% if author[1].stackexchange %}<a href="{{ author[1].stackexchange }}" title="{{ author[1].name}} on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>{% endif %}
         	{% if author[1].instagram %}<a href="https://instagram.com/{{ author[1].instagram }}" title="{{ author[1].name}} on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>{% endif %}
