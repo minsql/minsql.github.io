@@ -10,6 +10,7 @@ modified: 2014-08-08T19:44:38.564948-04:00
 <div class="author-columns">
 <ul>
     {% for author in site.data.authors %}
+  
     <li>
         <h3>{{ author[1].name  }}</h3>
         {% if author[1].avatar contains 'http' %}

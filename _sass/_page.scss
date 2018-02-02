@@ -438,12 +438,13 @@ th {
   }
 
 	li {
-		width: 300px;
-		display: inline-block;
 	  list-style-type: none;
-	}
-	li > a {
-		border-bottom: 1px
+		&:before {
+      content: "\2022";
+    }
+		a {
+			border-bottom: 0;
+		}
 	}
 	img {
    display: block;
