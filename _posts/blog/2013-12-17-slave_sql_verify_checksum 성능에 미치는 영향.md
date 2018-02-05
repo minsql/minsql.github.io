@@ -11,7 +11,6 @@ image:
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"
-ads: true
 ---
 
 # slave_sql_verify_checksum 성능에 미치는 영향
