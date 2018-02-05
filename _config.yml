@@ -47,6 +47,7 @@ plugins:
   - jekyll-feed
 # page ads
 pageads: true
+
 # Site owner
 owner:
   name: MINSQL
