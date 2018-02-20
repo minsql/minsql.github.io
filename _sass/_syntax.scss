@@ -60,6 +60,10 @@ figure.highlight {
   background-color: $base06;
 }
 .highlight {
+  a {
+    /* Name.Attribute */
+    color: $base0d;
+  }
   .c {
     /* Comment */
     color: $base04;

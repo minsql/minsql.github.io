@@ -11,7 +11,7 @@ url: http://minsql.com
 
 permalink:   /:categories/:title/
 markdown:    kramdown
-highlighter: rouge
+
 sass:
   sass_dir: _sass
   style: compressed
@@ -23,6 +23,7 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..2
   enable_coderay: false
+  syntax_highlighter: rouge
 
 mathjax: true
 comments: true
