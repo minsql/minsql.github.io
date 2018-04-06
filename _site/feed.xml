@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-03-30T15:06:22+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MySQL range partition VS range columns partition</title><link href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" rel="alternate" type="text/html" title="MySQL range partition VS range columns partition" /><published>2018-01-22T14:46:49+09:00</published><updated>2018-01-22T14:46:49+09:00</updated><id>http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition</id><content type="html" xml:base="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/">&lt;h1 id=&quot;mysql-range-partition-vs-range-columns-partition&quot;&gt;MySQL range partition VS range columns partition&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-06T14:34:52+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MTS considerations</title><link href="http://localhost:4000/blog/MTS-considerations/" rel="alternate" type="text/html" title="MTS considerations" /><published>2018-04-05T00:00:00+09:00</published><updated>2018-04-05T00:00:00+09:00</updated><id>http://localhost:4000/blog/MTS%20considerations</id><content type="html" xml:base="http://localhost:4000/blog/MTS-considerations/">&lt;h1 id=&quot;mts-considerations&quot;&gt;MTS considerations&lt;/h1&gt;
+&lt;p&gt;Multi-threaded slave(MTS)를 통해서 slave delay를 줄일수 있을까.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;→ YES. https://mysqlhighavailability.com/multi-threaded-replication-performance-in-mysql-5-7/&lt;/li&gt;
+  &lt;li&gt;실제로 slave delay가 발생하는 시스템에서 MTS on/off test결과 효과적인 것을 확인 할 수 있었다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mts-on-57-how-to-use&quot;&gt;MTS on 5.7 how to use&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stop slave sql_thread;
+set global SLAVE_PARALLEL_TYPE='LOGICAL_CLOCK';
+set global SLAVE_PARALLEL_WORKERS=8;
+start slave sql_thread;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;mts-known-issues&quot;&gt;MTS known issues&lt;/h2&gt;
+&lt;p&gt;서비스에서 사용하기 전에 지금 알려진 이슈가 있는지, 안정적인 버전이 어떤 것인지 확인해보자.&lt;/p&gt;
+
+&lt;h3 id=&quot;backup&quot;&gt;Backup&lt;/h3&gt;
+&lt;p&gt;Slave에서 backup을 수행하는 환경이라면, xtrabackup에는 제약이 있다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The –slave-info option requires GTID enabled for a multi-threaded slave.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;gtid-and-mts&quot;&gt;GTID and MTS&lt;/h3&gt;
+&lt;p&gt;GTID replication and parallel replication are independent&lt;/p&gt;
+
+&lt;h3 id=&quot;other-bugs&quot;&gt;Other Bugs&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;binlog_group_commit_sync_delay를 0이상으로 설정하는 경우, slave worker가 느려진다. (Bug #21420180)
+    &lt;ul&gt;
+      &lt;li&gt;→ Bug fixed in 5.7.18, set the binlog_group_commit_sync_delay to 0.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;LOGICAL_CLOCK에서 worker가 hang되는 현상. FK validation의 gap lock때문이다. READ COMMITTED에서도 lock문제가 발생한다. (Bug #25082593)
+    &lt;ul&gt;
+      &lt;li&gt;→ Bug fixed in 5.7.18, set the slave to use READ COMMITTED transaction isolation level. 슬레이브는 READ COMMITTED로 사용할 것.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;relay log 가 rotate 될때 Seconds_Behind_Master값이 부정확한 값으로 나온다.(Bug #23532304)
+    &lt;ul&gt;
+      &lt;li&gt;→  Bug fixed in 5.7.18&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Large packet size 에러. (Bug #21280753, Bug #77406)
+    &lt;ul&gt;
+      &lt;li&gt;→ Bug fixed in 5.7.19&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;for-safe-replication-suggest-configuration-as-follows&quot;&gt;For safe replication, suggest configuration as follows&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;transaction_isolation = READ-COMMITTED
+binlog_format = ROW
+binlog_group_commit_sync_delay = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MTS considerations Multi-threaded slave(MTS)를 통해서 slave delay를 줄일수 있을까. → YES. https://mysqlhighavailability.com/multi-threaded-replication-performance-in-mysql-5-7/ 실제로 slave delay가 발생하는 시스템에서 MTS on/off test결과 효과적인 것을 확인 할 수 있었다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL range partition VS range columns partition</title><link href="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/" rel="alternate" type="text/html" title="MySQL range partition VS range columns partition" /><published>2018-01-22T14:46:49+09:00</published><updated>2018-01-22T14:46:49+09:00</updated><id>http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition</id><content type="html" xml:base="http://localhost:4000/blog/mysql-range-partition-vs-range-columns-partition/">&lt;h1 id=&quot;mysql-range-partition-vs-range-columns-partition&quot;&gt;MySQL range partition VS range columns partition&lt;/h1&gt;
 
 &lt;p&gt;날짜를 이용하여 파티션시, range 를 사용할 것인가? range colums 를 사용할 것인가?&lt;/p&gt;
 
@@ -1987,219 +2042,4 @@ postgres=# select * from pg_stat_replication ;
 Time: 6.919 ms
 postgres=#
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">skip-name-resolve 와 unauthenticated user</title><link href="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/" rel="alternate" type="text/html" title="skip-name-resolve 와 unauthenticated user" /><published>2016-04-18T00:00:00+09:00</published><updated>2016-04-18T00:00:00+09:00</updated><id>http://localhost:4000/blog/skip-name-resolve%20%EC%99%80%20unauthenticated%20user</id><content type="html" xml:base="http://localhost:4000/blog/skip-name-resolve-%EC%99%80-unauthenticated-user/">&lt;h1 id=&quot;skip-name-resolve-와-unauthenticated-user&quot;&gt;skip-name-resolve 와 unauthenticated user&lt;/h1&gt;
-
-&lt;h2 id=&quot;문제발생&quot;&gt;문제발생&lt;/h2&gt;
-
-&lt;p&gt;MySQL 을 사용하다보면, DNS 서버가 응답을 하지 않음으로서 MySQL 이 커넥션을 빠르게 처리하지 못하고 show processlist 에 많은 수의 ‘unauthenticated user’ 가 발생할 수 있다. 이는 error log 에 아래와 같이 나타나며,&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
-[Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;porcesslist에는 다음과 같이 나타날 수 있다.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-| Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
-+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-| 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
-+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;원인&quot;&gt;원인&lt;/h2&gt;
-
-&lt;p&gt;MySQL 은 connection 에서 요청이 들어오면, DNS 를 확인하여 해당 host가 무엇인지를 확인한다. 비록 user 생성시에 hostname이 아닌 IP로 유저를 만들었다 할지라도 들어온 IP에 대해 look up을 하고 hostname 을 알아낸 다음 해당 정보를 다시 사용하거나 관리하기 위하여 performance_schema.host_cache 에 저장한다. 이 과정에서 DNS 서버가 문제가 생긴다면, hostname 을 알아오려는 문제때문에 접속시에 시간이 오래걸릴뿐 아니라 커넥션들이 쌓이며 문제가 발생할 수 있다. 만약 user를 단순히 IP 로서 지정하거나 IP 를 통해 접속을 한다면, skip-name-resolve 를 my.cnf 에 주어 오버헤드를 막을 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;문제-재현&quot;&gt;문제 재현&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:13:43&amp;gt; show global variables like 'skip_name_resolve';
-+-------------------+-------+
-| Variable_name     | Value |
-+-------------------+-------+
-| skip_name_resolve | OFF   |
-+-------------------+-------+
-1 row in set (0.01 sec)
-
-
-        [root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
-        Warning: Using a password on the command line interface can be insecure.
-        +---+
-        | 1 |
-        +---+
-        | 1 |
-        +---+
-
-        real    0m28.071s
-        user    0m0.006s
-        sys 0m0.013s
-        ^^^ 접속시 대략 30초 정도의 시간이 걸렸다. DNS 를 lookup 했지만, 현재 DNS가 빨리 응답을 못하고 있다.
-
-
-root@localhost:performance_schema 23:16:22&amp;gt; show processlist;
-+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-| Id  | User                 | Host                 | db                 | Command | Time | State | Info             |
-+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-| 151 | root                 | localhost            | performance_schema | Query   |    0 | init  | show processlist |
-| 160 | unauthenticated user | 192.168.74.202:52305 | NULL               | Connect | NULL | login | NULL             |
-+-----+----------------------+----------------------+--------------------+---------+------+-------+------------------+
-2 rows in set (0.00 sec)
-^^^ 해당 순간의 processlist 이다.
-
-
-root@localhost:performance_schema 23:18:58&amp;gt; select * from performance_schema.host_cacheG
-*************************** 1. row ***************************
-                                        IP: 192.168.74.202
-                                      HOST: NULL
-                            HOST_VALIDATED: NO
-                        SUM_CONNECT_ERRORS: 0
-                 COUNT_HOST_BLOCKED_ERRORS: 0
-           COUNT_NAMEINFO_TRANSIENT_ERRORS: 6
-           COUNT_NAMEINFO_PERMANENT_ERRORS: 0
-                       COUNT_FORMAT_ERRORS: 0
-           COUNT_ADDRINFO_TRANSIENT_ERRORS: 0
-           COUNT_ADDRINFO_PERMANENT_ERRORS: 0
-                       COUNT_FCRDNS_ERRORS: 0
-                     COUNT_HOST_ACL_ERRORS: 0
-               COUNT_NO_AUTH_PLUGIN_ERRORS: 0
-                  COUNT_AUTH_PLUGIN_ERRORS: 0
-                    COUNT_HANDSHAKE_ERRORS: 0
-                   COUNT_PROXY_USER_ERRORS: 0
-               COUNT_PROXY_USER_ACL_ERRORS: 0
-               COUNT_AUTHENTICATION_ERRORS: 0
-                          COUNT_SSL_ERRORS: 0
-         COUNT_MAX_USER_CONNECTIONS_ERRORS: 0
-COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
-             COUNT_DEFAULT_DATABASE_ERRORS: 0
-                 COUNT_INIT_CONNECT_ERRORS: 0
-                        COUNT_LOCAL_ERRORS: 0
-                      COUNT_UNKNOWN_ERRORS: 0
-                                FIRST_SEEN: 2016-04-14 21:37:38
-                                 LAST_SEEN: 2016-04-14 23:19:03
-                          FIRST_ERROR_SEEN: 2016-04-14 21:37:38
-                           LAST_ERROR_SEEN: 2016-04-14 23:19:03
-1 row in set (0.00 sec)
-^^^ host_cache 테이블에는 IP만 존재할 뿐 HOST는 NULL 로 되어있다. DNS로부터 HOST 값을 정확히 얻어내지 못했다. host_cache 에 HOST_VALIDATED 값이 NO 라면, 다음번 접속시에도 똑같이 느린 현상이 발생한다.
-만약 제대로 HOST 값이 저장된다면, 해당 테이블이 truncate 되기 전까지는 빠른 접속이 가능하다.
-    - https://dev.mysql.com/doc/refman/5.6/en/host-cache-table.html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Error log&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Warning] IP address '192.168.74.202' could not be resolved: Temporary failure in name resolution
-[Warning] IP address '192.168.74.202' could not be resolved: Name or service not known
-^^^ error log 에 다음과 같이 찍힐 수 있다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;해결방법&quot;&gt;해결방법&lt;/h2&gt;
-
-&lt;h4 id=&quot;1-hosts-파일에-추가&quot;&gt;1. hosts 파일에 추가&lt;/h4&gt;
-
-&lt;p&gt;만약 DNS에서 자주 문제가 생긴다면, /etc/hosts 에 해당 서버로 접속하는 서버들에 대해 host를 명시해 줄 수 있다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@testvm3 certs]# cat /etc/hosts
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-192.168.74.203  testvm3
-192.168.74.202  testvm2
-
-[root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
-Warning: Using a password on the command line interface can be insecure.
-+---+
-| 1 |
-+---+
-| 1 |
-+---+
-
-real    0m0.021s
-user    0m0.003s
-sys 0m0.009s
-^^^ DNS를 lookup 하기 전에 /etc/hosts 파일에서 해당 hostname을 가지고 오기 때문에 아주 빠르다.
-
-root@localhost:(none) 23:22:09&amp;gt; select * from performance_schema.host_cacheG
-*************************** 1. row ***************************
-                                        IP: 192.168.74.202
-                                      HOST: testvm2
-                            HOST_VALIDATED: YES
-                        SUM_CONNECT_ERRORS: 0
-                 COUNT_HOST_BLOCKED_ERRORS: 0
-           COUNT_NAMEINFO_TRANSIENT_ERRORS: 6
-           COUNT_NAMEINFO_PERMANENT_ERRORS: 0
-                       COUNT_FORMAT_ERRORS: 0
-           COUNT_ADDRINFO_TRANSIENT_ERRORS: 0
-           COUNT_ADDRINFO_PERMANENT_ERRORS: 0
-                       COUNT_FCRDNS_ERRORS: 0
-                     COUNT_HOST_ACL_ERRORS: 0
-               COUNT_NO_AUTH_PLUGIN_ERRORS: 0
-                  COUNT_AUTH_PLUGIN_ERRORS: 0
-                    COUNT_HANDSHAKE_ERRORS: 0
-                   COUNT_PROXY_USER_ERRORS: 0
-               COUNT_PROXY_USER_ACL_ERRORS: 0
-               COUNT_AUTHENTICATION_ERRORS: 0
-                          COUNT_SSL_ERRORS: 0
-         COUNT_MAX_USER_CONNECTIONS_ERRORS: 0
-COUNT_MAX_USER_CONNECTIONS_PER_HOUR_ERRORS: 0
-             COUNT_DEFAULT_DATABASE_ERRORS: 0
-                 COUNT_INIT_CONNECT_ERRORS: 0
-                        COUNT_LOCAL_ERRORS: 0
-                      COUNT_UNKNOWN_ERRORS: 0
-                                FIRST_SEEN: 2016-04-14 21:37:38
-                                 LAST_SEEN: 2016-04-14 23:22:01
-                          FIRST_ERROR_SEEN: 2016-04-14 21:37:38
-                           LAST_ERROR_SEEN: 2016-04-14 23:19:03
-1 row in set (0.00 sec)
-^^^ host_cache 의 HOST 에도 testvm2 라고 저장된다.
-
-
-root@localhost:(none) 23:22:36&amp;gt; show processlist;
-+-----+------+---------------+------+---------+------+-------+------------------+
-| Id  | User | Host          | db   | Command | Time | State | Info             |
-+-----+------+---------------+------+---------+------+-------+------------------+
-| 167 | root | localhost     | NULL | Query   |    0 | init  | show processlist |
-| 168 | au   | testvm2:52593 | NULL | Sleep   |    9 |       | NULL             |
-+-----+------+---------------+------+---------+------+-------+------------------+
-2 rows in set (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;2-mycnf-의-mysqld-섹션에-skip_name_resolve-를-추가하고-restart&quot;&gt;2. my.cnf 의 [mysqld] 섹션에 skip_name_resolve 를 추가하고 restart&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 23:24:56&amp;gt; show global variables like 'skip_name_resolve';
-+-------------------+-------+
-| Variable_name     | Value |
-+-------------------+-------+
-| skip_name_resolve | ON    |
-+-------------------+-------+
-1 row in set (0.02 sec)
-
-[root@testvm2 cert]# time /db/5.6/bin/mysql -uau -pau --host=&quot;192.168.74.203&quot; -e &quot;select 1&quot;
-Warning: Using a password on the command line interface can be insecure.
-+---+
-| 1 |
-+---+
-| 1 |
-+---+
-
-real    0m0.025s
-user    0m0.009s
-sys 0m0.010s
-^^^ hostname 을 알아오려는 시도를 하지 않기 때문에 빠르다.
-
-root@localhost:(none) 23:25:57&amp;gt; show processlist;
-+----+------+----------------------+------+---------+------+-------+------------------+
-| Id | User | Host                 | db   | Command | Time | State | Info             |
-+----+------+----------------------+------+---------+------+-------+------------------+
-|  1 | root | localhost            | NULL | Query   |    0 | init  | show processlist |
-| 26 | au   | 192.168.74.202:54301 | NULL | Sleep   |    4 |       | NULL             |
-+----+------+----------------------+------+---------+------+-------+------------------+
-2 rows in set (0.00 sec)
-^^^ 만약 접속하게 된다면, hostname 대신 192.168.74.202 가 나타나는것이 관찰된다.
-
-
-root@localhost:(none) 23:25:57&amp;gt; select * from performance_schema.host_cacheG
-Empty set (0.00 sec)
-^^^ 물론 host_cache 테이블에는 아무것도 존재하지 않는다.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">skip-name-resolve 와 unauthenticated user</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>
+&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry></feed>
