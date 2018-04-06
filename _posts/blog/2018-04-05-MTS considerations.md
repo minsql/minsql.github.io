@@ -16,6 +16,7 @@ toc_icon: "cog"
 
 # MTS considerations
 Multi-threaded slave(MTS)를 통해서 slave delay를 줄일수 있을까.
+
 -> YES. https://mysqlhighavailability.com/multi-threaded-replication-performance-in-mysql-5-7/
 실제로 slave delay가 발생하는 시스템에서 MTS on/off test결과 효과적인 것을 확인 할 수 있었다.
 
