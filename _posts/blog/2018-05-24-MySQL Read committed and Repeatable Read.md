@@ -15,10 +15,10 @@ toc_icon: "cog"
 
 
 # Read Committed vs. Repeatable Read
-MySQL의 Isolation level은 전통적으로 Repeatable Read 를 default로 한다.
-하지만 반드시 repeatable read가 필요한 경우에만 lock을 사용하고 그외에서는 committed 를 봐도 무방하다면, 다른 RDBMS와 같이 Read committed를 default Isolation level로 하는 건 어떨까.
-막연하게 Read Committed가 lock contention이 더 줄고, 동시성에 더 좋을 것 같다.
-그리고 Repeatable read 에서 long running query (혹은 슬프게도 transaction이 제대로 close되지 않아서)가 돌때 undo가 너무 많이 쌓여서 전체적으로 성능에 영향을 주는 상황도 회피할 수 있다.
+- MySQL의 Isolation level은 전통적으로 Repeatable Read 를 default로 한다.
+- 하지만 반드시 repeatable read가 필요한 경우에만 lock을 사용하고 그외에서는 committed 를 봐도 무방하다면, 다른 RDBMS와 같이 Read committed를 default Isolation level로 하는 건 어떨까.
+- 막연하게 Read Committed가 lock contention이 더 줄고, 동시성에 더 좋을 것 같다.
+- 그리고 Repeatable read 에서 long running query (혹은 슬프게도 transaction이 제대로 close되지 않아서)가 돌때 undo가 너무 많이 쌓여서 전체적으로 성능에 영향을 주는 상황도 회피할 수 있다.
 
 ## Sysbench test and Isolation level
 ![]({{site_url}}/uploads/repeatable-read and read-committed graph.png){:width="800px"}
@@ -50,6 +50,6 @@ commit;
   - Readview를 생성할때 mutex경합으로 인해 read-committed의 throughput이 줄어드는 것이다.
 
 ## Conclusion
-어디까지나 Max throughput의 문제이다.
-일반적으로 3k TPS까지 쓸것인가. repeatable read로 인한 문제점이 더 자주 노출될 수도 있다.
-결과는 언제나 그렇듯 당신의 서비스 트랜잭션에 맞게....
+- 어디까지나 Max throughput의 문제이다.
+- 일반적으로 3k TPS까지 쓸것인가. repeatable read로 인한 문제점이 더 자주 노출될 수도 있다.
+- 결과는 언제나 그렇듯 당신의 서비스 트랜잭션에 맞게....
