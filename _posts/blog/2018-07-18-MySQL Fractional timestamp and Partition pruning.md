@@ -58,9 +58,10 @@ PARTITION BY RANGE (unix_timestamp(created_at))
 PARTITION p20180701 VALUES LESS THAN (1533049200) ENGINE = InnoDB);
 
 ERROR 1491 (HY000): The PARTITION function returns the wrong type
-
 ```
+
 > 안된다..
+
 ### wrong type이라니, 확인해보자.
 ```
 root@localhost:test 15:19:25>select now(3),unix_timestamp(now(3));
@@ -70,13 +71,13 @@ root@localhost:test 15:19:25>select now(3),unix_timestamp(now(3));
 | 2018-07-18 15:19:32.469 |         1531894772.469 |
 +-------------------------+------------------------+
 1 row in set (0.00 sec)
-
 ```
 
 > 어떻게 하면 fractional timestamp기준으로 partitioning할 수 있을까.
 정답: 소수점 떼기, FLOOR!
 
 ### FLOOR(UNIX_TIMESTMP(your_partitioning_key))
+
 ```
 alter table atest
 PARTITION BY RANGE (floor(unix_timestamp(created_at)))
@@ -100,6 +101,7 @@ Create Table: CREATE TABLE `atest` (
 
 ## UNFORTUNATELY, Partition pruning is not working well
 ### try to range scan
+
 ```
 root@localhost:test 15:43:09>explain select * from atest where created_at between ('2018-06-01') and ('2018-06-10');
 +----+-------------+-------+---------------------+------+---------------+------+---------+------+------+----------+-------------+
@@ -118,8 +120,8 @@ root@localhost:test 15:43:13>explain select * from atest where created_at ='2018
 |  1 | SIMPLE      | atest | p20180601  | ALL  | NULL          | NULL | NULL    | NULL |    4 |    25.00 | Using where |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
 1 row in set, 1 warning (0.00 sec)
-
 ```
+
 > BUG 였음. FLOOR(decimal)의 partitioning expression으로 되어있지만, pruning에 제약이 있음.
 
 
