@@ -84,15 +84,7 @@ Read_Master_Log_Pos: 120881044
 - crash recovery를 진행한다.
 
 #### 7. check data
-<table class="relative-table wrapped confluenceTable"><colgroup> <col /> <col /> <col /></colgroup>
-<tbody>
-<tr>
-<th>@old master</th>
-<th>@new master</th>
-<th>@slave</th>
-</tr>
-<tr>
-<td>
+@old master
 ```
 root@localhost:(none) 12:15:14>select max(id) from sbtest.sbtest1;
 +---------+
@@ -110,8 +102,7 @@ root@localhost:(none) 12:15:20>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.04 sec)
 ```
-</td>
-<td>
+@new master
 ```
 root@localhost:(none) 12:13:27>select max(id) from sbtest.sbtest1;
 +---------+
@@ -130,8 +121,7 @@ root@localhost:(none) 12:13:22>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.04 sec)
 ```
-</td>
-<td>
+@slave
 ```
 root@localhost:(none) 12:13:29>select max(id) from sbtest.sbtest1;
 +---------+
@@ -150,9 +140,7 @@ root@localhost:(none) 12:13:08>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.04 sec)
 ```
-</td>
-</tr>
-</table>
+
 
 #### 8. client log check
 
@@ -233,16 +221,8 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
 #### 9. what happen next?
 * 이상태에서 old master를 그대로 붙이면?
   - master-standby master 서로 master로 바라보는 구성이라면, new master만 old master의 binlog를 읽을 수 있게 되기때문에 데이터가 깨진다.
-
-<table>
-<tbody>
-<tr>
-<th>@old master</th>
-<th>@new master</th>
-<th>@slave</th>
-</tr>
-<tr>
-<td>
+  
+@old master
 ```
 root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
     -> ;
@@ -253,9 +233,8 @@ root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
 +----------+
 1 row in set (0.05 sec)
 ```
-</td><td>
+@new Master_Bind
 ```
-new master
 root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
     -> ;
 +----------+
@@ -264,8 +243,8 @@ root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
 |   225605 |
 +----------+
 ```
-</td><td>
-**slave는 데이터를 잃게됨.**
+@slaves
+* **slave는 데이터를 잃게됨.**
 ```
 root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
     -> ;
@@ -276,10 +255,6 @@ root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
 +----------+
 1 row in set (0.04 sec)
 ```
-</td>
-</tr>
-</tbody>
-</table>
 
 - 심지어 new master가 service-in이 먼저 되었다면, dup이 나게됨.
 
@@ -322,15 +297,8 @@ Read_Master_Log_Pos: 118952543
 - crash recovery를 진행한다.
 
 #### 7. check data
-<table>
-<tbody>
-<tr>
-<th>@old master</th>
-<th>@new master</th>
-<th>@slave</th>
-</tr>
-<tr>
-<td>
+
+@old master
 ```
 root@localhost:(none) 13:47:20>select count(1) from sbtest.sbtest1;
 +----------+
@@ -340,8 +308,7 @@ root@localhost:(none) 13:47:20>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.05 sec)
 ```
-</td>
-<td>
+@new master
 ```
 root@localhost:(none) 13:46:14>select count(1) from sbtest.sbtest1;
 +----------+
@@ -351,8 +318,8 @@ root@localhost:(none) 13:46:14>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.04 sec)
 ```
-</td>
-<td>
+
+@slave
 ```
 root@localhost:(none) 13:46:28>select count(1) from sbtest.sbtest1;
 +----------+
@@ -362,10 +329,7 @@ root@localhost:(none) 13:46:28>select count(1) from sbtest.sbtest1;
 +----------+
 1 row in set (0.05 sec)
 ```
-</td>
-</tr>
-</tbody>
-</table>
+
 
 - xa recovery없이 innodb crash recovery만 진행한다면 binlog를 이미 받아간 slave가 더 많은 데이터를 가진다.
 
