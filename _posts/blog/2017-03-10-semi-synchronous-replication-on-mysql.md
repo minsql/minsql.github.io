@@ -196,5 +196,9 @@ AFTER_SYNC(By default on MySQL 5.7.2)</th>
     * InnoDB commit되기전, binlog에만 써진 변경사항이 존재할 수 있다.
   * The last binary log recovery.
     * 마지막 binary log를 연다.
-    * `Format_description` event를 확인하여 `binlog-in-use` flag 가 설정되었다면, binlog가 제대로 쓰여졌다는 것을 의미한다. 그 Xid들에 대해서는 recovery해준다.
-    * binlog-in-use=0 이라면 제대로 쓰고 닫힌 것으로 볼수 없으므로  truncate한다.
+    * `Format_description` event를 확인하여 `binlog-in-use` flag 를 확인한다. binlog를 쓰기 시작할때 binlog-in-use flag가 설정되고, 닫을 때 clear한다.
+    * binlog-in-use가 설정되어있다면 server crash가 일어난 것을 의미하며, 이 경우 XA recovery가 필요하다.
+    * binary log에 쓰인 모든 Xid 를 읽는다.
+    * 각 storage engine(InnoDB) prepare되었는데 commit이 안된 xid 이벤트는 commit한다.
+    * storage engine(InnoDB)에 prepare되었는데, binlog xid list에 없었다면, binary log를 쓰지 못하고 crash된 것이기 때문에 rollback된다.
+    
