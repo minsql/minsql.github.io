@@ -233,17 +233,36 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
 #### 9. what happen next?
 * 이상태에서 old master를 그대로 붙이면?
   - master-standby master 서로 master로 바라보는 구성이라면, new master만 old master의 binlog를 읽을 수 있게 되기때문에
-  <table>
-  <tbody>
-  <tr>
-  <th>@old master</th>
-  <th>@new master</th>
-  <th>@slave</th>
-  </tr>
-  <tr>  
-  </tr>
-  </tbody>
-  </table>
+@old master|@new master|@slave
+--- | --- | ---
+```
+root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
+    -> ;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+1 row in set (0.05 sec)
+``` | ```
+root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
+    -> ;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+1 row in set (0.05 sec)
+``` | ```
+root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
+    -> ;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+1 row in set (0.05 sec)
+``` |
 
 <table>
 <tbody>
