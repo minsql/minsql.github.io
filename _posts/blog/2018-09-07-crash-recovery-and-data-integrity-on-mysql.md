@@ -215,6 +215,7 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
 
 
 * which data is correct?
+
 ![crash_recovery_data1](../../uploads/crash_recovery_data1.png)
 - client가 fail을 받은 데이터도 이미 slave에 존재한다. 어디까지 commit 으로 봐야하는 것일까? 이를 염두해두고 retry해야할 것 같다.
 
@@ -386,6 +387,7 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
 
 
 * which data is correct?
+
 ![crash_recovery_data2](../../uploads/crash_recovery_data2.png)
 
 
