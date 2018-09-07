@@ -286,8 +286,8 @@ Read_Master_Log_Pos: 118952543
 
 #### 5. Failover to new master
 - new master는 read master log position까지 모두 execute하고, new master가 되었다. 다른 slave 는 이제 change master to new master했다.
-```Seconds_Behind_Master: NULL``` 을 확인한다.
-- 상태를 확인하기 위해서 ```stop slave;```
+  - ```Read_Master_Log_Pos = Exec_Master_Log_Pos```과 ```Seconds_Behind_Master: NULL``` 을 확인한다.
+  - 이시점의 상태를 확인하기 위해서 ```stop slave;```
 
 #### 6. old master recovery
 @old master
