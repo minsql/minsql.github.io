@@ -264,52 +264,6 @@ root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
 1 row in set (0.05 sec)
 ``` |
 
-<table>
-<tbody>
-<tr>
-<th>@old master</th>
-<th>@new master</th>
-<th>@slave</th>
-</tr>
-<tr>
-<td>
-```
-root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
-    -> ;
-+----------+
-| count(1) |
-+----------+
-|   225605 |
-+----------+
-1 row in set (0.05 sec)
-```
-</td><td>
-```
-new master
-root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
-    -> ;
-+----------+
-| count(1) |
-+----------+
-|   225605 |
-+----------+
-```
-</td><td>
-**slave는 데이터를 잃게됨.**
-```
-root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
-    -> ;
-+----------+
-| count(1) |
-+----------+
-|   225591 |
-+----------+
-1 row in set (0.04 sec)
-```
-</td>
-</tr>
-</tbody>
-</table>
 
 - 심지어 new master가 service-in이 먼저 되었다면, dup이 나게됨.
 
@@ -352,50 +306,7 @@ Read_Master_Log_Pos: 118952543
 - crash recovery를 진행한다.
 
 #### 7. check data
-<table>
-<tbody>
-<tr>
-<th>@old master</th>
-<th>@new master</th>
-<th>@slave</th>
-</tr>
-<tr>
-<td>
-```
-root@localhost:(none) 13:47:20>select count(1) from sbtest.sbtest1;
-+----------+
-| count(1) |
-+----------+
-|   229209 |
-+----------+
-1 row in set (0.05 sec)
-```
-</td>
-<td>
-```
-root@localhost:(none) 13:46:14>select count(1) from sbtest.sbtest1;
-+----------+
-| count(1) |
-+----------+
-|   229222 |
-+----------+
-1 row in set (0.04 sec)
-```
-</td>
-<td>
-```
-root@localhost:(none) 13:46:28>select count(1) from sbtest.sbtest1;
-+----------+
-| count(1) |
-+----------+
-|   229222 |
-+----------+
-1 row in set (0.05 sec)
-```
-</td>
-</tr>
-</tbody>
-</table>
+
 
 - xa recovery없이 innodb crash recovery만 진행한다면 binlog를 이미 받아간 slave가 더 많은 데이터를 가진다.
 
