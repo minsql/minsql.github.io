@@ -234,7 +234,7 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
 * 이상태에서 old master를 그대로 붙이면?
   - master-standby master 서로 master로 바라보는 구성이라면, new master만 old master의 binlog를 읽을 수 있게 되기때문에
 
-<table class="relative-table wrapped confluenceTable"><colgroup> <col /> <col /> <col /></colgroup>
+<table>
 <tbody>
 <tr>
 <th>@old master</th>
@@ -278,6 +278,7 @@ root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
 ```
 </td>
 </tr>
+</tbody>
 </table>
 
 - 심지어 new master가 service-in이 먼저 되었다면, dup이 나게됨.
@@ -321,7 +322,7 @@ Read_Master_Log_Pos: 118952543
 - crash recovery를 진행한다.
 
 #### 7. check data
-<table class="relative-table wrapped confluenceTable"><colgroup> <col /> <col /> <col /></colgroup>
+<table>
 <tbody>
 <tr>
 <th>@old master</th>
@@ -363,6 +364,7 @@ root@localhost:(none) 13:46:28>select count(1) from sbtest.sbtest1;
 ```
 </td>
 </tr>
+</tbody>
 </table>
 
 - xa recovery없이 innodb crash recovery만 진행한다면 binlog를 이미 받아간 slave가 더 많은 데이터를 가진다.
