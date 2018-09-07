@@ -1,5 +1,5 @@
 ---
-title: crash recovery and data integrity on MySQL
+title: Crash recovery and Data integrity on MySQL
 author: min_kim
 created: 2017/03/10 05:53:18
 modified:
