@@ -244,8 +244,7 @@ root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
 |   225605 |
 +----------+
 ```
-@slaves
-* **slave는 데이터를 잃게됨.**
+@slave
 ```
 root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
     -> ;
@@ -256,7 +255,7 @@ root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
 +----------+
 1 row in set (0.04 sec)
 ```
-
+- **slave는 데이터를 잃게됨.**
 - 심지어 new master가 service-in이 먼저 되었다면, dup이 나게됨.
 
 
