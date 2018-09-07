@@ -19,7 +19,7 @@ toc_icon: "cog"
 ## Extra data on recovered master
 https://www.percona.com/community-blog/2018/08/23/question-about-semi-synchronous-replication-answer-with-all-the-details/
 > 매우 주의깊에 읽어보아야한다. 이건 semi-sync뿐만이 아니라 일반 replication구조에서도 일어나는 일이다. 
-crash recovery 할때 mysql 은 innodb redo log랑 binary log 모두를 확인해서 recovery 해준다. 이때 slave가 읽어가지 못한 event가 mysql binary log에만 쓰여있었다면, 이것까지 다 recovery 한다. 즉 recovered master 가 slave보다 데이터가 더 많다. 이게 얼마나 심각한 것인지 replication을 사용하는 사용자라면 반드시 확인해야한다.
+crash recovery 할때 mysql 은 innodb redo log랑 binary log 모두를 확인해서 recovery 해준다. 이때 slave가 읽어가지 못한 event가 mysql binary log에만 쓰여있었다면, 이것까지 다 recovery 한다. 즉, recovered master 가 slave보다 데이터가 더 많다. 이것이 어떤 영향이 있는지는 replication을 사용하는 사용자라면 반드시 확인해야한다.
 
 
 ## Storage engine commit and binlog commit
