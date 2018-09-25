@@ -8,6 +8,8 @@ image:
   feature:
 search_omit: true
 sitemap: false
+tipue_search_active: true
+exclude_from_search: true
 ---
   
 <!-- Search form -->
@@ -29,3 +31,4 @@ sitemap: false
     <a href="##Url##">##Title## <span class="excerpt">##Excerpt##</span></a>
   </article></li>
 </script>
+

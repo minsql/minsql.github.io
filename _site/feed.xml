@@ -1,4 +1,717 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-06T14:34:52+09:00</updated><id>http://localhost:4000/</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">MTS considerations</title><link href="http://localhost:4000/blog/MTS-considerations/" rel="alternate" type="text/html" title="MTS considerations" /><published>2018-04-05T00:00:00+09:00</published><updated>2018-04-05T00:00:00+09:00</updated><id>http://localhost:4000/blog/MTS%20considerations</id><content type="html" xml:base="http://localhost:4000/blog/MTS-considerations/">&lt;h1 id=&quot;mts-considerations&quot;&gt;MTS considerations&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-25T12:55:04+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">MINSQL</title><subtitle>밥먹고 살기 힘든 부부 DBA</subtitle><entry><title type="html">Crash recovery and Data integrity on MySQL</title><link href="http://localhost:4000/blog/crash-recovery-and-data-integrity-on-mysql/" rel="alternate" type="text/html" title="Crash recovery and Data integrity on MySQL" /><published>2018-09-07T00:00:00+09:00</published><updated>2018-09-07T00:00:00+09:00</updated><id>http://localhost:4000/blog/crash-recovery-and-data-integrity-on-mysql</id><content type="html" xml:base="http://localhost:4000/blog/crash-recovery-and-data-integrity-on-mysql/">&lt;h1 id=&quot;crash-recovery-on-mysql&quot;&gt;Crash recovery on MySQL&lt;/h1&gt;
+
+&lt;h2 id=&quot;extra-data-on-recovered-master&quot;&gt;Extra data on recovered master&lt;/h2&gt;
+&lt;p&gt;https://www.percona.com/community-blog/2018/08/23/question-about-semi-synchronous-replication-answer-with-all-the-details/&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;매우 주의깊에 읽어보아야한다. 이건 semi-sync뿐만이 아니라 일반 replication구조에서도 일어나는 일이다. 
+crash recovery 할때 mysql 은 innodb redo log랑 binary log 모두를 확인해서 recovery 해준다. 이때 slave가 읽어가지 못한 event가 mysql binary log에만 쓰여있었다면, 이것까지 다 recovery 한다. 즉, recovered master 가 slave보다 데이터가 더 많다. 이것이 어떤 영향이 있는지는 replication을 사용하는 사용자라면 반드시 확인해야한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;storage-engine-commit-and-binlog-commit&quot;&gt;Storage engine commit and binlog commit&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;5.7.10이후, innodb_support_xa = 1로 무조건 활성화이다. 이 옵션은 binary_log와, redo_log 를 2 phase commit하도록 해주는데, binary log group commit을 지원하면서 무조건 활성화가 되었다. 비활성화자체가 막혀있다.
+    &lt;ul&gt;
+      &lt;li&gt;참조 : http://minsql.com/blog/semi-synchronous-replication-on-mysql/#distributed-transaction-processing-using-xa&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;정리하면, mysql commit의 process는 다음과 같다.
+    &lt;ol&gt;
+      &lt;li&gt;Innodb prepare&lt;/li&gt;
+      &lt;li&gt;Binlog commit&lt;/li&gt;
+      &lt;li&gt;InnoDB commit&lt;/li&gt;
+      &lt;li&gt;Commit return&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;crash recovery 는 XA recovery를 포함한다. 즉, redo log, binary log 모두를 읽어서 최대한 rollforward시키고, rollback한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;관련-다른-parameters&quot;&gt;관련 다른 parameters&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;innodb_flush_log_at_trx_commit : 설정에 따라서 redo log를 fsync 한다.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;sync_binlog : 설정에 따라서 binlog를 fsync한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;두 파라메터에 따라서 event가 redo, binlog file에 있거나 없거나 할수 있다. 더 복잡하니까 여기서 모두 1로 설정했다고 가정해보자. (실제 default값이기도 하니)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;do-some-test1&quot;&gt;Do some test1&lt;/h3&gt;
+&lt;h4 id=&quot;1-load-generator--sysbench-num-threads100-insertlua-1개-테이블에-인서트를-미친듯이-하는-부하를-만들자&quot;&gt;1. Load generator : sysbench, num-threads=100, insert.lua 1개 테이블에 인서트를 미친듯이 하는 부하를 만들자.&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sysbench --mysql-user=sbtest --mysql-password=sbtest --mysql-db=sbtest --mysql-host=host1 --mysql-port=3306 --mysql-socket=/tmp/mysql.sock --oltp-table-name=sbtest --oltp-tables-count=1 --test='/usr/share/doc/sysbench/tests/db/insert.lua' --num-threads=100 --max-time=600 --max-requests=0 --report-interval=10 run &amp;gt; sysbench.out &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;2-kill-your-master&quot;&gt;2. kill your master&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -9 $(pid_of_mysql)&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;3-check-binlog&quot;&gt;3. check binlog&lt;/h4&gt;
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-rw-r-----  1 mysql dba  120891584 Sep  7 12:23 binary_log.000001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@new master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Master_Log_File: binary_log.000001
+Read_Master_Log_Pos: 120881044
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@Slave&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Master_Log_File: binary_log.000001
+Read_Master_Log_Pos: 120881044
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;-&amp;gt; crashed old master 에 120891584 썼는데, slaves는 120881044까지만 읽었다.&lt;/p&gt;
+
+&lt;h4 id=&quot;4-case-1--disk-fault가-아니라서-binlog를-살렸다고-가정하자&quot;&gt;4. Case 1 : Disk fault가 아니라서 binlog를 살렸다고 가정하자.&lt;/h4&gt;
+
+&lt;h4 id=&quot;5-failover-to-new-master&quot;&gt;5. Failover to new master&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;new master는 read master log position까지 모두 execute하고, new master가 되었다. 다른 slave 는 이제 change master to new master했다.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Seconds_Behind_Master: NULL&lt;/code&gt; 을 확인한다.&lt;/li&gt;
+  &lt;li&gt;상태를 확인하기 위해서 &lt;code class=&quot;highlighter-rouge&quot;&gt;stop slave;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;6-old-master-recovery&quot;&gt;6. old master recovery&lt;/h4&gt;
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;mysql start&lt;/li&gt;
+  &lt;li&gt;crash recovery를 진행한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;7-check-data&quot;&gt;7. check data&lt;/h4&gt;
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:15:14&amp;gt;select max(id) from sbtest.sbtest1;
++---------+
+| max(id) |
++---------+
+|  225605 |
++---------+
+1 row in set (0.00 sec)
+
+root@localhost:(none) 12:15:20&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+1 row in set (0.04 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;@new master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:13:27&amp;gt;select max(id) from sbtest.sbtest1;
++---------+
+| max(id) |
++---------+
+|  225591 |
++---------+
+1 row in set (0.00 sec)
+
+
+root@localhost:(none) 12:13:22&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   225591 |
++----------+
+1 row in set (0.04 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;@slave&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:13:29&amp;gt;select max(id) from sbtest.sbtest1;
++---------+
+| max(id) |
++---------+
+|  225591 |
++---------+
+1 row in set (0.00 sec)
+
+
+root@localhost:(none) 12:13:08&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   225591 |
++----------+
+1 row in set (0.04 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;8-client-log-check&quot;&gt;8. client log check&lt;/h4&gt;
+
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:15:24&amp;gt;select * from sbtest.sbtest1 order by id desc limit 1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 225605 | 4957 | 79888982258-61333436979-80792591123-92607263374-50040800467-73148416263-58685905075-76204100553-62710261379-83642825584 | 82186729862-84739608722-43812298929-12190970088-77403548167 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+root@localhost:(none) 12:16:06&amp;gt;select * from sbtest.sbtest1 order by id desc limit 14,1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 225591 | 5035 | 83125079753-76845493068-07999607293-02239216888-35640473802-91341354975-57883153786-83817135971-70529862698-88205345062 | 31394025583-27745092928-31936443034-19236847994-74971533578 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@new master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:14:48&amp;gt;select * from sbtest.sbtest1 order by id desc limit 1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 225591 | 5035 | 83125079753-76845493068-07999607293-02239216888-35640473802-91341354975-57883153786-83817135971-70529862698-88205345062 | 31394025583-27745092928-31936443034-19236847994-74971533578 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@client&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat sysbench_2.out | grep  79888982258-6
+ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUES (0, 4957, '79888982258-61333436979-80792591123-92607263374-50040800467-73148416263-58685905075-76204100553-62710261379-83642825584', '82186729862-84739608722-43812298929-12190970088-77403548167')`:
+
+# cat sysbench_2.out | grep  83125079753-7
+ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUES (0, 5035, '83125079753-76845493068-07999607293-02239216888-35640473802-91341354975-57883153786-83817135971-70529862698-88205345062', '31394025583-27745092928-31936443034-19236847994-74971533578')`:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;-&amp;gt; semisync, slave 에 들어간데이터이지만 클라이언트는 fail을 받았음&lt;/p&gt;
+
+&lt;p&gt;@ old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:19:20&amp;gt;select * from sbtest.sbtest1 order by id desc limit 81,1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 225524 | 5042 | 19722710887-41825524483-02611698822-07466480779-06500555688-30200956896-61619612159-87044566968-90038382663-22637007087 | 09802447442-78333893251-51199296003-01335745442-88653326619 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+root@localhost:(none) 12:19:29&amp;gt;select * from sbtest.sbtest1 order by id desc limit 82,1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 225523 | 4999 | 88830428108-21244349412-30076967478-44105296476-54457874100-32901524878-27481376778-84719973276-31930124008-75583547021 | 38444850712-91591550394-45494076064-29120744229-79922105662 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@client&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat sysbench.out | grep  19722710887
+ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUES (0, 5042, '19722710887-41825524483-02611698822-07466480779-06500555688-30200956896-61619612159-87044566968-90038382663-22637007087', '09802447442-78333893251-51199296003-01335745442-88653326619')`:
+# cat sysbench.out | grep  88830428108-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;-&amp;gt; 81건은 클라이언트가 fail했는데 존재하는 된 데이터임&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;which data is correct?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../uploads/crash_recovery_data1.png&quot; alt=&quot;crash_recovery_data1&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;client가 fail을 받은 데이터도 이미 slave에 존재한다. 어디까지 commit 으로 봐야하는 것일까? 이를 염두해두고 retry해야할 것 같다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;9-what-happen-next&quot;&gt;9. what happen next?&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;이상태에서 old master를 그대로 붙이면?
+    &lt;ul&gt;
+      &lt;li&gt;master-standby master 서로 master로 바라보는 구성이라면, new master만 old master의 binlog를 읽을 수 있게 되기때문에 데이터가 깨진다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:21:35&amp;gt; select count(1) from sbtest.sbtest1
+    -&amp;gt; ;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+1 row in set (0.05 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;@new Master_Bind&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:21:36&amp;gt;select count(1) from sbtest.sbtest1
+    -&amp;gt; ;
++----------+
+| count(1) |
++----------+
+|   225605 |
++----------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;@slave&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 12:21:36&amp;gt;select count(1) from sbtest.sbtest1
+    -&amp;gt; ;
++----------+
+| count(1) |
++----------+
+|   225591 |
++----------+
+1 row in set (0.04 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;slave는 데이터를 잃게됨.&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;심지어 new master가 service-in이 먼저 되었다면, dup이 나게됨.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;do-some-test1-1&quot;&gt;Do some test1&lt;/h3&gt;
+&lt;h4 id=&quot;1-load-generator--same-as-above&quot;&gt;1. Load generator : same as above&lt;/h4&gt;
+&lt;h4 id=&quot;2-kill-your-master--same-as-above&quot;&gt;2. kill your master : same as above&lt;/h4&gt;
+&lt;h4 id=&quot;3-check-binlog-1&quot;&gt;3. check binlog&lt;/h4&gt;
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-rw-r-----  1 mysql dba  118960128 Sep  7 12:12 binary_log.000080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@new master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Master_Log_File: binary_log.000080
+Read_Master_Log_Pos: 118952543
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@Slave&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Master_Log_File: binary_log.000080
+Read_Master_Log_Pos: 118952543
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;-&amp;gt; crashed old master 에 118960128까지 썼는데, slaves는 118952543까지만 읽었다.&lt;/p&gt;
+
+&lt;h4 id=&quot;4-case-2--disk-fault로-binlog가-더이상-fsync되지-않았거나-binary-log-file-을-loss한-상황을-가정하자&quot;&gt;4. Case 2 : Disk fault로 binlog가 더이상 fsync되지 않았거나, binary log file 을 loss한 상황을 가정하자.&lt;/h4&gt;
+
+&lt;h4 id=&quot;5-failover-to-new-master-1&quot;&gt;5. Failover to new master&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;new master는 read master log position까지 모두 execute하고, new master가 되었다. 다른 slave 는 이제 change master to new master했다.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Read_Master_Log_Pos = Exec_Master_Log_Pos&lt;/code&gt;과 &lt;code class=&quot;highlighter-rouge&quot;&gt;Seconds_Behind_Master: NULL&lt;/code&gt; 을 확인한다.&lt;/li&gt;
+      &lt;li&gt;이시점의 상태를 확인하기 위해서 &lt;code class=&quot;highlighter-rouge&quot;&gt;stop slave;&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;6-old-master-recovery-1&quot;&gt;6. old master recovery&lt;/h4&gt;
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;old master의 binlog를 지우고,
+&lt;code class=&quot;highlighter-rouge&quot;&gt;# mv binary_log.* /tmp&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;mysql start&lt;/li&gt;
+  &lt;li&gt;crash recovery를 진행한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;7-check-data-1&quot;&gt;7. check data&lt;/h4&gt;
+
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 13:47:20&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   229209 |
++----------+
+1 row in set (0.05 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;@new master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 13:46:14&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   229222 |
++----------+
+1 row in set (0.04 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@slave&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 13:46:28&amp;gt;select count(1) from sbtest.sbtest1;
++----------+
+| count(1) |
++----------+
+|   229222 |
++----------+
+1 row in set (0.05 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;xa recovery없이 innodb crash recovery만 진행한다면 binlog를 이미 받아간 slave가 더 많은 데이터를 가진다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;8-client-log-check-1&quot;&gt;8. client log check&lt;/h4&gt;
+
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 13:47:30&amp;gt;select * from sbtest.sbtest1 order by id desc limit 1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 229209 | 4977 | 52525542740-05883112138-31077642195-30054907937-74064462099-00624225210-35448309266-20632804320-25010658277-64451131942 | 17224000256-29616103547-98113363624-95788647627-13387357230 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@client&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat sysbench.out
+| grep 52525542740
+ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUES (0, 4977, '52525542740-05883112138-31077642195-30054907937-74064462099-00624225210-35448309266-20632804320-25010658277-64451131942', '17224000256-29616103547-98113363624-95788647627-13387357230')`:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@old master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 13:49:48&amp;gt;select * from sbtest.sbtest1 order by id desc limit 63,1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 229146 | 4970 | 48816247772-28840252430-30124535351-86953376118-43261578464-07669086776-76606208916-35289918736-10147949924-75820442447 | 64065821923-83179322010-08568364668-73745057832-25089710423 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+root@localhost:(none) 13:49:08&amp;gt;select * from sbtest.sbtest1 order by id desc limit 64,1;
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| id     | k    | c                                                                                                                       | pad                                                         |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+| 229145 | 4094 | 65666863675-30753985605-04616122135-38522455755-59504944319-44228740748-05905600041-71299214749-25530614096-46064840095 | 24274878022-13012603299-64736092749-48519901391-20055400636 |
++--------+------+-------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;@client&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat sysbench.out | grep 48816247772-
+ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUES (0, 4970, '48816247772-28840252430-30124535351-86953376118-43261578464-07669086776-76606208916-35289918736-10147949924-75820442447', '64065821923-83179322010-08568364668-73745057832-25089710423')`:
+# cat sysbench_2_a.out | grep 65666863675-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;63건은 client 가 fail을 받은 건이다.&lt;/li&gt;
+  &lt;li&gt;여전히 client가 commit을 받지 않은 데이터가 들어갈 수 있다.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;user commit return 보다 engine commit이 먼저니까..&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;which data is correct?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../uploads/crash_recovery_data2.png&quot; alt=&quot;crash_recovery_data2&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;다시한번-복습&quot;&gt;다시한번 복습&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;innodb 2 phase commit
+    &lt;ol&gt;
+      &lt;li&gt;engine prepare&lt;/li&gt;
+      &lt;li&gt;binlog commit&lt;/li&gt;
+      &lt;li&gt;engine commit&lt;/li&gt;
+      &lt;li&gt;commit return&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;crash날때, 2-3 사이, 3-4 사이에 있던 transaction은 client가 commit을 제대로 받지 못했는데, DB에 존재하게된다.&lt;/li&gt;
+  &lt;li&gt;이를 이해하지 못하거나, 무시하고 replication 구성을 사용한다면, 나중에 데이터가 깨져도 모른다…
+    &lt;ul&gt;
+      &lt;li&gt;HA 구성을 사용하는 환경에서 slave 중 하나를 master 로 failover시켜서 서비스한다고 해보자.
+        &lt;ul&gt;
+          &lt;li&gt;crashed old master 를 복구시켰는데 여기에 지금의 master에는 없는 데이터가 있다는 의미다.&lt;/li&gt;
+          &lt;li&gt;recovered master를 그대로 new master의 slave 로 붙이면 데이터가 dup날 것이다.&lt;/li&gt;
+          &lt;li&gt;안나면 더 심각하다. 그냥 데이터가 틀어져버린다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;여기에 master-standby master의 구성으로 recovered master의 데이터를 new master가 다시 복제해갔다고 생각해보자.
+        &lt;ul&gt;
+          &lt;li&gt;두대 구성이면 recovered data까지 복구된채로 서비스할 수도 있다.&lt;/li&gt;
+          &lt;li&gt;하지만 다른 slaves 들이 있다면? 다른 slaves는 이 데이터를 가져갈 수가 없다. 점점 더 데이터는 틀어질 것이다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HA solution 에 따라서 복구에 따른 대응방안을 다시한번 생각해봐야할 때이다.&lt;/li&gt;
+  &lt;li&gt;특히 crash master를 복구했다고 무심코 원래 replication set에 넣어버리는 경우가 많은데, 매우 주의해야한다.&lt;/li&gt;
+  &lt;li&gt;binlog를 최대한 수집해서 new master에 적용시켜주거나..(like MHA)&lt;/li&gt;
+  &lt;li&gt;failover하게 되었다면, crashed old master는 그냥 붙일 생각말고 재구성하거나..&lt;/li&gt;
+  &lt;li&gt;잘 대책을 세워보도록 하자.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Crash recovery on MySQL</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL Add an AUTO_INCREMENT column to a partitioned table</title><link href="http://localhost:4000/blog/MySQL-Add-an-AUTO_INCREMENT-column-to-a-partitioned-table/" rel="alternate" type="text/html" title="MySQL Add an AUTO_INCREMENT column to a partitioned table" /><published>2018-08-29T00:00:00+09:00</published><updated>2018-08-29T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20Add%20an%20AUTO_INCREMENT%20column%20to%20a%20partitioned%20table</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-Add-an-AUTO_INCREMENT-column-to-a-partitioned-table/">&lt;h1 id=&quot;add-an-auto_increment-column-to-a-partitioned-table&quot;&gt;Add an AUTO_INCREMENT column to a partitioned table&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;사용중인 파티션테이블에 AI column을 추가하려고한다. 이때 AUTO_INCREMENT속성으로 add column, ALGORITHM=INPLACE 하면 에러가 발생한다. 현상을 살펴보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;mysql-partitioned-table-without-auto_increment-column&quot;&gt;MySQL partitioned table without AUTO_INCREMENT column&lt;/h2&gt;
+&lt;h2 id=&quot;creating-a-test-table&quot;&gt;Creating a test table&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE `aitest` (
+  `no` int(11) NOT NULL,
+  `name` varchar(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`no`,`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4
+PARTITION BY RANGE (unix_timestamp(created_at))
+(PARTITION p20180601 VALUES LESS THAN (1530370800) ENGINE = InnoDB,
+ PARTITION p20180701 VALUES LESS THAN (1533049200) ENGINE = InnoDB,
+ PARTITION p20180801 VALUES LESS THAN (1535727600) ENGINE = InnoDB,
+ PARTITION p20180901 VALUES LESS THAN (1538319600 ) ENGINE = InnoDB);
+
+
+insert into aitest values(100,'a','2018-06-01');
+insert into aitest values(200,'b','2018-07-01');
+insert into aitest values(300,'c','2018-08-01');
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;add-ai-column&quot;&gt;Add AI column&lt;/h2&gt;
+&lt;h3 id=&quot;add-ai-column-with-algorithminplace&quot;&gt;Add AI column with ALGORITHM=INPLACE&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;AI column을 add 하는 것은 LOCK=NONE으로 안되고, AI column은 PK이거나 UK여야한다. PK는 기존에 쓰고 있는 것이 있으니 UK로 선언한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table `aitest`
+add column `seq` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, add unique key seq_uk(seq, created_at), ALGORITHM=INPLACE, LOCK=SHARED;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;dont-panic-you-will-see-this---&quot;&gt;Don’t panic, you will see this -.-.&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:test 18:10:36&amp;gt;select * from aitest;
++-----+------+---------------------+-----+
+| no  | name | created_at          | seq |
++-----+------+---------------------+-----+
+| 100 | a    | 2018-06-01 00:00:00 |   1 |
+| 200 | b    | 2018-07-01 00:00:00 |   1 |
+| 300 | c    | 2018-08-01 00:00:00 |   1 |
++-----+------+---------------------+-----+
+3 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;왜이럴까. T.T 분명 partitioned table에서도 AI컬럼 썼었는데, sequential하게 증가했었는데,…&lt;/li&gt;
+  &lt;li&gt;add column하면 각 partition에 초기값부터 넣게 되는 것 같은데.&lt;/li&gt;
+  &lt;li&gt;drop 한다.
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table `aitest`
+drop column `seq` , drop index seq_uk, ALGORITHM=INPLACE, LOCK=NONE;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;add-ai-column-with-algorithmcopy&quot;&gt;Add AI column with ALGORITHM=COPY&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;column을 먼저 만들고 AI 속성을 변경시킨다. FYI, 속성변경은 ALGORITHM=COPY.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table `aitest`
+add column `seq` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, add unique key seq_uk(seq, created_at), ALGORITHM=COPY, LOCK=SHARED;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;yes-it-works&quot;&gt;YES, it works!&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:test 18:20:24&amp;gt;select * from aitest;
++-----+------+---------------------+-----+
+| no  | name | created_at          | seq |
++-----+------+---------------------+-----+
+| 100 | a    | 2018-06-01 00:00:00 |   1 |
+| 200 | b    | 2018-07-01 00:00:00 |   2 |
+| 300 | c    | 2018-08-01 00:00:00 |   3 |
++-----+------+---------------------+-----+
+3 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;bug-related-to-algorithm&quot;&gt;Bug related to ALGORITHM&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;ALGORITHM에 따라서 다르게 동작한다. Bug로 등록함. https://bugs.mysql.com/bug.php?id=92241&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ALGORITHM=COPY&lt;/strong&gt;로 사용해야한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table `aitest`
+add column `seq` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, add unique key seq_uk(seq, created_at), ALGORITHM=COPY, LOCK=SHARED;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;AUTO_INCREMENT column을 Partitioned table에 추가할때에 ALGORITHM=COPY를 사용한다!!!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Add an AUTO_INCREMENT column to a partitioned table 사용중인 파티션테이블에 AI column을 추가하려고한다. 이때 AUTO_INCREMENT속성으로 add column, ALGORITHM=INPLACE 하면 에러가 발생한다. 현상을 살펴보자.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL Fractional timestamp and Partition pruning</title><link href="http://localhost:4000/blog/MySQL-Fractional-timestamp-and-Partition-pruning/" rel="alternate" type="text/html" title="MySQL Fractional timestamp and Partition pruning" /><published>2018-07-18T00:00:00+09:00</published><updated>2018-07-18T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20Fractional%20timestamp%20and%20Partition%20pruning</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-Fractional-timestamp-and-Partition-pruning/">&lt;h1 id=&quot;mysql-fractional-timestamp-and-partition-pruning&quot;&gt;MySQL Fractional timestamp and Partition pruning&lt;/h1&gt;
+
+&lt;h2 id=&quot;mysql-fractional-timestamp&quot;&gt;MySQL Fractional timestamp&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;timestamp 를 milliseconds 혹은 microseconds까지 저장하기 위해서 fractional part 를 명시할 수 있다.&lt;/li&gt;
+  &lt;li&gt;Reference : https://dev.mysql.com/doc/refman/5.7/en/fractional-seconds.html&lt;/li&gt;
+  &lt;li&gt;timestamp(3): 3자리 fractional part를 저장한다. milliseconds(ms)&lt;/li&gt;
+  &lt;li&gt;timestamp(6): 6자리 fractional part를 저장한다. microseconds(µs)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;test-table-with-timestamp3&quot;&gt;test table with timestamp(3)&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:(none) 11:17:56&amp;gt;show create table test.atest\G
+*************************** 1. row ***************************
+       Table: atest
+Create Table: CREATE TABLE `atest` (
+  `no` bigint(20) NOT NULL AUTO_INCREMENT,
+  `a_no` bigint(20) NOT NULL,
+  `created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`no`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+1 row in set (0.00 sec)
+
+
+root@localhost:test 13:58:20&amp;gt;select * from atest;
++----+------+-------------------------+
+| no | a_no | created_at              |
++----+------+-------------------------+
+|  1 |    1 | 2018-06-04 09:56:35.931 |
+|  2 |    2 | 2018-06-04 09:56:35.931 |
+|  3 |    3 | 2018-06-04 09:56:35.931 |
+|  4 |    4 | 2018-06-04 09:56:35.931 |
++----+------+-------------------------+
+4 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;partitoining-with-fractional-timestamp&quot;&gt;Partitoining with fractional timestamp&lt;/h2&gt;
+&lt;h3 id=&quot;try-to-alter-partition-table&quot;&gt;try to alter partition table&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table atest
+PARTITION BY RANGE (unix_timestamp(created_at))
+(PARTITION p20180601 VALUES LESS THAN (1530370800) ENGINE = InnoDB,
+PARTITION p20180701 VALUES LESS THAN (1533049200) ENGINE = InnoDB);
+
+ERROR 1491 (HY000): The PARTITION function returns the wrong type
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;안된다..&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;wrong-type이라니-확인해보자&quot;&gt;wrong type이라니, 확인해보자.&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:test 15:19:25&amp;gt;select now(3),unix_timestamp(now(3));
++-------------------------+------------------------+
+| now(3)                  | unix_timestamp(now(3)) |
++-------------------------+------------------------+
+| 2018-07-18 15:19:32.469 |         1531894772.469 |
++-------------------------+------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;어떻게 하면 fractional timestamp기준으로 partitioning할 수 있을까.
+정답: 소수점 떼기, FLOOR!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;floorunix_timestmpyour_partitioning_key&quot;&gt;FLOOR(UNIX_TIMESTMP(your_partitioning_key))&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table atest
+PARTITION BY RANGE (floor(unix_timestamp(created_at)))
+(PARTITION p20180601 VALUES LESS THAN (1530370800) ENGINE = InnoDB,
+PARTITION p20180701 VALUES LESS THAN (1533049200) ENGINE = InnoDB);
+
+root@localhost:test 15:41:07&amp;gt;show create table atest\G
+*************************** 1. row ***************************
+       Table: atest
+Create Table: CREATE TABLE `atest` (
+  `no` bigint(20) NOT NULL AUTO_INCREMENT,
+  `a_no` bigint(20) NOT NULL,
+  `created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`no`,`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4
+/*!50100 PARTITION BY RANGE (floor(unix_timestamp(created_at)))
+(PARTITION p20180601 VALUES LESS THAN (1530370800) ENGINE = InnoDB,
+ PARTITION p20180701 VALUES LESS THAN (1533049200) ENGINE = InnoDB) */
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;unfortunately-partition-pruning-is-not-working-well&quot;&gt;UNFORTUNATELY, Partition pruning is not working well&lt;/h2&gt;
+&lt;h3 id=&quot;try-to-range-scan&quot;&gt;try to range scan&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:test 15:43:09&amp;gt;explain select * from atest where created_at between ('2018-06-01') and ('2018-06-10');
++----+-------------+-------+---------------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions          | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+---------------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | atest | p20180601,p20180701 | ALL  | NULL          | NULL | NULL    | NULL |    8 |    12.50 | Using where |
++----+-------------+-------+---------------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;try-to-equal-scan&quot;&gt;try to equal scan&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@localhost:test 15:43:13&amp;gt;explain select * from atest where created_at ='2018-06-04 09:56:35.931';
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | atest | p20180601  | ALL  | NULL          | NULL | NULL    | NULL |    4 |    25.00 | Using where |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;BUG 였음. FLOOR(decimal)의 partitioning expression으로 되어있지만, pruning에 제약이 있음.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;인덱스를 타게 해야한다.&lt;/li&gt;
+  &lt;li&gt;가능하다면, Partition selection을 강제한다.&lt;/li&gt;
+  &lt;li&gt;빨리 bug fix 되길 바란다.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL Fractional timestamp and Partition pruning</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL Read Committed vs. Repeatable Read</title><link href="http://localhost:4000/blog/MySQL-Read-committed-and-Repeatable-Read/" rel="alternate" type="text/html" title="MySQL Read Committed vs. Repeatable Read" /><published>2018-05-24T00:00:00+09:00</published><updated>2018-05-24T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20Read%20committed%20and%20Repeatable%20Read</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-Read-committed-and-Repeatable-Read/">&lt;h1 id=&quot;read-committed-vs-repeatable-read&quot;&gt;Read Committed vs. Repeatable Read&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;MySQL의 Isolation level은 전통적으로 Repeatable Read 를 default로 한다.&lt;/li&gt;
+  &lt;li&gt;하지만 반드시 repeatable read가 필요한 경우에만 lock을 사용하고 그외에서는 committed 를 봐도 무방하다면, 다른 RDBMS와 같이 Read committed를 default Isolation level로 하는 건 어떨까.&lt;/li&gt;
+  &lt;li&gt;막연하게 Read Committed가 lock contention이 더 줄고, 동시성에 더 좋을 것 같다.&lt;/li&gt;
+  &lt;li&gt;그리고 Repeatable read 에서 long running query (혹은 슬프게도 transaction이 제대로 close되지 않아서)가 돌때 undo가 너무 많이 쌓여서 전체적으로 성능에 영향을 주는 상황도 회피할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;sysbench-test-and-isolation-level&quot;&gt;Sysbench test and Isolation level&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/repeatable-read and read-committed graph.png&quot; alt=&quot;&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;첫번째 결과그래프가 뭔가 throughput이 더 좋다.&lt;/li&gt;
+  &lt;li&gt;Lock wait은 두번째가 더 적다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Isolation level만 변경한 것이다. 무엇이 Read Committed이고, 무엇이  Repeatable Read일까?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;첫번째가 Repeatable read이고, 두번째가 Read Committed의 결과이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;basically&quot;&gt;Basically,&lt;/h3&gt;
+&lt;p&gt;트랜잭션 특성에 따라 결과는 다를 것이다.
+이 테스트의 sysbench transaction은 간단한 update, delete, insert 하나씩 수행하게 되어있었다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;begin;
+ update ..;
+ update ..;
+ delete ..;
+ insert ..;
+commit;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;what-makes-a-difference-in-throughput&quot;&gt;What makes a difference in throughput?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;정답은 ReadView 이다.&lt;/li&gt;
+  &lt;li&gt;Reference: http://dimitrik.free.fr/blog/archives/2015/02/mysql-performance-impact-of-innodb-transaction-isolation-modes-in-mysql-57.html
+    &lt;ul&gt;
+      &lt;li&gt;MySQL InnoDB의 transaction isolation / MVCC 은 ReadViews를 기반으로 동작한다.&lt;/li&gt;
+      &lt;li&gt;repeatable read는 transaction 시작할때 한번 readview 를 만든다.&lt;/li&gt;
+      &lt;li&gt;read-committed는 매 문장마다, 여기서는 4번, readview를 생성한다.&lt;/li&gt;
+      &lt;li&gt;Readview를 생성할때 mutex경합으로 인해 read-committed의 throughput이 줄어드는 것이다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;어디까지나 Max throughput의 문제이다.&lt;/li&gt;
+  &lt;li&gt;일반적으로 3k TPS까지 쓸것인가. repeatable read로 인한 문제점이 더 자주 노출될 수도 있다.&lt;/li&gt;
+  &lt;li&gt;결과는 언제나 그렇듯 당신의 서비스 트랜잭션에 맞게….&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Read Committed vs. Repeatable Read MySQL의 Isolation level은 전통적으로 Repeatable Read 를 default로 한다. 하지만 반드시 repeatable read가 필요한 경우에만 lock을 사용하고 그외에서는 committed 를 봐도 무방하다면, 다른 RDBMS와 같이 Read committed를 default Isolation level로 하는 건 어떨까. 막연하게 Read Committed가 lock contention이 더 줄고, 동시성에 더 좋을 것 같다. 그리고 Repeatable read 에서 long running query (혹은 슬프게도 transaction이 제대로 close되지 않아서)가 돌때 undo가 너무 많이 쌓여서 전체적으로 성능에 영향을 주는 상황도 회피할 수 있다.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MTS considerations</title><link href="http://localhost:4000/blog/MTS-considerations/" rel="alternate" type="text/html" title="MTS considerations" /><published>2018-04-05T00:00:00+09:00</published><updated>2018-04-05T00:00:00+09:00</updated><id>http://localhost:4000/blog/MTS%20considerations</id><content type="html" xml:base="http://localhost:4000/blog/MTS-considerations/">&lt;h1 id=&quot;mts-considerations&quot;&gt;MTS considerations&lt;/h1&gt;
 &lt;p&gt;Multi-threaded slave(MTS)를 통해서 slave delay를 줄일수 있을까.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;→ YES. https://mysqlhighavailability.com/multi-threaded-replication-performance-in-mysql-5-7/&lt;/li&gt;
@@ -398,7 +1111,7 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL range partition VS range columns partition</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL sandbox 설치와 이용방법</title><link href="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/" rel="alternate" type="text/html" title="MySQL sandbox 설치와 이용방법" /><published>2018-01-22T00:00:00+09:00</published><updated>2018-01-22T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20sandbox%20%EC%84%A4%EC%B9%98%EC%99%80%20%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-sandbox-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9D%B4%EC%9A%A9%EB%B0%A9%EB%B2%95/">&lt;h1 id=&quot;mysql-sandbox-설치와-이용방법&quot;&gt;MySQL sandbox 설치와 이용방법&lt;/h1&gt;
 
-&lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
+&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -423,7 +1136,7 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
   &lt;li&gt;자세한 사용법은 아래를 참고하자. &lt;a href=&quot;https://github.com/datacharmer/mysql-sandbox&quot;&gt;https://github.com/datacharmer/mysql-sandbox&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;설치&quot;&gt;설치&lt;/h3&gt;
+&lt;h2 id=&quot;설치&quot;&gt;설치&lt;/h2&gt;
 
 &lt;p&gt;설치는 간단하다. 소스를 github 에서 받아 설치해주면 된다.&lt;/p&gt;
 &lt;ul&gt;
@@ -446,126 +1159,411 @@ mysql [localhost] {msandbox} (test) &amp;gt; select @@session.sql_mode;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost sandbox]# wget https://github.com/datacharmer/mysql-sandbox/archive/master.zip
-    --2017-07-20 04:16:45--  https://github.com/datacharmer/mysql-sandbox/archive/master.zip
-    Resolving jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)... 10.188.53.53
-    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
-    Proxy request sent, awaiting response... 302 Found
-    Location: https://codeload.github.com/datacharmer/mysql-sandbox/zip/master [following]
-    --2017-07-20 04:16:46--  https://codeload.github.com/datacharmer/mysql-sandbox/zip/master
-    Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
-    Proxy request sent, awaiting response... 200 OK
-    Length: unspecified [application/zip]
-    Saving to: ‘master.zip’
+--2017-07-20 04:16:45--  https://github.com/datacharmer/mysql-sandbox/archive/master.zip
+Resolving jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)... 10.188.53.53
+Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+Proxy request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/datacharmer/mysql-sandbox/zip/master [following]
+--2017-07-20 04:16:46--  https://codeload.github.com/datacharmer/mysql-sandbox/zip/master
+Connecting to jp-proxy.jp.oracle.com (jp-proxy.jp.oracle.com)|10.188.53.53|:80... connected.
+Proxy request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: ‘master.zip’
 
-        [  &amp;lt;=&amp;gt;                                                                                                                                   ] 167,877      414KB/s   in 0.4s   
+    [  &amp;lt;=&amp;gt;                                                                                                                                   ] 167,877      414KB/s   in 0.4s   
 
-    2017-07-20 04:16:48 (414 KB/s) - ‘master.zip’ saved [167877]
+2017-07-20 04:16:48 (414 KB/s) - ‘master.zip’ saved [167877]
 
-    [root@localhost sandbox]# ll
-    total 288
-    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
-    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
-    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+[root@localhost sandbox]# ll
+total 288
+-rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+-rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
 
-    [root@localhost sandbox]# unzip master.zip
-    Archive:  master.zip
-    a3d6e43f5c5f8baee3794c98a157ee0c8fe8a2a4
-       creating: mysql-sandbox-master/
-      inflating: mysql-sandbox-master/Changelog  
-      inflating: mysql-sandbox-master/LICENSE  
-      inflating: mysql-sandbox-master/MANIFEST  
-      inflating: mysql-sandbox-master/Makefile.PL  
-      inflating: mysql-sandbox-master/README.md  
-       creating: mysql-sandbox-master/bin/
-      inflating: mysql-sandbox-master/bin/deploy_to_remote_sandboxes.sh  
-      inflating: mysql-sandbox-master/bin/low_level_make_sandbox  
-      inflating: mysql-sandbox-master/bin/make_multiple_custom_sandbox  
-      inflating: mysql-sandbox-master/bin/make_multiple_sandbox  
-      inflating: mysql-sandbox-master/bin/make_replication_sandbox  
-      inflating: mysql-sandbox-master/bin/make_sandbox  
-      inflating: mysql-sandbox-master/bin/make_sandbox_from_installed  
-      inflating: mysql-sandbox-master/bin/make_sandbox_from_source  
-      inflating: mysql-sandbox-master/bin/make_sandbox_from_url  
-      inflating: mysql-sandbox-master/bin/msandbox  
-      inflating: mysql-sandbox-master/bin/msb  
-      inflating: mysql-sandbox-master/bin/sbtool  
-      inflating: mysql-sandbox-master/bin/test_sandbox  
-       creating: mysql-sandbox-master/lib/
-       creating: mysql-sandbox-master/lib/MySQL/
-      inflating: mysql-sandbox-master/lib/MySQL/Sandbox.pm  
-       creating: mysql-sandbox-master/lib/MySQL/Sandbox/
-      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Recipes.pm  
-      inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Scripts.pm  
-      inflating: mysql-sandbox-master/mkdist.sh  
-      inflating: mysql-sandbox-master/repo_list.pl  
-       creating: mysql-sandbox-master/t/
-      inflating: mysql-sandbox-master/t/01_modules.t  
-      inflating: mysql-sandbox-master/t/02_test_binaries.t  
-      inflating: mysql-sandbox-master/t/03_test_sandbox.t  
-      inflating: mysql-sandbox-master/t/04_test_sbtool.t  
-      inflating: mysql-sandbox-master/t/05_test_smoke.t  
-      inflating: mysql-sandbox-master/t/06_test_user_defined.t  
-      inflating: mysql-sandbox-master/t/07_test_user_defined.t  
-      inflating: mysql-sandbox-master/t/08_test_single_port_checking.t  
-      inflating: mysql-sandbox-master/t/09_test_multiple_port_checking.t  
-      inflating: mysql-sandbox-master/t/10_check_start_restart.t  
-      inflating: mysql-sandbox-master/t/11_replication_parameters.t  
-      inflating: mysql-sandbox-master/t/12_custom_user_pwd.t  
-      inflating: mysql-sandbox-master/t/13_innodb_plugin_install.t  
-      inflating: mysql-sandbox-master/t/14_semi_synch_plugin_install.t  
-      inflating: mysql-sandbox-master/t/15_user_privileges.t  
-      inflating: mysql-sandbox-master/t/16_replication_options.t  
-      inflating: mysql-sandbox-master/t/17_replication_flow.t  
-      inflating: mysql-sandbox-master/t/18_force_creation.t  
-      inflating: mysql-sandbox-master/t/19_replication_gtid.t  
-      inflating: mysql-sandbox-master/t/20_add_option.t  
-      inflating: mysql-sandbox-master/t/21_replication_gtid_option.t  
-      inflating: mysql-sandbox-master/t/22_init_exec_sql.t  
-      inflating: mysql-sandbox-master/t/23_mysqlx_plugin.t  
-      inflating: mysql-sandbox-master/t/24_dd_expose.t  
-      inflating: mysql-sandbox-master/t/Test_Helper.pm  
-      inflating: mysql-sandbox-master/t/add_option.sb.pl  
-      inflating: mysql-sandbox-master/t/check_replication.sb  
-      inflating: mysql-sandbox-master/t/check_single_server.sb  
-      inflating: mysql-sandbox-master/t/custom_user_pwd.sb.pl  
-      inflating: mysql-sandbox-master/t/dd_expose.sb.pl  
-      inflating: mysql-sandbox-master/t/force.sb.pl  
-      inflating: mysql-sandbox-master/t/group_port_checking.sb.pl  
-      inflating: mysql-sandbox-master/t/init_exec_sql.sb.pl  
-      inflating: mysql-sandbox-master/t/innodb_plugin_install.sb.pl  
-      inflating: mysql-sandbox-master/t/mysqlx_plugin.sb.pl  
-      inflating: mysql-sandbox-master/t/replication_flow.sh  
-      inflating: mysql-sandbox-master/t/replication_gtid.sb.pl  
-      inflating: mysql-sandbox-master/t/replication_options.sb.pl  
-      inflating: mysql-sandbox-master/t/replication_parameters.sb.pl  
-      inflating: mysql-sandbox-master/t/semi_synch_plugin_install.sb.pl  
-      inflating: mysql-sandbox-master/t/single_port_checking.sb.pl  
-      inflating: mysql-sandbox-master/t/start_restart_arguments.sb.pl  
-      inflating: mysql-sandbox-master/t/test_init_exec.sh  
-      inflating: mysql-sandbox-master/t/user_privileges.sb.pl  
-      inflating: mysql-sandbox-master/test_all_latest.sh  
-    [root@localhost sandbox]# ll
-    total 288
-    -rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
-    drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
-    -rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
-    drwxr-xr-x. 5 root root     184 Jul 18 14:24 mysql-sandbox-master
+[root@localhost sandbox]# unzip master.zip
+Archive:  master.zip
+a3d6e43f5c5f8baee3794c98a157ee0c8fe8a2a4
+   creating: mysql-sandbox-master/
+  inflating: mysql-sandbox-master/Changelog  
+  inflating: mysql-sandbox-master/LICENSE  
+  inflating: mysql-sandbox-master/MANIFEST  
+  inflating: mysql-sandbox-master/Makefile.PL  
+  inflating: mysql-sandbox-master/README.md  
+   creating: mysql-sandbox-master/bin/
+  inflating: mysql-sandbox-master/bin/deploy_to_remote_sandboxes.sh  
+  inflating: mysql-sandbox-master/bin/low_level_make_sandbox  
+  inflating: mysql-sandbox-master/bin/make_multiple_custom_sandbox  
+  inflating: mysql-sandbox-master/bin/make_multiple_sandbox  
+  inflating: mysql-sandbox-master/bin/make_replication_sandbox  
+  inflating: mysql-sandbox-master/bin/make_sandbox  
+  inflating: mysql-sandbox-master/bin/make_sandbox_from_installed  
+  inflating: mysql-sandbox-master/bin/make_sandbox_from_source  
+  inflating: mysql-sandbox-master/bin/make_sandbox_from_url  
+  inflating: mysql-sandbox-master/bin/msandbox  
+  inflating: mysql-sandbox-master/bin/msb  
+  inflating: mysql-sandbox-master/bin/sbtool  
+  inflating: mysql-sandbox-master/bin/test_sandbox  
+   creating: mysql-sandbox-master/lib/
+   creating: mysql-sandbox-master/lib/MySQL/
+  inflating: mysql-sandbox-master/lib/MySQL/Sandbox.pm  
+   creating: mysql-sandbox-master/lib/MySQL/Sandbox/
+  inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Recipes.pm  
+  inflating: mysql-sandbox-master/lib/MySQL/Sandbox/Scripts.pm  
+  inflating: mysql-sandbox-master/mkdist.sh  
+  inflating: mysql-sandbox-master/repo_list.pl  
+   creating: mysql-sandbox-master/t/
+  inflating: mysql-sandbox-master/t/01_modules.t  
+  inflating: mysql-sandbox-master/t/02_test_binaries.t  
+  inflating: mysql-sandbox-master/t/03_test_sandbox.t  
+  inflating: mysql-sandbox-master/t/04_test_sbtool.t  
+  inflating: mysql-sandbox-master/t/05_test_smoke.t  
+  inflating: mysql-sandbox-master/t/06_test_user_defined.t  
+  inflating: mysql-sandbox-master/t/07_test_user_defined.t  
+  inflating: mysql-sandbox-master/t/08_test_single_port_checking.t  
+  inflating: mysql-sandbox-master/t/09_test_multiple_port_checking.t  
+  inflating: mysql-sandbox-master/t/10_check_start_restart.t  
+  inflating: mysql-sandbox-master/t/11_replication_parameters.t  
+  inflating: mysql-sandbox-master/t/12_custom_user_pwd.t  
+  inflating: mysql-sandbox-master/t/13_innodb_plugin_install.t  
+  inflating: mysql-sandbox-master/t/14_semi_synch_plugin_install.t  
+  inflating: mysql-sandbox-master/t/15_user_privileges.t  
+  inflating: mysql-sandbox-master/t/16_replication_options.t  
+  inflating: mysql-sandbox-master/t/17_replication_flow.t  
+  inflating: mysql-sandbox-master/t/18_force_creation.t  
+  inflating: mysql-sandbox-master/t/19_replication_gtid.t  
+  inflating: mysql-sandbox-master/t/20_add_option.t  
+  inflating: mysql-sandbox-master/t/21_replication_gtid_option.t  
+  inflating: mysql-sandbox-master/t/22_init_exec_sql.t  
+  inflating: mysql-sandbox-master/t/23_mysqlx_plugin.t  
+  inflating: mysql-sandbox-master/t/24_dd_expose.t  
+  inflating: mysql-sandbox-master/t/Test_Helper.pm  
+  inflating: mysql-sandbox-master/t/add_option.sb.pl  
+  inflating: mysql-sandbox-master/t/check_replication.sb  
+  inflating: mysql-sandbox-master/t/check_single_server.sb  
+  inflating: mysql-sandbox-master/t/custom_user_pwd.sb.pl  
+  inflating: mysql-sandbox-master/t/dd_expose.sb.pl  
+  inflating: mysql-sandbox-master/t/force.sb.pl  
+  inflating: mysql-sandbox-master/t/group_port_checking.sb.pl  
+  inflating: mysql-sandbox-master/t/init_exec_sql.sb.pl  
+  inflating: mysql-sandbox-master/t/innodb_plugin_install.sb.pl  
+  inflating: mysql-sandbox-master/t/mysqlx_plugin.sb.pl  
+  inflating: mysql-sandbox-master/t/replication_flow.sh  
+  inflating: mysql-sandbox-master/t/replication_gtid.sb.pl  
+  inflating: mysql-sandbox-master/t/replication_options.sb.pl  
+  inflating: mysql-sandbox-master/t/replication_parameters.sb.pl  
+  inflating: mysql-sandbox-master/t/semi_synch_plugin_install.sb.pl  
+  inflating: mysql-sandbox-master/t/single_port_checking.sb.pl  
+  inflating: mysql-sandbox-master/t/start_restart_arguments.sb.pl  
+  inflating: mysql-sandbox-master/t/test_init_exec.sh  
+  inflating: mysql-sandbox-master/t/user_privileges.sb.pl  
+  inflating: mysql-sandbox-master/test_all_latest.sh  
+[root@localhost sandbox]# ll
+total 288
+-rw-r--r--. 1 root root  167877 Jul 20 04:16 master.zip
+drwxr-xr-x. 6  501 games    197 Jul 20 03:39 MySQL-Sandbox-3.0.66
+-rw-r--r--. 1 root root  124076 Aug  8  2015 MySQL-Sandbox-3.0.66.tar.gz
+drwxr-xr-x. 5 root root     184 Jul 18 14:24 mysql-sandbox-master
 
-    [root@localhost sandbox]# cd mysql-sandbox-master
+[root@localhost sandbox]# cd mysql-sandbox-master
 
-    [root@localhost mysql-sandbox-master]# ll
-    total 120
-    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 bin
-    -rw-r--r--. 1 root root 41076 Jul 18 14:24 Changelog
-    drwxr-xr-x. 3 root root    19 Jul 18 14:24 lib
-    -rw-r--r--. 1 root root 11358 Jul 18 14:24 LICENSE
-    -rw-r--r--. 1 root root  2927 Jul 18 14:24 Makefile.PL
-    -rw-r--r--. 1 root root  1498 Jul 18 14:24 MANIFEST
-    -rwxr-xr-x. 1 root root  1659 Jul 18 14:24 mkdist.sh
-    -rw-r--r--. 1 root root 33848 Jul 18 14:24 README.md
-    -rw-r--r--. 1 root root  1011 Jul 18 14:24 repo_list.pl
-    drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
-    -rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
+[root@localhost mysql-sandbox-master]# ll
+total 120
+drwxr-xr-x. 2 root root  4096 Jul 18 14:24 bin
+-rw-r--r--. 1 root root 41076 Jul 18 14:24 Changelog
+drwxr-xr-x. 3 root root    19 Jul 18 14:24 lib
+-rw-r--r--. 1 root root 11358 Jul 18 14:24 LICENSE
+-rw-r--r--. 1 root root  2927 Jul 18 14:24 Makefile.PL
+-rw-r--r--. 1 root root  1498 Jul 18 14:24 MANIFEST
+-rwxr-xr-x. 1 root root  1659 Jul 18 14:24 mkdist.sh
+-rw-r--r--. 1 root root 33848 Jul 18 14:24 README.md
+-rw-r--r--. 1 root root  1011 Jul 18 14:24 repo_list.pl
+drwxr-xr-x. 2 root root  4096 Jul 18 14:24 t
+-rwxr-xr-x. 1 root root   831 Jul 18 14:24 test_all_latest.sh
+
+
+[root@localhost mysql-sandbox-master]# perl Makefile.PL 
+Checking if your kit is complete...
+Looks good
+Writing Makefile for MySQL::Sandbox
+[root@localhost mysql-sandbox-master]# make
+cp lib/MySQL/Sandbox/Scripts.pm blib/lib/MySQL/Sandbox/Scripts.pm
+cp lib/MySQL/Sandbox/Recipes.pm blib/lib/MySQL/Sandbox/Recipes.pm
+cp repo_list.pl blib/lib/MySQL/repo_list.pl
+cp lib/MySQL/Sandbox.pm blib/lib/MySQL/Sandbox.pm
+cp bin/deploy_to_remote_sandboxes.sh blib/script/deploy_to_remote_sandboxes.sh
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/deploy_to_remote_sandboxes.sh
+cp bin/msandbox blib/script/msandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/msandbox
+cp bin/make_replication_sandbox blib/script/make_replication_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_replication_sandbox
+cp bin/make_multiple_sandbox blib/script/make_multiple_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_multiple_sandbox
+cp bin/make_sandbox_from_url blib/script/make_sandbox_from_url
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_sandbox_from_url
+cp bin/test_sandbox blib/script/test_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/test_sandbox
+cp bin/make_sandbox blib/script/make_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_sandbox
+cp bin/make_sandbox_from_installed blib/script/make_sandbox_from_installed
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_sandbox_from_installed
+cp bin/low_level_make_sandbox blib/script/low_level_make_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/low_level_make_sandbox
+cp bin/msb blib/script/msb
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/msb
+cp bin/make_multiple_custom_sandbox blib/script/make_multiple_custom_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_multiple_custom_sandbox
+cp bin/sbtool blib/script/sbtool
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/sbtool
+cp bin/make_sandbox_from_source blib/script/make_sandbox_from_source
+/usr/bin/perl -MExtUtils::MY -e 'MY-&amp;amp;gt;fixin(shift)' -- blib/script/make_sandbox_from_source
+Manifying blib/man3/MySQL::Sandbox::Scripts.3pm
+Manifying blib/man3/MySQL::Sandbox::Recipes.3pm
+Manifying blib/man3/MySQL::Sandbox.3pm
+
+[root@localhost mysql-sandbox-master]# make test
+PERL_DL_NONLAZY=1 /usr/bin/perl &quot;-MExtUtils::Command::MM&quot; &quot;-e&quot; &quot;test_harness(0, 'blib/lib', 'blib/arch')&quot; t/*.t
+t/01_modules.t ...................... ok   
+t/02_test_binaries.t ................ ok   
+t/03_test_sandbox.t ................. ok   
+t/04_test_sbtool.t .................. ok   
+t/05_test_smoke.t ................... ok   
+t/06_test_user_defined.t ............ ok   
+t/07_test_user_defined.t ............ ok   
+t/08_test_single_port_checking.t .... ok   
+t/09_test_multiple_port_checking.t .. ok   
+t/10_check_start_restart.t .......... ok   
+t/11_replication_parameters.t ....... ok   
+t/12_custom_user_pwd.t .............. ok   
+t/13_innodb_plugin_install.t ........ ok   
+t/14_semi_synch_plugin_install.t .... ok   
+t/15_user_privileges.t .............. ok   
+t/16_replication_options.t .......... ok   
+t/17_replication_flow.t ............. ok   
+t/18_force_creation.t ............... ok   
+t/19_replication_gtid.t ............. ok   
+t/20_add_option.t ................... ok   
+t/21_replication_gtid_option.t ...... ok   
+t/22_init_exec_sql.t ................ ok   
+t/23_mysqlx_plugin.t ................ ok   
+t/24_dd_expose.t .................... ok   
+All tests successful.
+Files=24, Tests=26,  1 wallclock secs ( 0.07 usr  0.02 sys +  0.75 cusr  0.09 csys =  0.93 CPU)
+Result: PASS
+
+[root@localhost mysql-sandbox-master]# make install
+Installing /usr/local/share/perl5/MySQL/repo_list.pl
+Installing /usr/local/share/perl5/MySQL/Sandbox.pm
+Installing /usr/local/share/perl5/MySQL/Sandbox/Scripts.pm
+Installing /usr/local/share/perl5/MySQL/Sandbox/Recipes.pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox::Scripts.3pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox::Recipes.3pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox.3pm
+Installing /usr/local/bin/deploy_to_remote_sandboxes.sh
+Installing /usr/local/bin/msandbox
+Installing /usr/local/bin/make_replication_sandbox
+Installing /usr/local/bin/make_multiple_sandbox
+Installing /usr/local/bin/make_sandbox_from_url
+Installing /usr/local/bin/test_sandbox
+Installing /usr/local/bin/make_sandbox
+Installing /usr/local/bin/make_sandbox_from_installed
+Installing /usr/local/bin/low_level_make_sandbox
+Installing /usr/local/bin/msb
+Installing /usr/local/bin/make_multiple_custom_sandbox
+Installing /usr/local/bin/sbtool
+Installing /usr/local/bin/make_sandbox_from_source
+Appending installation info to /usr/lib64/perl5/perllocal.pod
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;mysql-binary-다운로드&quot;&gt;MySQL binary 다운로드&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;설치가 완료되었다면, 필요한 MySQL generic tar 본을 받도록 하자. (MySQL sandbox 는 해당 generic tar 에 대해 압축을 풀고 해당 binaries 를 이용하여 MySQL 을 구성한다.)&lt;/li&gt;
+  &lt;li&gt;log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+[root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz
+[root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.37-linux-glibc2.12-x86_64.tar.gz
+[root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.57-linux-glibc2.12-x86_64.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;sandbox-로-설치&quot;&gt;SANDBOX 로 설치&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;sandbox 를 이용하여, MySQL 을 설치해보자. (SANDBOX 는 root 가 아닌 유저로 올리게 설정되어 있지만, 테스트 용도이니 “export SANDBOX_AS_ROOT=1” 를 통해 ROOT 로 사용할 수 있도록 설정할 수 있다.)&lt;/li&gt;
+  &lt;li&gt;아래는 5.7.18 과 5.7.19 를 동시에 설치하는 예제이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost MySQL_bianries]# export SANDBOX_AS_ROOT=1
+[root@localhost MySQL_bianries]# make_sandbox /MySQL_bianries/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz 
+.... sandbox server started
+
+[root@localhost MySQL_bianries]# make_sandbox /MySQL_bianries/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz 
+.... sandbox server started
+
+unpacking /MySQL_bianries/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+
+
+[root@localhost MySQL_bianries]# ps -ef | grep mysql
+root     23972     1  0 04:02 pts/2    00:00:00 /bin/sh /MySQL_bianries/5.7.19/bin/mysqld_safe --defaults-file=/root/sandboxes/msb_5_7_19/my.sandbox.cnf
+root     24171 23972  0 04:02 pts/2    00:00:01 /MySQL_bianries/5.7.19/bin/mysqld --defaults-file=/root/sandboxes/msb_5_7_19/my.sandbox.cnf --basedir=/MySQL_bianries/5.7.19 --datadir=/root/sandboxes/msb_5_7_19/data --plugin-dir=/MySQL_bianries/5.7.19/lib/plugin --user=root --log-error=msandbox.err --pid-file=/root/sandboxes/msb_5_7_19/data/mysql_sandbox5719.pid --socket=/tmp/mysql_sandbox5719.sock --port=5719
+root     24444     1  0 04:25 pts/2    00:00:00 /bin/sh bin/mysqld_safe --defaults-file=/root/sandboxes/msb_5_7_18/my.sandbox.cnf
+root     24629 24444  3 04:25 pts/2    00:00:00 /MySQL_bianries/5.7.18/bin/mysqld --defaults-file=/root/sandboxes/msb_5_7_18/my.sandbox.cnf --basedir=/MySQL_bianries/5.7.18 --datadir=/root/sandboxes/msb_5_7_18/data --plugin-dir=/MySQL_bianries/5.7.18/lib/plugin --user=root --log-error=/root/sandboxes/msb_5_7_18/data/msandbox.err --pid-file=/root/sandboxes/msb_5_7_18/data/mysql_sandbox5718.pid --socket=/tmp/mysql_sandbox5718.sock --port=5718
+root     24682 23578  0 04:25 pts/2    00:00:00 grep --color=auto mysql
+
+
+
+[root@localhost msb_5_7_18]# pwd
+/root/sandboxes/msb_5_7_18
+
+
+[root@localhost msb_5_7_18]# ./use
+Welcome to the MySQL monitor.  Commands end with ; or g.
+Your MySQL connection id is 5
+Server version: 5.7.18 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+mysql [localhost] {msandbox} ((none)) &amp;amp;gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
++--------------------+
+5 rows in set (0.01 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;아래는 5.7.19 이용하는 replication 을 구성을 진행하는 예제이다.
+    &lt;ul&gt;
+      &lt;li&gt;default 로 master 1대와 slave 2대로 구성되며, 이는 조절될 수 있다.&lt;/li&gt;
+      &lt;li&gt;enable_gtid 이라는 스크립트를 통해, gtid 를 통한 replication 구성을 만들 수 있다.&lt;/li&gt;
+      &lt;li&gt;위의 스크립트 외에도 initialize_slaves 혹은 check_slaves 로, 초기화 및 체크를 진행할 수 있다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost sandboxes]# make_replication_sandbox /MySQL_bianries/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz 
+installing and starting master
+installing slave 1
+installing slave 2
+starting slave 1
+... sandbox server started
+starting slave 2
+.... sandbox server started
+initializing slave 1
+initializing slave 2
+replication directory installed in $HOME/sandboxes/rsandbox_mysql-5_7_19
+
+[root@localhost rsandbox_mysql-5_7_19]# pwd
+/root/sandboxes/rsandbox_mysql-5_7_19
+[root@localhost rsandbox_mysql-5_7_19]# ./m
+Welcome to the MySQL monitor.  Commands end with ; or g.
+Your MySQL connection id is 7
+Server version: 5.7.19-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+master [localhost] {msandbox} ((none)) &amp;amp;gt; show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000001 |     4823 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+
+master [localhost] {msandbox} ((none)) &amp;amp;gt; exit
+Bye
+[root@localhost rsandbox_mysql-5_7_19]# ./s1
+Welcome to the MySQL monitor.  Commands end with ; or g.
+Your MySQL connection id is 7
+Server version: 5.7.19-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+
+slave1 [localhost] {msandbox} ((none)) &amp;amp;gt; show slave statusG
+    *************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+              Master_Host: 127.0.0.1
+              Master_User: rsandbox
+              Master_Port: 20594
+            Connect_Retry: 60
+              Master_Log_File: mysql-bin.000001
+          Read_Master_Log_Pos: 4823
+               Relay_Log_File: mysql-relay.000002
+            Relay_Log_Pos: 5036
+        Relay_Master_Log_File: mysql-bin.000001
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+           Replicate_Ignore_Table: 
+          Replicate_Wild_Do_Table: 
+      Replicate_Wild_Ignore_Table: 
+               Last_Errno: 0
+               Last_Error: 
+             Skip_Counter: 0
+          Exec_Master_Log_Pos: 4823
+              Relay_Log_Space: 5239
+              Until_Condition: None
+               Until_Log_File: 
+            Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: 0
+    Master_SSL_Verify_Server_Cert: No
+            Last_IO_Errno: 0
+            Last_IO_Error: 
+               Last_SQL_Errno: 0
+               Last_SQL_Error: 
+      Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: 1
+              Master_UUID: 00020594-1111-1111-1111-111111111111
+             Master_Info_File: /root/sandboxes/rsandbox_mysql-5_7_19/node1/data/master.info
+                SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+          Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+           Master_Retry_Count: 86400
+              Master_Bind: 
+          Last_IO_Error_Timestamp: 
+         Last_SQL_Error_Timestamp: 
+               Master_SSL_Crl: 
+           Master_SSL_Crlpath: 
+           Retrieved_Gtid_Set: 
+            Executed_Gtid_Set: 
+            Auto_Position: 0
+         Replicate_Rewrite_DB: 
+             Channel_Name: 
+           Master_TLS_Version: 
+    1 row in set (0.00 sec)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL sandbox 설치와 이용방법</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">Make my replication to the InnoDB Cluster</title><link href="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/" rel="alternate" type="text/html" title="Make my replication to the InnoDB Cluster" /><published>2017-09-19T00:00:00+09:00</published><updated>2017-09-19T00:00:00+09:00</updated><id>http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster</id><content type="html" xml:base="http://localhost:4000/blog/make-my-replication-to-the-innodb-cluster/">&lt;h1 id=&quot;make-my-replication-to-the-innodb-cluster&quot;&gt;Make my replication to the InnoDB Cluster&lt;/h1&gt;
 
@@ -1559,487 +2557,11 @@ AFTER_SYNC(By default on MySQL 5.7.2)&lt;/th&gt;
   &lt;li&gt;The last binary log recovery.
     &lt;ul&gt;
       &lt;li&gt;마지막 binary log를 연다.&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Format_description&lt;/code&gt; event를 확인하여 &lt;code class=&quot;highlighter-rouge&quot;&gt;binlog-in-use&lt;/code&gt; flag 가 설정되었다면, binlog가 제대로 쓰여졌다는 것을 의미한다. 그 Xid들에 대해서는 recovery해준다.&lt;/li&gt;
-      &lt;li&gt;binlog-in-use=0 이라면 제대로 쓰고 닫힌 것으로 볼수 없으므로  truncate한다.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Format_description&lt;/code&gt; event를 확인하여 &lt;code class=&quot;highlighter-rouge&quot;&gt;binlog-in-use&lt;/code&gt; flag 를 확인한다. binlog를 쓰기 시작할때 binlog-in-use flag가 설정되고, 닫을 때 clear한다.&lt;/li&gt;
+      &lt;li&gt;binlog-in-use가 설정되어있다면 server crash가 일어난 것을 의미하며, 이 경우 XA recovery가 필요하다.&lt;/li&gt;
+      &lt;li&gt;binary log에 쓰인 모든 Xid 를 읽는다.&lt;/li&gt;
+      &lt;li&gt;각 storage engine(InnoDB) prepare되었는데 commit이 안된 xid 이벤트는 commit한다.&lt;/li&gt;
+      &lt;li&gt;storage engine(InnoDB)에 prepare되었는데, binlog xid list에 없었다면, binary log를 쓰지 못하고 crash된 것이기 때문에 rollback된다.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Semi-Synchronous Replication on MySQL</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">MySQL slow query 를 효율적으로 이용해보자!</title><link href="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/" rel="alternate" type="text/html" title="MySQL slow query 를 효율적으로 이용해보자!" /><published>2016-12-15T00:00:00+09:00</published><updated>2016-12-15T00:00:00+09:00</updated><id>http://localhost:4000/blog/MySQL%20slow%20query%20%EB%A5%BC%20%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/blog/MySQL-slow-query-%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90/">&lt;h1 id=&quot;mysql-slow-query-를-효율적으로-이용해보자&quot;&gt;MySQL slow query 를 효율적으로 이용해보자!&lt;/h1&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;MySQL 은 slow query 를 사용하여, 많은 정보를 얻어낼 수 있다. 하지만, 해당 기능들이 default 로 OFF 로 되어 있어 그냥 지나가는 경우가 많다. slow query 관련한 기능들을 알아보자.
-    &lt;ul&gt;
-      &lt;li&gt;Slow query 파일은 쿼리를 튜닝하는데 아주 중요한 요소로 작용하지만, 5.6부터는 해당 기능이 default 로 OFF 되어 있다. 먼저 아래에 나열된 모든 기능을 사용하기 위해서는 slow_query_log 를 ON 으로 설정해야 한다.&lt;/li&gt;
-      &lt;li&gt;해당값은 dynamic 변수로서 set global slow_query_log=ON; 와 같이 변경가능하다.&lt;/li&gt;
-      &lt;li&gt;my.cnf 의 [mysqld] section 에 slow_query_log 를 추가하여 restart 후에도 해당 값이 ON 이 될 수있도록 조정한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;slow-query-에-쓰여지는것들&quot;&gt;Slow query 에 쓰여지는것들&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-long_query_time-이상으로-실행되는-쿼리에-대하여-slow_query_log_file-에-존재하는-파일에-slow-query-를-작성한다&quot;&gt;1. long_query_time 이상으로 실행되는 쿼리에 대하여, slow_query_log_file 에 존재하는 파일에 slow query 를 작성한다.&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;long_query_time (default : 10) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_long_query_time&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;OLTP 환경에서 해당값을 10초로 두는것은 개인적으로 너무 길다. 해당 값을 1초 혹은 2초로 수정하자.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;slow_query_log_file (default : host_name-slow.log) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_slow_query_log_file&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-index-를-사용하지-않는-쿼리들&quot;&gt;2. Index 를 사용하지 않는 쿼리들&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;log_queries_not_using_indexes (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_queries_not_using_indexes&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;해당옵션을 ON 하게 된다면, INDEX를 사용하지 않는 쿼리가 찍히게 된다. 이는 기존의 slow query (느려서 찍히게 되는 경우) 와 꼬일 수 있으므로, 프로젝트가 오픈되기 전 쿼리 검증을 위해 사용할 수 있다.&lt;/li&gt;
-      &lt;li&gt;중간에 쿼리튜닝을 위해 사용해야 한다면, 아래와 같이 사용하자.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global log_queries_not_using_indexes = ON, GLOBAL long_query_time = 100000, GLOBAL slow_query_log_file = \'not_using_index.log\';
-mysql&amp;gt; flush logs; 정보 수집을 한 후, 원래의 값으로 돌려놓자.
-mysql&amp;gt; set global log_queries_not_using_indexes = OFF, GLOBAL long_query_time = 2, GLOBAL slow_query_log_file = \'host_name-slow.log\';
-mysql&amp;gt; flush logs;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;물론 performance_schema 를 사용한다면, performance_schema.events_statements_summary_by_digest 의 SUM_NO_INDEX_USED 컬럼을 참고하여, 쿼리를 알아낼 수도 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;3-admin-관련-명령어-혹은-slave-의-sql_thread-에-의해-실행된-명령어중-long_query_time-이상으로-실행된-명령어를-찾는다&quot;&gt;3. Admin 관련 명령어 혹은 slave 의 sql_thread 에 의해 실행된 명령어중 long_query_time 이상으로 실행된 명령어를 찾는다.&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;log_slow_admin_statements (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_log_slow_admin_statements&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;log_slow_slave_statements (default : OFF) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/replication-options-slave.html#sysvar_log_slow_slave_statements&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;기본적으로 slow queries 에는 admin 관련 명령어나 slave 의 sql_thread 에 의해 실행된 명령어는 아무리 오래걸려도 찍히지 않는다. 해당 내용을 확인하기 위해서는 위의 두옵션을 ON 으로 설정해야 한다.&lt;/li&gt;
-      &lt;li&gt;admin 관련 명령어 는 ALTER TABLE, ANALYZE TABLE, CHECK TABLE, CREATE INDEX, DROP INDEX, OPTIMIZE TABLE, REPAIR TABLE 이다. 예전에 alter table 을 누가했는지 알 수 있는 방법을 문의한적이 있다. 이때 해당 방법은 좋은 선택이 될 수 있다. 물론 해당 명령어 역시, long_query_time 이상으로 실행된 명령어에 대해서만 찍힌다.&lt;/li&gt;
-      &lt;li&gt;예제&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# User@Host: root[root] @  [192.168.74.202]  Id:    17
-# Query_time: 3.362235  Lock_time: 0.007825 Rows_sent: 0  Rows_examined: 0
-SET timestamp=1469352147;
-alter table tester add index b(b);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;효율적으로-활용하기&quot;&gt;효율적으로 활용하기&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-long-query-time-과-mysqldumpslow를-이용하여-쿼리의-종류와-횟수-계산하기&quot;&gt;1. long-query-time 과 mysqldumpslow를 이용하여, 쿼리의 종류와 횟수 계산하기&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;일반적으로 어떤 쿼리가 얼만큼 들어오는지 확인하기 위해 여러방법이 쓰일 수 있다. WAS에서 계산해볼 수도 있고, general log 를 내려 모든 쿼리를 확인할 수 있다. 하지만 이 경우 직접 통계를 내는 프로그램이 필요하다.&lt;/li&gt;
-  &lt;li&gt;간단히 특정시간동안 long_query_time 를 0 으로 세팅하여 모든 쿼리를 slow query에 남긴후, mysqldumpslow 를 통해 분석해 낼 수 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; set global long_query_time=0;
-shell# mysqldumpslow -s c slow-queries.log &amp;gt; static.sql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;mysqldumpslow 는 여러가지 옵션이 있으니 적절히 사용해 보자. &lt;a href=&quot;\\&amp;quot;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html\\&amp;quot;&quot;&gt;https://dev.mysql.com/doc/refman/5.6/en/mysqldumpslow.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-min_examined_row_limit-를-이용하여-특정-row-이상으로-검사한-쿼리만-찾기&quot;&gt;2. min_examined_row_limit 를 이용하여, 특정 row 이상으로 검사한 쿼리만 찾기.&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;비록, log_queries_not_using_indexes 를 통해 index 를 사용하지 않는 쿼리를 찾는다 하더라도, 테이블에 데이터가 10건정도라면 인덱스를 타지 않는것이 현명한 쿼리일 수 있다. 또한 적절히 limit 를 쓴 경우도 그러하다. 이러한 쿼리들을 걸러내기 위하여 min_examined_row_limit 라는 변수가 존재한다.&lt;/li&gt;
-  &lt;li&gt;min_examined_row_limit (default : 0) - &lt;a href=&quot;\\&amp;quot;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit\\&amp;quot;&quot;&gt;http://dev.mysql.com/doc/refman/5.6/en/server-options.html#option_mysqld_min-examined-row-limit&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;소스를 보면 알겠지만, 해당 값은 마지막에 and 조건으로 연산이 된다. 해당 의미는 min_examined_row_limit 설정된값 이하로 row수를 검사하면 조건에 만족하더라도 slow query에 쓰지 않는다는 의미이다. 이로써 해당값으로 filter 를 만들 수 있다.(예를 들면 log_queries_not_using_indexes = ON, min_examined_row_limit=100)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (thd-&amp;gt;enable_slow_log)
-{
-  ulonglong end_utime_of_query= thd-&amp;gt;current_utime();
-  thd_proc_info(thd, 'logging slow query');
-
-  if (((thd-&amp;gt;server_status &amp;amp; SERVER_QUERY_WAS_SLOW) ||
-       ((thd-&amp;gt;server_status &amp;amp;
-         (SERVER_QUERY_NO_INDEX_USED | SERVER_QUERY_NO_GOOD_INDEX_USED)) &amp;amp;&amp;amp;
-        opt_log_queries_not_using_indexes &amp;amp;&amp;amp;
-         !(sql_command_flags[thd-&amp;gt;lex-&amp;gt;sql_command] &amp;amp; CF_STATUS_COMMAND))) &amp;amp;&amp;amp; thd-&amp;gt;examined_row_count &amp;gt;= thd-&amp;gt;variables.min_examined_row_limit)
-  {
-    thd_proc_info(thd, 'logging slow query');
-    thd-&amp;gt;status_var.long_query_count++;
-    slow_log_print(thd, thd-&amp;gt;query(), thd-&amp;gt;query_length(),
-                   end_utime_of_query);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;추천하는-설정&quot;&gt;추천하는 설정&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;MASTER&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
-log-slow-queries=/log/slow_queries.log
-long-query-time=1
-log_slow_admin_statements
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;SLAVE&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
-log-slow-queries=/log/slow_queries.log
-long-query-time=1
-log_slow_slave_statements
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN CHO</name><email>makayal46@gmail.com</email></author><category term="MySQL" /><summary type="html">MySQL slow query 를 효율적으로 이용해보자!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry><entry><title type="html">PostgreSQL synchronous_commit 개념도</title><link href="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/" rel="alternate" type="text/html" title="PostgreSQL synchronous_commit 개념도" /><published>2016-07-01T00:00:00+09:00</published><updated>2016-07-01T00:00:00+09:00</updated><id>http://localhost:4000/blog/PostgreSQL%20synchronous_commit%20%EA%B0%9C%EB%85%90%EB%8F%84</id><content type="html" xml:base="http://localhost:4000/blog/PostgreSQL-synchronous_commit-%EA%B0%9C%EB%85%90%EB%8F%84/">&lt;h1 id=&quot;postgresql-synchronous_commit-개념도&quot;&gt;PostgreSQL synchronous_commit 개념도&lt;/h1&gt;
-
-&lt;h3 id=&quot;synchronous_commit-개념도&quot;&gt;synchronous_commit 개념도&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;안정성이냐 성능이냐. PostgreSQL의 synchronous_commit, fsync에 대해서 정리해본다.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;/uploads/Slide4.jpg&quot; alt=&quot;Slide4&quot; /&gt;
-&lt;img src=&quot;/uploads/Slide1.jpg&quot; alt=&quot;Slide1&quot; /&gt;
-&lt;img src=&quot;/uploads/Slide2.jpg&quot; alt=&quot;Slide2&quot; /&gt;
-&lt;img src=&quot;/uploads/Slide3.jpg&quot; alt=&quot;Slide3&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;synchronous_commit-enum&quot;&gt;synchronous_commit (enum)&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;트랜잭션 커밋하기전에 WAL 레코드가 disk까지 쓰인다음에 success를 리턴할 것인가 여부.
-    &lt;ul&gt;
-      &lt;li&gt;on : default&lt;/li&gt;
-      &lt;li&gt;off : 클라이언트에 바로 transaction commit을 보냄. 하지만 실제로 트랜잭션이 안전하게 반영(WAL record가 WAL file에 쓰여짐) 되기까지 딜레이가 존재함. 서버 crash났을때 트랜잭션 손실될 수 있음. (최대 delay는 wal_writer_delay(200ms)의 3배). 하지만 fsync와는 달리 off로 한다고 해서 db 일관성에 문제가 되지는 않음. 최근 커밋되어야하는 트랜잭션이 손실될 수는 있으나 database 상태는 이 트랜잭션들이 정상적으로 롤백된 것과 같아서 일관성에 문제 없음.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;synchronous 리플리케이션을 사용하는 경우에 트랜잭션 커밋전에 변경WAL이 synchronus standby까지 리플리케이션되기를 기다릴것인지 아닌지를 설정할 수 있음
-    &lt;ul&gt;
-      &lt;li&gt;on : 변경WAL레코드가 standby의 WAL file까지 쓰여진 후 커밋 success 리턴해줌&lt;/li&gt;
-      &lt;li&gt;remote-write : standby가 WAL을 받아서 os buffer까지 썼다는 것을 의미, disk에 쓰여진것은 보장하지 않음. 이세팅도 충분히 안전함.&lt;/li&gt;
-      &lt;li&gt;local : synchronous replication을 사용한다는 것은 일반적으로 master의 disk와 standby에 WAL변경사항을 동시에 적용해야하는게 당연하다. 그렇지 않다면 asynchronus replication인 것이니까 말이다. 그럼에도 불구하고 local disk에까지만 쓰고, standby까지 replication되는 것을 기다리지 않고 싶다면 local로 설정할 수 있다. 이 파라메터는 운영중에 변경가능하므로, sync해야하는 트랜잭션도 있고 async로 해도 되는 트랜잭션도 있는 경우 유용하게 사용할 수 있을 것이다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;fsync-boolean&quot;&gt;fsync (boolean)&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;fsync가 on이면, PostgreSQL서버는 fsync()시스템콜을 통해서 변경분을 디스크에 물리적으로 바로 쓴다. 이는 데이터베이스클러스터가 OS나 하드웨어 장애시 consistent한 상태로 복구가 가능함을 보장한다.&lt;/li&gt;
-  &lt;li&gt;fsync를 off한다면, OS가 알아서 메모리에 있는 것을 디스크로 내려쓰게 된다. 언제 무엇이 디스크에 쓰여졌는지 아닌지 알수 없다. 그러므로 성능상 이득을 볼수는 있겠지만, 전원장애나 system crash로가 발생했을때 복구가 불가능할수 있다. 만약 전체 데이터베이스를 쉽게 재생성할수 있는 경우에만 off하도록 한다. 예를들어 백업본으로부터 새로운 데이터베이스 클러스트를 초기 구축하는 경우, 버리고 재생성할 데이터베이스의 데이터 처리, 자주 재생성되는 read-only 데이터베이스 복제본으로 failover에 사용되지 않는 데이터베이스인 경우 사용할 수 있다. 고성능의 하드웨어 장비라고해서 fsync를 끄는 것은 올바르지 않다.
-    &lt;ul&gt;
-      &lt;li&gt;성능을 위해서라면 synchronous_commit을 off하는 것만으로 충분할 것이다.&lt;/li&gt;
-      &lt;li&gt;만약 off하기로 했다면, full_page_writes도 off하는 것을 고려하도록 한다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">PostgreSQL synchronous_commit 개념도</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">pgbadger로 PostgreSQL 로그분석레포팅하기</title><link href="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/" rel="alternate" type="text/html" title="pgbadger로 PostgreSQL 로그분석레포팅하기" /><published>2016-06-30T00:00:00+09:00</published><updated>2016-06-30T00:00:00+09:00</updated><id>http://localhost:4000/blog/pgbadger%EB%A1%9C%20PostgreSQL%20%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0</id><content type="html" xml:base="http://localhost:4000/blog/pgbadger%EB%A1%9C-PostgreSQL-%EB%A1%9C%EA%B7%B8%EB%B6%84%EC%84%9D%EB%A0%88%ED%8F%AC%ED%8C%85%ED%95%98%EA%B8%B0/">&lt;h1 id=&quot;pgbadger로-postgresql-로그분석레포팅하기&quot;&gt;pgbadger로 PostgreSQL 로그분석레포팅하기&lt;/h1&gt;
-
-&lt;h2 id=&quot;pgbadger---a-fast-postgresql-log-analysis-report&quot;&gt;pgBadger - a fast PostgreSQL log analysis report&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;너무 간단해서 쓸것도 없지만, 기록을 남겨두겠음&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-설치&quot;&gt;1. 설치&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;최신버전 다운로드 후 압축해제: https://github.com/dalibo/pgbadger/releases/latest&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://github.com/dalibo/pgbadger/archive/v8.1.tar.gz
-tar xzf pgbadger-8.1.tar.gz
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;설치
-    &lt;ul&gt;
-      &lt;li&gt;root user로&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cd pgbadger-8.1
-# perl Makefile.PL
-Checking if your kit is complete...
-Looks good
-Writing Makefile for pgBadger
-Writing MYMETA.yml and MYMETA.json
-# make &amp;amp;&amp;amp; make install
-Installing /usr/local/share/man/man1/pgbadger.1p
-Installing /usr/local/bin/pgbadger
-Appending installation info to /usr/lib64/perl5/perllocal.pod
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;2-postgresql-관련-파라메터-설정&quot;&gt;2. PostgreSQL 관련 파라메터 설정&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;log_min_durtion_statement를 0 이상으로 설정하자. 0은 모든 문장을 로깅하므로, 서비스서버에서는 알맞는 duration을 지정한다.&lt;/li&gt;
-  &lt;li&gt;log_line_prefix
-    &lt;ul&gt;
-      &lt;li&gt;‘stderr’ log format을 사용하는 경우, log_line_prefix에 최소한 ‘%t [%p]: [%l-1] ‘(timestamp,process id,session line number)를 설정해야한다. user, dbname, application name, client ip까지 로깅하기를 원한다면, ‘%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h ‘을 사용하자.&lt;/li&gt;
-      &lt;li&gt;syslog log format을 사용하는 경우, ‘user=%u,db=%d,app=%aclient=%h ‘로 설정하자.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_min_duration_statement = 1000
-log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;추가 정보를 로깅하고 싶다면 다음의 파라메터를 활성화할수 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;log_checkpoints = on
-log_connections = on
-log_disconnections = on
-log_lock_waits = on
-log_temp_files = 0
-log_autovacuum_min_duration = 0
-log_error_verbosity = default
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;log_statement은 pgBadger로 parse되지 않으니 사용하지 않는다.&lt;/li&gt;
-  &lt;li&gt;lc_messages는 C로 한다&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lc_messages='C'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;[Note] log_min_duration_statement, log_duration 설정관련 참조
-    &lt;ul&gt;
-      &lt;li&gt;수행된 쿼리문장까지 로깅하고 싶다면 log_min_duration_statement 을 0이상으로 설정하여 사용한다. 쿼리문은 로깅하지 않고, 단지 수행시간과 횟수만 로깅하고 싶다면 log_min_duration_statement는 -1로 설정하여 disable하고, log_duration을 사용한다.&lt;/li&gt;
-      &lt;li&gt;log_min_duration_statement을 사용하면 가장 수행시간이 많이 걸리는 쿼리에 대한 레포트를 생성할수 있다.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;3-레포트생성&quot;&gt;3. 레포트생성&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ pgbadger  --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '  logfile-Wed.log
-[=============&amp;gt;           ] Parsed 1639250 bytes of 2842188 (57.68%), queries: 8
-[========================&amp;gt;] Parsed 2842188 bytes of 2842188 (100.00%), queries: 17221, events: 21
-LOG: Ok, generating html report...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;간단하게 html output을 뽑아 볼수 있다.
-&lt;img src=&quot;/wp-content/uploads/2016/06/pgbadger_out.png&quot; alt=&quot;pgbadger_out&quot; /&gt; 다른 옵션들은 필요하다면 사용해보시길.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;github 참조 &lt;a href=&quot;https://github.com/dalibo/pgbadger&quot;&gt;https://github.com/dalibo/pgbadger&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pgbadger로 PostgreSQL 로그분석레포팅하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry><entry><title type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</title><link href="http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/" rel="alternate" type="text/html" title="pg_rewind로 좀더 편해진 Streaming replication Failback" /><published>2016-06-10T00:00:00+09:00</published><updated>2016-06-10T00:00:00+09:00</updated><id>http://localhost:4000/blog/pg_rewind%EB%A1%9C%20%EC%A2%80%EB%8D%94%20%ED%8E%B8%ED%95%B4%EC%A7%84%20Streaming%20replication%20Failback</id><content type="html" xml:base="http://localhost:4000/blog/pg_rewind%EB%A1%9C-%EC%A2%80%EB%8D%94-%ED%8E%B8%ED%95%B4%EC%A7%84-Streaming-replication-Failback/">&lt;h1 id=&quot;pg_rewind로-좀더-편해진-streaming-replication-failback&quot;&gt;pg_rewind로 좀더 편해진 Streaming replication Failback&lt;/h1&gt;
-
-&lt;h3 id=&quot;pg_rewind&quot;&gt;pg_rewind&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;9.5부터 지원되는 feature이다.&lt;/li&gt;
-  &lt;li&gt;streaming replication을 사용하다가 마스터가 failure난 경우, 쉽게 슬레이브를 promote하여 서비스를 계속할수 있다. 그럼 마스터를 정상화시킨후 다시 replication의 slave로 failback할수 있는가? 디스크 폴드가 아니라서 크래시 직전까지의 데이터가 온전히 있는 경우에도 백업본 올려서 replication 재구성해야했다. 그 작업이 pg_rewind을 사용해서 단축될수 있다. pg_rewind는 소스디렉터라와 타겟디렉터리의 파일들을 sync해주는 유틸리티이다. pg_controlfile의 정보를 바탕으로 모든 data file을 동기화하는것이다. pg_rewind로 파일 싱크한뒤 recovery.conf작성하여 start하면 recovery모드로 진입해서 wal 적용하고 streaming 받기 시작한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;test&quot;&gt;TEST&lt;/h3&gt;
-
-&lt;h4 id=&quot;i-streaming-replication-구성&quot;&gt;I. streaming replication 구성&lt;/h4&gt;
-
-&lt;h5 id=&quot;1-server1-준비&quot;&gt;1. server1 준비&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/initdb --pgdata=/data1/9.5/data -W
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;2-server1-postgresqlconf&quot;&gt;2. server1 postgresql.conf&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
-port = 5435                             # (change requires restart)
-wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
-wal_log_hints = on                      # also do full page writes of non-critical updates
-archive_mode = on               # enables archiving; off, on, or always
-archive_command = 'test ! -f /backup1/9.5/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5/pg_arc/%f'            # command to use to archive a logfile segment
-max_wal_senders = 3             # max number of walsender processes
-wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
-hot_standby = on                        # &quot;on&quot; allows queries during recovery
-logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;3-server1-pg_hbaconf&quot;&gt;3. server1 pg_hba.conf&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;4-server1-start&quot;&gt;4. server1 start&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_ctl -D /data1/9.5/data start
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;5-server2-준비&quot;&gt;5. server2 준비&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pg_basebackup  -D /data1/9.5s1/data --xlog --progress --verbose -h localhost -p 5435
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;6-server2-postgresqlconf&quot;&gt;6. server2 postgresql.conf&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*'          # what IP address(es) to listen on;
-port = 5445                             # (change requires restart)
-wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
-wal_log_hints = on                      # also do full page writes of non-critical updates
-archive_mode = on               # enables archiving; off, on, or always
-archive_command = 'test ! -f /backup1/9.5s1/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5s1/pg_arc/%f'                # command to use to archive a logfile segment
-max_wal_senders = 3             # max number of walsender processes
-wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
-hot_standby = on                        # &quot;on&quot; allows queries during recovery
-logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;7-server2-pg_hbaconf&quot;&gt;7. server2 pg_hba.conf&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host    replication     postgres        ::1/128                 trust
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;8-server2-recoveryconf&quot;&gt;8. server2 recovery.conf&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;standby_mode = 'on'
-primary_conninfo = 'host=localhost port=5435'
-restore_command = 'cp /backup1/9.5/pg_arc/%f %p'
-recovery_target_timeline = 'latest'
-trigger_file = '/tmp/trigger_file_0'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;ii-failover-테스트&quot;&gt;II. failover 테스트&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;server1(port=5435) -&amp;gt; server2(port=5445)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&quot;1-master-failover하자&quot;&gt;1. master failover하자&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server 1
-touch /tmp/trigger_file_0
-@server2
-tail -f pg_log/postgresql-2016-06-10_123437.log
-pgbench -i -s 10 postgres
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;2-pg_rewind-테스트&quot;&gt;2. pg_rewind 테스트&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1
-[postgres@pgvm1 data]$ pg_ctl stop
-waiting for server to shut down.... done
-server stopped
-
-[postgres@pgvm1 data]$ pg_rewind --source-server='host=::1 port=5445 user=postgres' --target-pgdata=$PGDATA -P
-connected to server
-servers diverged at WAL position 0/220003E0 on timeline 5
-rewinding from last common checkpoint at 0/22000338 on timeline 5
-reading source file list
-reading target file list
-reading WAL in target
-need to copy 458 MB (total source directory size is 482 MB)
-469734/469734 kB (100%) copied
-creating backup label and updating control file
-Done!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;3-recoveryconf-생성&quot;&gt;3. recovery.conf 생성&lt;/h5&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;pg_rewind가 recovery.conf생성해주진 않는다&lt;/li&gt;
-  &lt;li&gt;server2꺼 recovery.done sync된것이 있으니 이걸 활용해서 변경&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ cp recovery.done recovery.conf
-[postgres@pgvm1 data]$ vi recovery.conf
-standby_mode = 'on'
-primary_conninfo = 'host=localhost port=5445'
-restore_command = 'cp /backup1/9.5s1/pg_arc/%f %p'
-recovery_target_timeline = 'latest'
-trigger_file = '/tmp/trigger_file_0'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;4-postgresqlconf-변경&quot;&gt;4. postgresql.conf 변경&lt;/h5&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;pg_rewind가 postgresql.conf를 덮어쓴다 변경해야할 파라메터들은 변경하자&lt;/li&gt;
-  &lt;li&gt;내경우엔 port랑 archive command&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ vi postgresql.conf
-listen_addresses = '*'          # what IP address(es) to listen on;
-port = 5435                             # (change requires restart)
-wal_level = hot_standby                 # minimal, archive, hot_standby, or logical
-wal_log_hints = on                      # also do full page writes of non-critical updates
-archive_mode = on               # enables archiving; off, on, or always
-archive_command = 'test ! -f /backup1/9.5/pg_arc/%f &amp;amp;&amp;amp; cp %p /backup1/9.5/pg_arc/%f'            # command to use to archive a logfile segment
-max_wal_senders = 3             # max number of walsender processes
-wal_keep_segments = 64          # in logfile segments, 16MB each; 0 disables
-hot_standby = on                        # &quot;on&quot; allows queries during recovery
-logging_collector = on          # Enable capturing of stderr and csvlog
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;5-failback&quot;&gt;5. failback&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[postgres@pgvm1 data]$ pg_ctl start
-server starting
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;6-failback-확인&quot;&gt;6. failback 확인&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@server1(new slave)
-#pg_log/로그파일 확인
-LOG:  database system was interrupted while in recovery at log time 2016-06-10 12:35:31 GMT-10
-HINT:  If this has occurred more than once some data might be corrupted and you might need to choose an earlier recovery target.
-cp: cannot stat `/backup1/9.5s1/pg_arc/00000007.history': No such file or directory
-LOG:  entering standby mode
-LOG:  restored log file &quot;00000006.history&quot; from archive
-LOG:  restored log file &quot;000000060000000000000022&quot; from archive
-cp: cannot stat `/backup1/9.5s1/pg_arc/00000005.history': No such file or directory
-LOG:  redo starts at 0/22000300
-LOG:  restored log file &quot;000000060000000000000023&quot; from archive
-LOG:  restored log file &quot;000000060000000000000024&quot; from archive
-LOG:  restored log file &quot;000000060000000000000025&quot; from archive
-LOG:  restored log file &quot;000000060000000000000026&quot; from archive
-LOG:  restored log file &quot;000000060000000000000027&quot; from archive
-LOG:  restored log file &quot;000000060000000000000028&quot; from archive
-cp: cannot stat `/backup1/9.5s1/pg_arc/000000060000000000000029': No such file or directory
-LOG:  consistent recovery state reached at 0/29B41898
-LOG:  database system is ready to accept read only connections
-LOG:  invalid record length at 0/29B41898
-LOG:  started streaming WAL from primary at 0/29000000 on timeline 6
-
-@server2(new master)
-[postgres@pgvm1 data]$ psql
-Timing is on.
-psql (9.5.1)
-Type &quot;help&quot; for help.
-
-postgres=# select * from pg_stat_replication ;
- pid  | usesysid | usename  | application_name | client_addr | client_hostname | client_port |         backend_start         | backend_xmin |   state   | sent_l ocation | write_location | flush_location | replay_location | sync_priority | sync_state
-------+----------+----------+------------------+-------------+-----------------+ -------------+-------------------------------+--------------+-----------+------- --------+----------------+----------------+-----------------+---------------+------------
- 2692 |       10 | postgres | wal_receiver1    | ::1         |                 | 48059 | 2016-06-10 12:39:21.203712+10 |              | streaming | 0/29B4 2588    | 0/29B42588     | 0/29B42588     | 0/29B418C8      |             0 | async
-(1 row)
-
-Time: 6.919 ms
-postgres=#
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="Postgres" /><summary type="html">pg_rewind로 좀더 편해진 Streaming replication Failback</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22postgres.png%22%7D" /></entry></feed>
+&lt;/ul&gt;</content><author><name>MIN KIM</name><email>fabmichaela@gmail.com</email></author><category term="MySQL" /><summary type="html">Semi-Synchronous Replication on MySQL</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22mysql.png%22%7D" /></entry></feed>

@@ -72,3 +72,8 @@ owner:
     ad-client: 'ca-pub-2669792816970567'
     ad-slot: '6147132222'
   bing-verify:
+
+# tipue_search
+tipue_search:
+  include:
+    pages: true

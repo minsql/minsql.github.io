@@ -266,9 +266,11 @@ Installing /usr/local/bin/sbtool
 Installing /usr/local/bin/make_sandbox_from_source
 Appending installation info to /usr/lib64/perl5/perllocal.pod
 ```
+
 ## MySQL binary 다운로드
 - 설치가 완료되었다면, 필요한 MySQL generic tar 본을 받도록 하자. (MySQL sandbox 는 해당 generic tar 에 대해 압축을 풀고 해당 binaries 를 이용하여 MySQL 을 구성한다.)
 - log
+
 ```
 [root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
 [root@localhost MySQL_bianries]# wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz
@@ -279,6 +281,7 @@ Appending installation info to /usr/lib64/perl5/perllocal.pod
 ## SANDBOX 로 설치
 - sandbox 를 이용하여, MySQL 을 설치해보자. (SANDBOX 는 root 가 아닌 유저로 올리게 설정되어 있지만, 테스트 용도이니 "export SANDBOX_AS_ROOT=1" 를 통해 ROOT 로 사용할 수 있도록 설정할 수 있다.)
 - 아래는 5.7.18 과 5.7.19 를 동시에 설치하는 예제이다.
+
 ```
 [root@localhost MySQL_bianries]# export SANDBOX_AS_ROOT=1
 [root@localhost MySQL_bianries]# make_sandbox /MySQL_bianries/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz 
@@ -330,9 +333,10 @@ mysql [localhost] {msandbox} ((none)) &gt; show databases;
 ```
 
 - 아래는 5.7.19 이용하는 replication 을 구성을 진행하는 예제이다.
-  - default 로 master 1대와 slave 2대로 구성되며, 이는 조절될 수 있다.</li>
-  - enable_gtid 이라는 스크립트를 통해, gtid 를 통한 replication 구성을 만들 수 있다.</li>
-  - 위의 스크립트 외에도 initialize_slaves 혹은 check_slaves 로, 초기화 및 체크를 진행할 수 있다.</li>
+  - default 로 master 1대와 slave 2대로 구성되며, 이는 조절될 수 있다.
+  - enable_gtid 이라는 스크립트를 통해, gtid 를 통한 replication 구성을 만들 수 있다.
+  - 위의 스크립트 외에도 initialize_slaves 혹은 check_slaves 로, 초기화 및 체크를 진행할 수 있다.
+  
 ```
 [root@localhost sandboxes]# make_replication_sandbox /MySQL_bianries/mysql-5.7.19-linux-glibc2.12-x86_64.tar.gz 
 installing and starting master
