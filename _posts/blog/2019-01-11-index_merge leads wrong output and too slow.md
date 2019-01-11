@@ -14,7 +14,7 @@ toc_icon: "cog"
 ---
 
 
-# Crash recovery on MySQL
+# Disable index_merge on MySQL
 
 ## Index Merge
 ![intersect-vs-sort-intersect](../../uploads/intersect-vs-sort-intersect.png)
