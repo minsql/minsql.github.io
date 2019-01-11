@@ -32,7 +32,7 @@ toc_icon: "cog"
 
 ### Reproduce schema
 
-```
+```sql
 CREATE TABLE `table1` (
   `ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
@@ -53,7 +53,7 @@ insert into table2 values (1,1,20),(2,1,20),(3,1,30),(4,2,20),(5,2,20),(6,2,30);
 
 ### Test query
 
-```
+```sql
 select * from table1 t1 where t1.ID=1 and exists (select 1 from table2 t2 where t2.c2=30 and t2.c1=t1.ID);
 ```
 
@@ -61,7 +61,7 @@ select * from table1 t1 where t1.ID=1 and exists (select 1 from table2 t2 where 
 
 ### index_merge
 
-```
+```sql
 root@localhost:test 14:42:35>SET optimizer_switch="index_merge_intersection=on";
 Query OK, 0 rows affected (0.00 sec)
 
@@ -82,7 +82,7 @@ Empty set (0.00 sec)
 
 ### index scan
 
-```
+```sql
 root@localhost:test 14:42:20>SET optimizer_switch="index_merge_intersection=off";
 Query OK, 0 rows affected (0.00 sec)
 
@@ -110,7 +110,7 @@ root@localhost:test 14:42:25>select * from table1 t1 where t1.ID=1 and exists (s
 
 ### index_merge vs composite_index
 
-```
+```sql
 root@localhost:test 14:54:59>alter table table2 add index c1_c2_index(c1, c2);
 Query OK, 0 rows affected (0.02 sec)
 Records: 0  Duplicates: 0  Warnings: 0
@@ -148,13 +148,13 @@ root@localhost:test 14:55:51>select * from table1 t1 where t1.ID=1 and exists (s
 ## Disable index_merge!
 * 잘못된 결과값을 낼수 있기때문에 아예 이 방식으로 계획이 풀리지 않게 하고 싶다.
 * my.cnf
-```
+```bash
 vi my.cnf
 optimizer_switch=index_merge_intersection=off
 
 ```
 
 * set global variable
-```
+```sql
 SET global optimizer_switch = 'index_merge_intersection=off'
 ```
