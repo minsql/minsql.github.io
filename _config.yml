@@ -38,8 +38,8 @@ read_time: true
 #  enabled: true
 #  per_page: 30 # amount of posts to show
 #  permalink: '/:num/'
-paginate: 20 # amount of posts to show
-paginate_path: "/page:num/"
+#paginate: 20 # amount of posts to show
+#paginate_path: "/page:num/"
 
 # Search
 search_full_content: true
