@@ -30,7 +30,8 @@ toc_icon: "cog"
   
 ### Reproduce bug
 
-* Reproduce schema
+### Reproduce schema
+
 ```
 CREATE TABLE `table1` (
   `ID` bigint(20) NOT NULL,
@@ -49,13 +50,17 @@ CREATE TABLE `table2` (
 insert into table1 values (1),(2);
 insert into table2 values (1,1,20),(2,1,20),(3,1,30),(4,2,20),(5,2,20),(6,2,30);
 ```
-* Test query
+
+### Test query
+
 ```
 select * from table1 t1 where t1.ID=1 and exists (select 1 from table2 t2 where t2.c2=30 and t2.c1=t1.ID);
 ```
+
 -> Correct output would be ID=1
 
-* index_merge
+### index_merge
+
 ```
 root@localhost:test 14:42:35>SET optimizer_switch="index_merge_intersection=on";
 Query OK, 0 rows affected (0.00 sec)
@@ -75,7 +80,8 @@ root@localhost:test 14:42:42>select * from table1 t1 where t1.ID=1 and exists (s
 Empty set (0.00 sec)
 ```
 
-* index scan
+### index scan
+
 ```
 root@localhost:test 14:42:20>SET optimizer_switch="index_merge_intersection=off";
 Query OK, 0 rows affected (0.00 sec)
@@ -102,7 +108,8 @@ root@localhost:test 14:42:25>select * from table1 t1 where t1.ID=1 and exists (s
 
 ```
 
-* index_merge vs composite_index
+### index_merge vs composite_index
+
 ```
 root@localhost:test 14:54:59>alter table table2 add index c1_c2_index(c1, c2);
 Query OK, 0 rows affected (0.02 sec)
@@ -144,7 +151,9 @@ root@localhost:test 14:55:51>select * from table1 t1 where t1.ID=1 and exists (s
 ```
 vi my.cnf
 optimizer_switch=index_merge_intersection=off
+
 ```
+
 * set global variable
 ```
 SET global optimizer_switch = 'index_merge_intersection=off'
