@@ -39,34 +39,15 @@ read_time: true
 #  per_page: 30 # amount of posts to show
 #  permalink: '/:num/'
 paginate: 20 # amount of posts to show
-paginate_path: "/page:num/"
-# Search
-search_full_content: true
-
-# Taxonomy pages
-category_archive_path: "/categories/#"
-tag_archive_path: "/tags/#"
-
+paginate_path: "/blog/page:num/"
 # Plugins (previously gems:)
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
-  - jekyll-seo-tag
 # page ads
 pageads: true
-
-# Front Matter Defaults
-defaults:
-  # Post defaults
-  - scope:
-      path: "_posts"
-      type: posts
-    values:
-      layout: post
-      comments: true
-      share: true
 
 # Site owner
 owner:
