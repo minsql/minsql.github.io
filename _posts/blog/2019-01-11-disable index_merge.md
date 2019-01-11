@@ -26,7 +26,7 @@ toc_icon: "cog"
 ## Known bug
 * Bug #79675  index_merge_intersection optimization causes wrong query results
   - 참조 : https://bugs.mysql.com/bug.php?id=79675
-
+* Fixed in 5.7.19, 8.0.2
   
 ### Reproduce bug
 

@@ -2,6 +2,14 @@
 
   
     {
+      "title"			: "Disable index_merge on MySQL",
+      "link"			: "http://localhost:4000/blog/disable-index_merge/",
+      "excerpt"		: "Disable index_merge on MySQL"
+    }
+  
+
+  
+    ,{
       "title"			: "Crash recovery and Data integrity on MySQL",
       "link"			: "http://localhost:4000/blog/crash-recovery-and-data-integrity-on-mysql/",
       "excerpt"		: "Crash recovery on MySQL"
@@ -573,6 +581,14 @@
   
 
   
+    ,{
+      "title"			: "Category Archive",
+      "link"			: "http://localhost:4000/categories/",
+      "excerpt"		: ""
+    }
+  
+
+  
 
   
     ,{
@@ -580,8 +596,6 @@
       "link"			: "http://localhost:4000/",
       "excerpt"		: "밥먹고 살기 힘든 부부 DBA"
     }
-  
-
   
 
   
@@ -611,7 +625,11 @@
   
 
   
-
+    ,{
+      "title"			: "Post Archive",
+      "link"			: "http://localhost:4000/posts/",
+      "excerpt"		: ""
+    }
   
 
   
@@ -620,6 +638,42 @@
 
   
 
+  
+    ,{
+      "title"			: "Tag Archive",
+      "link"			: "http://localhost:4000/tags/",
+      "excerpt"		: ""
+    }
+  
+
+  
+
+  
+
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page2/",
+      "excerpt"		: "밥먹고 살기 힘든 부부 DBA"
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page3/",
+      "excerpt"		: "밥먹고 살기 힘든 부부 DBA"
+    }
+  
+
+  
+    ,{
+      "title"			: "Latest Posts",
+      "link"			: "http://localhost:4000/page4/",
+      "excerpt"		: "밥먹고 살기 힘든 부부 DBA"
+    }
   
 
 ]
