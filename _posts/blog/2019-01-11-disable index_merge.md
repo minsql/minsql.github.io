@@ -4,10 +4,10 @@ author: min_kim
 created: 2017/03/10 05:53:18
 modified:
 layout: post
-tags: mysql, mysql-bug, mysql-optimizer
+tags: mysql mysql_bug
 image:
   feature: mysql.png
-categories: blog
+categories: MySQL
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

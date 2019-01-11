@@ -4,10 +4,10 @@ author: min_kim
 created: 2015/04/10 14:59:58
 modified:
 layout: post
-tags: Mongo
+tags: mongo
 image:
   feature: mongo.png
-categories: blog
+categories: Mongo
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

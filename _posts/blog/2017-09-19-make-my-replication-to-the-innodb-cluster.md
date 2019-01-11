@@ -4,10 +4,10 @@ author: min_kim
 created: 2017/09/19 05:29:02
 modified:
 layout: post
-tags: MySQL
+tags: mysql_innodb_cluster
 image:
   feature: mysql.png
-categories: blog
+categories: MySQL
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

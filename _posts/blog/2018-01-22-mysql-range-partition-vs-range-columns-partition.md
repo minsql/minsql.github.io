@@ -4,10 +4,10 @@ author: min_cho
 date: 2018/01/22 14:46:49
 modified:
 layout: post
-tags: MySQL
+tags: mysql mysql_partitioning
 image:
   feature: mysql.png
-categories: blog
+categories: MySQL
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

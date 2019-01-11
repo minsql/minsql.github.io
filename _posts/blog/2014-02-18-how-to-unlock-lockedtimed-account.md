@@ -4,10 +4,10 @@ author: min_kim
 created: 2014/02/18 06:26:00
 modified:
 layout: post
-tags: Oracle
+tags: oracle
 image:
   feature: oracle.png
-categories: blog
+categories: Oracle
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

@@ -4,10 +4,10 @@ author: min_kim
 created: 2015/06/12 09:47:12
 modified:
 layout: post
-tags: Postgres
+tags: postgres postgres_migration
 image:
   feature: postgres.png
-categories: blog
+categories: Postgres
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"

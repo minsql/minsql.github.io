@@ -4,10 +4,10 @@ author: min_cho
 created: 2015/03/18 20:12:54
 modified:
 layout: post
-tags: MySQL
+tags: mysql mysql_internal
 image:
   feature: mysql.png
-categories: blog
+categories: MySQL
 toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"
