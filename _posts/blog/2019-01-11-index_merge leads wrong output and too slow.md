@@ -57,7 +57,7 @@ insert into table2 values (1,1,20),(2,1,20),(3,1,30),(4,2,20),(5,2,20),(6,2,30);
 select * from table1 t1 where t1.ID=1 and exists (select 1 from table2 t2 where t2.c2=30 and t2.c1=t1.ID);
 ```
 
--> Correct output would be ID=1
+> Correct output would be ID=1
 
 ### index_merge
 
@@ -79,6 +79,7 @@ Note (Code 1003): /* select#1 */ select '1' AS `ID` from `test`.`table1` `t1` wh
 root@localhost:test 14:42:42>select * from table1 t1 where t1.ID=1 and exists (select 1 from table2 t2 where t2.c2=30 and t2.c1=t1.ID);
 Empty set (0.00 sec)
 ```
+> Empty? Incorrect result.
 
 ### index scan
 
