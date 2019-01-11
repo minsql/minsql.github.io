@@ -4,7 +4,7 @@ author: min_kim
 created: 2017/03/10 05:53:18
 modified:
 layout: post
-tags: mysql, mysql_bug, mysql_optimizer
+tags: mysql, mysql-bug, mysql-optimizer
 image:
   feature: mysql.png
 categories: blog
