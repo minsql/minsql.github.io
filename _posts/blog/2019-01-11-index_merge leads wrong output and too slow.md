@@ -148,13 +148,15 @@ root@localhost:test 14:55:51>select * from table1 t1 where t1.ID=1 and exists (s
 ## Disable index_merge!
 * 잘못된 결과값을 낼수 있기때문에 아예 이 방식으로 계획이 풀리지 않게 하고 싶다.
 * my.cnf
+
 ```bash
 vi my.cnf
 optimizer_switch=index_merge_intersection=off
 
 ```
 
-* set global variable
+* set global variable 
+
 ```sql
 SET global optimizer_switch = 'index_merge_intersection=off'
 ```
