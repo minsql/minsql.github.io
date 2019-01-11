@@ -1,7 +1,7 @@
 ---
 title: Disable index_merge on MySQL
 author: min_kim
-created: 2017/03/10 05:53:18
+created: 2019/01/11
 modified:
 layout: post
 tags: mysql mysql_bug

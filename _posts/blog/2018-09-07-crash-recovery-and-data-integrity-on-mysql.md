@@ -1,7 +1,7 @@
 ---
 title: Crash recovery and Data integrity on MySQL
 author: min_kim
-created: 2017/03/10 05:53:18
+created: 2018/09/07
 modified:
 layout: post
 tags: mysql mysql_internal

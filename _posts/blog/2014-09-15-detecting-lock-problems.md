@@ -4,7 +4,7 @@ author: min_kim
 created: 2014/09/15
 modified:
 layout: post
-tags: postgres, postgres_lock
+tags: postgres postgres_lock
 image:
   feature: postgres.png
 categories: Postgres

@@ -4,7 +4,7 @@ author: min_kim
 created: 2014/04/04 01:56:00
 modified:
 layout: post
-tags: postgres, postgres_parameters
+tags: postgres postgres_parameters
 image:
   feature: postgres.png
 categories: Postgres

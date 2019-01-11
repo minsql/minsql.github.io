@@ -4,7 +4,7 @@ author: min_kim
 created: 2014/12/10 03:01:32
 modified:
 layout: post
-tags: postgres, postgres_replication
+tags: postgres postgres_replication
 image:
   feature: postgres.png
 categories: Postgres
