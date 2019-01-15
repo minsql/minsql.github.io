@@ -38,8 +38,11 @@ $h6-min: ($base-font-size / $modular-scale-1) !default;
 $h6-max: ($base-font-size / $modular-scale-2) !default;
 
 /* Font Families */
-$serif-font-family: "Lora", serif !default;
-$sans-serif-font-family: "Source Sans Pro", sans-serif !default;
+@import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+
+$serif-font-family: "Nanum Barun Gothic", "Lora", serif !default;
+$sans-serif-font-family: "Nanum Barun Gothic", "Source Sans Pro", sans-serif !default;
 $monospace-font-family: Menlo, Consolas, Monaco, "Courier New", Courier, monospace !default;
 
 $base-font-family: $sans-serif-font-family !default;
@@ -130,3 +133,22 @@ $border-radius: 0.25rem !default;
 
 /* Global transition */
 $global-transition: all 0.4s ease !default;
+
+/* mixin */
+$white                    : #fff;
+$black                    : #000;
+$doc-font-size            : 16;
+$doc-line-height          : 24;
+$alt-font                 : "Nanum Barun Gothic", 'source-sans-pro', sans-serif;
+$gray: #7a8288 !default;
+$box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125) !default;
+/* type scale */
+$type-size-1: 2.441em !default; // ~39.056px
+$type-size-2: 1.953em !default; // ~31.248px
+$type-size-3: 1.563em !default; // ~25.008px
+$type-size-4: 1.25em !default; // ~20px
+$type-size-5: 1em !default; // ~16px
+$type-size-6: 0.75em !default; // ~12px
+$type-size-7: 0.6875em !default; // ~11px
+$type-size-8: 0.625em !default; // ~10px
+$muted-text-color: mix(#fff, $text-color, 35%) !default;
