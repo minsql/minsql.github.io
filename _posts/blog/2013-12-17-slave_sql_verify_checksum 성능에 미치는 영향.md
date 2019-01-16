@@ -10,7 +10,6 @@ image:
 categories: MySQL
 toc: true
 toc_label: "My Table of Contents"
-toc_icon: "cog"
 ---
 
 # slave_sql_verify_checksum 성능에 미치는 영향

@@ -5,7 +5,7 @@ min_cho:
 #  web: http://minsql.com
   email: makayal46@gmail.com
   bio: "멋쟁이 야구선수"
-  avatar: makayal-photo.jpg
+  picture: /images/makayal-photo.jpg
   facebook: makayal46
   linkedin: makayal46
   google:
@@ -16,7 +16,7 @@ min_kim:
   name: MIN KIM
   email: fabmichaela@gmail.com
   bio: "패뷸러스 김부인"
-  avatar: fabmichaela-photo.jpg
+  picture: /images/fabmichaela-photo.jpg
   facebook: fabmichaela
   linkedin: fabmichaela
   google:

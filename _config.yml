@@ -3,12 +3,12 @@
 title: MINSQL
 locale: ko_KR
 description: 밥먹고 살기 힘든 부부 DBA
-logo: site-logo.png
+logo: /images/site-logo.png
 search: true
 url: http://minsql.com
 
 # Jekyll configuration
-
+date_format: "%B %-d, %Y"
 permalink:   /:categories/:title/
 markdown:    kramdown
 
@@ -67,6 +67,10 @@ defaults:
       share: true
 
 # Site owner
+disqus:
+  shortname: minsql
+google_analytics: UA-56786998-2
+
 owner:
   name: MINSQL
   avatar: site-logo.png
