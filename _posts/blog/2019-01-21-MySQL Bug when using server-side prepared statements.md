@@ -16,8 +16,8 @@ toc_icon: "cog"
 
 # MySQL Bug when using server-side prepared statements
 
-## MySQL Fractional timestamp and server-side prepared statement
-- server-side prepared statement를 사용하는 경우 timestamp 의 fractional part가 binary log에 보존되## 않는다.
+## MySQL Fractional timestamp 불일치 현상
+- server-side prepared statement를 사용하는 경우 timestamp 의 fractional part가 binary log에 보존되지 않는다.
 - Reference : https://bugs.mysql.com/bug.php?id=74550
 
 ## server-side prepared statements
