@@ -55,7 +55,7 @@ public class TestConn {
             try {
                   Class.forName("com.mysql.jdbc.Driver");
                   conn = DriverManager.getConnection(
-                  "jdbc:mysql://localhost:20306/test?useServerPrepStmts=true", "myslvtest", "myslvtest"); // Test DB
+                  "jdbc:mysql://localhost:3306/test?useServerPrepStmts=true", "mytest", "mytest"); // Test DB
                   System.out.println("Connected.");
                   PreparedStatement stmt = conn.prepareStatement("INSERT INTO test_history(name,created_at) values (?,?)");
                   stmt.setString(1, "jdbc");
