@@ -1,10 +1,10 @@
 ---
-title: MySQL Bug when using server-side prepared statements
+title: MySQL explicit_defaults_for_timestamp
 author: min_kim
-created: 2019/01/21
+created: 2019/02/19
 modified:
 layout: post
-tags: mysql mysql_bug
+tags: mysql mysql_variables
 image:
   feature: mysql.png
 categories: MySQL
@@ -12,150 +12,157 @@ toc: true
 toc_label: "My Table of Contents"
 toc_icon: "cog"
 ---
+ 
+# explicit_defaults_for_timestamp 에 대해서
+> [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+> 이런 로그를 mysql error log에서 만난적이 있다면 참고하세요.
 
-
-# MySQL Bug when using server-side prepared statements
-
-## MySQL Fractional timestamp 불일치 현상
-- server-side prepared statement를 사용하는 경우 timestamp 의 fractional part가 binary log에 보존되지 않는다.
-- Reference : https://bugs.mysql.com/bug.php?id=74550
-
-## server-side prepared statements
-- JDBC connection / connection pool datasource properties 에서 useServerPrepStmts=true 로 설정한 경우, 버그에 영향을 받을 수 있다.
-
-### Reproduce bug
-#### create table
-```sql
-CREATE TABLE `test_history` (
- `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `name` varchar(20),
- `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE `test_history_fr` (
- `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(20),
- `created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
-);
+## Default Value: OFF
+## 설명
+* TIMESTAMP 컬럼의 default 속성을 제어하는 옵션이다.
+  * OFF라면, 
+    - nullable로 선언되지 않았다면, 자동으로 NOT NULL로 선언된다. 
+    - NULL을 인서트하면, 자동으로 current timestamp가 들어간다.
+    - 테이블의 첫 TIMESTAMP 컬럼이 nullable로 선언되지 않았고, default값이나, on update 속성이 선언되지 않았다면, 자동으로 DEFAULT CURRENT_TIMESTAMP and ON UPDATE CURRENT_TIMESTAMP 속성이 선언된다.
+    - 두번째 TIMESTAMP컬럼부터는,  nullable로 선언되지 않았고, default값이 선언되지 않았다면, 자동으로 DEFAULT '0000-00-00 00:00:00'로 선언된다. data insert시에 warning나오지 않는다.
+    
 ```
+root@localhost:test 12:27:45>create table timestamptest ( no int auto_increment primary key, b timestamp, c timestamp);
+Query OK, 0 rows affected (0.00 sec)
 
-#### insert
-jdbc connection 으로 데이터 입력
-
-```bash
-# vi TestConn.java
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-
-public class TestConn {
-            public static void main(String args[]) {
-            Connection conn = null;
-            try {
-                  Class.forName("com.mysql.jdbc.Driver");
-                  conn = DriverManager.getConnection(
-                  "jdbc:mysql://localhost:3306/test?useServerPrepStmts=true", "mytest", "mytest"); // Test DB
-                  System.out.println("Connected.");
-                  PreparedStatement stmt = conn.prepareStatement("INSERT INTO test_history(name,created_at) values (?,?)");
-                  stmt.setString(1, "jdbc");
-                  stmt.setTimestamp(2, new Timestamp(1548036718501L));
-                  stmt.execute();
-                  PreparedStatement stmt2= conn.prepareStatement("INSERT INTO test_history_fr(name,created_at) values (?,?)");
-                  stmt2.setString(1, "jdbc");
-                  stmt2.setTimestamp(2, new Timestamp(1548036718501L));
-                  stmt2.execute();
-                  System.out.println("Executed.");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-}
-
-# javac TestConn.java
-
-# java -cp .:/usr/share/java/mysql-connector-java.jar  TestConn
-Connected.
-Executed.
-
-```
-
-
-#### binary log
-```
-#190121 15:32:36 server id 176118997  end_log_pos 24690394 CRC32 0x9f0a3a26     Intvar
-SET INSERT_ID=1/*!*/;
-#190121 15:32:36 server id 176118997  end_log_pos 24690558 CRC32 0x18424c02     Query   thread_id=70964 exec_time=0     error_code=0
-SET TIMESTAMP=1548052356/*!*/;
-INSERT INTO test_history_fr(name,created_at) values ('jdbc','2019-01-21 11:11:58')
-/*!*/;
-
-...
-#190121 15:32:36 server id 176118997  end_log_pos 24690394 CRC32 0x9f0a3a26     Intvar
-SET INSERT_ID=1/*!*/;
-#190121 15:32:36 server id 176118997  end_log_pos 24690558 CRC32 0x18424c02     Query   thread_id=70964 exec_time=0     error_code=0
-SET TIMESTAMP=1548052356/*!*/;
-INSERT INTO test_history_fr(name,created_at) values ('jdbc','2019-01-21 11:11:58')
-/*!*/;
-
-```
-
-### data
-* @master
-
-```sql
-root@localhost:test 15:33:44>select * from test_history;
-+----+------+---------------------+
-| id | name | created_at          |
-+----+------+---------------------+
-|  1 | jdbc | 2019-01-21 11:11:59 |
-+----+------+---------------------+
+root@localhost:test 12:28:29>show create table timestamptest\G
+*************************** 1. row ***************************
+       Table: timestamptest
+Create Table: CREATE TABLE `timestamptest` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `b` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `c` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 1 row in set (0.00 sec)
 
-root@localhost:test 15:33:49>select * from test_history_fr;
-+----+------+-------------------------+
-| id | name | created_at              |
-+----+------+-------------------------+
-|  1 | jdbc | 2019-01-21 11:11:58.501 |
-+----+------+-------------------------+
+root@localhost:test 12:45:30>insert into timestamptest(no) values(null);
+Query OK, 1 row affected (0.00 sec)
+
+root@localhost:test 12:45:37>insert into timestamptest(b) values(null);
+Query OK, 1 row affected (0.00 sec)
+
+root@localhost:test 12:45:41>insert into timestamptest(c) values(null);
+Query OK, 1 row affected (0.00 sec)
+
+root@localhost:test 12:45:44>select * from timestamptest;
++----+---------------------+---------------------+
+| no | b                   | c                   |
++----+---------------------+---------------------+
+|  1 | 2019-02-19 12:45:37 | 0000-00-00 00:00:00 |
+|  2 | 2019-02-19 12:45:41 | 0000-00-00 00:00:00 |
+|  3 | 2019-02-19 12:45:44 | 2019-02-19 12:45:44 |
++----+---------------------+---------------------+
+3 rows in set (0.00 sec)
+
+```
+
+- - - strict SQL mode나  NO_ZERO_DATE SQL mode 를 사용한다면,  '0000-00-00 00:00:00'은 invalid한 것으로 주의해야한다.
+    
+```
+
+root@localhost:test 12:45:57>set sql_mode='traditional';
+Query OK, 0 rows affected (0.00 sec)
+
+root@localhost:test 12:47:43>truncate table timestamptest;
+Query OK, 0 rows affected (0.12 sec)
+
+root@localhost:test 12:47:48>insert into timestamptest(no) values(null);
+Query OK, 1 row affected (0.00 sec)
+
+root@localhost:test 12:47:50>insert into timestamptest(c) values('0000-00-00 00:00:00');
+ERROR 1292 (22007): Incorrect datetime value: '0000-00-00 00:00:00' for column 'c' at row 1
+root@localhost:test 12:47:52>select * from timestamptest;
++----+---------------------+---------------------+
+| no | b                   | c                   |
++----+---------------------+---------------------+
+|  1 | 2019-02-19 12:47:50 | 0000-00-00 00:00:00 |
++----+---------------------+---------------------+
 1 row in set (0.00 sec)
 
 ```
 
-* @slave
+- - - default로 선언된 zero date는 waring이나 error 없이 들어간다. 그런데 직접 zero date를 인서트하는 것은 sql_mode에 의해서 error가 된다. 
+* * ON이라면,
+    - TIMESTAMP컬럼 속성을 명시하지 않았을때, 혹은 NULL을 인서트했을 때, current timestamp를 자동으로 할당하지 않는다. current timestamp 사용하려면 `NOT NULL DEFAULT CURRENT_TIMESTAMP`를 사용해야한다.
+    - TIMESTAMP컬럼이 NOT NULL로 명시되었다면 NULL insert를 허용하지 않는다. 
+    - zero date의 인서트동작은 SQL mode에 따른다.
+```
+root@localhost:test 12:48:00>set explicit_defaults_for_timestamp = 1;
+Query OK, 0 rows affected (0.00 sec)
 
-```sql
-root@localhost:test 15:32:26>select * from test_history;
-+----+------+---------------------+
-| id | name | created_at          |
-+----+------+---------------------+
-|  1 | jdbc | 2019-01-21 11:11:58 |
-+----+------+---------------------+
+root@localhost:test 12:49:34>drop table timestamptest;
+Query OK, 0 rows affected (0.00 sec)
+
+root@localhost:test 12:49:51>create table timestamptest ( no int auto_increment primary key, b timestamp, c timestamp);
+Query OK, 0 rows affected (0.01 sec)
+
+root@localhost:test 12:49:52>show create table timestamptest\G
+*************************** 1. row ***************************
+       Table: timestamptest
+Create Table: CREATE TABLE `timestamptest` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `b` timestamp NULL DEFAULT NULL,
+  `c` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 1 row in set (0.00 sec)
 
-root@localhost:test 15:33:30>select * from test_history_fr;
-+----+------+-------------------------+
-| id | name | created_at              |
-+----+------+-------------------------+
-|  1 | jdbc | 2019-01-21 11:11:58.000 |
-+----+------+-------------------------+
+root@localhost:test 12:50:02>drop table timestamptest;
+Query OK, 0 rows affected (0.03 sec)
+
+root@localhost:test 12:51:29>create table timestamptest ( no int auto_increment primary key, b timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, c timestamp NOT NULL DEFAULT '0000-00-00 00:00:00');
+Query OK, 0 rows affected (0.01 sec)
+
+root@localhost:test 12:51:31>show create table timestamptest\G
+*************************** 1. row ***************************
+       Table: timestamptest
+Create Table: CREATE TABLE `timestamptest` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `b` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `c` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 1 row in set (0.00 sec)
+
+root@localhost:test 12:52:26>insert into timestamptest(no) values(null);
+Query OK, 1 row affected (0.00 sec)
+
+root@localhost:test 12:52:48>insert into timestamptest(b) values(null);
+ERROR 1048 (23000): Column 'b' cannot be null
 
 ```
+- - - NOT NULL에 default값을 선언하지 않았다면, default값은 SQL mode에 따라 다르다.
+      - strict mode라면, ERROR
+      - strict mode가 아니면 '0000-00-00 00:00:00' and warning
+      
+```
+root@localhost:test 12:57:37>create table timestamptest ( no int auto_increment primary key, b timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, c timestamp NOT NULL);
+Query OK, 0 rows affected (0.05 sec)
 
-> master, slave가 다른 timestamp 값을 가지게 된다.
+root@localhost:test 12:58:01>show create table timestamptest\G
+*************************** 1. row ***************************
+       Table: timestamptest
+Create Table: CREATE TABLE `timestamptest` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `b` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `c` timestamp NOT NULL,
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+1 row in set (0.00 sec)
 
-1. 1548036718501,즉 2019-01-21 11:11:58.501의 시간을 PreparedStatement에 넘겨주었다.
-2. master commit시, master는 timestamp(0)에 담기 위해서 데이터를 반올림한다. timestamp(3)인 경우, 그대로 저장한다.
-3. binlog에 fractional part를 truncate한 값이 쓰인다. '2019-01-21 11:11:58'
-4. slave는 truncate 된 timestamp값을 저장한다.
+root@localhost:test 13:00:47>set sql_mode='traditional';
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Warning (Code 3090): Changing sql mode 'NO_AUTO_CREATE_USER' is deprecated. It will be removed in a future release.
+root@localhost:test 13:00:54>insert into timestamptest(no) values(null);
+ERROR 1364 (HY000): Field 'c' doesn't have a default value
+```
 
 
-## Conclusion
-- Do not use Server-side prepared statement: useServerPrepStmts=false
-- ROW based replication
-- Version Upgrade, Bug fixed in 5.6.36, 5.7.18
 
