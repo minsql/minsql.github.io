@@ -15,7 +15,8 @@ toc_icon: "cog"
  
 # explicit_defaults_for_timestamp 에 대해서
 > [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
-> 이런 로그를 mysql error log에서 만난적이 있다면 참고하세요.
+
+-> 이런 로그를 mysql error log에서 만난적이 있다면 참고하세요.
 
 ## Default Value: OFF
 ## 설명
@@ -92,6 +93,7 @@ root@localhost:test 12:47:52>select * from timestamptest;
     - TIMESTAMP컬럼 속성을 명시하지 않았을때, 혹은 NULL을 인서트했을 때, current timestamp를 자동으로 할당하지 않는다. current timestamp 사용하려면 `NOT NULL DEFAULT CURRENT_TIMESTAMP`를 사용해야한다.
     - TIMESTAMP컬럼이 NOT NULL로 명시되었다면 NULL insert를 허용하지 않는다. 
     - zero date의 인서트동작은 SQL mode에 따른다.
+
 ```
 root@localhost:test 12:48:00>set explicit_defaults_for_timestamp = 1;
 Query OK, 0 rows affected (0.00 sec)
@@ -137,6 +139,7 @@ root@localhost:test 12:52:48>insert into timestamptest(b) values(null);
 ERROR 1048 (23000): Column 'b' cannot be null
 
 ```
+
 - - - NOT NULL에 default값을 선언하지 않았다면, default값은 SQL mode에 따라 다르다.
       - strict mode라면, ERROR
       - strict mode가 아니면 '0000-00-00 00:00:00' and warning
