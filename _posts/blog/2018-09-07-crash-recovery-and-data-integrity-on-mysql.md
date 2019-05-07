@@ -234,7 +234,7 @@ root@localhost:(none) 12:21:35> select count(1) from sbtest.sbtest1
 +----------+
 1 row in set (0.05 sec)
 ```
-@new Master_Bind
+@new master
 ```
 root@localhost:(none) 12:21:36>select count(1) from sbtest.sbtest1
     -> ;
