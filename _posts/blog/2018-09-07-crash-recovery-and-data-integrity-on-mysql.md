@@ -24,7 +24,7 @@ crash recovery 할때 mysql 은 innodb redo log랑 binary log 모두를 확인�
 
 ## Storage engine commit and binlog commit
 * 5.7.10이후, innodb_support_xa = 1로 무조건 활성화이다. 이 옵션은 binary_log와, redo_log 를 2 phase commit하도록 해주는데, binary log group commit을 지원하면서 무조건 활성화가 되었다. 비활성화자체가 막혀있다.
-  - 참조 : http://minsql.com/blog/semi-synchronous-replication-on-mysql/#distributed-transaction-processing-using-xa 
+  - 참조 : http://minsql.com/mysql/semi-synchronous-replication-on-mysql/#distributed-transaction-processing-using-xa 
   
   
 * 정리하면, mysql commit의 process는 다음과 같다.
