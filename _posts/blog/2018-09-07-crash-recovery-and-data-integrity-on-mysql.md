@@ -409,11 +409,24 @@ ALERT: failed to execute MySQL query: `INSERT INTO sbtest1 (id, k, c, pad) VALUE
     - 두대 구성이면 recovered data까지 복구된채로 서비스할 수도 있다. 
     - 하지만 다른 slaves 들이 있다면? 다른 slaves는 이 데이터를 가져갈 수가 없다. 점점 더 데이터는 틀어질 것이다. 
 
+## 추가테스트
+- Mysql 8.0, 동일 문제 발생
+- GTID mode, 동일 문제 발생
 
     
 ## Conclusion
 - HA solution 에 따라서 복구에 따른 대응방안을 다시한번 생각해봐야할 때이다.
 - 특히 crash master를 복구했다고 무심코 원래 replication set에 넣어버리는 경우가 많은데, 매우 주의해야한다.
-- binlog를 최대한 수집해서 new master에 적용시켜주거나..(like MHA)
-- failover하게 되었다면, crashed old master는 그냥 붙일 생각말고 재구성하거나..
-- 잘 대책을 세워보도록 하자.
+  - HA solution에 따라 다른데 dual master구조인 경우, crashed old master가 올라왔을때 master에는 전파되지만, 다른 slave에는 전파되지 않는다. log_slave_update라면, 전파된다. 그런데, 이걸 전파시키는것이 맞느냐는 의문이다. 그렇다고 binlog를 지우고 올리는 것도 안된다. crash recovery가 반쪽밖에 안되기 때문에, data loss가 발생한다. 오래된 log position으로 change master하고 skip counter를 증가시키면서 복구할수 있을까 생각했지만, 자신의 server-id, uuid의 것은 skip하기 때문에 안된다. 
+- failover하게 되었다면, crashed old master는 그냥 붙일 생각말고 재구성하는 것이 깔끔하다.
+- 살려서 기존 구성에 붙이고 싶다면, binlog position을 반드시 확인하고 data loss 발생가능성을 타진한 후에 붙여야한다.
+
+## 어떻게 하는것이 좋을까..
+- Semi-sync를 활성화한다. (loss-less)
+- most uptodate slave를 승격시킨다. (MMM은 이게 안됨, MHA는 가능)
+- 누락되는 데이터 없게 binlog를 수집해서 나머지 슬레이브들에 적용시킨다. (MHA, GTID mode로도 OK)
+- crashed old master는 disk문제로 binlog를 잃었다면 버린다.
+- 살리기 전에 binlog file size를 확인한다. (old master로부터 적용한 Read_Master_Log_Pos가 확인되는 환경이라면, position과 filesize를 비교하여 누락된 변경이 있는지 확인가능하다. 없으면 붙여도 된다. )
+- 살릴수 있으면 일단 살려본다. (dual master는 new master가 절대 old master를 바라보지 않도록 한다.stop slave해둔다.) 
+- 올라왔을때 master status 를 확인한다. binlog position이나, GTID mode라면 Executed_Gtid_Set 를 확인한다. 누락된 binlog가 없는지 확인한다.
+- 비교결과 문제 없다면 투입한다.
