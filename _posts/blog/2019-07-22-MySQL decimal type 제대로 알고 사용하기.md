@@ -44,7 +44,7 @@ toc_icon: "cog"
 - **A double-precision floating-point number is accurate to approximately 15 decimal places.**
   - https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html
 
-## Decimal사용시 주의할점
+## Exact-value vs. Approximate-value numeric literals
 - Approximate-value numeric literals을 사용하면 근사값이다.
 
 ```
@@ -69,6 +69,7 @@ root@localhost:test 18:51:17>select 1.2345678901234563e-1, 1.2345678901234564e-1
 
 - test : 17번째 자리수의 값을 0-9로 변화시켜본다.
 - table column의 데이터type을 decimal로 생성했다고 해서 decimal로 정확한 값을 저장하는 것이 아니다. 지수표현을 사용했다면 double의 accuracy를 가지는 근사치를 저장한다.
+
 ```
 create table t1 (
 id int AUTO_INCREMENT PRIMARY KEY,
