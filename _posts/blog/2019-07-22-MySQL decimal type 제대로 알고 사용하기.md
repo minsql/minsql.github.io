@@ -37,10 +37,10 @@ toc_icon: "cog"
 - 정확한 값을 다루고 계산하려면 Decimal타입을 사용한다.
 - 단, precision, scale(M,D)자릿수를 정확하게 정의하도록 한다.
 
-## MySQL Float, Double의 accuracy?
+## MySQL Float, Double의 accuracy
 - 근사값이다!
 - Float는 4bytes, Double은 8bytes
-- Double에서 대략 15자리까지만 정확하다.(?)
+- Double에서 대략 15자리까지만 정확하다.(*)
 - **A double-precision floating-point number is accurate to approximately 15 decimal places.**
   - https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html
 
