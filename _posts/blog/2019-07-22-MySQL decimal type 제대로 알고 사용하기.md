@@ -46,6 +46,7 @@ toc_icon: "cog"
 
 ## Decimal사용시 주의할점
 - Approximate-value numeric literals을 사용하면 근사값이다.
+
 ```
 root@localhost:test 18:47:42>select 1.234567890123456e-1;
 +----------------------+
@@ -62,59 +63,75 @@ root@localhost:test 18:51:17>select 1.2345678901234563e-1, 1.2345678901234564e-1
 |   0.12345678901234564 |   0.12345678901234564 |   0.12345678901234565 |   0.12345678901234566 |   0.12345678901234566 |
 +-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
 1 row in set (0.00 sec)
-
-
 ```
+
 -> 17번째 소수점 자리를 정확하게 저장하는 것을 보장하지 않는다.
 
+- test : 17번째 자리수의 값을 0-9로 변화시켜본다.
+- table column의 데이터type을 decimal로 생성했다고 해서 decimal로 정확한 값을 저장하는 것이 아니다. 지수표현을 사용했다면 double의 accuracy를 가지는 근사치를 저장한다.
 ```
 create table t1 (
 id int AUTO_INCREMENT PRIMARY KEY,
-dtype varchar(10),
-preciseval decimal(24,17) not null
+exact_val decimal(24,18),
+exponent_val decimal(24,18) not null
 );
 
-insert into t1(dtype, preciseval) values('approx', 0.12345678901234564e0);
-insert into t1(dtype, preciseval) values('approx', 0.12345678901234565e0);
-insert into t1(dtype, preciseval) values('approx', 0.12345678901234566e0);
-insert into t1(dtype, preciseval) values('approx', 0.12345678901234567e0);
-insert into t1(dtype, preciseval) values('approx', 0.12345678901234568e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234560, 0.12345678901234560e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234561, 0.12345678901234561e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234562, 0.12345678901234562e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234563, 0.12345678901234563e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234564, 0.12345678901234564e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234565, 0.12345678901234565e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234566, 0.12345678901234566e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234567, 0.12345678901234567e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234568, 0.12345678901234568e0);
+insert into t1(exact_val, exponent_val) values(0.12345678901234569, 0.12345678901234569e0);
 
+insert into t1(exact_val, exponent_val) values(0.92345678901234560, 0.92345678901234560e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234561, 0.92345678901234561e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234562, 0.92345678901234562e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234563, 0.92345678901234563e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234564, 0.92345678901234564e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234565, 0.92345678901234565e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234566, 0.92345678901234566e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234567, 0.92345678901234567e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234568, 0.92345678901234568e0);
+insert into t1(exact_val, exponent_val) values(0.92345678901234569, 0.92345678901234569e0);
 
-insert into t1(dtype, preciseval) values('exact', 0.12345678901234564);
-insert into t1(dtype, preciseval) values('exact', 0.12345678901234565);
-insert into t1(dtype, preciseval) values('exact', 0.12345678901234566);
-insert into t1(dtype, preciseval) values('exact', 0.12345678901234567);
-insert into t1(dtype, preciseval) values('exact', 0.12345678901234568);
-
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234563e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234564e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234565e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234566e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234567e-1);
-
-root@localhost:test 19:16:48>select * from t1;
-+----+--------+---------------------+
-| id | dtype  | preciseval          |
-+----+--------+---------------------+
-|  1 | approx | 0.12345678901234564 |
-|  2 | approx | 0.12345678901234565 |
-|  3 | approx | 0.12345678901234566 |
-|  4 | approx | 0.12345678901234566 |
-|  5 | approx | 0.12345678901234568 |
-|  6 | exact  | 0.12345678901234564 |
-|  7 | exact  | 0.12345678901234565 |
-|  8 | exact  | 0.12345678901234566 |
-|  9 | exact  | 0.12345678901234567 |
-| 10 | exact  | 0.12345678901234568 |
-| 11 | approx | 0.12345678901234564 |
-| 12 | approx | 0.12345678901234564 |
-| 13 | approx | 0.12345678901234565 |
-| 14 | approx | 0.12345678901234566 |
-| 15 | approx | 0.12345678901234566 |
-+----+--------+---------------------+
-15 rows in set (0.00 sec)
-
+root@localhost:test 22:00:31>select id, exact_val, exponent_val, exact_val=exponent_val from t1;
++----+----------------------+----------------------+------------------------+
+| id | exact_val            | exponent_val         | exact_val=exponent_val |
++----+----------------------+----------------------+------------------------+
+|  1 | 0.123456789012345600 | 0.123456789012345600 |                      1 |
+|  2 | 0.123456789012345610 | 0.123456789012345610 |                      1 |
+|  3 | 0.123456789012345620 | 0.123456789012345620 |                      1 |
+|  4 | 0.123456789012345630 | 0.123456789012345640 |                      0 |
+|  5 | 0.123456789012345640 | 0.123456789012345640 |                      1 |
+|  6 | 0.123456789012345650 | 0.123456789012345650 |                      1 |
+|  7 | 0.123456789012345660 | 0.123456789012345660 |                      1 |
+|  8 | 0.123456789012345670 | 0.123456789012345660 |                      0 |
+|  9 | 0.123456789012345680 | 0.123456789012345680 |                      1 |
+| 10 | 0.123456789012345690 | 0.123456789012345690 |                      1 |
+| 11 | 0.923456789012345600 | 0.923456789012345600 |                      1 |
+| 12 | 0.923456789012345610 | 0.923456789012345600 |                      0 |
+| 13 | 0.923456789012345620 | 0.923456789012345600 |                      0 |
+| 14 | 0.923456789012345630 | 0.923456789012345600 |                      0 |
+| 15 | 0.923456789012345640 | 0.923456789012345600 |                      0 |
+| 16 | 0.923456789012345650 | 0.923456789012345600 |                      0 |
+| 17 | 0.923456789012345660 | 0.923456789012345600 |                      0 |
+| 18 | 0.923456789012345670 | 0.923456789012345600 |                      0 |
+| 19 | 0.923456789012345680 | 0.923456789012345600 |                      0 |
+| 20 | 0.923456789012345690 | 0.923456789012345700 |                      0 |
++----+----------------------+----------------------+------------------------+
+20 rows in set (0.00 sec)
 ```
+
+-> Exact-value numeric로 표현한 값과, 지수표현을 사용한 Approximate-value numeric literals을 decimal(24,18)에 저장해보았다.
+- 지수표현을 사용한 경우에는 의도한 값이 제대로 반영되지 않았다는 것을 확인할 수 있다.
+- id 20의 값을 비교해보자, 0.92345678901234569e0의 값을 입력한 것인데, 15자리까지는 정확하지만, 16,17자리는 입력한 값과 다름.
+
+
+
+## Decimal 사용시 주의할 점
 - Approximate-value numeric literals 지수표현을 사용한 value를 DECIMAL에 저장한다면? 정확하게 저장되지 않을 수있다.
 - Exact-value numeric literals만을 사용해야한다.
