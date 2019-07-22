@@ -73,11 +73,13 @@ id int AUTO_INCREMENT PRIMARY KEY,
 dtype varchar(10),
 preciseval decimal(24,17) not null
 );
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234563e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234564e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234565e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234566e-1);
-insert into t1(dtype, preciseval) values('approx', 1.2345678901234567e-1);
+
+insert into t1(dtype, preciseval) values('approx', 0.12345678901234564e0);
+insert into t1(dtype, preciseval) values('approx', 0.12345678901234565e0);
+insert into t1(dtype, preciseval) values('approx', 0.12345678901234566e0);
+insert into t1(dtype, preciseval) values('approx', 0.12345678901234567e0);
+insert into t1(dtype, preciseval) values('approx', 0.12345678901234568e0);
+
 
 insert into t1(dtype, preciseval) values('exact', 0.12345678901234564);
 insert into t1(dtype, preciseval) values('exact', 0.12345678901234565);
@@ -85,23 +87,33 @@ insert into t1(dtype, preciseval) values('exact', 0.12345678901234566);
 insert into t1(dtype, preciseval) values('exact', 0.12345678901234567);
 insert into t1(dtype, preciseval) values('exact', 0.12345678901234568);
 
+insert into t1(dtype, preciseval) values('approx', 1.2345678901234563e-1);
+insert into t1(dtype, preciseval) values('approx', 1.2345678901234564e-1);
+insert into t1(dtype, preciseval) values('approx', 1.2345678901234565e-1);
+insert into t1(dtype, preciseval) values('approx', 1.2345678901234566e-1);
+insert into t1(dtype, preciseval) values('approx', 1.2345678901234567e-1);
 
-root@localhost:test 19:00:54>select * from t1;
+root@localhost:test 19:16:48>select * from t1;
 +----+--------+---------------------+
 | id | dtype  | preciseval          |
 +----+--------+---------------------+
 |  1 | approx | 0.12345678901234564 |
-|  2 | approx | 0.12345678901234564 |
-|  3 | approx | 0.12345678901234565 |
+|  2 | approx | 0.12345678901234565 |
+|  3 | approx | 0.12345678901234566 |
 |  4 | approx | 0.12345678901234566 |
-|  5 | approx | 0.12345678901234566 |
+|  5 | approx | 0.12345678901234568 |
 |  6 | exact  | 0.12345678901234564 |
 |  7 | exact  | 0.12345678901234565 |
 |  8 | exact  | 0.12345678901234566 |
 |  9 | exact  | 0.12345678901234567 |
 | 10 | exact  | 0.12345678901234568 |
+| 11 | approx | 0.12345678901234564 |
+| 12 | approx | 0.12345678901234564 |
+| 13 | approx | 0.12345678901234565 |
+| 14 | approx | 0.12345678901234566 |
+| 15 | approx | 0.12345678901234566 |
 +----+--------+---------------------+
-10 rows in set (0.00 sec)
+15 rows in set (0.00 sec)
 
 ```
 - Approximate-value numeric literals 지수표현을 사용한 value를 DECIMAL에 저장한다면? 정확하게 저장되지 않을 수있다.
