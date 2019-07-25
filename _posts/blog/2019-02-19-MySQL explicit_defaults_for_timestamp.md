@@ -193,7 +193,7 @@ alter table timestamptest modify `b` timestamp NOT NULL DEFAULT CURRENT_TIMESTAM
 - master와 slave의 explicit_defaults_for_timestamp값이 다르다면 default절이 서로 다르게 생성될수 있으므로, MySQL이 일부러 이 문장을 남긴다.
 
 ### 여기서 주의할 점!!
-1. 만약 session level에서 explicit_defaults_for_timestamp을 조정하고,테이블을 생성하거나,변경했다면 문제가 될 수 있다.
+- 1) 만약 session level에서 explicit_defaults_for_timestamp을 조정하고,테이블을 생성하거나,변경했다면 문제가 될 수 있다.
 
 ```
 root@localhost:test 11:08:50>set session explicit_defaults_for_timestamp=1;
@@ -227,10 +227,9 @@ alter table timestamptest modify `c` timestamp NOT NULL DEFAULT CURRENT_TIMESTAM
 /*!*/;
 ```
 
+- 2) `SET @@session.explicit_defaults_for_timestamp=1/*!*/;` 설정이 binary log에 남게되고, slave는 이를 reply하게 된다. 지금부터 slave의 sql_thread는 explicit_defaults_for_timestamp가 1인 상태로 돌게된다.
 
-2. `SET @@session.explicit_defaults_for_timestamp=1/*!*/;` 설정이 binary log에 남게되고, slave는 이를 reply하게 된다. 지금부터 slave의 sql_thread는 explicit_defaults_for_timestamp가 1인 상태로 돌게된다.
-
-3. 이때 master에서 explicit_defaults_for_timestamp=0인 세션에서 timestamp값에 null을 인서트하려고 한다면?
+- 3) 이때 master에서 explicit_defaults_for_timestamp=0인 세션에서 timestamp값에 null을 인서트하려고 한다면?
 
 ```
 root@localhost:test 11:17:23>set session explicit_defaults_for_timestamp=0;
@@ -240,7 +239,7 @@ root@localhost:test 11:22:07>insert into timestamptest(b,c) values(now(),null);
 Query OK, 1 row affected (0.00 sec)
 ```
 
-4. master에서는 OK이지만, slave에서 explicit_defaults_for_timestamp로 동작하기때문에 binlog_format이 MIXED or STATEMENT라면 해당 insert를 수행하지 못하고 ERROR가 나게된다.
+- 4) master에서는 OK이지만, slave에서 explicit_defaults_for_timestamp로 동작하기때문에 binlog_format이 MIXED or STATEMENT라면 해당 insert를 수행하지 못하고 ERROR가 나게된다.
 
 
 ```
@@ -255,9 +254,10 @@ root@localhost:test 11:22:41>show slave status\G
                    Last_Error: Error 'Column 'c' cannot be null' on query. Default database: 'test'. Query: 'insert into timestamptest(b,c) values(now(),null)'
 ```
 
-5. slave를 다시 시작해주어야한다. 그럼 global 변수값으로 다시 동작하게 되니 문장을 실행할 수 있게된다.
+- 5) slave를 다시 시작해주어야한다. 그럼 global 변수값으로 다시 동작하게 되니 문장을 실행할 수 있게된다.
 
 - 참고로, binlog_format이 ROW라면, 다음과 같이  row format으로 binlog가 남기때문에 문제 없다.
+
 ```
 # at 3666093
 #190725 11:17:32 server id 1  end_log_pos 3666141 CRC32 0x44febd19      Write_rows: table id 348 flags: STMT_END_F
