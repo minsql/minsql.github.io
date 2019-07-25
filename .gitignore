@@ -4,3 +4,8 @@ _site
 */.DS_Store
 .DS_Store
 _site/feed.xml
+*.xml
+_site/index.html
+_site/robots.txt
+_site/search.json
+_site/tags/index.html
