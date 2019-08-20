@@ -1,5 +1,5 @@
 ---
-title: ALTER TABLE ALGORITHM=INSTANT 옵션
+title: SET PERIST 구문
 author: min_cho
 created: 2019/08/20
 modified:
