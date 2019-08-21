@@ -21,18 +21,19 @@ toc_icon: "cog"
   - SQL 주석을 통한 Hint 제어로, MySQL에 의존적인 구문을 사용하지 않아 이기종간의 호환성을 유지한다.
   - ORMapper 를 이용한 Query 생성시 주석을 통해 Hint를 SET 시켜 쿼리를 통제할 수 있다.
   - 추가적인 Hint 로서, 조금 더 세밀한 조인 오더를 만들 수 있다.
+   ```txt
    A. JOIN_FIXED_ORDER : STRAIGHT_JOIN 구문을 대체하며, 이는 조인순서를 강제한다.
    B. JOIN_ORDER : 가능하다면, 나열된 join 순서로 조인할것을 권고한다. (USE INDEX와 비슷하게 아주 불합리할 경우 사용하지 않는다.)
    C. JOIN_PREFIX : 처음의 조인순서를 권고한다.
    D. JOIN_SUFFIX: : 마지막의 조인순서를 권고한다.
-
+   ```
  2. Hint를 통한 쿼리 runtime시 session variable 조절
   - 특정 쿼리에 대해서는 설정되어 있는 variable 보다 많은 값이 필요할때가 있다. 이러한 경우 기존에는 아래와 같은 구문을 사용하였지만, 8.0부터는 SET_VAR hint로 query 실행 시점에서 조절할 수 있다.
    ```sql
-      SET @saved_val = @@SESSION.var_name;
-      SET @@SESSION.var_name = value;
-      SELECT ...
-      SET @@SESSION.var_name = @saved_val;
+   SET @saved_val = @@SESSION.var_name;
+   SET @@SESSION.var_name = value;
+   SELECT ...
+   SET @@SESSION.var_name = @saved_val;
    ```
  3. 기존의 5.7 optimzer hint 외에 다음과 같은 hint가 추가되었다.
   - INDEX_MERGE, NO_INDEX_MERGE : 옵티마이져에게 실행계획에 INDEX MERGE 혹은 그 반대의 경우를 권고할 수 있다.
