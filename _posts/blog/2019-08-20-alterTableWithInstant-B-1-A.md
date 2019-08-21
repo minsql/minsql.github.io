@@ -1,5 +1,5 @@
 ---
-title: ALTER TABLE ALGORITHM=INSTANT 옵션
+title: MySQL 8.0 - ALTER TABLE ALGORITHM=INSTANT 옵션
 author: min_cho
 created: 2019/08/20
 modified:

@@ -1,5 +1,5 @@
 ---
-title: SET PERIST 구문
+title: MySQL 8.0 - SET PERIST 구문
 author: min_cho
 created: 2019/08/20
 modified:
