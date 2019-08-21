@@ -17,7 +17,6 @@ toc_icon: "cog"
 - MySQL 8.0은 이전 버젼보다 훨씬 강력하고 편의성이 강한 Optimizer hint를 제공한다. 새롭게 추가된 Hint 중 유용한 Hint는 다음과 같다.
  1. Hint를 통한 테이블 조인 순서 통제.
   > 기존의 join 순서를 제어하던 STRAIGHT_JOIN 구문등은 사용상의 여러 문제를 만들어 냈지만, 8.0 의 Optimizer hint를 통해 해결하게 되었다.
-
   - SQL 주석을 통한 Hint 제어로, MySQL에 의존적인 구문을 사용하지 않아 이기종간의 호환성을 유지한다.
   - ORMapper 를 이용한 Query 생성시 주석을 통해 Hint를 SET 시켜 쿼리를 통제할 수 있다.
   - 추가적인 Hint 로서, 조금 더 세밀한 조인 오더를 만들 수 있다.
