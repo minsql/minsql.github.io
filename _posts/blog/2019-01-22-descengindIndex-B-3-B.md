@@ -37,39 +37,39 @@ toc_icon: "cog"
 
 ### 5.7
 
-- ```sql
-  mysql 5.7 [localhost] {msandbox} (test) > create table tbl_alter (a int primary key auto_increment, b int, c int, d varchar(40));
-  Query OK, 0 rows affected (0.03 sec)
+    ```sql
+    mysql 5.7 [localhost] {msandbox} (test) > create table tbl_alter (a int primary key auto_increment, b int, c int, d varchar(40));
+    Query OK, 0 rows affected (0.03 sec)
 
-  mysql 5.7 [localhost] {msandbox} (test) > insert into tbl_alter (b,c,d)  select round(rand()*10)+1, round(rand()*1000)+1, uuid()
-   from information_schema.columns A1, information_schema.columns B2 limit 5000;
-  Query OK, 5000 rows affected (0.22 sec)
-  Records: 5000  Duplicates: 0  Warnings: 0
+    mysql 5.7 [localhost] {msandbox} (test) > insert into tbl_alter (b,c,d)  select round(rand()*10)+1, round(rand()*1000)+1, uuid()
+     from information_schema.columns A1, information_schema.columns B2 limit 5000;
+    Query OK, 5000 rows affected (0.22 sec)
+    Records: 5000  Duplicates: 0  Warnings: 0
 
-  mysql 5.7 [localhost] {msandbox} (test) > explain select c,b from tbl_alter order by c desc, b asc limit 10;
-  +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
-  | id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra          |
-  +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
-  |  1 | SIMPLE      | tbl_alter | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 4999 |   100.00 | Using filesort |
-  +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
-  1 row in set, 1 warning (0.00 sec)
+    mysql 5.7 [localhost] {msandbox} (test) > explain select c,b from tbl_alter order by c desc, b asc limit 10;
+    +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
+    | id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra          |
+    +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
+    |  1 | SIMPLE      | tbl_alter | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 4999 |   100.00 | Using filesort |
+    +----+-------------+-----------+------------+------+---------------+------+---------+------+------+----------+----------------+
+    1 row in set, 1 warning (0.00 sec)
 
-  mysql 5.7 [localhost] {msandbox} (test) > alter table tbl_alter add index compositeOrder_idx (c desc, b asc);
-  Query OK, 0 rows affected (0.03 sec)
-  Records: 0  Duplicates: 0  Warnings: 0
+    mysql 5.7 [localhost] {msandbox} (test) > alter table tbl_alter add index compositeOrder_idx (c desc, b asc);
+    Query OK, 0 rows affected (0.03 sec)
+    Records: 0  Duplicates: 0  Warnings: 0
 
-  mysql 5.7 [localhost] {msandbox} (test) > explain  select c,b from tbl_alter order by c desc, b asc limit 10;
-  +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
-  | id | select_type | table     | partitions | type  | possible_keys | key                | key_len | ref  | rows | filtered | Extra                       |
-  +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
-  |  1 | SIMPLE      | tbl_alter | NULL       | index | NULL          | compositeOrder_idx | 10      | NULL | 4999 |   100.00 | Using index; Using filesort |
-  +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
-  1 row in set, 1 warning (0.00 sec)
-  ```
+    mysql 5.7 [localhost] {msandbox} (test) > explain  select c,b from tbl_alter order by c desc, b asc limit 10;
+    +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
+    | id | select_type | table     | partitions | type  | possible_keys | key                | key_len | ref  | rows | filtered | Extra                       |
+    +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
+    |  1 | SIMPLE      | tbl_alter | NULL       | index | NULL          | compositeOrder_idx | 10      | NULL | 4999 |   100.00 | Using index; Using filesort |
+    +----+-------------+-----------+------------+-------+---------------+--------------------+---------+------+------+----------+-----------------------------+
+    1 row in set, 1 warning (0.00 sec)
+    ```
 
 ### 8.0
 
-- ```sql
+  ```sql
   mysql 8.0 [localhost] {msandbox} (test) > create table tbl_alter (a int primary key auto_increment, b int, c int, d varchar(40));
   Query OK, 0 rows affected (0.07 sec)
 
