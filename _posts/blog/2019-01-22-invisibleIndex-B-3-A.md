@@ -1,5 +1,5 @@
 ---
-title: MySQL 8.0 - INVISIBLE INDEX
+title: MySQL 8.0 - Invisible Index
 author: min_cho
 created: 2019/01/14
 modified:
