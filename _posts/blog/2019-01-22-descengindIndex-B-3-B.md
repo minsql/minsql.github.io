@@ -37,7 +37,7 @@ toc_icon: "cog"
 
 ### 5.7
 
-  ```sql
+- ```sql
   mysql 5.7 [localhost] {msandbox} (test) > create table tbl_alter (a int primary key auto_increment, b int, c int, d varchar(40));
   Query OK, 0 rows affected (0.03 sec)
 
@@ -69,7 +69,7 @@ toc_icon: "cog"
 
 ### 8.0
 
-  ```sql
+- ```sql
   mysql 8.0 [localhost] {msandbox} (test) > create table tbl_alter (a int primary key auto_increment, b int, c int, d varchar(40));
   Query OK, 0 rows affected (0.07 sec)
 
