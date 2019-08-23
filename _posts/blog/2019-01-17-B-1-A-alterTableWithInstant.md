@@ -4,7 +4,7 @@ author: min_cho
 created: 2019/01/17
 modified:
 layout: post
-tags: mysql mysql8
+tags: mysql
 image:
   feature: mysql.png
 categories: MySQL8
