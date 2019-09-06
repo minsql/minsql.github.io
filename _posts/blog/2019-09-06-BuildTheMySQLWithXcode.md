@@ -59,7 +59,7 @@ $ pwd
 
 
 
-# sudo /usr/bin/xcode-select --switch /Users/MinCHO/CM/Xcode.app/
+$ sudo /usr/bin/xcode-select --switch /Users/MinCHO/CM/Xcode.app/
 
 $ cmake .. -G Xcode \
 -DCMAKE_INSTALL_PREFIX=/Users/MinCHO/CM/MySQL_debug/8.0.17/bin \
@@ -102,4 +102,5 @@ CMake Warning:
 -- Build files have been written to: /Users/MinCHO/CM/MySQL_debug/8.0.17/src/mysql-8.0.17/bld
 ```
 
-Xcode project 를 열어 build 한 후, "command + shift + ," 를 눌러 mysqld 를 (--initialize-insecure)[https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_initialize-insecure] 인자와 함께 한번 실행 후, 다음번부터는 제거 한다.
+* Xcode project 를 열어 build 한 후, "command + shift + ," 를 눌러 mysqld 를 --initialize-insecure  인자와 함께 한번 실행 후, 다음번부터는 제거 한다.
+ * https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_initialize-insecure
