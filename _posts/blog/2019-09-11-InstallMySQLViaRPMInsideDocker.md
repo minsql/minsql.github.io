@@ -13,6 +13,7 @@ toc_label: "My Table of Contents"
 toc_icon: "cog"
 ---
 
+------
 # 주의사항
  * 해당 스크립트는 MySQL Debugging 을 위해 debug버젼을 compile하는데 목적이 있음으로 OS root유저로 진행한다. 사용을 위해서는 정상적인 절차 (mysql user 생성 / systemd 등록..) 를 진행한다.
  * 5.7 과 8.0은 명령어가 조금 다른데, 해당이유는 8.0을 compile 하기 위해서는 cmake 버젼과 gcc 버젼을 올려줘야 한다.
