@@ -17,6 +17,8 @@ toc_icon: "cog"
 # 주의사항
  * 해당 스크립트는 MySQL Debugging 을 위해 debug버젼을 compile하는데 목적이 있음으로 OS root유저로 진행한다. 사용을 위해서는 정상적인 절차 (mysql user 생성 / systemd 등록..) 를 진행한다.
  * 5.7 과 8.0은 명령어가 조금 다른데, 해당이유는 8.0을 compile 하기 위해서는 cmake 버젼과 gcc 버젼을 올려줘야 한다.
+  * cmake >= 3.0  
+  * GCC >= 4.8 (C++ 11) (MySQL 5.7의 경우, GCC >= 4.4)
  * 8.0 compile시, `fatal error: ld terminated with signal 9 [Killed]` 라는 에러가 발생했는데 이는 docker가 사용했던 메모리가 부족 (2GiB)하여 발생되었다. oom 세팅과 메모리를 4GiB로 올린 후 문제는 발생하지 않았다.
  * _windows 는 깔끔하게 mysql_debug binary를 받아서 사용하면 된다. :-)_
 
