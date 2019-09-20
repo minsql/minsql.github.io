@@ -18,7 +18,7 @@ toc_icon: "cog"
 
 
 ## ALTER TABLE .. convert to character set
-* Converting a character set
+* [Converting a character set](https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html)
   - inplace : NO
   - Rebuild Table : YES
   - Permits DDL : No
@@ -123,4 +123,3 @@ done
 ```
 alter table your_no_pk_table convert to character set utf8mb4 collate utf8mb4_general_ci, ROW_FORMAT=DYNAMIC;
 ```
-
