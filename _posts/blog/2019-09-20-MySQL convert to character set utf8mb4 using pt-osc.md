@@ -18,7 +18,7 @@ toc_icon: "cog"
 
 
 ## ALTER TABLE .. convert to character set
-* [Converting a character set](https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html)
+* [Converting a character set](https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html#online-ddl-table-operations)
   - inplace : NO
   - Rebuild Table : YES
   - Permits DDL : No
