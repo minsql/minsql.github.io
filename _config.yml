@@ -55,7 +55,7 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 # page ads
-pageads: true
+pageads: false
 defaults:
   # Post defaults
   - scope:
