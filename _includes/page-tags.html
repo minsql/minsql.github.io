@@ -18,5 +18,5 @@
       <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label }}</h4></header>
       {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="toc__menu" %}
     </nav>
-{% if site.pageads == true %}{% include ad-sidebar.html %}<!-- /.google-ads -->{% endif %}
+{% if site.pageads == true %}<!-- {% include ad-sidebar.html %}<!-- /.google-ads -->{% endif %}
 {% endif %}
