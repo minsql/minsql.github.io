@@ -37,7 +37,7 @@ mysqlslap --login-path=local --delimiter=";"  --query="replace into test2.seq_t1
 
 ```
 begin;
-select * from t1;
+select count(1) from ttt;
 ```
 
 - 어마어마하게 history length 증가함
