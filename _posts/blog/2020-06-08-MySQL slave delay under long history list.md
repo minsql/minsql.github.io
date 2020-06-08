@@ -34,6 +34,7 @@ mysqlslap --login-path=local --delimiter=";"  --query="replace into test2.seq_t1
 
 * Slave
 - 아무생각없이 트랜잭션 열고 아무 테이블이나 access한다.
++ set autocommit=0; select ..하는 것도 동일한 결과. 툴이나 Application에서 session 열때 autocommit=0을 사용하는 경우가 많으니 이때도 주의한다.
 
 ```
 begin;
@@ -97,3 +98,4 @@ root@localhost:test 11:29:03>select name, count from information_schema.INNODB_M
 * Slave에서 repeatable_read 를 써야하나? 
 * tranasction을 잘 닫자.
 * transaction을 짧게 가져가자.
+* history length를 모니터링한다. 10k넘으면 hangup 전조증상임.
