@@ -1,5 +1,5 @@
 ---
-title: MySQL 8.0 - 추가된 GIS functions
+title: MySQL 8.0 - 기본 CharacterSet 의 변경
 author: min_cho
 created: 2019/01/20
 modified:
