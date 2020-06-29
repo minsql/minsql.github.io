@@ -28,7 +28,7 @@ toc_icon: "cog"
 -----------
 
 
-# 재현스크립트
+## 재현스크립트
 ```sql
 
 -- partition table 생성
