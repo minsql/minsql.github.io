@@ -20,9 +20,11 @@ toc_icon: "cog"
 
 * 재현결과 다음과 같은 상황에서 문제의 메세지가 나타날 수 있음을 확인
 ```
-  1. session1> begin; select .. from some_tbl;
-  2. session2> alter table some_tbl add partition...
-  3. session1> insert into some_tbl...;
+session1> begin; select .. from some_tbl;
+
+    session2> alter table some_tbl add partition...
+
+session1> insert into some_tbl...;
 ```
 
 -----------
@@ -61,7 +63,7 @@ Empty set (0.00 sec)
           +-------------+---------------+-------------+-------------+-------------+-----------+----------------+------------------+
           1 row in set (0.00 sec)
 
-          ^^^^^ begin; select로 인해 해당 테이블 변경할 수 없도록 SHARED_READ lock 획득
+          ^^^^^ begin; select로 인해 해당 테이블 다른세션에서 변경작업 할 수 없도록 SHARED_READ lock 획득
 
 
      -- session 2
