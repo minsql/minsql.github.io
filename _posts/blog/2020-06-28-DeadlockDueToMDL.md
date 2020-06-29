@@ -29,7 +29,7 @@ toc_icon: "cog"
 
 
 # 재현스크립트
-``sql
+```sql
 
 -- partition table 생성
 
