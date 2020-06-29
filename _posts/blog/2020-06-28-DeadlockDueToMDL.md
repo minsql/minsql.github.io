@@ -19,13 +19,13 @@ toc_icon: "cog"
 * 해당 Message가 InnoDB 에서 발생시킨것이 아닐 수 있다는 의심을 하게 되었고, 공교롭게 해당 메세지를 받은 시간이 partition 작업이 이루어졌다는 점에서 Meta Data lock이 해당 메세지를 발생시킬 수 있다는 의구심을 갖게 됨.
 
 * 재현결과 다음과 같은 상황에서 문제의 메세지가 나타날 수 있음을 확인
-```
-session1> begin; select .. from some_tbl;
 
-    session2> alter table some_tbl add partition...
+> session1> begin; select .. from some_tbl;
 
-session1> insert into some_tbl...;
-```
+>> session2> alter table some_tbl add partition...
+
+> session1> insert into some_tbl...;
+
 
 -----------
 
