@@ -226,6 +226,11 @@ $ pg_ctl start
 ```
 $ repmgr standby register 
 $ repmgr cluster show
+
+ID | Name                      | Role    | Status    | Upstream | Location | Priority | Timeline | Connection string
+----+---------------------------+---------+-----------+----------+----------+----------+----------+-----------------------------------------------------------------------------
+1  | your_primary_node | primary | * running |          | default  | 100      | 1        | host=your_primary_node  user=repmgr dbname=repmgr connect_timeout=2
+2  | your_standby_node | standby |   running | your_primary_node | default  | 100      | 1       | host=your_standby_node  user=repmgr dbname=repmgr connect_timeout=2
 ```
 
 ### ALL: Start repmgrd daemon process (as a root user)
