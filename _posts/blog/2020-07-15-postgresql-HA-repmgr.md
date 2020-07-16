@@ -23,7 +23,7 @@ DNS를 쓰지 않는다면 pgbouncer + repmgr을 사용하면 된다.
 connection 관리가 필요하다면 pg-poolII를 사용해도 된다.
 
 ## Architecture : repmgr + powerdns
-![repmgr_and_powerdns]({{site_url}}/uploads/repmgr_and_powerdns.png)
+![repmgr_and_powerdns]({{site_url}}/uploads/repmgr_and_powerdns.png){:width="400px"}
 
 ## Postgresql installation
 - Prepare 2 postgres instances
