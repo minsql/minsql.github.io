@@ -91,6 +91,7 @@ mysql> show grants;
 
 -- ^^^ super 권한을 가지고 있지않다. 하지만 EXECUTE 권한을 가지고 있으니 프로시져를 호출할 수 있다. 참고로 super권한이 있더라도 *.* 가 아닌 db1.* 과 같이 특정 database에 대한 super권한이라면 set 명령어시 권한부족의 에러가 발생한다.
 
+-- ^^^ *.* 영역에 EXECUTE 권한이 굳이 필요없어도 된다. GRANT EXECUTE ON common_db.* to user_C; 와 같이 common_db에만 EXECUTE권한을 줄 수 있다.
 
 mysql> select current_user(), @@session.sql_log_bin,@@session.binlog_format,@@session.explicit_defaults_for_timestamp;
 +----------------+-----------------------+-------------------------+-------------------------------------------+
