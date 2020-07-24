@@ -4,7 +4,7 @@ author: min_kim
 created: 2014/09/25 06:42:00
 modified:
 layout: post
-tags: postgres postgre_intenal
+tags: postgres postgres_intenal
 image:
   feature: postgres.png
 categories: Postgres
