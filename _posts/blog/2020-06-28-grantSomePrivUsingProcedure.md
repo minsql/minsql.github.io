@@ -18,9 +18,11 @@ toc_icon: "cog"
 ## 개요
 
 * 특정사용자들에게는 접속한 세션에 대해서 super권한이 없음에도 불구하고 sql_log_bin, binlog_format, explicit_defaults_for_timestamp 등을 조절하여 사용해야하는 필요성이 생겼다.
+
   * application user가 batch를 돌리기전 binlog_format을 STATEMENT로 변경
   * 작업을 위한 Temp성 테이블을 생성하기 위하여 [sql_log_bin](https://dev.mysql.com/doc/refman/en/set-sql-log-bin.html)을 off로 변경
   * airflow 같은 특정 Application을 위해 테이블 생성시 [explicit_defaults_for_timestamp](https://dev.mysql.com/doc/refman/en/server-system-variables.html#sysvar_explicit_defaults_for_timestamp) 를 on으로 변경
+
 
 * 하지만, 해당 사용자들에게 [set command](https://dev.mysql.com/doc/refman/en/set-variable.html#set-variable-system-variables)를 실행시키기 위해 [SUPER](https://dev.mysql.com/doc/refman/en/privileges-provided.html#priv_super) 권한을 준다면 이는 매우 위험한 일이다.
 
@@ -30,7 +32,7 @@ toc_icon: "cog"
   * SQL SECURITY INVOKER - 호출하는 USER의 권한으로 PROCEDURE를 실행한다.
 
 
-
+------
 
 ## 스크립트
 
