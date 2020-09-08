@@ -21,7 +21,7 @@ toc_icon: "cog"
 - https://dev.mysql.com/doc/refman/8.0/en/thread-commands.html
 - Connect: A replica is connected to its source.
 - Query : The thread is executing a statement.
-- sql thread가 connect type에서 query type으로 바뀌었다. relay log다 적용하고 기다리는 상태.
+- sql thread가 relay log다 적용하고 기다리는 상태일 때, processlist의 Command 값이 connect type에서 query type으로 바뀌었다.
 
 ## sql thread command type by version
 ### 8.0
