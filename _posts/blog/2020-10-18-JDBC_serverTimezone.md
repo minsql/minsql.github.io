@@ -137,7 +137,7 @@ autoReconnect=true&cacheServerConfiguration=true&useLocalSessionState=true&elide
   ....&serverTimezone=Asia/Seoul
   ```
 
-1. 두번째 방법으로는 my.cnf의 mysqld section에 아래와 같이 추가하여, Connector/J가 Canonical timezone을 세팅할 수 있도록 한다. (물론, mysql_tzinfo_to_sql을 이용하여, timezone테이블을 활성화시키고 정확히 mysqld에서 '+09:00'대신 'Asia/Seoul'로 세팅할 수 있다.)
+2. 두번째 방법으로는 my.cnf의 mysqld section에 아래와 같이 추가하여, Connector/J가 Canonical timezone을 세팅할 수 있도록 한다. (물론, mysql_tzinfo_to_sql을 이용하여, timezone테이블을 활성화시키고 정확히 mysqld에서 '+09:00'대신 'Asia/Seoul'로 세팅할 수 있다.)
   ```
   default_time_zone='+09:00'
   ```
