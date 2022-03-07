@@ -18,7 +18,6 @@ toc_icon: "cog"
 > 나만의 MySQL replication and PMM 테스트 환경을 만들자
 
 ## docker-compose file작성하기
-https://github.com/chrodriguez/mysql-gtid-test 를 참조해서 작성함.
 * mysql replication 만 테스트 할것이고 pmm으로 monitoring을 하고 싶다. pmm도 같이 한방에 띄우기 위해 작성하였다.
 
 https://github.com/fabmichaela/mysql_pmm_test/blob/main/docker-compose.yaml
@@ -80,6 +79,7 @@ pmm-admin add mysql --cluster=my80replication --replication-set=my80replication 
 ```
 
 ### pmm-server 확인
-![pmm-one-two]({{site_url}}/uploads/pmm-one-two.png)
+![pmm]({{site_url}}/uploads/pmm-one-two.png)
 
 one, two service가 보이면 OK
+
