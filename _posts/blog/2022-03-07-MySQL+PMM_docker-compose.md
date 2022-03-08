@@ -22,7 +22,7 @@ toc_icon: "cog"
 
 https://github.com/fabmichaela/mysql_pmm_test/blob/main/docker-compose.yaml
 
-## 시작하기
+## mysql instance 시작하기
 ```
 docker compose up -d
 ```
@@ -57,6 +57,12 @@ show slave status \G
 * docker-compose에 pmm-server, pmm-client도 같이 생성했다.
 * 처음 시작시에 다음과 같이 pmm에 mysql서비스를 등록해준다.
 
+### create pmm-agnet.yaml
+```
+touch pmm-agent.yaml
+chmod 0666 pmm-agent.yaml
+```
+
 ### one(master): create pmm user
 ```
 mysql -uroot -ptest -h127.0.0.1 -P3301
@@ -66,10 +72,10 @@ GRANT SELECT, PROCESS, REPLICATION CLIENT, RELOAD, BACKUP_ADMIN ON *.* TO 'pmm'@
 
 ### pmm-admin add
 ```
-docker exec mysql-replication_pmm-client_1 \
+docker exec mysql-replication-pmm-client-1 \
 pmm-admin add mysql --cluster=my80replication --replication-set=my80replication --username=pmm --password=pmm --query-source=perfschema  --service-name=one --host=one --port=3306
 
-docker exec mysql-replication_pmm-client_1 \
+docker exec mysql-replication-pmm-client-1 \
 pmm-admin add mysql --cluster=my80replication --replication-set=my80replication --username=pmm --password=pmm --query-source=perfschema --service-name=two --host=two --port=3306
 ```
 
