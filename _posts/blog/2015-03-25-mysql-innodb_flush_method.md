@@ -4,7 +4,7 @@ author: min_kim
 created: 2015/03/25 10:06:08
 modified:
 layout: post
-tags: mysql mysql_internal
+tags: mysql mysql_internal flush
 image:
   feature: mysql.png
 categories: MySQL
